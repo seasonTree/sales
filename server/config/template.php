@@ -35,10 +35,10 @@ return [
 
     //留着,以后js等代码上传到CDN
     'tpl_replace_string' => [
-        '__CSS__' => '',
-        '__JS__' => '',
-        '__IMG__' => '',
-        '__FONTS__' => '',
+        '__CSS__' => '/client',
+        '__JS__' => '/client',
+        '__IMG__' => '/client',
+        '__FONTS__' => '/client',
         '__date__'=>time()
     ],
 
