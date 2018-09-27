@@ -1,0 +1,12 @@
+/.idea
+/.vscode
+*.log
+.env
+/node_modules
+/yarn.lock
+.DS_Store
+Thumbs.db
+composer.phar
+composer.lock
+/server/thinkphp/phpunit.xml
+/server/runtime
