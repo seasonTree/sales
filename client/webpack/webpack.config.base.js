@@ -3,6 +3,8 @@ const extractTextPlugin = require("extract-text-webpack-plugin");
 const vueLoaderPlugin = require('vue-loader/lib/plugin');
 const htmlPlugin = require('html-webpack-plugin');
 const fs = require('fs');
+// 自动查找后缀文件
+// const glob = require('glob');
 
 //多线程打包, 使用 happypack@next
 const happyPack = require('happypack');
@@ -23,7 +25,7 @@ function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
 
     files.forEach((item) => {
-        if (item !== 'upload' && item != 'favicon.ico' && item != 'image' && item != 'fonts') {
+        if (item !== 'upload' && item && item != 'image' && item != 'fonts') {
             var fpath = path.resolve(outputPath, item),
                 fstat = fs.statSync(fpath);
 
@@ -52,7 +54,7 @@ function genEntey(entryPath, parent) {
         if (fstat.isDirectory()) {
             genEntey(fpath, parent + '/' + item)
         } else if (/\.js/.test(item)) {
-            var key = parent? parent + '/' + item.replace(/\.js$/, '') : item.replace(/\.js$/, '');
+            var key = parent ? parent + '/' + item.replace(/\.js$/, '') : item.replace(/\.js$/, '');
 
             entry[key] = path.resolve(entryPath, item);
         }
@@ -61,10 +63,9 @@ function genEntey(entryPath, parent) {
 
 genEntey(entryPath, '');
 
-console.log('**********************');
-console.log(entry);
-
 module.exports = {
+    mode: 'production', //默认是生产环境
+
     performance: {
         hints: false
         // hints: "warning", // 枚举
@@ -97,13 +98,17 @@ module.exports = {
         splitChunks: {
             chunks: 'all',
             minChunks: 2,
-            name: 'common'
+            name: 'vendor'
             // cacheGroups:{
             //     common: {
             //         name: 'common'                
             //     }
             // }
         },
+
+        runtimeChunk: {
+            name: 'runtime'
+        }
         // runtimeChunk: true
     },
     plugins: [
@@ -156,19 +161,19 @@ module.exports = {
 
         //复制文件
         new copyFile([{ //image
-            from: `${srcPath}/image`,
-            to: `${outputPath}/image`,
-            force: true,
-        },
-        { //font
-            from: `${srcPath}/fonts`,
-            to: `${outputPath}/fonts`,
-            force: true,
-        } ])
+                from: `${srcPath}/image`,
+                to: `${outputPath}/image`,
+                force: true,
+            },
+            { //font
+                from: `${srcPath}/fonts`,
+                to: `${outputPath}/fonts`,
+                force: true,
+            }
+        ])
     ],
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
@@ -209,15 +214,15 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: `/image/[name].[hash:7].[ext]`,
+                    name: `image/[name].[hash:7].[ext]`,
                 }
             },
             {
-                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                test: /\.(woff2?|woff|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: `/fonts/[name].[hash:7].[ext]`,
+                    name: `fonts/[name].[hash:7].[ext]`,
                 }
             }
         ],

@@ -1,11 +1,50 @@
-{extend name='../../client/template/layout/layout.html'/}
+{extend name='layout:layout'/}
 
 {block name="_css"}
 
 {/block}
 
 {block name="_head"}
+<div class="header">
+    <v-toolbar>
+        <v-toolbar-side-icon class="toolbar-icon" @click="drawer = true"></v-toolbar-side-icon>
+        <v-toolbar-title>
+            <v-img class="toolbar-img" src="./image/kooa_logo.png" contain></v-img>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
 
+        <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn href="./index.html" flat>主页</v-btn>
+        </v-toolbar-items>
+
+        <v-toolbar-items>
+
+            <v-menu offset-y>
+                <v-btn flat primary slot="activator">语言</v-btn>
+                <v-list dense class="language-dropdown">
+                    <v-list-tile @click="">
+                        <v-list-tile-title>
+                            English
+                        </v-list-tile-title>
+                    </v-list-tile>
+
+                    <v-list-tile @click="">
+                        <v-list-tile-title>简体中文</v-list-tile-title>
+                    </v-list-tile>
+                    <v-list-tile @click="">
+                        <v-list-tile-title>繁体中文</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>
+            </v-menu>
+        </v-toolbar-items>
+
+        <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn flat href="./person_reg.html">个人注册</v-btn>
+            <v-btn flat href="./company_reg.html">企业注册</v-btn>
+            <v-btn flat>联系方式</v-btn>
+        </v-toolbar-items>
+    </v-toolbar>
+</div>
 {/block}
 
 {block name="_script"}
