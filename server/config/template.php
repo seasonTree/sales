@@ -35,11 +35,11 @@ return [
 
     //留着,以后js等代码上传到CDN
     'tpl_replace_string' => [
-        '__CSS__' => '/client',
-        '__JS__' => '/client',
-        '__IMG__' => '/client',
-        '__FONTS__' => '/client',
-        '__basePath__' => '/client',
+//        '__CSS__' => '',
+//        '__JS__' => '',
+//        '__IMG__' => '',
+//        '__FONTS__' => '',
+        '__basePath__' => '',
         '__date__'=>time(),
     ],
     'client_temp'=>'../../client/template/',
