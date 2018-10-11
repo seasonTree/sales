@@ -9,12 +9,14 @@
     <v-toolbar>
         <v-toolbar-side-icon class="toolbar-icon" @click="drawer = true"></v-toolbar-side-icon>
         <v-toolbar-title>
-            <v-img class="toolbar-img" src="./image/kooa_logo.png" contain></v-img>
+            <a href="/">
+                <v-img class="toolbar-img" src="/image/kooa_logo.png" contain></v-img>
+            </a>
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn href="./index.html" flat>主页</v-btn>
+            <v-btn href="/" flat>主页</v-btn>
         </v-toolbar-items>
 
         <v-toolbar-items>
@@ -39,8 +41,8 @@
         </v-toolbar-items>
 
         <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn flat href="./person_reg.html">个人注册</v-btn>
-            <v-btn flat href="./company_reg.html">企业注册</v-btn>
+            <v-btn flat href="{:url('personReg')}">个人注册</v-btn>
+            <v-btn flat href="/company_reg.html">企业注册</v-btn>
             <v-btn flat>联系方式</v-btn>
         </v-toolbar-items>
     </v-toolbar>
