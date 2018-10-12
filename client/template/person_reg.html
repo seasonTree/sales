@@ -1,35 +1,7 @@
 {extend name="layout:head_layout"/}
 
 {block name="css"}
-<style>
-    .content {
-        max-width: 1000px;
-    }
-
-    .upload-container {
-        height: 100%;
-        line-height: 140px;
-        text-align: center;
-        border: 4px dotted #efefef;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .upload-container:hover {
-        color: #5d5d5d;
-        box-shadow: 4px 4px 5px #e3e3e3;
-    }
-
-    .s-primary {
-        margin: 10px 0;
-        width: 100%;
-    }
-
-    .protocol {
-        text-align: center;
-        margin-top: 10px;
-    }
-</style>
+<link href="__basePath__/css/person_reg.css" rel="stylesheet" />
 {/block}
 
 {block name="body"}
@@ -52,16 +24,19 @@
         <v-text-field label="移动电话"></v-text-field>
 
         <v-layout row wrap>
-            <v-flex xs6>
-                <div class="upload-container">
+            <v-flex md6 xs12>
+                <upload-image content="个人照片"></upload-image>
+
+                <!-- <div class="upload-container">
                     个人照片
-                </div>
+                </div> -->
             </v-flex>
 
-            <v-flex xs6>
-                <div class="upload-container">
+            <v-flex md6 xs12>
+                <upload-image content="身份证照片"></upload-image>
+                <!-- <div class="upload-container">
                     身份证照片
-                </div>
+                </div> -->
             </v-flex>
         </v-layout>
         <div class="protocol">

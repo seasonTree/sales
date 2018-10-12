@@ -98,6 +98,20 @@ module.exports = {
         splitChunks: {
             chunks: 'all',
             minChunks: 2,
+            // cacheGroups: {
+            //     vendor: {
+            //         test: /[\\/]node_modules[\\/]/,
+            //         // priority: 0,
+            //         name: 'vendor'
+            //     },
+            //     common: {
+            //         minChunks: 2,
+            //         // priority: 10,
+            //         reuseExistingChunk: true,
+            //         name: 'common'
+            //     }
+            // }
+
             name: 'vendor'
             // cacheGroups:{
             //     common: {

@@ -17,6 +17,7 @@ class Index
     {
         return 'hello,' . $name;
     }
+    
     public function personReg(){
         return view('/person_reg');
     }
