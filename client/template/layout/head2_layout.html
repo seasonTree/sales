@@ -9,15 +9,15 @@
     <v-toolbar>
         <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
         <v-toolbar-title>
-            <v-img class="toolbar-img" src="__basePath__/images/kooa_logo.png" contain></v-img>
+            <v-img class="toolbar-img" src="__basePath__/image/kooa_logo.png" contain></v-img>
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn href="./team.html" flat>团队</v-btn>
-            <v-btn href="./channel.html" flat>渠道</v-btn>
-            <v-btn href="./achievement.html" flat>业绩</v-btn>
-            <v-btn href="./distribution_network.html" flat>销售网络</v-btn>
+            <v-btn href="{:url('Team/index')}" flat>团队</v-btn>
+            <v-btn href="{:url('Channel/index')}" flat>渠道</v-btn>
+            <v-btn href="{:url('Achievement/index')}" flat>业绩</v-btn>
+            <v-btn href="{:url('Achievement/distributionNetwork')}" flat>销售网络</v-btn>
 
             <v-btn href="./message.html" flat>
                 消息
@@ -77,7 +77,7 @@
                                         角色
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-list-tile @click="window.location.href='./user_manage.html'">
+                                <v-list-tile @click="window.location.href='{:url('User/index')}'">
                                     <v-list-tile-title>
                                         用户
                                     </v-list-tile-title>

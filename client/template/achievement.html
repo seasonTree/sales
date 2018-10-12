@@ -1,0 +1,261 @@
+<!-- 渠道管理 -->
+{extend name="layout:head2_layout"/}
+
+{block name="css"}
+    <style>
+        .date-container>div {
+            display: inline-block;
+        }
+
+        /* .sub-container {
+            padding-left: 40px;
+        } */
+
+        .sub-item-sp {
+            padding: 3px;
+            border: 1px solid #e3e3e3;
+        }
+
+        .sub-item {
+            margin-bottom: 10px;
+        }
+
+        .line {
+            height: 1px;
+            background-color: #e3e3e3;
+            padding: 0 !important;
+            margin: 10px 0;
+        }
+
+        .sp-color {
+            color: #4CAF50;
+        }
+
+        .sp-color svg {
+            transform: rotate(-90deg);
+            background: yellowgreen;
+            border-radius: 50%;
+            margin-bottom: -6px;
+            margin-right: 3px;
+        }
+
+        .sp-color svg circle {
+            fill: yellowgreen;
+        }
+
+        .item-arrow {
+            margin-left: -12px;
+            margin-bottom: -4px;
+        }
+    </style>
+{/block}
+
+{block name="body"}
+
+
+            <v-container class="content" grid-list-md>
+                <div class="content-header">
+                    业绩
+                </div>
+
+                <v-layout row align-left>
+                    <v-flex xs6>
+                        主账号：正崎代理(上海)有限公司
+                        &nbsp;&nbsp;
+                        <v-btn color="s-primary" class="ml-0" @click="showEdit = true">
+                            <v-icon dark>edit</v-icon>修改资料
+                        </v-btn>
+                    </v-flex>
+                    <v-flex xs4>
+                        <v-card-text class="pa-0">KOOA客服：武勇 1234567890</v-card-text>
+                    </v-flex>
+                    <v-flex xs2>
+                        负责人：陈大文
+                    </v-flex>
+                </v-layout>
+
+                <div class="text-xs-right date-container">
+                    <span class="px-2">从</span>
+                    <v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40"
+                        :return-value.sync="dateFm" lazy transition="scale-transition" offset-y>
+                        <v-text-field slot="activator" v-model="dateFm" prepend-icon="event" readonly></v-text-field>
+                        <v-date-picker v-model="dateFm" @input="$refs.menu.save(dateFm)"></v-date-picker>
+                    </v-menu>
+                    </v-date-picker>
+                    <span class="px-2">至</span>
+                    <v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40"
+                        :return-value.sync="dateTo" lazy transition="scale-transition" offset-y>
+                        <v-text-field slot="activator" v-model="dateTo" prepend-icon="event" readonly></v-text-field>
+                        <v-date-picker v-model="dateTo" @input="$refs.menu1.save(dateTo)"></v-date-picker>
+                    </v-menu>
+
+                    <div>
+                        <v-select :items="month" label="月份"></v-select>
+                    </div>
+
+                </div>
+
+                <v-layout align-center>
+                    <v-data-table :headers="theader" :items="tdata" hide-actions item-key="a" expand class="elevation-1 s-table"
+                        ref="dTable">
+
+                        <template slot="items" slot-scope="props">
+                            <tr @click="props.expanded = !props.expanded">
+
+                                <td class="text-xs-left" ref="td1">
+                                    <v-icon v-if="props.expanded" xs class="item-arrow">
+                                        keyboard_arrow_down
+                                    </v-icon>
+
+                                    <v-icon v-if="!props.expanded" xs class="item-arrow">
+                                        keyboard_arrow_right
+                                    </v-icon>
+
+                                    {{ props.item.a }}
+                                </td>
+                                <td class="text-xs-right">
+                                    {{ props.item.b }}
+                                </td>
+                                <td class="text-xs-right sp-color">
+                                    {{ props.item.b }}
+                                </td>
+                                <td class="text-xs-right">
+                                    {{ props.item.d }}
+                                </td>
+                                <td class="text-xs-right sp-color">
+
+                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                        <circle r="10" cx="10" cy="10" stroke="#655" stroke-width="20"
+                                            :stroke-dasharray="props.item.pie"></circle>
+                                    </svg>
+
+                                    <span>
+                                        {{ props.item.e }}%
+                                    </span>
+                                </td>
+                                <td class="text-xs-right">
+                                    {{ props.item.f }}
+                                </td>
+                                <td class="text-xs-right">
+                                    {{ props.item.g }}
+                                </td>
+                                <td class="text-xs-right sp-color">
+                                    {{ props.item.h }}
+                                </td>
+                                <td class="text-xs-right sp-color">
+                                    {{ props.item.i }}%
+                                </td>
+                                <td class="text-xs-right">
+                                    {{ props.item.j }}%
+                                </td>
+                                <td class="text-xs-right">
+                                    ${{ props.item.k }}
+                                </td>
+                                <td class="text-xs-center">
+                                    <v-icon v-if="props.item.l" md class="mr-2" color="red" title="停止">
+                                        cancel
+                                    </v-icon>
+
+                                    <v-icon v-if="!props.item.l" md class="mr-2" color="light-green" title="开始">
+                                        lens
+                                    </v-icon>
+                                </td>
+                            </tr>
+                        </template>
+
+                        <template slot="expand" slot-scope="props">
+                            <v-container grid-list-md text-xs-left>
+
+                                <template v-if="props.item.children.length">
+                                    <v-layout row wrap>
+                                        <template xs12 v-for="(subItem, subIdx) in props.item.children" :key="subIdx">
+                                            <v-flex xs2 offset-xs1>
+                                                {{subItem.a}}
+                                            </v-flex>
+                                            <v-flex xs2>
+                                                {{subItem.b}}
+                                            </v-flex>
+                                            <v-flex xs1>
+                                                <span class="sub-item-sp">
+                                                    {{subItem.c}}
+                                                </span>
+
+                                            </v-flex>
+                                            <v-flex xs1>
+                                                {{subItem.d}}
+                                            </v-flex>
+
+                                            <v-flex xs1>
+                                                <span class="sub-item-sp">
+                                                    {{subItem.e}}
+                                                </span>
+                                            </v-flex>
+
+                                            <v-flex xs1>
+                                                {{subItem.f}}
+                                            </v-flex>
+
+                                            <v-flex xs1>
+                                                <span class="sub-item-sp">
+                                                    {{subItem.g}}
+                                                </span>
+                                            </v-flex>
+                                            <v-flex xs2>
+                                                {{subItem.h}}
+                                            </v-flex>
+                                        </template>
+
+                                        <!-- 汇总 -->
+                                        <v-flex xs7 offset-xs5 class="line"></v-flex>
+                                        <!-- <div class="sub-item-total"> -->
+                                        <v-flex xs1 offset-xs5>
+                                            <span class="sub-item-sp">
+                                                {{props.item.childTotal.a}}
+                                            </span>
+
+                                        </v-flex>
+                                        <v-flex xs1>
+                                            {{props.item.childTotal.b}}
+                                        </v-flex>
+
+                                        <v-flex xs1>
+                                            <span class="sub-item-sp">
+                                                {{props.item.childTotal.c}}
+                                            </span>
+                                        </v-flex>
+
+                                        <v-flex xs1>
+                                            {{props.item.childTotal.d}}
+                                        </v-flex>
+
+                                        <v-flex xs1>
+                                            <span class="sub-item-sp">
+                                                {{props.item.childTotal.e}}
+                                            </span>
+                                        </v-flex>
+                                        <v-flex xs2>
+                                            {{props.item.childTotal.f}}
+                                        </v-flex>
+                                        <!-- </div> -->
+
+                                    </v-layout>
+                                    <!-- </v-layout> -->
+                                </template>
+
+                                <template v-if="!props.item.children.length">
+                                    <div class="text-xs-center">
+                                        暂无数据
+                                    </div>
+                                </template>
+                            </v-container>
+                        </template>
+
+                    </v-data-table>
+                </v-layout>
+            </v-container>
+
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/achievement.js?date=__date__"></script>
+{/block}

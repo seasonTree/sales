@@ -1,0 +1,51 @@
+{extend name="layout:head2_layout"/}
+
+{block name="css"}
+
+{/block}
+
+{block name="body"}
+            
+
+            <v-container class="body" grid-list-md text-xs-center>
+                <div class="body-header">
+                    销售网络
+                </div>
+
+                <v-layout row wrap>
+                    <v-flex xs2>
+                        <v-text-field label="名字"></v-text-field>
+                    </v-flex>
+
+                    <v-flex xs2>
+                        <v-text-field label="姓"></v-text-field>
+                    </v-flex>
+                    <v-flex xs4>
+                        <v-text-field label="用户名"></v-text-field>
+                    </v-flex>
+                    <v-flex xs2>
+                        <v-text-field label="渠道名"></v-text-field>
+                    </v-flex>
+                    <v-flex xs2>
+                        <v-btn color="s-primary">
+                            <v-icon dark>search</v-icon>搜索
+                        </v-btn>
+                    </v-flex>
+                </v-layout>
+
+
+                <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
+                    <template slot="items" slot-scope="props">
+                        <td class="text-xs-left">{{ props.item.a }}</td>
+                        <td class="text-xs-left">{{ props.item.b }}</td>
+                        <td class="text-xs-left">{{ props.item.c }}</td>
+                        <td class="text-xs-left">{{ props.item.d }}</td>
+                        <td class="text-xs-left">{{ props.item.e }}</td>
+                    </template>
+                </v-data-table>
+            </v-container>
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/distribution_network.js?date=__date__"></script>
+{/block}
