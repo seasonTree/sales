@@ -9,7 +9,7 @@
     <v-toolbar>
         <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
         <v-toolbar-title>
-            <v-img class="toolbar-img" src="__basePath__/images/kooa_logo.png" contain></v-img>
+            <v-img class="toolbar-img" src="__basePath__/image/kooa_logo.png" contain></v-img>
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
@@ -77,7 +77,7 @@
                                         角色
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-list-tile @click="window.location.href='./user_manage.html'">
+                                <v-list-tile @click="window.location.href='{:url('User/index')}'">
                                     <v-list-tile-title>
                                         用户
                                     </v-list-tile-title>
