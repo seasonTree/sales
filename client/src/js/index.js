@@ -8,6 +8,8 @@ new Vue({
         }).then((data) => {
             console.log('************************');
             console.log(data);
+        }).catch((data)=>{
+            
         });
     },
 
