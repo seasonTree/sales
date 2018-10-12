@@ -28,7 +28,7 @@
         <v-text-field label="密码" v-model="data.password" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
             @click:append="show_pass = !show_pass"></v-text-field>
         <v-checkbox color="info" v-model="data.remember" hide-details label="Remember me"></v-checkbox>
-        <v-btn class="s-primary" @click="window.location.href='/team.html'">登录</v-btn>
+        <v-btn class="s-primary" @click="handlerSubmit">登录</v-btn>
 
         <div class="text-xs-left">
             忘记用户名或密码

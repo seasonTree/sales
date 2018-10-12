@@ -171,19 +171,19 @@
                                 </v-list-tile-title>
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile @click="window.location.href='./reg_setting.html'">
+                                <v-list-tile href="{:url('Config/regSetting')}">
                                     <v-list-tile-title>
                                         注册设置
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile @click="window.location.href='./notify_setting.html'">
+                                <v-list-tile href="{:url('Config/notifySetting')}">
                                     <v-list-tile-title>
                                         消息设置
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile @click="window.location.href='./protocol_setting.html'">
+                                <v-list-tile href="{:url('Config/protocolSetting')}">
                                     <v-list-tile-title>
                                         协议设置
                                     </v-list-tile-title>
@@ -216,7 +216,7 @@
                                 </v-list-tile-title>
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile @click="window.location.href='./reg_audit.html'">
+                                <v-list-tile href="{:url('Audit/regAudit')}">
                                     <v-list-tile-title>
                                         注册审核
                                     </v-list-tile-title>
@@ -232,7 +232,7 @@
                     </div>
                 </v-list>
             </v-menu>
-            <v-btn href="./login.html" flat>登出</v-btn>
+            <v-btn href="{:url('Login/loginOut')}" flat>登出</v-btn>
         </v-toolbar-items>
     </v-toolbar>
 </div>
