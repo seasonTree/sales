@@ -19,7 +19,7 @@
             <v-btn href="{:url('Achievement/index')}" flat>业绩</v-btn>            
             <v-btn href="{:url('Achievement/distributionNetwork')}" flat>销售网络</v-btn>
 
-            <v-btn href="./message.html" flat>
+            <v-btn href="{:url('Message/index')}" flat>
                 消息
                 <v-badge right class="toolbar-message-tip">
                     <span slot="badge">6</span>
@@ -98,7 +98,7 @@
                                 </v-list-tile-title>
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile @click="window.location.href='./commision_setting.html'">
+                                <v-list-tile href="{:url('Commision/index')}">
                                     <v-list-tile-title>
                                         佣金设置
                                     </v-list-tile-title>

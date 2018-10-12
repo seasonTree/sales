@@ -5,9 +5,9 @@ import '@css/fonts';
 import '@css/common';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import axios from 'axios';
+import api from './api';
 
-
+Vue.use(api);
 Vue.config.productionTip = false
 
 Vue.use(Vuetify);
