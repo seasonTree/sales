@@ -20,9 +20,13 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
         <template slot="items" slot-scope="props">
-            <td class="text-xs-left">{{ props.item.a }}</td>
-            <td class="text-xs-left">{{ props.item.b }}</td>
-            <td class="text-xs-right">{{ props.item.c }}</td>
+            <td class="text-xs-left">{{ props.item.id }}</td>
+            <td class="text-xs-left">
+                {{ props.item.pri_name }}
+            </td>
+            <td class="text-xs-left">{{ props.item.module_name }}</td>
+            <td class="text-xs-left">{{ props.item.controller_name }}</td>
+            <td class="text-xs-left">{{ props.item.action_name }}</td>
             <td class="text-xs-center">
                 <v-icon small class="mr-2">
                     edit
@@ -30,7 +34,6 @@
                 <v-icon small>
                     delete
                 </v-icon>
-
             </td>
         </template>
     </v-data-table>

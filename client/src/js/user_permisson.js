@@ -1,6 +1,21 @@
 import Vue from './base';
+
 new Vue({
     el: '#app',
+
+    created(){
+        let that = this;
+
+        that.$api.privilege.get().then((data) =>{
+                that.tdata = data.data;
+
+                console.log('(((((((((((((((');
+                console.log(data.data);
+        }).catch((data) =>{
+            console.log('eeeeeeeeeeeee');
+            console.log(data);
+        });
+    },
 
     data() {
         return {
@@ -12,33 +27,41 @@ new Vue({
             theader: [{
                     text: 'ID',
                     align: 'left',
-                    value: 'a',
+                    value: 'id',
                     sortable: false,
                 },
                 {
                     text: '权限名称',
                     align: 'left',
-                    value: 'b',
+                    value: 'pri_name',
                     sortable: false,
                 },
                 {
-                    text: '字段名',
+                    text: '模块名称',
                     align: 'right',
-                    value: 'c',
+                    value: 'module_name',
+                    sortable: false,
+                },
+                {
+                    text: '控制器名称',
+                    align: 'right',
+                    value: 'controller_name',
+                    sortable: false,
+                },
+                {
+                    text: '方法名',
+                    align: 'right',
+                    value: 'action_name',
                     sortable: false,
                 },
                 {
                     text: '操作',
                     align: 'center',
-                    value: 'd',
+                    value: '_act',
                     sortable: false,
                 },
             ],
-            tdata: [{
-                a: '1',
-                b: '会员管理',
-                c: 'admin   user   memberlst',
-            }]
+            tdata: []
         };
     }
 })
