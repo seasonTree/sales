@@ -17,6 +17,12 @@ new Vue({
         return {
             drawer: false,
             show_pass: false,
+
+            data: {
+                username: '',
+                password: '',
+                remember: false,
+            }
         }
     }
 });
