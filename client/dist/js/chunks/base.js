@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[3],[],[[0,0,1]]]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["base"],[],[["./client/src/js/base.js","runtime","vendor"]]]);
