@@ -1,15 +1,1 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["team"],{
-
-/***/ "./client/src/js/team.js":
-/*!*******************************!*\
-  !*** ./client/src/js/team.js ***!
-  \*******************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./base */ \"./client/src/js/base.js\");\n\nnew _base__WEBPACK_IMPORTED_MODULE_0__[\"default\"]({\n  el: '#app',\n  data: function data() {\n    return {\n      showAdd: false,\n      show_pass: false,\n      showEdit: false,\n      theader: [{\n        text: '姓名',\n        align: 'left',\n        value: 'a',\n        sortable: false\n      }, {\n        text: '电话',\n        align: 'left',\n        value: 'b',\n        sortable: false\n      }, {\n        text: '负责/关联渠道',\n        align: 'right',\n        value: 'c',\n        sortable: false\n      }, {\n        text: '业绩目标',\n        align: 'left',\n        value: 'd',\n        sortable: false\n      }, {\n        text: '医生目标',\n        align: 'left',\n        value: 'e',\n        sortable: false\n      }, {\n        text: '设置',\n        align: 'left',\n        value: 'f',\n        sortable: false\n      }],\n      tdata: [{\n        a: '王成',\n        b: '187563245',\n        c: '微信1(大众点评)',\n        d: '50000',\n        e: '10000'\n      }, {\n        a: '',\n        b: '',\n        c: '微信1(大众点评)',\n        d: '50000',\n        e: '10000'\n      }, {\n        a: '李成功',\n        b: '1821503112',\n        c: '医生合作',\n        d: '50000',\n        e: '10000'\n      }]\n    };\n  }\n});\n\n//# sourceURL=webpack:///./client/src/js/team.js?");
-
-/***/ })
-
-},[["./client/src/js/team.js","runtime","vendor"]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[10],{20:function(e,t,a){"use strict";a.r(t),new(a(0).default)({el:"#app",data:function(){return{showAdd:!1,show_pass:!1,showEdit:!1,theader:[{text:"姓名",align:"left",value:"a",sortable:!1},{text:"电话",align:"left",value:"b",sortable:!1},{text:"负责/关联渠道",align:"right",value:"c",sortable:!1},{text:"业绩目标",align:"left",value:"d",sortable:!1},{text:"医生目标",align:"left",value:"e",sortable:!1},{text:"设置",align:"left",value:"f",sortable:!1}],tdata:[{a:"王成",b:"187563245",c:"微信1(大众点评)",d:"50000",e:"10000"},{a:"",b:"",c:"微信1(大众点评)",d:"50000",e:"10000"},{a:"李成功",b:"1821503112",c:"医生合作",d:"50000",e:"10000"}]}}})}},[[20,0,1]]]);
