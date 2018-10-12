@@ -1,462 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
+{extend name="layout:head2_layout"/}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>注册审核</title>
+{block name="css"}
+<style>
+    .upload-container {
+        height: 100%;
+        line-height: 140px;
+        text-align: center;
+        border: 1px solid #efefef;
+        cursor: pointer;
+    }
+</style>
+{/block}
 
-    <link href="./css/reset.css" rel="stylesheet" />
-    <link href="./css/vuetify.min.css" rel="stylesheet" />
-    <link href="./css/css.css" rel="stylesheet" />
-    <link href="./css/common.css" rel="stylesheet" />
-
-    <style>
-        .upload-container {
-            height: 100%;
-            line-height: 140px;
-            text-align: center;
-            border: 1px solid #efefef;
-            cursor: pointer;
-        }
-    </style>
-
-</head>
-
-<body>
-    <div id="app">
-        <v-app>
-            <div class="header">
-                <v-toolbar>
-                    <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
-                    <v-toolbar-title>
-                        <v-img class="toolbar-img" src="./images/kooa_logo.png" contain></v-img>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-
-                    <v-toolbar-items class="hidden-sm-and-down">
-                        <v-btn href="./team.html" flat>团队</v-btn>
-                        <v-btn href="./channel.html" flat>渠道</v-btn>
-                        <v-btn href="./achievement.html" flat>业绩</v-btn>
-                        <v-btn href="./distribution_network.html" flat>销售网络</v-btn>
-                        <v-btn href="./message.html" flat>
-                            消息
-                            <v-badge right class="toolbar-message-tip">
-                                <span slot="badge">6</span>
-                            </v-badge>
-                        </v-btn>
-                    </v-toolbar-items>
-
-                    <v-toolbar-items>
-
-                        <v-menu offset-y>
-                            <v-btn flat primary slot="activator">语言</v-btn>
-                            <v-list dense class="toolbar-dropdown">
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        English
-                                    </v-list-tile-title>
-                                </v-list-tile>
-
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>简体中文</v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>繁体中文</v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </v-toolbar-items>
-
-                    <v-toolbar-items class="hidden-sm-and-down">
-                        <v-menu offset-y>
-                            <v-btn flat primary slot="activator">系统信息</v-btn>
-                            <v-list dense class="toolbar-dropdown">
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                <!-- <v-icon>$vuetify.icons.product</v-icon> -->
-                                                用户管理
-                                            </v-list-tile-title>
-
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='/user_permisson.html'">
-                                                <v-list-tile-title>
-                                                    权限
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="window.location.href='/user_role.html'">
-                                                <v-list-tile-title>
-                                                    角色
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="window.location.href='/user_manage.html'">
-                                                <v-list-tile-title>
-                                                    用户
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                佣金管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='/commision_setting.html'">
-                                                <v-list-tile-title>
-                                                    佣金设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                财务管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    财务资料
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    财务报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                报表管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    经销商报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    内部销售员报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                参数设置
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='/reg_setting.html'">
-                                                <v-list-tile-title>
-                                                    注册设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="window.location.href='/notify_setting.html'">
-                                                <v-list-tile-title>
-                                                    消息设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="window.location.href='/protocol_setting.html'">
-                                                <v-list-tile-title>
-                                                    协议设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    医生脱离设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    审批流程设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                审核管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='/reg_audit.html'">
-                                                <v-list-tile-title>
-                                                    注册审核
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    医生脱离审核
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-                            </v-list>
-                        </v-menu>
-
-                        <v-btn href="/login.html" flat>登出</v-btn>
-                    </v-toolbar-items>
-                </v-toolbar>
-            </div>
-
-            <v-container class="body" grid-list-md text-xs-center>
-                <div class="body-header">
-                    注册审核
-                </div>
-
-                <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
-                    <template slot="items" slot-scope="props">
-                        <td class="text-xs-left">{{ props.item.a }}</td>
-                        <td class="text-xs-left">{{ props.item.b }}</td>
-                        <td class="text-xs-left">{{ props.item.c }}</td>
-                        <td class="text-xs-left">{{ props.item.d }}</td>
-                        <td class="text-xs-center">
-                            <v-btn color="s-primary" class="mr-0" @click="viewAudit(props.item)">查看明细</v-btn>
-                        </td>
-                    </template>
-                </v-data-table>
-            </v-container>
-
-            <v-dialog scrollable v-model="auditInfo" width="600">
-                <v-card>
-                    <v-card-title class="headline grey lighten-2" primary-title>
-                        资料
-                    </v-card-title>
-
-                    <v-card-text>
-                        <template v-if="viewAuditInfo && viewAuditInfo.e == 'p'">
-                            <v-text-field label="用户名"></v-text-field>
-                            <v-text-field label="姓"></v-text-field>
-                            <v-text-field label="名字"></v-text-field>
-                            <v-text-field label="银行账号"></v-text-field>
-                            <v-text-field label="银行名称"></v-text-field>
-                            <v-text-field label="银行地址"></v-text-field>
-                            <v-text-field label="开户名"></v-text-field>
-                            <v-text-field label="固定电话"></v-text-field>
-                            <v-text-field label="移动电话"></v-text-field>
-
-                            <v-layout row>
-                                <v-flex xs6 class="mr-1">
-                                    <div class="upload-container" @click="viewImage = true">
-                                        <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
-                                    </div>
-                                </v-flex>
-
-                                <v-flex xs6 class="ml-1">
-                                    <div class="upload-container" @click="viewImage = true">
-                                        <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
-                                    </div>
-                                </v-flex>
-                            </v-layout>
-
-                        </template>
-
-                        <template v-if="viewAuditInfo && viewAuditInfo.e == 'c'">
-                            <v-text-field label="用户名"></v-text-field>
-                            <v-text-field label="密码" type="password"></v-text-field>
-                            <v-text-field label="姓"></v-text-field>
-                            <v-text-field label="名字"></v-text-field>
-                            <v-text-field label="公司名称"></v-text-field>
-                            <v-text-field label="银行账号"></v-text-field>
-                            <v-text-field label="开户银行名称"></v-text-field>
-                            <v-text-field label="开户银行地址"></v-text-field>
-                            <v-text-field label="公司地址"></v-text-field>
-                            <v-text-field label="联系人"></v-text-field>
-                            <v-text-field label="联系人手机"></v-text-field>
-                            <v-text-field label="联系人邮箱"></v-text-field>
-
-
-                            <v-layout row>
-                                <v-flex xs4 class="mr-1">
-                                    <div class="upload-container" @click="viewImage = true">
-                                        <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
-                                    </div>
-                                </v-flex>
-
-                                <v-flex xs4 class="mr-1">
-                                    <div class="upload-container" @click="viewImage = true">
-                                        <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
-                                    </div>
-                                </v-flex>
-
-                                <v-flex xs4 class="ml-1">
-                                    <div class="upload-container" @click="viewImage = true">
-                                        <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
-                                    </div>
-                                </v-flex>
-                            </v-layout>
-                        </template>
-                    </v-card-text>
-
-                    <v-card-actions class="text-xs-right">
-                        <v-spacer></v-spacer>
-                        <v-btn color="s-primary" @click="auditInfo = false">审核通过</v-btn>
-                        <v-btn color="primary" flat @click="auditNotPass = true">
-                            审核不通过
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-
-            </v-dialog>
-
-            <v-dialog width="300" height="300" v-model="viewImage">
-                <v-card>
-                    <v-card-text>
-                        <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
-
-            <v-dialog width="300" scrollable height="300" v-model="auditNotPass">
-                <v-card>
-                    <v-card-text>
-                        <v-textarea label="拒决理由" value="拒绝理由."></v-textarea>
-                    </v-card-text>
-                    <v-card-actions class="text-xs-right">
-                        <v-spacer></v-spacer>
-                        <v-btn color="s-primary" @click="auditNotPass = false">提交</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-        </v-app>
+{block name="body"}
+<v-container class="content" grid-list-md text-xs-center>
+    <div class="content-header">
+        注册审核
     </div>
 
-    <script src="./js/vue.js"></script>
-    <script src="./js/vuetify.js"></script>
-    <script>
-        new Vue({
-            el: '#app',
+    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
+        <template slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.a }}</td>
+            <td class="text-xs-left">{{ props.item.b }}</td>
+            <td class="text-xs-left">{{ props.item.c }}</td>
+            <td class="text-xs-left">{{ props.item.d }}</td>
+            <td class="text-xs-center">
+                <v-btn color="s-primary" class="mr-0" @click="viewAudit(props.item)">查看明细</v-btn>
+            </td>
+        </template>
+    </v-data-table>
+</v-container>
 
-            methods: {
-                viewAudit(item) {
-                    this.auditInfo = true;
+<v-dialog scrollable v-model="auditInfo" width="600">
+    <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>
+            资料
+        </v-card-title>
 
-                    this.viewAuditInfo = item;
-                }
-            },
+        <v-card-text>
+            <template v-if="viewAuditInfo && viewAuditInfo.e == 'p'">
+                <v-text-field label="用户名"></v-text-field>
+                <v-text-field label="姓"></v-text-field>
+                <v-text-field label="名字"></v-text-field>
+                <v-text-field label="银行账号"></v-text-field>
+                <v-text-field label="银行名称"></v-text-field>
+                <v-text-field label="银行地址"></v-text-field>
+                <v-text-field label="开户名"></v-text-field>
+                <v-text-field label="固定电话"></v-text-field>
+                <v-text-field label="移动电话"></v-text-field>
 
-            data() {
-                return {
-                    auditInfo: false,
+                <v-layout row>
+                    <v-flex xs6 class="mr-1">
+                        <div class="upload-container" @click="viewImage = true">
+                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                        </div>
+                    </v-flex>
 
-                    viewImage: false,
+                    <v-flex xs6 class="ml-1">
+                        <div class="upload-container" @click="viewImage = true">
+                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                        </div>
+                    </v-flex>
+                </v-layout>
 
-                    auditNotPass: false,
+            </template>
 
-                    viewAuditInfo: {
+            <template v-if="viewAuditInfo && viewAuditInfo.e == 'c'">
+                <v-text-field label="用户名"></v-text-field>
+                <v-text-field label="密码" type="password"></v-text-field>
+                <v-text-field label="姓"></v-text-field>
+                <v-text-field label="名字"></v-text-field>
+                <v-text-field label="公司名称"></v-text-field>
+                <v-text-field label="银行账号"></v-text-field>
+                <v-text-field label="开户银行名称"></v-text-field>
+                <v-text-field label="开户银行地址"></v-text-field>
+                <v-text-field label="公司地址"></v-text-field>
+                <v-text-field label="联系人"></v-text-field>
+                <v-text-field label="联系人手机"></v-text-field>
+                <v-text-field label="联系人邮箱"></v-text-field>
 
-                    },
 
-                    theader: [{
-                            text: '姓',
-                            align: 'left',
-                            value: 'a',
-                            sortable: false,
-                        },
-                        {
-                            text: '名',
-                            align: 'left',
-                            value: 'b',
-                            sortable: false,
-                        },
-                        {
-                            text: '角色',
-                            align: 'left',
-                            value: 'c',
-                            sortable: false,
-                        },
-                        {
-                            text: '电话',
-                            align: 'left',
-                            value: 'd',
-                            sortable: false,
-                        },
-                        {
-                            text: '操作',
-                            align: 'center',
-                            value: 'e',
-                            sortable: false,
-                        },
-                    ],
-                    tdata: [{
-                            a: '刘',
-                            b: '伟',
-                            c: '销售员',
-                            d: '1234567890',
-                            e: 'p'
-                        },
-                        {
-                            a: '刘',
-                            b: '伟2',
-                            c: '公司',
-                            d: '1234567890',
-                            e: 'c'
-                        }
-                    ]
-                };
-            }
-        })
-    </script>
-</body>
+                <v-layout row>
+                    <v-flex xs4 class="mr-1">
+                        <div class="upload-container" @click="viewImage = true">
+                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                        </div>
+                    </v-flex>
 
-</html>
+                    <v-flex xs4 class="mr-1">
+                        <div class="upload-container" @click="viewImage = true">
+                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                        </div>
+                    </v-flex>
+
+                    <v-flex xs4 class="ml-1">
+                        <div class="upload-container" @click="viewImage = true">
+                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                        </div>
+                    </v-flex>
+                </v-layout>
+            </template>
+        </v-card-text>
+
+        <v-card-actions class="text-xs-right">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="auditInfo = false">审核通过</v-btn>
+            <v-btn color="primary" flat @click="auditNotPass = true">
+                审核不通过
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+
+</v-dialog>
+
+<v-dialog width="300" height="300" v-model="viewImage">
+    <v-card>
+        <v-card-text>
+            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+        </v-card-text>
+    </v-card>
+</v-dialog>
+
+<v-dialog width="300" scrollable height="300" v-model="auditNotPass">
+    <v-card>
+        <v-card-text>
+            <v-textarea label="拒决理由" value="拒绝理由."></v-textarea>
+        </v-card-text>
+        <v-card-actions class="text-xs-right">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="auditNotPass = false">提交</v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/reg_audit.js?date=__date__"></script>
+{/block}

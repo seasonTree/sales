@@ -2,336 +2,335 @@
 {extend name="layout:head2_layout"/}
 
 {block name="css"}
-    <style>
-        .main-table-sub {
-            color: #c5c4c4;
-            border: 1px solid #e3e3e3;
-            padding: 4px;
-            margin: 6px 0;
-            /* text-align: center; */
-        }
+<style>
+    .main-table-sub {
+        color: #c5c4c4;
+        border: 1px solid #e3e3e3;
+        padding: 4px;
+        margin: 6px 0;
+        /* text-align: center; */
+    }
 
-        .qr-container {
-            padding: 4px;
-            margin: 4px 0;
-        }
+    .qr-container {
+        padding: 4px;
+        margin: 4px 0;
+    }
 
-        .qrcode-image {
-            min-height: 60px;
-            min-width: 60px;
-            height: 100%;
-            width: 100%;
-            border: 1px solid #e3e3e3;
-            border-radius: 6px;
-        }
+    .qrcode-image {
+        min-height: 60px;
+        min-width: 60px;
+        height: 100%;
+        width: 100%;
+        border: 1px solid #e3e3e3;
+        border-radius: 6px;
+    }
 
-        .download-qrcode {
-            color: #2196f3;
-            border-color: #2196f3;
-            border-radius: 6px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-        }
+    .download-qrcode {
+        color: #2196f3;
+        border-color: #2196f3;
+        border-radius: 6px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
 
-        .download-qrcode:hover {
-            color: white;
-            background-color: #2196f3;
-        }
+    .download-qrcode:hover {
+        color: white;
+        background-color: #2196f3;
+    }
 
-        .table-sub-number {
-            color: #8BC34A;
-        }
+    .table-sub-number {
+        color: #8BC34A;
+    }
 
-        .sub-item {
-            padding: 0;
-            margin: 10px 0;
-        }
+    .sub-item {
+        padding: 0;
+        margin: 10px 0;
+    }
 
-        .line {
-            height: 1px;
-            background-color: #e3e3e3;
-            width: 100%;
-        }
+    .line {
+        height: 1px;
+        background-color: #e3e3e3;
+        width: 100%;
+    }
 
-        .sub-item div {
-            display: inline-block;
-        }
+    .sub-item div {
+        display: inline-block;
+    }
 
-        .sub-right {
-            float: right;
-            margin-right: -4px;
-        }
+    .sub-right {
+        float: right;
+        margin-right: -4px;
+    }
 
-        .clearfix:after {
-            display: block;
-            content: '';
-            clear: both;
-            height: 0;
-        }
+    .clearfix:after {
+        display: block;
+        content: '';
+        clear: both;
+        height: 0;
+    }
 
-        .sub-right .sub-right-item,
-        .sub-left {
-            padding: 0 24px;
-        }
+    .sub-right .sub-right-item,
+    .sub-left {
+        padding: 0 24px;
+    }
 
 
-        .upload-container {
-            height: 100%;
-            line-height: 140px;
-            text-align: center;
-            border: 4px dotted #efefef;
-            cursor: pointer;
-            margin-left: 6px;
-            /* margin-right: 0; */
-        }
+    .upload-container {
+        height: 100%;
+        line-height: 140px;
+        text-align: center;
+        border: 4px dotted #efefef;
+        cursor: pointer;
+        margin-left: 6px;
+        /* margin-right: 0; */
+    }
 
-        .upload-container:first-of-type {
-            margin-right: 6px;
-            margin-left: 0;
-        }
-    </style>
+    .upload-container:first-of-type {
+        margin-right: 6px;
+        margin-left: 0;
+    }
+</style>
 {/block}
 
 
 {block name="body"}
 
 
-            <v-container class="content" grid-list-md>
-                <div class="content-header">
-                    渠道
+<v-container class="content" grid-list-md>
+    <div class="content-header">
+        渠道
+    </div>
+
+    <v-layout row align-center>
+        <v-flex xs6>
+            主账号：正崎代理(上海)有限公司
+            &nbsp;&nbsp;
+            <v-btn color="s-primary" class="ml-0" @click="showEdit = true">
+                <v-icon dark>edit</v-icon>修改资料
+            </v-btn>
+        </v-flex>
+        <v-flex xs4>
+            <v-card-text class="pa-0">KOOA客服：武勇 1234567890</v-card-text>
+        </v-flex>
+        <v-flex xs2>
+            负责人：陈大文
+        </v-flex>
+    </v-layout>
+
+    <div class="action-bar">
+        <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
+            <v-icon dark>add</v-icon>新增渠道
+        </v-btn>
+    </div>
+
+    <v-layout v-resize="onTabelResize">
+        <v-data-table :headers="theader" :items="tdata" hide-headers hide-actions item-key="a" expand class="elevation-1 s-table"
+            ref="dTable">
+
+            <template slot="items" slot-scope="props">
+                <tr @click="props.expanded = !props.expanded">
+                    <td class="text-xs-left" ref="td1">
+                        {{ props.item.a }}
+                    </td>
+                    <td class="text-xs-left">
+                        {{ props.item.b }}
+                        <div class="main-table-sub">
+                            {{ props.item.a_1 }}
+                        </div>
+                    </td>
+                    <td class="text-xs-left">
+                        <div class="qr-container">
+                            <v-img src="/image/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                        </div>
+                    </td>
+                    <td class="text-xs-left">
+                        {{ props.item.d }}
+                        <div class="main-table-sub">
+                            {{ props.item.d_1 }}
+                        </div>
+                    </td>
+                    <td class="text-xs-left" ref="td2">
+                        {{ props.item.e }}
+                        <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
+                    </td>
+                    <td class="text-xs-right" ref="td3">
+                        {{ props.item.f }}
+                        <div class="table-sub-number">
+                            {{ props.item.f_1 }}
+                        </div>
+                    </td>
+                    <td class="text-xs-right" ref="td4">
+                        {{ props.item.g }}
+                        <div class="table-sub-number">
+                            {{ props.item.g_1 }}
+                        </div>
+                    </td>
+                    <td class="text-xs-center" ref="td5">
+                        <v-icon v-if="props.item.stop" class="mr-2" color="red" title="停止">
+                            block
+                        </v-icon>
+
+                        <v-icon v-if="!props.item.stop" class="mr-2" color="light-green" title="开始">
+                            lens
+                        </v-icon>
+                    </td>
+                </tr>
+            </template>
+
+            <template slot="expand" slot-scope="props">
+                <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" class="sub-item clearfix" :style="subSytle">
+                    <div class="sub-left">
+                        <span>{{subItem.sub_id}}</span>
+                        <span>{{subItem.sub_name}}</span>
+                    </div>
+                    <div class="sub-right">
+                        <!-- <v-layout row wrap> -->
+                        <div class="text-xs-left sub-right-item ellipsis" :style="subUrlWidth">
+                            <span :title="subItem.url">{{ subItem.url }}</span>
+                            <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
+                        </div>
+                        <div class="text-xs-right sub-right-item" :style="docWidth">
+                            <p>
+                                {{ subItem.f }}
+                            </p>
+
+                            <div class="table-sub-number">
+                                {{ subItem.f_1 }}
+                            </div>
+                        </div>
+
+                        <div class="text-xs-right sub-right-item" :style="achWidth">
+                            <p>
+                                {{ subItem.g }}
+                            </p>
+                            <div class="table-sub-number">
+                                {{ subItem.g_1 }}
+                            </div>
+                        </div>
+                        <!-- </v-layout> -->
+                    </div>
+
+                    <div class="line"></div>
                 </div>
 
-                <v-layout row align-center>
-                    <v-flex xs6>
-                        主账号：正崎代理(上海)有限公司
-                        &nbsp;&nbsp;
-                        <v-btn color="s-primary" class="ml-0" @click="showEdit = true">
-                            <v-icon dark>edit</v-icon>修改资料
-                        </v-btn>
-                    </v-flex>
-                    <v-flex xs4>
-                        <v-card-text class="pa-0">KOOA客服：武勇 1234567890</v-card-text>
-                    </v-flex>
-                    <v-flex xs2>
-                        负责人：陈大文
-                    </v-flex>
-                </v-layout>
-
-                <div class="action-bar">
-                    <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
-                        <v-icon dark>add</v-icon>新增渠道
+                <div :style="subSytle">
+                    <v-btn color="s-primary" ml="0" @click="showAddSales = true">
+                        <v-icon dark>add</v-icon>新增销售员
                     </v-btn>
                 </div>
+            </template>
+        </v-data-table>
+    </v-layout>
 
-                <v-layout v-resize="onTabelResize">
-                    <v-data-table :headers="theader" :items="tdata" hide-headers hide-actions item-key="a" expand class="elevation-1 s-table"
-                        ref="dTable">
+    <v-dialog scrollable v-model="showAdd" width="500">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                新增
+            </v-card-title>
 
-                        <template slot="items" slot-scope="props">
-                            <tr @click="props.expanded = !props.expanded">
-                                <td class="text-xs-left" ref="td1">
-                                    {{ props.item.a }}
-                                </td>
-                                <td class="text-xs-left">
-                                    {{ props.item.b }}
-                                    <div class="main-table-sub">
-                                        {{ props.item.a_1 }}
-                                    </div>
-                                </td>
-                                <td class="text-xs-left">
-                                    <div class="qr-container">
-                                        <v-img src="/image/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
-                                    </div>
-                                </td>
-                                <td class="text-xs-left">
-                                    {{ props.item.d }}
-                                    <div class="main-table-sub">
-                                        {{ props.item.d_1 }}
-                                    </div>
-                                </td>
-                                <td class="text-xs-left" ref="td2">
-                                    {{ props.item.e }}
-                                    <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
-                                </td>
-                                <td class="text-xs-right" ref="td3">
-                                    {{ props.item.f }}
-                                    <div class="table-sub-number">
-                                        {{ props.item.f_1 }}
-                                    </div>
-                                </td>
-                                <td class="text-xs-right" ref="td4">
-                                    {{ props.item.g }}
-                                    <div class="table-sub-number">
-                                        {{ props.item.g_1 }}
-                                    </div>
-                                </td>
-                                <td class="text-xs-center" ref="td5">
-                                    <v-icon v-if="props.item.stop" class="mr-2" color="red" title="停止">
-                                        block
-                                    </v-icon>
+            <v-card-text>
+                <v-form>
+                    <v-text-field label="渠道名称"></v-text-field>
+                    <v-text-field label="描述信息"></v-text-field>
+                    <v-text-field label="二维码附加信息"></v-text-field>
+                </v-form>
+            </v-card-text>
 
-                                    <v-icon v-if="!props.item.stop" class="mr-2" color="light-green" title="开始">
-                                        lens
-                                    </v-icon>
-                                </td>
-                            </tr>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="showAdd = false">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="showAdd = false">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog scrollable v-model="showAddSales" width="500">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                新增销售员
+            </v-card-title>
+
+            <v-card-text>
+                <v-form>
+                    <v-combobox v-model="chips" :items="saliesLists" label="请选择销售员" chips clearable prepend-icon="filter_list"
+                        solo multiple>
+                        <template slot="selection" slot-scope="data">
+                            <v-chip :selected="data.selected" close @input="remove(data)">
+                                <strong>{{ data.item }}</strong>&nbsp;
+                            </v-chip>
                         </template>
+                    </v-combobox>
+                </v-form>
+            </v-card-text>
 
-                        <template slot="expand" slot-scope="props">
-                            <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" class="sub-item clearfix"
-                                :style="subSytle">
-                                <div class="sub-left">
-                                    <span>{{subItem.sub_id}}</span>
-                                    <span>{{subItem.sub_name}}</span>
-                                </div>
-                                <div class="sub-right">
-                                    <!-- <v-layout row wrap> -->
-                                    <div class="text-xs-left sub-right-item ellipsis" :style="subUrlWidth">
-                                        <span :title="subItem.url">{{ subItem.url }}</span>
-                                        <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
-                                    </div>
-                                    <div class="text-xs-right sub-right-item" :style="docWidth">
-                                        <p>
-                                            {{ subItem.f }}
-                                        </p>
+            <v-btn color="s-primary" @click="showAddUser = true">开通账号</v-btn>
 
-                                        <div class="table-sub-number">
-                                            {{ subItem.f_1 }}
-                                        </div>
-                                    </div>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="showAddSales = false">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="showAddSales = false">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 
-                                    <div class="text-xs-right sub-right-item" :style="achWidth">
-                                        <p>
-                                            {{ subItem.g }}
-                                        </p>
-                                        <div class="table-sub-number">
-                                            {{ subItem.g_1 }}
-                                        </div>
-                                    </div>
-                                    <!-- </v-layout> -->
-                                </div>
+    <v-dialog scrollable v-model="showAddUser" width="600">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                新增
+            </v-card-title>
 
-                                <div class="line"></div>
+            <v-card-text>
+                <v-form>
+                    <v-text-field label="用户名"></v-text-field>
+                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
+                        @click:append="show_pass = !show_pass"></v-text-field>
+                    <v-text-field label="姓"></v-text-field>
+                    <v-text-field label="名字"></v-text-field>
+                    <v-text-field label="银行账号"></v-text-field>
+                    <v-text-field label="银行名称"></v-text-field>
+                    <v-text-field label="银行地址"></v-text-field>
+                    <v-text-field label="开户名"></v-text-field>
+                    <v-text-field label="固定电话"></v-text-field>
+                    <v-text-field label="移动电话"></v-text-field>
+
+                    <v-layout row wrap>
+                        <v-flex xs6>
+                            <div class="upload-container">
+                                个人照片
                             </div>
+                        </v-flex>
 
-                            <div :style="subSytle">
-                                <v-btn color="s-primary" ml="0" @click="showAddSales = true">
-                                    <v-icon dark>add</v-icon>新增销售员
-                                </v-btn>
+                        <v-flex xs6>
+                            <div class="upload-container">
+                                身份证照片
                             </div>
-                        </template>
-                    </v-data-table>
-                </v-layout>
+                        </v-flex>
+                    </v-layout>
+                </v-form>
+            </v-card-text>
 
-                <v-dialog scrollable v-model="showAdd" width="500">
-                    <v-card>
-                        <v-card-title class="headline grey lighten-2" primary-title>
-                            新增
-                        </v-card-title>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="showAddUser = false">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="showAddUser = false">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 
-                        <v-card-text>
-                            <v-form>
-                                <v-text-field label="渠道名称"></v-text-field>
-                                <v-text-field label="描述信息"></v-text-field>
-                                <v-text-field label="二维码附加信息"></v-text-field>
-                            </v-form>
-                        </v-card-text>
-
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="s-primary" @click="showAdd = false">
-                                确认
-                            </v-btn>
-                            <v-btn color="primary" flat @click="showAdd = false">
-                                取消
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-
-                <v-dialog scrollable v-model="showAddSales" width="500">
-                    <v-card>
-                        <v-card-title class="headline grey lighten-2" primary-title>
-                            新增销售员
-                        </v-card-title>
-
-                        <v-card-text>
-                            <v-form>
-                                <v-combobox v-model="chips" :items="saliesLists" label="请选择销售员" chips clearable
-                                    prepend-icon="filter_list" solo multiple>
-                                    <template slot="selection" slot-scope="data">
-                                        <v-chip :selected="data.selected" close @input="remove(data)">
-                                            <strong>{{ data.item }}</strong>&nbsp;
-                                        </v-chip>
-                                    </template>
-                                </v-combobox>
-                            </v-form>
-                        </v-card-text>
-
-                        <v-btn color="s-primary" @click="showAddUser = true">开通账号</v-btn>
-
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="s-primary" @click="showAddSales = false">
-                                确认
-                            </v-btn>
-                            <v-btn color="primary" flat @click="showAddSales = false">
-                                取消
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-
-                <v-dialog scrollable v-model="showAddUser" width="600">
-                    <v-card>
-                        <v-card-title class="headline grey lighten-2" primary-title>
-                            新增
-                        </v-card-title>
-
-                        <v-card-text>
-                            <v-form>
-                                <v-text-field label="用户名"></v-text-field>
-                                <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
-                                    :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass"></v-text-field>
-                                <v-text-field label="姓"></v-text-field>
-                                <v-text-field label="名字"></v-text-field>
-                                <v-text-field label="银行账号"></v-text-field>
-                                <v-text-field label="银行名称"></v-text-field>
-                                <v-text-field label="银行地址"></v-text-field>
-                                <v-text-field label="开户名"></v-text-field>
-                                <v-text-field label="固定电话"></v-text-field>
-                                <v-text-field label="移动电话"></v-text-field>
-
-                                <v-layout row wrap>
-                                    <v-flex xs6>
-                                        <div class="upload-container">
-                                            个人照片
-                                        </div>
-                                    </v-flex>
-
-                                    <v-flex xs6>
-                                        <div class="upload-container">
-                                            身份证照片
-                                        </div>
-                                    </v-flex>
-                                </v-layout>
-                            </v-form>
-                        </v-card-text>
-
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="s-primary" @click="showAddUser = false">
-                                确认
-                            </v-btn>
-                            <v-btn color="primary" flat @click="showAddUser = false">
-                                取消
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-
-            </v-container>
+</v-container>
 
 {/block}
 

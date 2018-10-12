@@ -1,398 +1,98 @@
 <!-- 角色管理 -->
-<!DOCTYPE html>
-<html lang="en">
+{extend name="layout:head2_layout"/}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>角色管理</title>
+{block name="css"}
+<style>
+    .role-container {
+        border: 1px solid #e3e3e3;
+        width: 100%;
+    }
 
-    <link href="./css/reset.css" rel="stylesheet" />
-    <link href="./css/vuetify.min.css" rel="stylesheet" />
-    <link href="./css/css.css" rel="stylesheet" />
-    <link href="./css/common.css" rel="stylesheet" />
+    .role-title {
+        background-color: #e3e3e3;
+    }
 
-    <style>
-        .role-container {
-            border: 1px solid #e3e3e3;
-            width: 100%;
-        }
+    .role {
+        width: 100%;
+        padding: 8px;
+    }
 
-        .role-title {
-            background-color: #e3e3e3;
-        }
+    .role li {
+        display: inline-block;
+    }
+</style>
+{/block}
 
-        .role {
-            width: 100%;
-            padding: 8px;
-        }
-
-        .role li {
-            display: inline-block;
-        }
-    </style>
-
-</head>
-
-<body>
-    <div id="app">
-        <v-app>
-            <div class="header">
-                <v-toolbar>
-                    <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
-                    <v-toolbar-title>
-                        <v-img class="toolbar-img" src="./images/kooa_logo.png" contain></v-img>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-
-                    <v-toolbar-items class="hidden-sm-and-down">
-                        <v-btn href="./team.html" flat>团队</v-btn>
-                        <v-btn href="./channel.html" flat>渠道</v-btn>
-                        <v-btn href="./achievement.html" flat>业绩</v-btn>
-                        <v-btn href="./distribution_network.html" flat>销售网络</v-btn>
-                        <v-btn href="./message.html" flat>
-                            消息
-                            <v-badge right class="toolbar-message-tip">
-                                <span slot="badge">6</span>
-                            </v-badge>
-                        </v-btn>
-                    </v-toolbar-items>
-
-                    <v-toolbar-items>
-
-                        <v-menu offset-y>
-                            <v-btn flat primary slot="activator">语言</v-btn>
-                            <v-list dense class="toolbar-dropdown">
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        English
-                                    </v-list-tile-title>
-                                </v-list-tile>
-
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>简体中文</v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>繁体中文</v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </v-toolbar-items>
-
-                    <v-toolbar-items class="hidden-sm-and-down">
-                        <v-menu offset-y>
-                            <v-btn flat primary slot="activator">系统信息</v-btn>
-                            <v-list dense class="toolbar-dropdown">
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                <!-- <v-icon>$vuetify.icons.product</v-icon> -->
-                                                用户管理
-                                            </v-list-tile-title>
-
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./user_permisson.html'">
-                                                <v-list-tile-title>
-                                                    权限
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="window.location.href='./user_role.html'">
-                                                <v-list-tile-title>
-                                                    角色
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="window.location.href='./user_manage.html'">
-                                                <v-list-tile-title>
-                                                    用户
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                佣金管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./commision_setting.html'">
-                                                <v-list-tile-title>
-                                                    佣金设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                财务管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    财务资料
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    财务报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                报表管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    经销商报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    内部销售员报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                参数设置
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./reg_setting.html'">
-                                                <v-list-tile-title>
-                                                    注册设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="window.location.href='./notify_setting.html'">
-                                                <v-list-tile-title>
-                                                    消息设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="window.location.href='./protocol_setting.html'">
-                                                <v-list-tile-title>
-                                                    协议设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    医生脱离设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    审批流程设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                审核管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./reg_audit.html'">
-                                                <v-list-tile-title>
-                                                    注册审核
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    医生脱离审核
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-                            </v-list>
-                        </v-menu>
-
-                        <v-btn href="./login.html" flat>登出</v-btn>
-                    </v-toolbar-items>
-                </v-toolbar>
-            </div>
-
-            <v-container class="body" grid-list-md text-xs-center>
-                <div class="body-header">
-                    角色管理
-                </div>
-
-                <div class="action-bar">
-                    <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
-                        <v-icon dark>add</v-icon>新增
-                    </v-btn>
-                </div>
-
-
-                <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
-                    <template slot="items" slot-scope="props">
-                        <td class="text-xs-left">{{ props.item.a }}</td>
-                        <td class="text-xs-left">{{ props.item.b }}</td>
-                        <td class="text-xs-left">{{ props.item.c }}</td>
-                        <td class="text-xs-left">{{ props.item.d }}</td>
-                        <td class="text-xs-center">
-                            <v-icon small class="mr-2">
-                                edit
-                            </v-icon>
-                            <v-icon small>
-                                delete
-                            </v-icon>
-                        </td>
-                    </template>
-                </v-data-table>
-            </v-container>
-
-            <v-dialog scrollable v-model="showAdd" width="500">
-                <v-card>
-                    <v-card-title class="headline grey lighten-2" primary-title>
-                        新增
-                    </v-card-title>
-
-                    <v-card-text>
-                        <v-form>
-                            <v-text-field label="角色名称"></v-text-field>
-                            <div class="role-container">
-                                <div class="role role-title">
-                                    <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
-                                </div>
-                                <ul class="role">
-                                    <li>
-                                        <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
-                                    </li>
-                                    <li>
-                                        <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
-                                    </li>
-                                </ul>
-                            </div>
-                        </v-form>
-                    </v-card-text>
-
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="s-primary" @click="showAdd = false">
-                            确认
-                        </v-btn>
-                        <v-btn color="primary" flat @click="showAdd = false">
-                            取消
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-
-        </v-app>
+{block name="body"}
+<v-container class="content" grid-list-md text-xs-center>
+    <div class="content-header">
+        角色管理
     </div>
 
-    <script src="./js/vue.js"></script>
-    <script src="./js/vuetify.js"></script>
-    <script>
-        new Vue({
-            el: '#app',
+    <div class="action-bar">
+        <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
+            <v-icon dark>add</v-icon>新增
+        </v-btn>
+    </div>
 
-            data() {
-                return {
-                    showAdd: false,
 
-                    items: ['页面1', '页面2'],
+    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
+        <template slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.a }}</td>
+            <td class="text-xs-left">{{ props.item.b }}</td>
+            <td class="text-xs-left">{{ props.item.c }}</td>
+            <td class="text-xs-left">{{ props.item.d }}</td>
+            <td class="text-xs-center">
+                <v-icon small class="mr-2">
+                    edit
+                </v-icon>
+                <v-icon small>
+                    delete
+                </v-icon>
+            </td>
+        </template>
+    </v-data-table>
+</v-container>
 
-                    theader: [{
-                            text: 'ID',
-                            align: 'left',
-                            value: 'a',
-                            sortable: false,
-                        },
-                        {
-                            text: '角色名称',
-                            align: 'left',
-                            value: 'b',
-                            sortable: false,
-                        },
-                        {
-                            text: '用户列表',
-                            align: 'left',
-                            value: 'c',
-                            sortable: false,
-                        },
-                        {
-                            text: '描述',
-                            align: 'left',
-                            value: 'd',
-                            sortable: false,
-                        },
-                        {
-                            text: '操作',
-                            align: 'center',
-                            value: 'e',
-                            sortable: false,
-                        }
-                    ],
-                    tdata: [{
-                        a: '1',
-                        b: '管理员',
-                        c: 'aaa,bbb',
-                        d: '用户管理员'
-                    }]
-                }
-            }
-        });
-    </script>
-</body>
+<v-dialog scrollable v-model="showAdd" width="500">
+    <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>
+            新增
+        </v-card-title>
 
-</html>
+        <v-card-text>
+            <v-form>
+                <v-text-field label="角色名称"></v-text-field>
+                <div class="role-container">
+                    <div class="role role-title">
+                        <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
+                    </div>
+                    <ul class="role">
+                        <li>
+                            <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
+                        </li>
+                        <li>
+                            <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
+                        </li>
+                    </ul>
+                </div>
+            </v-form>
+        </v-card-text>
+
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="showAdd = false">
+                确认
+            </v-btn>
+            <v-btn color="primary" flat @click="showAdd = false">
+                取消
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
+
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/user_role.js?date=__date__"></script>
+{/block}

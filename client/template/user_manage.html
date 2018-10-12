@@ -1,4 +1,77 @@
 <!-- 用户管理 -->
+{extend name="layout:head2_layout"/}
+
+{block name="css"}
+
+{/block}
+
+{block name="body"}
+
+<v-container class="content" grid-list-md text-xs-center>
+    <div class="content-header">
+        用户管理
+    </div>
+
+    <div class="action-bar">
+        <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
+            <v-icon dark>add</v-icon>新增
+        </v-btn>
+    </div>
+
+
+    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
+        <template slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.a }}</td>
+            <td class="text-xs-left">{{ props.item.b }}</td>
+            <td class="text-xs-right">{{ props.item.c }}</td>
+            <td class="text-xs-left">{{ props.item.d }}</td>
+            <td class="text-xs-center">
+                <v-icon small class="mr-2">
+                    edit
+                </v-icon>
+                <v-icon small>
+                    delete
+                </v-icon>
+
+            </td>
+        </template>
+    </v-data-table>
+
+    <v-dialog scrollable v-model="showAdd" width="500">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                新增
+            </v-card-title>
+
+            <v-card-text>
+                <v-form>
+                    <v-text-field label="用户名"></v-text-field>
+                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
+                        :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass"></v-text-field>
+                    <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
+                        :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1"></v-text-field>
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="showAdd = false">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="showAdd = false">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+</v-container>
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/user_manage.js?date=__date__"></script>
+{/block}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -250,122 +323,13 @@
                 </v-toolbar>
             </div>
 
-            <v-container class="body" grid-list-md text-xs-center>
-                <div class="body-header">
-                    用户管理
-                </div>
-
-                <div class="action-bar">
-                    <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
-                        <v-icon dark>add</v-icon>新增
-                    </v-btn>
-                </div>
-
-
-                <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
-                    <template slot="items" slot-scope="props">
-                        <td class="text-xs-left">{{ props.item.a }}</td>
-                        <td class="text-xs-left">{{ props.item.b }}</td>
-                        <td class="text-xs-right">{{ props.item.c }}</td>
-                        <td class="text-xs-left">{{ props.item.d }}</td>
-                        <td class="text-xs-center">
-                            <v-icon small class="mr-2">
-                                edit
-                            </v-icon>
-                            <v-icon small>
-                                delete
-                            </v-icon>
-
-                        </td>
-                    </template>
-                </v-data-table>
-
-                <v-dialog scrollable v-model="showAdd" width="500">
-                    <v-card>
-                        <v-card-title class="headline grey lighten-2" primary-title>
-                            新增
-                        </v-card-title>
-
-                        <v-card-text>
-                            <v-form>
-                                <v-text-field label="用户名"></v-text-field>
-                                <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
-                                    :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass"></v-text-field>
-                                <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
-                                    :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1"></v-text-field>
-                            </v-form>
-                        </v-card-text>
-
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="s-primary" @click="showAdd = false">
-                                确认
-                            </v-btn>
-                            <v-btn color="primary" flat @click="showAdd = false">
-                                取消
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-
-            </v-container>
         </v-app>
     </div>
 
     <script src="./js/vue.js"></script>
     <script src="./js/vuetify.js"></script>
     <script>
-        new Vue({
-            el: '#app',
 
-            data() {
-                return {
-
-                    show_pass: false,
-                    show_pass1: false,
-
-                    showAdd: false,
-
-                    theader: [{
-                            text: 'ID',
-                            align: 'left',
-                            value: 'a',
-                            sortable: false,
-                        },
-                        {
-                            text: '登录名',
-                            align: 'left',
-                            value: 'b',
-                            sortable: false,
-                        },
-                        {
-                            text: '角色',
-                            align: 'right',
-                            value: 'c',
-                            sortable: false,
-                        },
-                        {
-                            text: '是否启用',
-                            align: 'left',
-                            value: 'd',
-                            sortable: false,
-                        },
-                        {
-                            text: '操作',
-                            align: 'center',
-                            value: 'e',
-                            sortable: false,
-                        },
-                    ],
-                    tdata: [{
-                        a: '1',
-                        b: 'admin',
-                        c: '管理员',
-                        d: '是',
-                    }]
-                };
-            }
-        })
     </script>
 
     <!-- <div id="app">
