@@ -10,4 +10,5 @@ composer.phar
 composer.lock
 /server/thinkphp/phpunit.xml
 /server/runtime
+/server/config/database.php
 /client/dist
