@@ -1,0 +1,141 @@
+<!-- 登录页面 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="/images/kooa64.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/images/kooa64.ico" rel="apple-touch-icon">
+
+    <title>登录</title>
+
+    <link href="./css/reset.css" rel="stylesheet" />
+    <link href="./css/vuetify.min.css" rel="stylesheet" />
+    <link href="./css/css.css" rel="stylesheet" />
+    <link href="./css/common.css" rel="stylesheet" />
+
+    <style>
+        .body {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 600px;
+        }
+
+        .s-primary {
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        /* toolbar */
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <div class="header">
+                <v-toolbar>
+                    <v-toolbar-side-icon class="toolbar-icon" @click="drawer = true"></v-toolbar-side-icon>
+                    <v-toolbar-title>
+                        <v-img class="toolbar-img" src="./images/kooa_logo.png" contain></v-img>
+                    </v-toolbar-title>
+                    <v-spacer></v-spacer>
+
+                    <v-toolbar-items class="hidden-sm-and-down">
+                        <v-btn href="./login.html" flat>主页</v-btn>
+                    </v-toolbar-items>
+
+                    <v-toolbar-items>
+
+                        <v-menu offset-y>
+                            <v-btn flat primary slot="activator">语言</v-btn>
+                            <v-list dense class="toolbar-dropdown">
+                                <v-list-tile @click="">
+                                    <v-list-tile-title>
+                                        English
+                                    </v-list-tile-title>
+                                </v-list-tile>
+
+                                <v-list-tile @click="">
+                                    <v-list-tile-title>简体中文</v-list-tile-title>
+                                </v-list-tile>
+                                <v-list-tile @click="">
+                                    <v-list-tile-title>繁体中文</v-list-tile-title>
+                                </v-list-tile>
+                            </v-list>
+                        </v-menu>
+                    </v-toolbar-items>
+
+                    <v-toolbar-items class="hidden-sm-and-down">
+                        <v-btn flat href="./person_reg.html">个人注册</v-btn>
+                        <v-btn flat href="./company_reg.html">企业注册</v-btn>
+                        <v-btn flat>联系方式</v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
+            </div>
+
+            <!-- <v-navigation-drawer v-model="drawer" absolute temporary>
+                <div>
+                    
+                </div>
+
+                <v-list class="pa-1">
+                    <v-list-tile avatar>
+                        <v-list-tile-avatar>
+                            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+                        </v-list-tile-avatar>
+
+                        <v-list-tile-content>
+                            <v-list-tile-title>John Leider</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                </v-list>
+            </v-navigation-drawer> -->
+
+            <v-container class="body" grid-list-md text-xs-center>
+                <div class="body-header">
+                    KOOA - Sales Management System
+                </div>
+
+                <v-form>
+                    <v-text-field label="用户名"></v-text-field>
+                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
+                        @click:append="show_pass = !show_pass"></v-text-field>
+                    <v-checkbox color="info" hide-details label="Remember me"></v-checkbox>
+                    <v-btn class="s-primary" @click="window.location.href='/team.html'">登录</v-btn>
+
+                    <div class="text-xs-left">
+                        忘记用户名或密码
+                        <a href="./forget_password.html">
+                            点击找回密码
+                        </a>
+                    </div>
+                </v-form>
+
+            </v-container>
+        </v-app>
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+
+            data() {
+                return {
+                    drawer: false,
+                    show_pass: false,
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
