@@ -16,6 +16,7 @@ class Channel extends Model
         //获取渠道
         $channel = Channel::alias('a')
                             ->join('sales_url b','a.id = b.channel_id','left')
+                            ->field('a.*,b.channel_id,b.url_code')
                             ->where('user_id',$uid)
                             ->select();
 
@@ -36,6 +37,18 @@ class Channel extends Model
     public function addChannel($data){
         //添加渠道
         $res = Channel::insert($data);
+        return $res;
+    }
+
+    public function findChannel($data){
+        //检查渠道
+        $res = Channel::where($data)->find();
+        return $res;
+    }
+
+    public function countChannel($uid){
+        //检查渠道条数
+        $res = Channel::where('user_id',$uid)->count();
         return $res;
     }
 }

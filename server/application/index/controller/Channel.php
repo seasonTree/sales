@@ -28,6 +28,19 @@ class Channel
     	// $data['user_id'] = Session::has('user.userid');
     	$data['user_id'] = 2;
     	$channel = new ChannelModel();
+
+    	$count = $channel->countChannel($data['user_id']);
+    	if ($count == 10) {
+    		return json(['msg'=>'渠道最多存在十条','code'=>3]);
+    	}
+
+    	$find = $channel->findChannel($data);
+    	if ($find) {
+    		return json(['msg'=>'渠道已存在','code'=>2]);
+    	}
+
+
+
     	$res = $channel->addChannel($data);
     	if ($res) {
     		return json(['msg'=>'添加成功','code'=>0]);
