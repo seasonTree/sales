@@ -58,6 +58,38 @@ new Vue({
         remove(item) {
             this.chips.splice(this.chips.indexOf(item), 1)
             this.chips = [...this.chips]
+        },
+
+        addChannel(){
+        	// alert('aaa');
+        	let that = this;
+
+            that.submitLoading = true;
+
+        	that.$api.channel.add({
+        		data: that.addItem
+        	}).then((res) =>{
+        		if (res.code == 0) {
+                    that.message.text = res.msg;
+                    that.message.color = 'success';
+                    that.message.show = true;
+                    // that.showAdd = false;
+                    //重刷页面,后台负责跳转
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                } else {
+                    that.message.text = res.msg;
+                    that.message.color = 'error';
+                    that.message.show = true;
+                    that.submitLoading = false;
+                }
+
+
+        	}).catch((res) =>{
+        		console.log('***********')
+        	});
+
         }
     },
 
@@ -72,10 +104,22 @@ new Vue({
                 // paddingRight: '-100px'
             },
 
+<<<<<<< HEAD
             subRight: {
                 width: '0px'
             },
 
+=======
+            message: {
+                show: false,
+                text: '',
+                time: 3000,
+                color: 'success'
+            },
+
+            submitLoading: false,
+
+>>>>>>> 1da1d5b62c6fbd3113c85ffe5383cf9b8220f1e3
             docWidth: {
                 width: '0px'
             },
@@ -104,6 +148,12 @@ new Vue({
             ],
 
             chips: [],
+
+            addItem: {
+            	channel_name: '',
+            	channel_info: '',
+            	qr_code_info: ''
+            },
 
             // items: ['页面1', '页面2'],
 

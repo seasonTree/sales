@@ -1,4 +1,5 @@
 import Vue from './base';
+import * as privilege from "../api/privilege";
 
 new Vue({
     el: '#app',
@@ -8,23 +9,32 @@ new Vue({
 
         that.$api.privilege.get().then((data) =>{
                 that.tdata = data.data;
+                that.items = that.tdata.map(function (item) {
+                     item.pri_name = new Array(item.level+1).join('------')+item.pri_name;
 
-                console.log('(((((((((((((((');
-                console.log(data.data);
+                    return item;
+                });
+
+
         }).catch((data) =>{
             console.log('eeeeeeeeeeeee');
             console.log(data);
         });
+
     },
 
     data() {
         return {
 
             showAdd: false,
+            showEdit: false,
 
-            items: ['页面1', '页面2'],
+            selectID: 1,
 
-            theader: [{
+            items: null,
+
+            theader: [
+                {
                     text: 'ID',
                     align: 'left',
                     value: 'id',
@@ -61,7 +71,48 @@ new Vue({
                     sortable: false,
                 },
             ],
-            tdata: []
+            tdata: [],
+
+            editItem: {}
         };
+    },
+
+    methods:{
+        edit (item) {
+            this.editItem = item;
+
+            this.showEdit = true;
+        },
+
+
+
+        editCommit(){
+            //
+            // let data = this.data.map(item){
+            //     if(item){
+            //         return '-----------' + item.item;
+            //     }
+            // }
+            // let data = this.data.map(item){
+            //     if(item){
+            //         return '-----------' + item.item;
+            //     }
+            // }
+
+
+            let that = this;
+            that.$api.privilege.edit({
+                data: this.editItem
+            }).then((data) => {
+                // that.editItem.id = data.id;
+                that.showEdit = false;
+
+                console.log(data)
+            }).catch((data) =>{ //function(data){}
+                console.log('失败了')
+            });
+
+            this.editItem;
+        }
     }
 })

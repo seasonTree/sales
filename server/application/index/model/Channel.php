@@ -32,4 +32,10 @@ class Channel extends Model
         }
         return $channel;
     }
+
+    public function addChannel($data){
+        //添加渠道
+        $res = Channel::insert($data);
+        return $res;
+    }
 }
