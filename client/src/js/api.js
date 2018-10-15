@@ -1,7 +1,9 @@
 import * as user from '../api/user'
+import * as privilege from '../api/privilege';
 
 const apis = {
-    user
+    user, //user: user
+    privilege
 }
 
 const install = function (Vue) {

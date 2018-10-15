@@ -1,21 +1,23 @@
 <?php
 namespace app\index\controller;
 
-use think\Loader;
-Loader::import('ShortMessage', ROOT_PATH . 'application/entend/ShortMessage.php');
-Loader::import('Mailer', ROOT_PATH . 'application/entend/Mailer.php');
+use \think\Request;
+
+
+require '../extend/ShortMessage.php';
+require '../extend/Mailer.php';
 
 class Register
 {
 	private $redis;
     public function __construct(Request $request = null)
     {
-        parent::__construct($request);
-        $this->redis=new \Redis();
-        $this->redis->connect(Config::get('redis.host'),Config::get('redis.port'));
-        $this->redis->select(Config::get('redis.db_index'));
+        // parent::__construct($request);
+        // $this->redis=new \Redis();
+        // $this->redis->connect(Config::get('redis.host'),Config::get('redis.port'));
+        // $this->redis->select(Config::get('redis.db_index'));
     }
-    
+
     public function companyReg(){
     	//公司注册
     	return view('/company_reg');
