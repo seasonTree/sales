@@ -7,3 +7,11 @@ export function get(data) {
         data: data
     })
 }
+
+export function edit(data){
+    return request({
+        url: '/privilege/edit',
+        method: 'post',
+        data: data
+    })
+}
