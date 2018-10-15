@@ -7,6 +7,8 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import api from './api';
 
+// Vue.extends();
+
 Vue.use(api);
 Vue.config.productionTip = false
 
