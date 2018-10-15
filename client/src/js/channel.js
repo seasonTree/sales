@@ -23,33 +23,30 @@ new Vue({
 
         setTimeout(() => {
             that.calcWidth();
-        }, 100);
+        }, 260);
     },
 
     methods: {
-        onTabelResize() {            
+        onTabelResize() {
             //这里执行速度快,第一次会报错
-
-            let that = this;
-
-            setTimeout(() => {
-                that.calcWidth();
-            }, 100);
-
-            // try {
-            //     this.calcWidth();
-            // } catch (error) {}
+            try {
+                this.calcWidth();
+            } catch (error) {}
         },
 
         calcWidth() {
-            var td1Width = this.$refs.td1.offsetWidth,
+            var trWidht = this.$refs.tr.offsetWidth,
+                td1Width = this.$refs.td1.offsetWidth,
                 td2Width = this.$refs.td2.offsetWidth,
                 td3Width = this.$refs.td3.offsetWidth,
                 td4Width = this.$refs.td4.offsetWidth,
                 td5Width = this.$refs.td5.offsetWidth,
                 left = td1Width;
-                // right = td5Width;
+            // right = td5Width;
 
+            // this.subRight['width'] = td2Width + td3Width + td4Width + td5Width + 'px';
+            // this.trWidth = (trWidht - td1Width) + 'px';
+            this.infoWidth['width'] = (trWidht - td1Width - td2Width - td3Width - td4Width - td5Width) + 'px';
             this.subUrlWidth['width'] = td2Width + 'px';
             this.docWidth['width'] = td3Width + 'px';
             this.achWidth['width'] = td4Width + 'px';
@@ -66,9 +63,17 @@ new Vue({
 
     data() {
         return {
+            infoWidth: {
+                width: '0px'
+            },
+
             subSytle: {
                 paddingLeft: '0px',
                 // paddingRight: '-100px'
+            },
+
+            subRight: {
+                width: '0px'
             },
 
             docWidth: {

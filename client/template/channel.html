@@ -45,7 +45,12 @@
 
     .sub-item {
         padding: 0;
-        margin: 10px 0;
+        margin: 10px 0 !important;
+        width: 100%;
+    }
+
+    .sub-item > div{
+        padding: 0 24px !important;
     }
 
     .line {
@@ -54,26 +59,31 @@
         width: 100%;
     }
 
-    .sub-item div {
+    /* .sub-item>div {
         display: inline-block;
     }
 
     .sub-right {
         float: right;
-        margin-right: -4px;
-    }
+        
+    } */
 
-    .clearfix:after {
+    /* .clearfix:after {
         display: block;
         content: '';
         clear: both;
         height: 0;
-    }
+    } */
 
-    .sub-right .sub-right-item,
+    /* .sub-right .sub-right-item,
     .sub-left {
-        padding: 0 24px;
-    }
+        
+
+    } */
+
+    /* .sub-right-item{
+        box-sizing: border-box;
+    } */
 
 
     .upload-container {
@@ -129,7 +139,7 @@
             ref="dTable">
 
             <template slot="items" slot-scope="props">
-                <tr @click="props.expanded = !props.expanded">
+                <tr @click="props.expanded = !props.expanded" ref="tr">
                     <td class="text-xs-left" ref="td1">
                         {{ props.index + 1 }}
                     </td>
@@ -167,11 +177,11 @@
                         </div>
                     </td>
                     <td class="text-xs-center" ref="td5">
-                        <v-icon v-if="!props.item.status" class="mr-2" color="red" title="停止">
+                        <v-icon v-if="!props.item.status" color="red" title="停止">
                             block
                         </v-icon>
 
-                        <v-icon v-if="props.item.status" class="mr-2" color="light-green" title="开始">
+                        <v-icon v-if="props.item.status" color="light-green" title="开始">
                             lens
                         </v-icon>
                     </td>
@@ -179,20 +189,71 @@
             </template>
 
             <template slot="expand" slot-scope="props">
-                <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" class="sub-item clearfix" :style="subSytle">
-                    <div class="sub-left">
-                        <span>{{subItem.username}}</span>
-                        <span>{{subItem.username}}</span>
-                    </div>
+                <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" :style="subSytle">
+                    <!-- <div class="sub-left"> -->
+
+                    <!-- </div> -->
+
+                    <!-- <div class="sub-right" :style="subRight"> -->
+                    <v-layout xs12 wrap row class="sub-item" align-center>
+                        <v-flex :style="infoWidth">
+                            <span class="mr-3">{{subIdx + 1}}</span>
+                            <span>{{subItem.username}}</span>
+                        </v-flex>
+
+                        <v-flex class="text-xs-left" :style="subUrlWidth">
+                            <span ellipsis :title="subItem.url">{{ subItem.url_code }}</span>
+                            <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
+                        </v-flex>
+
+                        <v-flex class="text-xs-right" :style="docWidth">
+                            <p>
+                                医生
+                            </p>
+
+                            <div class="table-sub-number">
+                                {{ subItem.url_code }}
+                            </div>
+                        </v-flex>
+
+                        <v-flex class="text-xs-right" :style="achWidth">
+                            <p>
+                                业绩
+                            </p>
+                            <div class="table-sub-number">
+                                {{ subItem.url_code }}
+                            </div>
+                        </v-flex>
+
+                        <v-flex class="text-xs-center" :style="actWidth">
+                            <v-icon v-if="!subItem.status" color="red" title="停止">
+                                block
+                            </v-icon>
+
+                            <v-icon v-if="subItem.status" color="light-green" title="开始">
+                                lens
+                            </v-icon>
+                        </v-flex>
+                    </v-layout>
+                    <!-- </div> -->
+
+                    <div class="line"></div>
+
+                </div>
+                <div class="text-xs-center">
+                    <v-btn color="s-primary" ml="0" @click="showAddSales = true">
+                        <v-icon dark>add</v-icon>新增销售员
+                    </v-btn>
+                </div>
+                <!-- 
                     <div class="sub-right">
-                        <!-- <v-layout row wrap> -->
                         <div class="text-xs-left sub-right-item ellipsis" :style="subUrlWidth">
                             <span :title="subItem.url">{{ subItem.url_code }}</span>
                             <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
                         </div>
                         <div class="text-xs-right sub-right-item" :style="docWidth">
                             <p>
-                                {{ subItem.url_code }}
+                                医生
                             </p>
 
                             <div class="table-sub-number">
@@ -202,7 +263,7 @@
 
                         <div class="text-xs-right sub-right-item" :style="achWidth">
                             <p>
-                                {{ subItem.url_code }}
+                                业绩
                             </p>
                             <div class="table-sub-number">
                                 {{ subItem.url_code }}
@@ -210,25 +271,20 @@
                         </div>
 
                         <div class="text-xs-center sub-right-item" :style="actWidth">
-                            <v-icon v-if="!subItem.status" class="mr-2" color="red" title="停止">
+                            <v-icon v-if="!subItem.status" color="red" title="停止">
                                 block
                             </v-icon>
 
-                            <v-icon v-if="subItem.status" class="mr-2" color="light-green" title="开始">
+                            <v-icon v-if="subItem.status" color="light-green" title="开始">
                                 lens
                             </v-icon>
                         </div>
-                        <!-- </v-layout> -->
-                    </div>
+                    </div> -->
 
-                    <div class="line"></div>
-                </div>
+                <!-- <div class="line"></div> -->
+                <!-- </div> -->
 
-                <div :style="subSytle">
-                    <v-btn color="s-primary" ml="0" @click="showAddSales = true">
-                        <v-icon dark>add</v-icon>新增销售员
-                    </v-btn>
-                </div>
+
             </template>
         </v-data-table>
     </v-layout>
