@@ -1,22 +1,38 @@
 {extend name='layout:layout'/}
 
 {block name="_css"}
-<!-- <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet"> -->
+
 {/block}
 
 {block name="_head"}
-<div class="header">        
+<div class="header">
     <v-toolbar>
         <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
         <v-toolbar-title>
-            <v-img class="toolbar-img" src="__basePath__/image/kooa_logo.png" contain></v-img>            
+            <v-img class="toolbar-img" src="__basePath__/image/kooa_logo.png" contain></v-img>
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-sm-and-down">
+            <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
+            <v-menu offset-y>
+                <v-btn flat primary slot="activator">用户中心</v-btn>
+                <v-list dense class="language-dropdown">
+                    <v-list-tile @click="">
+                        <v-list-tile-title>
+                            个人资料
+                        </v-list-tile-title>
+                    </v-list-tile>
+
+                    <v-list-tile @click="">
+                        <v-list-tile-title>修改密码</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>
+            </v-menu>
+
             <v-btn href="{:url('Team/index')}" flat>团队</v-btn>
             <v-btn href="{:url('Channel/index')}" flat>渠道</v-btn>
-            <v-btn href="{:url('Achievement/index')}" flat>业绩</v-btn>            
+            <v-btn href="{:url('Achievement/index')}" flat>业绩</v-btn>
             <v-btn href="{:url('Achievement/distributionNetwork')}" flat>销售网络</v-btn>
 
             <v-btn href="{:url('Message/index')}" flat>
@@ -61,7 +77,6 @@
                                 </v-list-tile-action>
 
                                 <v-list-tile-title>
-                                    <!-- <v-icon>$vuetify.icons.product</v-icon> -->
                                     用户管理
                                 </v-list-tile-title>
 

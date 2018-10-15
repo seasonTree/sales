@@ -2,22 +2,43 @@ import Vue from './base';
 new Vue({
     el: '#app',
 
+    created() {
+        let that = this;
+
+        that.$api.channel.get().then((res) => {
+            that.tdata = res.data;
+        }).catch((res) => {
+            console.log('eeeeeeeeeeeee');
+            console.log(res);
+        });
+    },
+
     mounted() {
-        for (let i = 0; i < this.tdata.length; i += 1) {
-            const item = this.tdata[i];
-            this.$set(this.$refs.dTable.expanded, item.a, true)
+        let that = this;
+
+        for (let i = 0; i < that.tdata.length; i += 1) {
+            const item = that.tdata[i];
+            that.$set(that.$refs.dTable.expanded, item.id, true)
         }
 
-        var that = this;
-
-        setTimeout(function () {
+        setTimeout(() => {
             that.calcWidth();
         }, 100);
     },
 
     methods: {
-        onTabelResize() {
-            this.calcWidth();
+        onTabelResize() {            
+            //这里执行速度快,第一次会报错
+
+            let that = this;
+
+            setTimeout(() => {
+                that.calcWidth();
+            }, 100);
+
+            // try {
+            //     this.calcWidth();
+            // } catch (error) {}
         },
 
         calcWidth() {
@@ -26,14 +47,15 @@ new Vue({
                 td3Width = this.$refs.td3.offsetWidth,
                 td4Width = this.$refs.td4.offsetWidth,
                 td5Width = this.$refs.td5.offsetWidth,
-                left = td1Width,
-                right = td5Width;
+                left = td1Width;
+                // right = td5Width;
 
             this.subUrlWidth['width'] = td2Width + 'px';
             this.docWidth['width'] = td3Width + 'px';
             this.achWidth['width'] = td4Width + 'px';
+            this.actWidth['width'] = td5Width + 'px';
             this.subSytle['paddingLeft'] = left + 'px';
-            this.subSytle['paddingRight'] = right + 'px';
+            // this.subSytle['paddingRight'] = right + 'px';
         },
 
         remove(item) {
@@ -46,7 +68,7 @@ new Vue({
         return {
             subSytle: {
                 paddingLeft: '0px',
-                paddingRight: '0px'
+                // paddingRight: '-100px'
             },
 
             docWidth: {
@@ -58,6 +80,10 @@ new Vue({
             },
 
             subUrlWidth: {
+                width: '0px'
+            },
+
+            actWidth: {
                 width: '0px'
             },
 
@@ -78,142 +104,47 @@ new Vue({
 
             theader: [{
                     align: 'left',
-                    value: 'a',
+                    // value: '',
                     sortable: false,
                 },
                 {
                     align: 'left',
-                    value: 'b',
+                    value: 'channel_name',
                     sortable: false,
                 },
                 {
                     align: 'left',
-                    value: 'c',
+                    // value: '',
                     sortable: false,
                 },
                 {
                     align: 'left',
-                    value: 'd',
+                    value: 'qr_code_info',
                     sortable: false,
                 },
                 {
                     align: 'left',
-                    value: 'e',
+                    value: 'url_code',
                     sortable: false,
                 },
                 {
                     align: 'right',
-                    value: 'f',
+                    value: 'chan_doc_num',
                     sortable: false,
                 },
                 {
                     align: 'right',
-                    value: 'g',
+                    value: 'chan_pfm_obj',
                     sortable: false,
                 },
                 {
                     align: 'center',
-                    value: 'h',
+                    value: '',
                     sortable: false,
                 },
             ],
 
-            // tsubHead: [{
-            //         align: 'left',
-            //         value: 'a',
-            //         sortable: false,
-            //     },
-            //     {
-            //         align: 'left',
-            //         value: 'b',
-            //         sortable: false,
-            //     },
-            //     {
-            //         align: 'left',
-            //         value: 'c',
-            //         sortable: false,
-            //     },
-            //     {
-            //         align: 'left',
-            //         value: 'd',
-            //         sortable: false,
-            //     },
-            //     {
-            //         align: 'left',
-            //         value: 'e',
-            //         sortable: false,
-            //     },
-            //     {
-            //         align: 'right',
-            //         value: 'f',
-            //         sortable: false,
-            //     },
-            //     {
-            //         align: 'right',
-            //         value: 'g',
-            //         sortable: false,
-            //     },
-            //     {
-            //         align: 'center',
-            //         value: 'h',
-            //         sortable: false,
-            //     },
-
-            // ],
-
-            tdata: [{
-                    a: '1',
-                    a_1: '大众点评xxxxxxxxx',
-                    b: '微信',
-                    c: '',
-                    d: '二维码信息 231312',
-                    d_1: '全球领先 免费试用',
-                    e: 'http://www.google.com',
-                    f: '医生',
-                    f_1: 1000,
-                    g: '业绩',
-                    g_1: 1000,
-                    stop: false,
-
-                    children: [{
-                            sub_id: 1,
-                            sub_name: '王成',
-                            url: 'http://www.google.com12312312',
-                            f: '医生',
-                            f_1: 1000,
-                            g: '业绩',
-                            g_1: 1000,
-                        },
-                        {
-                            sub_id: 2,
-                            sub_name: '王三',
-                            url: 'http://www.google.com12312312',
-                            f: '医生',
-                            f_1: 1000,
-                            g: '业绩',
-                            g_1: 1000,
-                        }
-                    ]
-                },
-                {
-                    a: '2',
-                    a_1: '大众点评xxxxxxxxx',
-                    b: '微信',
-                    c: '',
-                    d: '二维码信息 231312',
-                    d_1: '全球领先 免费试用',
-                    e: 'http://www.google.com',
-                    f: '医生',
-                    f_1: 1000,
-                    g: '业绩',
-                    g_1: 1000,
-                    stop: true,
-
-                    children: [
-
-                    ]
-                }
-            ]
+            tdata: []
         };
     }
 })

@@ -125,18 +125,18 @@
     </div>
 
     <v-layout v-resize="onTabelResize">
-        <v-data-table :headers="theader" :items="tdata" hide-headers hide-actions item-key="a" expand class="elevation-1 s-table"
+        <v-data-table :headers="theader" :items="tdata" hide-headers hide-actions item-key="id" expand class="elevation-1 s-table"
             ref="dTable">
 
             <template slot="items" slot-scope="props">
                 <tr @click="props.expanded = !props.expanded">
                     <td class="text-xs-left" ref="td1">
-                        {{ props.item.a }}
+                        {{ props.index + 1 }}
                     </td>
                     <td class="text-xs-left">
-                        {{ props.item.b }}
+                        {{ props.item.channel_name }}
                         <div class="main-table-sub">
-                            {{ props.item.a_1 }}
+                            {{ props.item.channel_info }}
                         </div>
                     </td>
                     <td class="text-xs-left">
@@ -145,33 +145,33 @@
                         </div>
                     </td>
                     <td class="text-xs-left">
-                        {{ props.item.d }}
+                        二维码信息
                         <div class="main-table-sub">
-                            {{ props.item.d_1 }}
+                            {{ props.item.qr_code_info }}
                         </div>
                     </td>
                     <td class="text-xs-left" ref="td2">
-                        {{ props.item.e }}
+                        {{ props.item.url_code }}
                         <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
                     </td>
                     <td class="text-xs-right" ref="td3">
-                        {{ props.item.f }}
+                        医生
                         <div class="table-sub-number">
-                            {{ props.item.f_1 }}
+                            {{ props.item.chan_doc_num }}
                         </div>
                     </td>
                     <td class="text-xs-right" ref="td4">
-                        {{ props.item.g }}
+                        业绩
                         <div class="table-sub-number">
-                            {{ props.item.g_1 }}
+                            {{ props.item.chan_pfm_obj }}
                         </div>
                     </td>
                     <td class="text-xs-center" ref="td5">
-                        <v-icon v-if="props.item.stop" class="mr-2" color="red" title="停止">
+                        <v-icon v-if="!props.item.status" class="mr-2" color="red" title="停止">
                             block
                         </v-icon>
 
-                        <v-icon v-if="!props.item.stop" class="mr-2" color="light-green" title="开始">
+                        <v-icon v-if="props.item.status" class="mr-2" color="light-green" title="开始">
                             lens
                         </v-icon>
                     </td>
@@ -181,32 +181,42 @@
             <template slot="expand" slot-scope="props">
                 <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" class="sub-item clearfix" :style="subSytle">
                     <div class="sub-left">
-                        <span>{{subItem.sub_id}}</span>
-                        <span>{{subItem.sub_name}}</span>
+                        <span>{{subItem.username}}</span>
+                        <span>{{subItem.username}}</span>
                     </div>
                     <div class="sub-right">
                         <!-- <v-layout row wrap> -->
                         <div class="text-xs-left sub-right-item ellipsis" :style="subUrlWidth">
-                            <span :title="subItem.url">{{ subItem.url }}</span>
+                            <span :title="subItem.url">{{ subItem.url_code }}</span>
                             <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
                         </div>
                         <div class="text-xs-right sub-right-item" :style="docWidth">
                             <p>
-                                {{ subItem.f }}
+                                {{ subItem.url_code }}
                             </p>
 
                             <div class="table-sub-number">
-                                {{ subItem.f_1 }}
+                                {{ subItem.url_code }}
                             </div>
                         </div>
 
                         <div class="text-xs-right sub-right-item" :style="achWidth">
                             <p>
-                                {{ subItem.g }}
+                                {{ subItem.url_code }}
                             </p>
                             <div class="table-sub-number">
-                                {{ subItem.g_1 }}
+                                {{ subItem.url_code }}
                             </div>
+                        </div>
+
+                        <div class="text-xs-center sub-right-item" :style="actWidth">
+                            <v-icon v-if="!subItem.status" class="mr-2" color="red" title="停止">
+                                block
+                            </v-icon>
+
+                            <v-icon v-if="subItem.status" class="mr-2" color="light-green" title="开始">
+                                lens
+                            </v-icon>
                         </div>
                         <!-- </v-layout> -->
                     </div>
