@@ -17,7 +17,7 @@ new Vue({
     data() {
         return {
             show_pass: false,
-            sending: false,
+            aa: false,
 
             data: {
                 username: '',
