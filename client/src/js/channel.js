@@ -104,12 +104,10 @@ new Vue({
                 // paddingRight: '-100px'
             },
 
-<<<<<<< HEAD
             subRight: {
                 width: '0px'
             },
 
-=======
             message: {
                 show: false,
                 text: '',
@@ -119,7 +117,6 @@ new Vue({
 
             submitLoading: false,
 
->>>>>>> 1da1d5b62c6fbd3113c85ffe5383cf9b8220f1e3
             docWidth: {
                 width: '0px'
             },
