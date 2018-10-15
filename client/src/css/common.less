@@ -5,7 +5,7 @@ body {
 
 body {
     background-color: #f8fafd;
-    background-image: url('../image/background.svg');
+    background-image: url("../image/background.svg");
     background-position: 50% 0px;
     background-size: cover;
     font-family: sans-serif;
@@ -49,7 +49,7 @@ body {
 }
 
 .v-date-picker-table .theme--light.v-btn {
-    color: rgba(0, 0, 0, .87);
+    color: rgba(0, 0, 0, 0.87);
 }
 
 .date-container .v-input__control {
@@ -80,22 +80,30 @@ body {
     background-color: #42a5f5;
 }
 
+.v-toolbar__items {
+    .active {
+        background-color: #d6f0fb;
+    }
+}
+
 .theme--light.v-toolbar .theme--light.v-btn,
 .toolbar-dropdown .v-list__tile__title,
-.toolbar-subdropdown .v-list__tile__title {
+.toolbar-subdropdown .v-list__tile__title,
+.language-dropdown .v-list__tile__title {
     font-size: 16px;
 }
 
 .toolbar-dropdown .v-list__tile__action,
-.toolbar-subdropdown .v-list__tile__action{
+.toolbar-subdropdown .v-list__tile__action {
     min-width: auto;
 }
 
-.toolbar-dropdown .v-list__tile__title{
+.toolbar-dropdown .v-list__tile__title {
     text-align: right;
 }
 
-.toolbar-subdropdown .v-list__tile__title{
+.toolbar-subdropdown .v-list__tile__title,
+.language-dropdown .v-list__tile__title {
     text-align: center;
 }
 
@@ -107,24 +115,20 @@ body {
     width: 20vh;
 }
 
-.toolbar-message-tip{
+.toolbar-message-tip {
     margin-top: -4vh;
 }
 
 @media screen and (min-width: 960px) {
-
     .theme--light.v-toolbar {
         background-color: rgba(255, 255, 255, 0.6);
     }
-
     .toolbar-icon {
         visibility: hidden;
     }
-
     .theme--light.v-toolbar .theme--light.v-btn:not(.toolbar-icon) {
         color: #12afe3;
     }
-
     .v-toolbar {
         box-shadow: none;
     }

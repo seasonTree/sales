@@ -2,16 +2,18 @@
     <div class="upload-container" :style="style">
         <label :for="id" class="upload"></label>
         <input hidden :id="id" type="file" accept="image/*" />
-        <div>
-            <v-icon x-large>image</v-icon>
-        </div>
-        <div>
-            {{content}}
+        <div class="image-content">
+            <div>
+                <v-icon x-large>image</v-icon>
+            </div>
+            <div>
+                {{content}}
+            </div>
         </div>
 
-        <div class="mask">
+        <!-- <div class="mask">
             <v-progress-circular size="50" color="info" indeterminate></v-progress-circular>
-        </div>
+        </div> -->
     </div>
 
 </template>
@@ -75,7 +77,8 @@ export default {
     align-items: center;
     justify-content: center;
 
-    .mask, .upload {
+    .mask,
+    .upload {
         position: absolute;
         height: 100%;
         width: 100%;
@@ -89,6 +92,7 @@ export default {
         cursor: pointer;
         background-position: center center;
         background-size: contain;
+        z-index: 100;
     }
 
     .mask {
@@ -102,11 +106,20 @@ export default {
     //
     // cursor: pointer;
     //
+    &:hover .image-content {
+        transition: all 0.2s;
+        cursor: pointer;
+    }
 
     &:hover {
-        transform: scale(1.01);
-        color: #5d5d5d;
+        // color: #5d5d5d;
         box-shadow: 4px 4px 5px #e3e3e3;
+    }
+
+    &:hover .image-content {
+        transform: scale(1.12);
+        // color: #5d5d5d;
+        // box-shadow: 4px 4px 5px #e3e3e3;
     }
 }
 </style>

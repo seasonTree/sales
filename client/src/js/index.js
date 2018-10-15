@@ -3,11 +3,12 @@ new Vue({
     el: '#app',
 
     mounted() {
+        let that = this;
+
         this.$api.user.login({
-            test: 'value'
+            data: that.data
         }).then((data) => {
-            console.log('************************');
-            console.log(data);
+
         }).catch((data)=>{
             
         });
@@ -15,8 +16,8 @@ new Vue({
 
     data() {
         return {
-            drawer: false,
             show_pass: false,
+            sending: false,
 
             data: {
                 username: '',
