@@ -241,15 +241,15 @@
 
             <v-card-text>
                 <v-form>
-                    <v-text-field label="渠道名称"></v-text-field>
-                    <v-text-field label="描述信息"></v-text-field>
-                    <v-text-field label="二维码附加信息"></v-text-field>
+                    <v-text-field label="渠道名称" v-model="addItem.channel_name"></v-text-field>
+                    <v-text-field label="描述信息" v-model="addItem.channel_info"></v-text-field>
+                    <v-text-field label="二维码附加信息" v-model="addItem.qr_code_info"></v-text-field>
                 </v-form>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="showAdd = false">
+                <v-btn color="s-primary" @click="addChannel" :loading="submitLoading">
                     确认
                 </v-btn>
                 <v-btn color="primary" flat @click="showAdd = false">
@@ -342,6 +342,12 @@
 
 </v-container>
 
+<v-snackbar v-model="message.show" :timeout="message.time" top>
+    {{ message.text }}
+    <v-btn color="pink" flat @click="message.show = false">
+        关闭
+    </v-btn>
+</v-snackbar>
 {/block}
 
 

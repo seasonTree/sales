@@ -10,9 +10,6 @@ class Channel
 
     public function index(){
     	//渠道
-    	
-    	
-    	// dump($data);
     	return view('/channel');
     }
 
@@ -23,5 +20,18 @@ class Channel
     	$userid = 2;
     	$data = $channel->getChannel($userid);
     	return json(['data'=>$data,'code'=>200,'msg'=>'']);
+    }
+
+    public function add(){
+    	//添加渠道
+    	$data = input('post.data');
+    	// $data['user_id'] = Session::has('user.userid');
+    	$data['user_id'] = 2;
+    	$channel = new ChannelModel();
+    	$res = $channel->addChannel($data);
+    	if ($res) {
+    		return json(['msg'=>'添加成功','code'=>0]);
+    	}
+    	return json(['msg'=>'添加失败','code'=>1]);
     }
 }

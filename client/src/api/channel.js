@@ -7,3 +7,12 @@ export function get(data) {
         data: data
     })
 }
+
+export function add(data) {
+
+    return request({
+        url: '/channel/add',
+        method: 'post',
+        data: data
+    })
+}
