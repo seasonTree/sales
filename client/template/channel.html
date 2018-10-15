@@ -125,13 +125,13 @@
     </div>
 
     <v-layout v-resize="onTabelResize">
-        <v-data-table  :headers="theader" :items="tdata" hide-headers hide-actions item-key="id" expand class="elevation-1 s-table"
+        <v-data-table :headers="theader" :items="tdata" hide-headers hide-actions item-key="id" expand class="elevation-1 s-table"
             ref="dTable">
 
             <template slot="items" slot-scope="props">
                 <tr @click="props.expanded = !props.expanded">
                     <td class="text-xs-left" ref="td1">
-                        {{ props.index  + 1 }}
+                        {{ props.index + 1 }}
                     </td>
                     <td class="text-xs-left">
                         {{ props.item.channel_name }}
@@ -207,6 +207,16 @@
                             <div class="table-sub-number">
                                 {{ subItem.url_code }}
                             </div>
+                        </div>
+
+                        <div class="text-xs-center sub-right-item" :style="actWidth">
+                            <v-icon v-if="!subItem.status" class="mr-2" color="red" title="停止">
+                                block
+                            </v-icon>
+
+                            <v-icon v-if="subItem.status" class="mr-2" color="light-green" title="开始">
+                                lens
+                            </v-icon>
                         </div>
                         <!-- </v-layout> -->
                     </div>
