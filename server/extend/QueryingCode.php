@@ -51,7 +51,7 @@ class QueryingCode
             }
             $img_bg = imagecreatefromstring(file_get_contents($bg));
             //list($qCodeWidth, $qCodeHight, $qCodeType) = getimagesize($QR);
-            imagecopymerge($img_bg, $QR, 95, 275, 0, 0, $QR_width, $QR_height, 100);
+            imagecopymerge($img_bg, $QR, 85, 270, 0, 0, $QR_width, $QR_height, 100);
             $mime = 'application/force-download';
             header('Pragma: public'); // required
             header('Expires: 0'); // no cache
