@@ -18,18 +18,18 @@ class ShortMessage
      */
     public function sendSms($phone, $code)
     {
-        require_once (ROOT_PATH  . 'extend/aliyun/SignatureHelper.php');
+        require_once ('aliyun/SignatureHelper.php');
         $params = array();
         // *** 需用户填写部分 ***
         // fixme 必填: 请参阅 https://ak-console.aliyun.com/ 取得您的AK信息
-        $accessKeyId = Config::get('sendMessage.accessKeyId');
-        $accessKeySecret = Config::get('sendMessage.accessKeySecret');
+        $accessKeyId = config('config.sendMessage.accessKeyId');
+        $accessKeySecret = config('config.sendMessage.accessKeySecret');
         // fixme 必填: 短信接收号码
         $params["PhoneNumbers"] = $phone;
         // fixme 必填: 短信签名，应严格按"签名名称"填写，请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/sign
-        $params["SignName"] = Config::get('sendMessage.signName');
+        $params["SignName"] = config('config.sendMessage.signName');
         // fixme 必填: 短信模板Code，应严格按"模板CODE"填写, 请参考: https://dysms.console.aliyun.com/dysms.htm#/develop/template
-        $params["TemplateCode"] = Config::get('sendMessage.templateCode');
+        $params["TemplateCode"] = config('config.sendMessage.templateCode');
         // fixme 可选: 设置模板参数, 假如模板中存在变量需要替换则为必填项
         $params['TemplateParam'] = Array(
             "code" => $code,
