@@ -143,7 +143,7 @@
                     </td>
                     <td class="text-xs-left" ref="td5">
                         {{ props.item.url_code }}
-                        <a @click.stop="null" class="main-table-sub download-qrcode" href="/channel/QrCode?url_code={{props.item.url_code}}&option=doc">下载二维码</a>
+                        <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'">下载二维码</a>
                     </td>
                     <td class="text-xs-right" ref="td6">
                         医生
@@ -195,7 +195,7 @@
                             </td>
                             <td class="text-xs-left" :style="subWidth.td5">
                                 {{ props.item.url_code }}
-                                <a @click.stop="null" class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
+                                <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'">下载二维码</a>
                             </td>
                             <td class="text-xs-right" :style="subWidth.td6">
                                 医生

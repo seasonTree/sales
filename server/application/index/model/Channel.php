@@ -19,7 +19,7 @@ class Channel extends Model
                             ->field('a.*,b.channel_id,b.url_code')
                             ->where('user_id',$uid)
                             ->select();
-
+                            // dump(Channel::getlastsql());exit;
         if ($channel[0]['p_id'] == 0) {
             //顶级渠道
             $chan_pfm_obj = '';

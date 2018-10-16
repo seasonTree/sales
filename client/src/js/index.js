@@ -17,14 +17,13 @@ new Vue({
             that.$api.common.login({
                 data: that.data
             }).then((res) => {
-
-                if (data.code == 0) {
+                if (res.code == 0) {
 
                     this.showMessage(true, res.msg, 'success');
 
                     //重刷页面,后台负责跳转
                     setTimeout(() => {
-                        window.location.reload();
+                        window.location.href = res.data;
                     }, 3000);
                 } else {
                     this.showMessage(true, res.msg, 'error');

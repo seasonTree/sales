@@ -2,7 +2,8 @@
 namespace app\index\controller;
 use app\index\model\Channel as ChannelModel;
 use app\index\model\Url as UrlModel;
-use think\Session;
+use think\facade\Cookie;
+use think\facade\Session;
 
 require_once '../extend/QueryingCode.php';
 
@@ -20,8 +21,9 @@ class Channel
     	//获取渠道列表
     	$channel = new ChannelModel();
     	// $userid = Session::has('user.userid');
-    	$userid = 2;
+    	$userid = Session::get('user.userid');
     	$data = $channel->getChannel($userid);
+    	// dump($userid);
     	return json(['data'=>$data,'code'=>200,'msg'=>'']);
     }
 
@@ -29,7 +31,7 @@ class Channel
     	//添加渠道
     	$data = input('post.data');
     	// $data['user_id'] = Session::has('user.userid');
-    	$data['user_id'] = 2;
+    	$data['user_id'] = Session::get('user.userid');
     	$channel = new ChannelModel();
 
     	$count = $channel->countChannel($data['user_id']);
