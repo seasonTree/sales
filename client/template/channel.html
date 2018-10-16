@@ -49,12 +49,16 @@
         width: 100%;
     }
 
-    .sub-item>div {
+    .sub-item > div {
         padding: 0 24px !important;
     }
 
     .sub-tabel{
         margin-bottom: 0;
+    }
+
+    .sub-tabel tr:last-of-type{
+        border-bottom: 1px solid rgba(0,0,0,.12);
     }
 
     .line {
@@ -222,7 +226,7 @@
                     暂无数据
                 </div>
 
-                <div class="line" :style="subWidth.line"></div>
+                <!-- <div class="line" :style="subWidth.line"></div> -->
 
 
                 <!-- <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" :style="subSytle">

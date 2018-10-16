@@ -45,7 +45,8 @@ new Vue({
                 td7Width = this.$refs.td7.offsetWidth,
                 td8Width = this.$refs.td8.offsetWidth;
 
-            this.subWidth.table['paddingLeft'] = this.subWidth.line['marginLeft'] = td1Width + 'px';
+            // this.subWidth.table['paddingLeft'] = this.subWidth.line['marginLeft'] = td1Width + 'px';
+            this.subWidth.table['paddingLeft'] = td1Width + 'px';
             this.subWidth.td2.width = td2Width + 'px';
             this.subWidth.td3.width = td3Width + 'px';
             this.subWidth.td4.width = td4Width + 'px';
@@ -53,6 +54,9 @@ new Vue({
             this.subWidth.td6.width = td6Width + 'px';
             this.subWidth.td7.width = td7Width + 'px';
             this.subWidth.td8.width = td8Width + 'px';
+
+            // this.subWidth.line['width'] = (this.$refs.tr - td1Width) + 'px';
+
         },
 
         remove(item) {
@@ -121,9 +125,10 @@ new Vue({
                 td8: {
                     width: '0px'
                 },
-                line: {
-                    marginLeft: '0px'
-                }
+                // line: {
+                //     marginLeft: '0px',
+                //     width: '0px'
+                // }
             },
 
             // infoWidth: {
