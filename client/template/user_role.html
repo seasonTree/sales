@@ -38,10 +38,10 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
         <template slot="items" slot-scope="props">
-            <td class="text-xs-left">{{ props.item.a }}</td>
-            <td class="text-xs-left">{{ props.item.b }}</td>
-            <td class="text-xs-left">{{ props.item.c }}</td>
-            <td class="text-xs-left">{{ props.item.d }}</td>
+            <td class="text-xs-left">{{ props.item.id }}</td>
+            <td class="text-xs-left">{{ props.item.role_name }}</td>
+            <td class="text-xs-left">{{ props.item.username }}</td>
+            <td class="text-xs-left">{{ props.item.pri_name }}</td>
             <td class="text-xs-center">
                 <v-icon small class="mr-2">
                     edit
@@ -62,7 +62,7 @@
 
         <v-card-text>
             <v-form>
-                <v-text-field label="角色名称"></v-text-field>
+                <v-text-field label="角色名称" v-model="addItem.role_name"></v-text-field>
                 <div class="role-container">
                     <div class="role role-title">
                         <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>

@@ -17,7 +17,6 @@
         </v-btn>
     </div>
 
-
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
         <template slot="items" slot-scope="props">
             <td class="text-xs-left">{{ props.item.id }}</td>
@@ -31,12 +30,13 @@
                 <v-icon small class="mr-2" @click="edit(props.item)">
                     edit
                 </v-icon>
-                <v-icon small>
+                <v-icon small @click="del(props.item.id)">
                     delete
                 </v-icon>
             </td>
         </template>
     </v-data-table>
+    <!--新增模态框-->
     <v-dialog scrollable v-model="showAdd" width="500">
         <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>
@@ -45,11 +45,11 @@
 
             <v-card-text>
                 <v-form>
-                    <v-select :items="items"  item-text="pri_name" item-value="id" label="上级权限"></v-select>
-                    <v-text-field label="权限名称" ></v-text-field>
-                    <v-text-field label="模块"></v-text-field>
-                    <v-text-field label="控制器"></v-text-field>
-                    <v-text-field label="方法"></v-text-field>
+                    <v-select :items="items"  item-text="pri_name" item-value="id" v-model="addItem.parent_id" label="上级权限"></v-select>
+                    <v-text-field label="权限名称" v-model="addItem.pri_name"></v-text-field>
+                    <v-text-field label="模块" v-model="addItem.module_name"></v-text-field>
+                    <v-text-field label="控制器" v-model="addItem.controller_name"></v-text-field>
+                    <v-text-field label="方法" v-model="addItem.action_name"></v-text-field>
                 </v-form>
             </v-card-text>
 
@@ -64,7 +64,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-
+    <!--修改模态框-->
     <v-dialog scrollable v-model="showEdit" width="500">
         <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>
@@ -93,27 +93,15 @@
         </v-card>
     </v-dialog>
 
-    <!--<v-snackbar-->
-            <!--v-model="snackbar"-->
-            <!--:bottom="y === 'bottom'"-->
-            <!--:left="x === 'left'"-->
-            <!--:multi-line="mode === 'multi-line'"-->
-            <!--:right="x === 'right'"-->
-            <!--:timeout="timeout"-->
-            <!--:top="y === 'top'"-->
-            <!--:vertical="mode === 'vertical'"-->
-    <!--&gt;-->
-        <!--{{ 成功}}-->
-        <!--<v-btn-->
-                <!--color="pink"-->
-                <!--flat-->
-                <!--@click="snackbar = false"-->
-        <!--&gt;-->
-            <!--Close-->
-        <!--</v-btn>-->
-    <!--</v-snackbar>-->
 
 </v-container>
+
+<v-snackbar v-model="message.show" :timeout="message.time" top>
+    {{ message.text }}
+    <v-btn color="pink" flat @click="message.show = false">
+        关闭
+    </v-btn>
+</v-snackbar>
 {/block}
 
 {block name="script"}

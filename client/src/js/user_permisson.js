@@ -1,17 +1,18 @@
 import Vue from './base';
-import * as privilege from "../api/privilege";
+// import * as privilege from "../api/privilege";
 
 new Vue({
     el: '#app',
 
     created(){
         let that = this;
+        // console.log(this);
 
         that.$api.privilege.get().then((data) =>{
                 that.tdata = data.data;
+                 that.tdata.unshift({parent_id:0,pri_name:'顶级权限',level:0});
                 that.items = that.tdata.map(function (item) {
                      item.pri_name = new Array(item.level+1).join('------')+item.pri_name;
-
                     return item;
                 });
 
@@ -30,6 +31,7 @@ new Vue({
             showEdit: false,
 
             selectID: 1,
+            // delID:null,
 
             items: null,
 
@@ -73,7 +75,15 @@ new Vue({
             ],
             tdata: [],
 
-            editItem: {}
+            editItem: {},
+            addItem:{},
+
+            message: {
+                show: false,
+                text: '',
+                time: 3000,
+                color: 'success'
+            },
         };
     },
 
@@ -83,33 +93,75 @@ new Vue({
 
             this.showEdit = true;
         },
+        del(id){
+            let that = this;
+            that.$api.privilege.del({
+                data: id
+            }).then((data) => {
+                that.message.text = data.message;
+                that.message.color = 'success';
+                that.message.show = true;
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
+
+            }).catch((data) =>{ //function(data){}
+                that.message.text = data.message;
+                that.message.color = 'error';
+                that.message.show = true;
+                // that.submitLoading = false;
+            });
+        },
+
+        addCommit(){
+            let that = this;
+            that.$api.privilege.add({
+                data: that.addItem
+            }).then((res) => {
+
+                // that.editItem.id = data.id;
+                that.showAdd = false;
+                that.message.text = res.message;
+                that.message.color = 'success';
+                that.message.show = true;
+
+                // that.addItem.id = res.data.id
 
 
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
+
+
+                // that.tdata.unshift(that.addItem);
+
+            }).catch((data) =>{ //function(data){}
+                // console.log('失败了')
+
+                that.message.text = data.message;
+                that.message.color = 'error';
+                that.message.show = true;
+                that.submitLoading = false;
+            });
+        },
 
         editCommit(){
-            //
-            // let data = this.data.map(item){
-            //     if(item){
-            //         return '-----------' + item.item;
-            //     }
-            // }
-            // let data = this.data.map(item){
-            //     if(item){
-            //         return '-----------' + item.item;
-            //     }
-            // }
-
-
             let that = this;
             that.$api.privilege.edit({
                 data: this.editItem
             }).then((data) => {
                 // that.editItem.id = data.id;
                 that.showEdit = false;
-
-                console.log(data)
+                that.message.text = data.message;
+                that.message.color = 'success';
+                that.message.show = true;
             }).catch((data) =>{ //function(data){}
-                console.log('失败了')
+                // console.log('失败了')
+
+                that.message.text = data.message;
+                that.message.color = 'error';
+                that.message.show = true;
+                that.submitLoading = false;
             });
 
             this.editItem;

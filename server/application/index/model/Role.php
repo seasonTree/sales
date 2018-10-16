@@ -58,7 +58,7 @@ class Role extends Model
             ->join('admin_role AR','R.id=AR.role_id','left')
             ->join('user A','A.id=AR.user_id','left')
             ->join('role_pri RP','R.id=RP.role_id','left')
-            ->join('privilege.js P','P.id=RP.pri_id','left')
+            ->join('privilege P','P.id=RP.pri_id','left')
             ->group('R.id')
             ->where('R.type=0')->select()->toArray();
         return $data;

@@ -2,34 +2,66 @@ import Vue from './base';
 new Vue({
     el: '#app',
 
+    created(){
+        let that = this;
+        // console.log(this);
+
+        that.$api.role.get().then((data) =>{
+            that.tdata = data.data;
+            that.priData = data.priData;
+            // let j=0;
+            // data.priData.forEach(function (v,i) {
+            //
+            //     if (v.level==0){
+            //         v.child={};
+            //         that.priData[j]=v;
+            //
+            //         j++;
+            //     }
+            //     // v.level==0 ? that.priData[i]=v: true;
+            //
+            //     // 1?that.priData.level=0:2;
+            // });
+            console.log(that.priData);
+
+
+
+        }).catch((data) =>{
+            console.log('eeeeeeeeeeeee');
+            console.log(data);
+        });
+
+    },
+
     data() {
         return {
             showAdd: false,
-
+            addItem:{},
+            priData:[],
             items: ['页面1', '页面2'],
 
             theader: [{
                     text: 'ID',
                     align: 'left',
-                    value: 'a',
+                    value: 'id',
                     sortable: false,
                 },
                 {
                     text: '角色名称',
                     align: 'left',
-                    value: 'b',
+                    value: 'role_name',
                     sortable: false,
                 },
                 {
                     text: '用户列表',
                     align: 'left',
-                    value: 'c',
+                    value: 'username',
                     sortable: false,
                 },
                 {
                     text: '描述',
                     align: 'left',
-                    value: 'd',
+                    value: 'pri_name',
                     sortable: false,
                 },
                 {
@@ -39,12 +71,7 @@ new Vue({
                     sortable: false,
                 }
             ],
-            tdata: [{
-                a: '1',
-                b: '管理员',
-                c: 'aaa,bbb',
-                d: '用户管理员'
-            }]
+            tdata: [],
         }
     }
 });

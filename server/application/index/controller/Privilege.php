@@ -8,9 +8,8 @@ class Privilege extends Controller
 		return view('/user_permisson');
 	}
 	//提供权限数据
-	public function list(){
+	public function lst(){
         $model =model('Privilege');
-
         $data = $model->getTree();
         $count = count($data);
         return json(['data'=>$data,'count'=>$count,'code'=>200,'message'=>'权限列表数据']);
@@ -23,7 +22,7 @@ class Privilege extends Controller
         $validate =validate('Privilege');
         if (!$validate->check($data)){
             $error =$validate->getError();
-            return json("$error");
+            return json(['message'=>$error]);
         }
 
         try{
@@ -31,10 +30,36 @@ class Privilege extends Controller
 
         }catch(\Exception $e){
             $error =$e->getMessage();
-            return json("$error");
+            return json(['message'=>$error]);
 
         }
-	    return json(['data'=>$id]);
+
+	    return json(['message'=>'修改成功']);
+    }
+    public function add(){
+	    $data = input('post.data');
+        $validate =validate('Privilege');
+        if (!$validate->check($data)){
+            $error =$validate->getError();
+            return json(['message'=>$error]);
+        }
+        try{
+            $id =model('Privilege')->add($data);
+        }catch(\Exception $e){
+            $error =$e->getMessage();
+            return json(['message'=>$error]);
+        }
+        return json(['message'=>'新增成功']);
+    }
+    public function del(){
+	    $id = input('post.data');
+        $res['msg'] = \app\index\model\Privilege::destroy($id);
+        if ($res['msg']){
+            return json(['message'=>'删除成功']);
+        }else{
+            return json(['message'=>'删除失败']);
+        }
+
     }
 
 }
