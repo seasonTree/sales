@@ -62,8 +62,9 @@ class Channel
     public function QrCode()
     {
         $url= urldecode(input('url_code'));
+        $option = input('option');
         $logoPath = config('template.client_image').'logo.jpg';
         $code = new \QueryingCode();
-        $code->makeQueryingCode($url,$logoPath);
+        $code->makeQueryingCode($url,$logoPath,$option);
     }
 }
