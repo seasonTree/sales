@@ -49,8 +49,12 @@
         width: 100%;
     }
 
-    .sub-item > div{
+    .sub-item>div {
         padding: 0 24px !important;
+    }
+
+    .sub-tabel{
+        margin-bottom: 0;
     }
 
     .line {
@@ -58,33 +62,6 @@
         background-color: #e3e3e3;
         width: 100%;
     }
-
-    /* .sub-item>div {
-        display: inline-block;
-    }
-
-    .sub-right {
-        float: right;
-        
-    } */
-
-    /* .clearfix:after {
-        display: block;
-        content: '';
-        clear: both;
-        height: 0;
-    } */
-
-    /* .sub-right .sub-right-item,
-    .sub-left {
-        
-
-    } */
-
-    /* .sub-right-item{
-        box-sizing: border-box;
-    } */
-
 
     .upload-container {
         height: 100%;
@@ -143,40 +120,40 @@
                     <td class="text-xs-left" ref="td1">
                         {{ props.index + 1 }}
                     </td>
-                    <td class="text-xs-left">
+                    <td class="text-xs-left" ref="td2">
                         {{ props.item.channel_name }}
                         <div class="main-table-sub">
                             {{ props.item.channel_info }}
                         </div>
                     </td>
-                    <td class="text-xs-left">
+                    <td class="text-xs-left" ref="td3">
                         <div class="qr-container">
                             <v-img :src="'/channel/QrCode?url_code='+ props.item.url_code" class="qrcode-image" contain>
                         </div>
                     </td>
-                    <td class="text-xs-left">
+                    <td class="text-xs-left" ref="td4">
                         二维码信息
                         <div class="main-table-sub">
                             {{ props.item.qr_code_info }}
                         </div>
                     </td>
-                    <td class="text-xs-left" ref="td2">
+                    <td class="text-xs-left" ref="td5">
                         {{ props.item.url_code }}
                         <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
                     </td>
-                    <td class="text-xs-right" ref="td3">
+                    <td class="text-xs-right" ref="td6">
                         医生
                         <div class="table-sub-number">
                             {{ props.item.chan_doc_num }}
                         </div>
                     </td>
-                    <td class="text-xs-right" ref="td4">
+                    <td class="text-xs-right" ref="td7">
                         业绩
                         <div class="table-sub-number">
                             {{ props.item.chan_pfm_obj }}
                         </div>
                     </td>
-                    <td class="text-xs-center" ref="td5">
+                    <td class="text-xs-center" ref="td8">
                         <v-icon v-if="!props.item.status" color="red" title="停止">
                             block
                         </v-icon>
@@ -189,16 +166,74 @@
             </template>
 
             <template slot="expand" slot-scope="props">
-                <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" :style="subSytle">
-                    <!-- <div class="sub-left"> -->
+                <v-data-table :style="subWidth.table" :headers="theader" :items="props.item.children" hide-headers
+                    hide-actions item-key="id" expand class="s-table sub-tabel">
 
-                    <!-- </div> -->
+                    <template slot="items" slot-scope="props">
+                        <tr @click="props.expanded = !props.expanded" ref="tr">
 
-                    <!-- <div class="sub-right" :style="subRight"> -->
+                            <td class="text-xs-left" :style="subWidth.td2">
+                                <span class="mr-2">
+                                    {{ props.index + 1 }}
+                                </span>
+
+                                <span>
+                                    {{ props.item.channel_name }}
+                                </span>
+                            </td>
+                            <td class="text-xs-left" :style="subWidth.td3" >
+                                <div class="qr-container">
+                                    <v-img :src="'/channel/QrCode?url_code='+ props.item.url_code" class="qrcode-image"
+                                        contain>
+                                </div>
+                            </td>
+                            <td class="text-xs-left" :style="subWidth.td4">
+                            </td>
+                            <td class="text-xs-left" :style="subWidth.td5">
+                                {{ props.item.url_code }}
+                                <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
+                            </td>
+                            <td class="text-xs-right" :style="subWidth.td6">
+                                医生
+                                <div class="table-sub-number">
+                                    {{ props.item.chan_doc_num }}
+                                </div>
+                            </td>
+                            <td class="text-xs-right" :style="subWidth.td7">
+                                业绩
+                                <div class="table-sub-number">
+                                    {{ props.item.chan_pfm_obj }}
+                                </div>
+                            </td>
+                            <td class="text-xs-center" :style="subWidth.td8">
+                                <v-icon v-if="!props.item.status" color="red" title="停止">
+                                    block
+                                </v-icon>
+
+                                <v-icon v-if="props.item.status" color="light-green" title="开始">
+                                    lens
+                                </v-icon>
+                            </td>
+                        </tr>
+                    </template>                    
+                </v-data-table>
+
+                <div class="line" :style="subWidth.line"></div>
+
+
+                <!-- <div v-for="(subItem, subIdx) in props.item.children" :key="subIdx" :style="subSytle">
+
                     <v-layout xs12 wrap row class="sub-item" align-center>
                         <v-flex :style="infoWidth">
                             <span class="mr-3">{{subIdx + 1}}</span>
                             <span>{{subItem.username}}</span>
+                        </v-flex>
+
+                        <v-flex :style="qrcodeWidth">
+                            <div class="qr-container">
+                                <v-img :src="'/channel/QrCode?url_code='+ props.item.url_code" class="qrcode-image"
+                                    contain>
+                            </div>
                         </v-flex>
 
                         <v-flex class="text-xs-left" :style="subUrlWidth">
@@ -234,56 +269,17 @@
                                 lens
                             </v-icon>
                         </v-flex>
-                    </v-layout>
-                    <!-- </div> -->
+                    </v-layout>                   
 
-                    <div class="line"></div>
+                </div> -->
 
-                </div>
+                
+
                 <div class="text-xs-center">
-                    <v-btn color="s-primary" ml="0" @click="showAddSales = true">
+                    <v-btn color="s-primary" class="my-2" @click="showAddSales = true">
                         <v-icon dark>add</v-icon>新增销售员
                     </v-btn>
                 </div>
-                <!-- 
-                    <div class="sub-right">
-                        <div class="text-xs-left sub-right-item ellipsis" :style="subUrlWidth">
-                            <span :title="subItem.url">{{ subItem.url_code }}</span>
-                            <a class="main-table-sub download-qrcode" href="javascript:void(0);">下载二维码</a>
-                        </div>
-                        <div class="text-xs-right sub-right-item" :style="docWidth">
-                            <p>
-                                医生
-                            </p>
-
-                            <div class="table-sub-number">
-                                {{ subItem.url_code }}
-                            </div>
-                        </div>
-
-                        <div class="text-xs-right sub-right-item" :style="achWidth">
-                            <p>
-                                业绩
-                            </p>
-                            <div class="table-sub-number">
-                                {{ subItem.url_code }}
-                            </div>
-                        </div>
-
-                        <div class="text-xs-center sub-right-item" :style="actWidth">
-                            <v-icon v-if="!subItem.status" color="red" title="停止">
-                                block
-                            </v-icon>
-
-                            <v-icon v-if="subItem.status" color="light-green" title="开始">
-                                lens
-                            </v-icon>
-                        </div>
-                    </div> -->
-
-                <!-- <div class="line"></div> -->
-                <!-- </div> -->
-
 
             </template>
         </v-data-table>

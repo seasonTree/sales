@@ -21,9 +21,14 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         const resp = response.data
+
+        console.log('******************');
+        console.log(response)
+
         if (response.status === 200) {
             return resp
         }
+
         return resp
     },
     error => {

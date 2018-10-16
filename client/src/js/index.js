@@ -2,40 +2,37 @@ import Vue from './base';
 new Vue({
     el: '#app',
 
-    mounted() {
-
-    },
-
     methods: {
+        showMessage(show, text, color){
+            this.message.text = text || '';
+            this.message.color = color;
+            this.message.show = show;
+        },
+
         handlerSubmit() {
             let that = this;
 
             that.submitLoading = true;
 
-            that.$api.user.login({
+            that.$api.common.login({
                 data: that.data
             }).then((res) => {
 
                 if (data.code == 0) {
-                    that.message.text = res.message;
-                    that.message.color = 'success';
-                    that.message.show = true;
+
+                    this.showMessage(true, res.msg, 'success');
 
                     //重刷页面,后台负责跳转
                     setTimeout(() => {
                         window.location.reload();
                     }, 3000);
                 } else {
-                    that.message.text = res.message;
-                    that.message.color = 'error';
-                    that.message.show = true;
+                    this.showMessage(true, res.msg, 'error');
                 }
 
                 that.submitLoading = false;
             }).catch((res) => {
-                that.message.text = '登录失败,请重试.';
-                that.message.color = 'error';
-                that.message.show = true;
+                this.showMessage(true, '登录失败,请重试.', 'error')
                 that.submitLoading = false;
             });
         }

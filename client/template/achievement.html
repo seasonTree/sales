@@ -166,7 +166,7 @@
 
                     <template v-if="props.item.children.length">
                         <v-layout row wrap>
-                            <div xs12 v-for="(subItem, subIdx) in props.item.children" key="subIdx">
+                            <template v-for="(subItem, subIdx) in props.item.children" :key="subIdx">
                                 <v-flex xs2 offset-xs1>
                                     {{subItem.a}}
                                 </v-flex>
@@ -201,7 +201,7 @@
                                 <v-flex xs2>
                                     {{subItem.h}}
                                 </v-flex>
-                            </div>
+                            </template>
 
                             <!-- 汇总 -->
                             <v-flex xs7 offset-xs5 class="line"></v-flex>

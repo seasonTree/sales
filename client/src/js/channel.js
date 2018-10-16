@@ -23,7 +23,7 @@ new Vue({
 
         setTimeout(() => {
             that.calcWidth();
-        }, 260);
+        }, 500);
     },
 
     methods: {
@@ -35,24 +35,33 @@ new Vue({
         },
 
         calcWidth() {
-            var trWidht = this.$refs.tr.offsetWidth,
-                td1Width = this.$refs.td1.offsetWidth,
+
+            let td1Width = this.$refs.td1.offsetWidth,
                 td2Width = this.$refs.td2.offsetWidth,
                 td3Width = this.$refs.td3.offsetWidth,
                 td4Width = this.$refs.td4.offsetWidth,
                 td5Width = this.$refs.td5.offsetWidth,
-                left = td1Width;
-            // right = td5Width;
+                td6Width = this.$refs.td6.offsetWidth,
+                td7Width = this.$refs.td7.offsetWidth,
+                td8Width = this.$refs.td8.offsetWidth;
 
-            // this.subRight['width'] = td2Width + td3Width + td4Width + td5Width + 'px';
-            // this.trWidth = (trWidht - td1Width) + 'px';
-            this.infoWidth['width'] = (trWidht - td1Width - td2Width - td3Width - td4Width - td5Width) + 'px';
-            this.subUrlWidth['width'] = td2Width + 'px';
-            this.docWidth['width'] = td3Width + 'px';
-            this.achWidth['width'] = td4Width + 'px';
-            this.actWidth['width'] = td5Width + 'px';
-            this.subSytle['paddingLeft'] = left + 'px';
-            // this.subSytle['paddingRight'] = right + 'px';
+            this.subWidth.table['paddingLeft'] = this.subWidth.line['marginLeft'] = td1Width + 'px';
+            this.subWidth.td2.width = td2Width + 'px';
+            this.subWidth.td3.width = td3Width + 'px';
+            this.subWidth.td4.width = td4Width + 'px';
+            this.subWidth.td5.width = td5Width + 'px';
+            this.subWidth.td6.width = td6Width + 'px';
+            this.subWidth.td7.width = td7Width + 'px';
+            this.subWidth.td8.width = td8Width + 'px';
+
+
+            // this.infoWidth['width'] = td2Width + 'px';            
+            // this.qrcodeWidth['width'] = td3Width + 'px';
+            // this.subUrlWidth['width'] = td4Width + 'px';
+            // this.docWidth['width'] = td5Width + 'px';
+            // this.achWidth['width'] = td6Width + 'px';
+            // this.actWidth['width'] = td7Width + 'px';
+            // this.subSytle['paddingLeft'] = td1Width + 'px';
         },
 
         remove(item) {
@@ -60,16 +69,16 @@ new Vue({
             this.chips = [...this.chips]
         },
 
-        addChannel(){
-        	// alert('aaa');
-        	let that = this;
+        addChannel() {
+            // alert('aaa');
+            let that = this;
 
             that.submitLoading = true;
 
-        	that.$api.channel.add({
-        		data: that.addItem
-        	}).then((res) =>{
-        		if (res.code == 0) {
+            that.$api.channel.add({
+                data: that.addItem
+            }).then((res) => {
+                if (res.code == 0) {
                     that.message.text = res.msg;
                     that.message.color = 'success';
                     that.message.show = true;
@@ -86,27 +95,73 @@ new Vue({
                 }
 
 
-        	}).catch((res) =>{
-        		console.log('***********')
-        	});
+            }).catch((res) => {
+                console.log('***********')
+            });
 
         }
     },
 
     data() {
         return {
-            infoWidth: {
-                width: '0px'
+
+            subWidth: {
+                table: {
+                    paddingLeft: '0px',
+                },
+                td2: {
+                    width: '0px'
+                },
+                td3: {
+                    width: '0px'
+                },
+                td4: {
+                    width: '0px'
+                },
+                td5: {
+                    width: '0px'
+                },
+                td6: {
+                    width: '0px'
+                },
+                td7: {
+                    width: '0px'
+                },
+                td8: {
+                    width: '0px'
+                },
+                line: {
+                    marginLeft: '0px'
+                }
             },
 
-            subSytle: {
-                paddingLeft: '0px',
-                // paddingRight: '-100px'
-            },
+            // infoWidth: {
+            //     width: '0px'
+            // },
 
-            subRight: {
-                width: '0px'
-            },
+            // qrcodeWidth: {
+            //     width: '0px'
+            // },
+
+            // subRight: {
+            //     width: '0px'
+            // },
+
+            // docWidth: {
+            //     width: '0px'
+            // },
+
+            // achWidth: {
+            //     width: '0px'
+            // },
+
+            // subUrlWidth: {
+            //     width: '0px'
+            // },
+
+            // actWidth: {
+            //     width: '0px'
+            // },
 
             message: {
                 show: false,
@@ -116,22 +171,6 @@ new Vue({
             },
 
             submitLoading: false,
-
-            docWidth: {
-                width: '0px'
-            },
-
-            achWidth: {
-                width: '0px'
-            },
-
-            subUrlWidth: {
-                width: '0px'
-            },
-
-            actWidth: {
-                width: '0px'
-            },
 
             showAdd: false,
             showAddSales: false,
@@ -147,9 +186,9 @@ new Vue({
             chips: [],
 
             addItem: {
-            	channel_name: '',
-            	channel_info: '',
-            	qr_code_info: ''
+                channel_name: '',
+                channel_info: '',
+                qr_code_info: ''
             },
 
             // items: ['页面1', '页面2'],

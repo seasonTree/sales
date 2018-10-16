@@ -1,8 +1,10 @@
+import * as common from '../api/common'
 import * as user from '../api/user'
 import * as privilege from '../api/privilege';
 import * as channel from '../api/channel';
 
 const apis = {
+    common,
     user, //user: user
     privilege,
     channel

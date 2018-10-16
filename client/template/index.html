@@ -18,7 +18,7 @@
 {/block}
 
 {block name="body"}
-<v-container class="content" grid-list-md text-xs-center>
+<v-container class="content" text-xs-center>
     <div class="content-header">
         KOOA - Sales Management System
     </div>
@@ -40,7 +40,7 @@
 
 </v-container>
 
-<v-snackbar v-model="message.show" :timeout="message.time" top>
+<v-snackbar :color="message.color" v-model="message.show" :timeout="message.time" top>
     {{ message.text }}
     <v-btn color="pink" flat @click="message.show = false">
         关闭
