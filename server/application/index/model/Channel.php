@@ -22,13 +22,31 @@ class Channel extends Model
 
         if ($channel[0]['p_id'] == 0) {
             //顶级渠道
+            $chan_pfm_obj = '';
+            //业绩总量
+            $chan_doc_num = '';
+            //医生总量
             foreach ($channel as $k => $v) {
+
                 $channel[$k]['children'] = Channel::alias('a')
                                                    ->join('sales_url b','a.id = b.channel_id','left')
                                                    ->join('sales_user c','c.id = a.user_id','left')
                                                    ->field('c.username,a.*,b.url_code')
                                                    ->where('p_id',$v['id'])
-                                                   ->select();
+                                                   ->select()
+                                                   ->toArray();
+
+                    
+                        if (isset($channel[$k]['children'])){
+
+                            $channel[$k]['chan_pfm_obj'] = array_sum(array_column($channel[$k]['children'], 'chan_pfm_obj'));
+                            //计算业绩总量
+
+                            $channel[$k]['chan_doc_num'] = array_sum(array_column($channel[$k]['children'], 'chan_doc_num'));
+                            //计算医生总量
+
+                        }
+
             }
         }
         return $channel;
@@ -36,13 +54,13 @@ class Channel extends Model
 
     public function addChannel($data){
         //添加渠道
-        $res = Channel::insert($data);
+        $res = Channel::insertGetId($data);
         return $res;
     }
 
     public function findChannel($data){
         //检查渠道
-        $res = Channel::where($data)->find();
+        $res = Channel::where(['user_id'=>$data['user_id'],'channel_name'=>$data['channel_name']])->find();
         return $res;
     }
 

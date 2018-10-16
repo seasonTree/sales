@@ -1,7 +1,10 @@
 <?php
 namespace app\index\controller;
 use app\index\model\Channel as ChannelModel;
+use app\index\model\Url as UrlModel;
 use think\Session;
+
+require_once '../extend/QueryingCode.php';
 
 class Channel
 {
@@ -35,16 +38,32 @@ class Channel
     	}
 
     	$find = $channel->findChannel($data);
+
     	if ($find) {
     		return json(['msg'=>'渠道已存在','code'=>2]);
     	}
 
+    	$channelId = $channel->addChannel($data);
 
+    	$url = getShortUrl("http://app.kooa.vip/signup?channelId=" . $channelId . "&referralCode=" . $data['user_id']);
 
-    	$res = $channel->addChannel($data);
+    	$insert_url['channel_id'] = $channelId;
+    	$insert_url['url_code'] = $url;
+
+    	$url_model = new UrlModel();
+    	$res = $url_model->addUrl($insert_url);
+
     	if ($res) {
     		return json(['msg'=>'添加成功','code'=>0]);
     	}
     	return json(['msg'=>'添加失败','code'=>1]);
+    }
+
+    public function QrCode()
+    {
+        $url= urldecode(input('url_code'));
+        $logoPath = config('template.client_image').'logo.jpg';
+        $code = new \QueryingCode();
+        $code->makeQueryingCode($url,$logoPath);
     }
 }

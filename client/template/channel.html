@@ -151,7 +151,7 @@
                     </td>
                     <td class="text-xs-left">
                         <div class="qr-container">
-                            <v-img src="/image/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                            <v-img :src="'/channel/QrCode?url_code='+ props.item.url_code" class="qrcode-image" contain>
                         </div>
                     </td>
                     <td class="text-xs-left">
@@ -212,7 +212,7 @@
                             </p>
 
                             <div class="table-sub-number">
-                                {{ subItem.url_code }}
+                                {{ subItem.chan_doc_num }}
                             </div>
                         </v-flex>
 
@@ -221,7 +221,7 @@
                                 业绩
                             </p>
                             <div class="table-sub-number">
-                                {{ subItem.url_code }}
+                                {{ subItem.chan_pfm_obj }}
                             </div>
                         </v-flex>
 
