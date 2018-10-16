@@ -166,7 +166,7 @@
             </template>
 
             <template slot="expand" slot-scope="props">
-                <v-data-table :style="subWidth.table" :headers="theader" :items="props.item.children" hide-headers
+                <v-data-table v-if="props.item.children.length" :style="subWidth.table" :headers="theader" :items="props.item.children" hide-headers
                     hide-actions item-key="id" expand class="s-table sub-tabel">
 
                     <template slot="items" slot-scope="props">
@@ -217,6 +217,10 @@
                         </tr>
                     </template>                    
                 </v-data-table>
+
+                <div class="text-xs-center my-2" v-if="props.item.children.length == 0">
+                    暂无数据
+                </div>
 
                 <div class="line" :style="subWidth.line"></div>
 

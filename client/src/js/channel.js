@@ -53,15 +53,6 @@ new Vue({
             this.subWidth.td6.width = td6Width + 'px';
             this.subWidth.td7.width = td7Width + 'px';
             this.subWidth.td8.width = td8Width + 'px';
-
-
-            // this.infoWidth['width'] = td2Width + 'px';            
-            // this.qrcodeWidth['width'] = td3Width + 'px';
-            // this.subUrlWidth['width'] = td4Width + 'px';
-            // this.docWidth['width'] = td5Width + 'px';
-            // this.achWidth['width'] = td6Width + 'px';
-            // this.actWidth['width'] = td7Width + 'px';
-            // this.subSytle['paddingLeft'] = td1Width + 'px';
         },
 
         remove(item) {
