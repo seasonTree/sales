@@ -21,7 +21,7 @@ export function logout(data) {
 //检查修改密码的短信校验码
 export function sendPasswordSMS(data) {
     return request({
-        url: '/user/send_password_sms',
+        url: '/user/sendMessage',
         method: 'post',
         data: data
     })

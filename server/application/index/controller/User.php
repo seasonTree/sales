@@ -42,12 +42,12 @@ class User
             $redis->setex('user:' . $phone, 300, $code);
             $message = new \ShortMessage();
             $result = $message->sendSms('00' . $section . $phone, $code);
-            dump($result);
+            // dump($result);
             if ($result->Message == 'OK' && $result->Code == 'OK') {
-                return json(['resp_code' => '0', 'msg' => '短信发送成功']);
+                return json(['resp_code' => '0', 'msg' => '发送成功']]);
             }
             else{
-            	return json(['resp_code' => '1', 'msg' => '短信发送失败']);
+            	return json(['resp_code' => '1', 'msg' => '发送失败']]);
             }
         }
     }
