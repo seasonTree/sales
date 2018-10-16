@@ -44,10 +44,10 @@ class User
             $result = $message->sendSms('00' . $section . $phone, $code);
             // dump($result);
             if ($result->Message == 'OK' && $result->Code == 'OK') {
-                return json(['resp_code' => '0', 'msg' => '发送成功']]);
+                return json(['resp_code' => '0', 'msg' => '发送成功']);
             }
             else{
-            	return json(['resp_code' => '1', 'msg' => '发送失败']]);
+            	return json(['resp_code' => '1', 'msg' => '发送失败']);
             }
         }
     }
