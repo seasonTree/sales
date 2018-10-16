@@ -13,7 +13,7 @@ instance.interceptors.request.use(
         return config
     },
     error => ({
-        status: 0,
+        code: 404,
         msg: error.message
     })
 )
@@ -22,9 +22,6 @@ instance.interceptors.response.use(
     response => {
         const resp = response.data
 
-        console.log('******************');
-        console.log(response)
-
         if (response.status === 200) {
             return resp
         }
@@ -32,8 +29,21 @@ instance.interceptors.response.use(
         return resp
     },
     error => {
-        console.log('err' + error) // for debug
-        return Promise.reject(error)
+        return Promise.reject(error);
     }
 )
+
 export default instance;
+
+// export default function request(opt) {
+//     // 调用 axios api，统一拦截
+//     return instance(opt)
+//         .then((response) => {
+//             console.log('******************');
+//             console.log(response);
+//         })
+//         .catch((error) => {
+//             console.log('EEEEEEEEEEEEEE');
+//             console.log(error);
+//         });
+// }
