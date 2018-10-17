@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use app\index\model\Channel as ChannelModel;
 use app\index\model\Url as UrlModel;
+use app\index\model\User as UserModel;
 use think\facade\Cookie;
 use think\facade\Session;
 
@@ -61,8 +62,16 @@ class Channel
     	return json(['msg'=>'添加失败','code'=>1]);
     }
 
+    public function getSales(){
+    	//获取销售员
+    	$user = new UserModel();
+    	$res = $user->getSales(Session::get('user.userid'));
+    	dump($res);
+    }
+
     public function QrCode()
-    {
+    {	
+    	//二维码
         $url= urldecode(input('url_code'));
         $option = input('option');
         $logoPath = config('template.client_image').'logo.jpg';

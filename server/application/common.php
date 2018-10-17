@@ -22,11 +22,11 @@ function getShortUrl($url){
 
 }
 
-function checkUserName($username){
-	//检查用户名
-	$rule = "/^[a-zA-Z0-9]+$/";
+function checkPassword($password){
+	//检查密码
+	$rule = "/^[a-zA-Z0-9_\.]+$/";
 
-	if (!preg_match($rule, $username)) {
+	if (!preg_match($rule, $password)) {
 		return false;
 	}
 	return true;
