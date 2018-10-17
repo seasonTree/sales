@@ -8,21 +8,9 @@ new Vue({
 
         that.$api.role.get().then((data) =>{
             that.tdata = data.data;
-            that.priData = data.priData;
-            // let j=0;
-            // data.priData.forEach(function (v,i) {
-            //
-            //     if (v.level==0){
-            //         v.child={};
-            //         that.priData[j]=v;
-            //
-            //         j++;
-            //     }
-            //     // v.level==0 ? that.priData[i]=v: true;
-            //
-            //     // 1?that.priData.level=0:2;
-            // });
-            console.log(that.priData);
+            that.priData =that.getChildren(data.priData,1,true) ;
+
+            console.log(data.priData);
 
 
 
@@ -36,6 +24,7 @@ new Vue({
     data() {
         return {
             showAdd: false,
+            prevData:[],
             addItem:{},
             priData:[],
             items: ['页面1', '页面2'],
@@ -73,5 +62,20 @@ new Vue({
             ],
             tdata: [],
         }
+    },
+    methods:{
+
+        getChildren(obj,parent_id=0,isClear) {
+            let that = this;
+            isClear? that.prevData=[]:null;
+            obj.forEach(function (value, index) {
+                if(value.parent_id == parent_id){
+                    that.prevData.push(value.id);
+                    that.getChildren(obj,value.id,false);
+                }
+            })
+            return that.prevData;
+        },
     }
 });
+
