@@ -7,7 +7,7 @@ require_once '../extend/Mailer.php';
 
 class User
 {
-    
+
 	public function index(){
 		//用户主页
 		return view('/user_manage');
@@ -23,6 +23,21 @@ class User
 		return view('/reset_password');
 	}
 
+	public function doCheckCode(){
+		//验证码验证
+		$redis = new \Redis();
+        $redis->connect(config('config.redis.host'), config('config.redis.port'));
+        $redis->select(config('config.redis.db_index'));
+        $phone = $redis->get('user:'.input('post.data.phone_num'));
+        if (!$phone) {
+        	return json(['code' => 1,'msg' => '非法操作，未能获取验证码']);
+        }
+        if ($phone != input('post.data.identify_code')) {
+        	return json(['code' => 2,'msg' => '验证码错误']);
+        }
+        return json(['code' => 0,'msg' => '验证成功','data'=>['url'=>'/user/resetpassword']]);
+	}
+
 	public function sendMessage()
     {
     	//发短信
@@ -32,9 +47,14 @@ class User
 	        $redis->connect(config('config.redis.host'), config('config.redis.port'));
 	        $redis->select(config('config.redis.db_index'));
 
-            $phone = input('phone');
+            $phone = input('post.data.phone_num');
+            // dump(input('post.'));exit;
             if ($phone == '') {
             	return json(['resp_code' => '2', 'msg' => '电话号码不能为空']);
+            }
+
+            if (!checkPhone($phone)) {
+            	return json(['resp_code' => '3', 'msg' => '请填写正确的电话号码']);
             }
             //电话号码
             // $section = input('section');
@@ -44,15 +64,15 @@ class User
             //随机验证码
             $redis->set('user:' . $phone, $code);
             $redis->setex('user:' . $phone, 300, $code);
-            $message = new \ShortMessage();
-            $result = $message->sendSms('00' . $section . $phone, $code);
-            // dump($result);
-            if ($result->Message == 'OK' && $result->Code == 'OK') {
-                return json(['resp_code' => '0', 'msg' => '发送成功']);
-            }
-            else{
-            	return json(['resp_code' => '1', 'msg' => '发送失败']);
-            }
+            // $message = new \ShortMessage();
+            // $result = $message->sendSms('00' . $section . $phone, $code);
+            // // dump($result);
+            // if ($result->Message == 'OK' && $result->Code == 'OK') {
+            //     return json(['resp_code' => '0', 'msg' => '发送成功']);
+            // }
+            // else{
+            // 	return json(['resp_code' => '1', 'msg' => '发送失败']);
+            // }
         }
     }
 

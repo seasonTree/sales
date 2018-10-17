@@ -21,3 +21,13 @@ function getShortUrl($url){
       return $short_url;
 
 }
+
+function checkPhone($phone){
+	//检查电话号码
+	$rule = "/^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(19[0-9])|16[6])\d{8}$/";
+
+	if (!preg_match($rule, $phone)) {
+		return false;
+	}
+	return true;
+}

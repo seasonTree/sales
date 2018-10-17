@@ -4,10 +4,11 @@ new Vue({
 
     created(){
         let that = this;
-        // console.log(this);
+
 
         that.$api.role.get().then((data) =>{
             that.tdata = data.data;
+
             that.priData =that.getChildren(data.priData,1,true) ;
 
             console.log(data.priData);
