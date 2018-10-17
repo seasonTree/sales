@@ -1,6 +1,6 @@
 import Vue from './base';
 import uploadImage from '../compontent/UploadImage'
-import '@css/user-info';
+import '@css/user_info';
 
 new Vue({
     el: '#app',

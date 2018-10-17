@@ -21,13 +21,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         const resp = response.data
-
-<<<<<<< Updated upstream
-=======
-        // console.log('******************');
-        // console.log(response)
-
->>>>>>> Stashed changes
         if (response.status === 200) {
             return resp
         }
@@ -40,16 +33,3 @@ instance.interceptors.response.use(
 )
 
 export default instance;
-
-// export default function request(opt) {
-//     // 调用 axios api，统一拦截
-//     return instance(opt)
-//         .then((response) => {
-//             console.log('******************');
-//             console.log(response);
-//         })
-//         .catch((error) => {
-//             console.log('EEEEEEEEEEEEEE');
-//             console.log(error);
-//         });
-// }
