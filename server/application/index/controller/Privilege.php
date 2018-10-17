@@ -5,7 +5,7 @@ class Privilege extends Controller
 {
     
 	public function index (){
-		return view('/user_permisson');
+		return view('/user_privilege');
 	}
 	//提供权限数据
 	public function lst(){
