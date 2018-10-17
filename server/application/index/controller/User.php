@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
-
+use app\index\model\UserInfo as UserInfoModel;
+use app\index\model\User as UserModel;
 
 require_once '../extend/ShortMessage.php';
 require_once '../extend/Mailer.php';
@@ -23,6 +24,28 @@ class User
 		return view('/reset_password');
 	}
 
+	public function doResetPassword(){
+		//重置密码
+		$data = input('post.data');
+		if ($data['password'] == '') {
+			return json(['code' => 1,'msg' => '密码不能为空']);
+		}
+		if ($data['rePassword'] != $data['password']) {
+			return json(['code' => 2,'msg' => '两次输入密码不一致']);
+		}
+		if (!isset($data['uid'])) {
+			return json(['code' => 3,'msg' => '非法操作']);
+		}
+		$data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+		$user_model = new UserModel();
+		$res = $user_model->updatePassword($data);
+		if (!$res) {
+			return json(['code' => 4,'msg' => '修改失败']);
+		}
+		return json(['code' => 0,'msg' => '修改成功' ,'data' => [ 'url' => '/']]);
+
+	}
+
 	public function doCheckCode(){
 		//验证码验证
 		$redis = new \Redis();
@@ -35,7 +58,9 @@ class User
         if ($phone != input('post.data.identify_code')) {
         	return json(['code' => 2,'msg' => '验证码错误']);
         }
-        return json(['code' => 0,'msg' => '验证成功','data'=>['url'=>'/user/resetpassword']]);
+        $user_info = new UserInfoModel();
+        $uid = $user_info->findUserId(input('post.data.phone_num'));
+        return json(['code' => 0,'msg' => '验证成功','data'=>['url'=>'/user/resetpassword','uid'=>$uid]]);
 	}
 
 	public function sendMessage()

@@ -170,4 +170,9 @@ class Api
         }
         // echo $qr_string;
     }
+
+    public function test(){
+    	//测试
+    	return view('/test');
+    }
 }

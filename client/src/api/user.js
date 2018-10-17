@@ -21,7 +21,7 @@ export function checkPasswordSMS(data) {
 //修改密码
 export function resetPassword(data) {
     return request({
-        url: '/user/reset_password',
+        url: '/user/doResetPassword',
         method: 'post',
         data: data
     })

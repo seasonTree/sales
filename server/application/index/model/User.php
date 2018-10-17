@@ -17,6 +17,14 @@ class User extends Model
     	return $res;
     }
 
+    public function updatePassword($data){
+    	//修改密码
+    	$res = User::where('id',$data['uid'])->update(['password'=>$data['password']]);
+    	return $res;
+    }
+
+
+
 
 
 

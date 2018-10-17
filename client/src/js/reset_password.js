@@ -22,7 +22,7 @@ new Vue({
                         that.showMessage(true, res.msg, 'success');
 
                         setTimeout(() => {
-                            window.location.href = '/';
+                            window.location.href = res.data.url;
                         }, 3000);
                     } else {
                         that.showMessage(true, res.msg, 'error');
@@ -37,12 +37,15 @@ new Vue({
 
     data() {
         return {
+
+            valid : false,
             show_pass: false,
             show_pass1: false,
 
             data:{
                 password: '',
-                rePassword: ''
+                rePassword: '',
+                uid: ''
             },
             
             message: {

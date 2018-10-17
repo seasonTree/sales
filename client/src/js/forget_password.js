@@ -106,7 +106,7 @@ new Vue({
 
                         setTimeout(() => {
                             //TODO
-                            window.location.href = res.data.url;
+                            window.location.href = res.data.url+'?uid='+res.data.uid;
                         }, 3000);
                     } else {
                         this.showMessage(true, res.msg, 'error');
