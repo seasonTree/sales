@@ -18,6 +18,11 @@ class User
 		return view('/user_info');
 	}
 
+	public function resetPassword(){
+		//重置密码
+		return view('/reset_password');
+	}
+
 	public function sendMessage()
     {
     	//发短信
@@ -28,6 +33,9 @@ class User
 	        $redis->select(config('config.redis.db_index'));
 
             $phone = input('phone');
+            if ($phone == '') {
+            	return json(['resp_code' => '2', 'msg' => '电话号码不能为空']);
+            }
             //电话号码
             // $section = input('section');
             $section = '86';
