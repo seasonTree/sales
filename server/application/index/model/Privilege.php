@@ -17,7 +17,7 @@ class Privilege extends Model
         if (!is_array($data)){
             return exception('传递数据不合法');
         }
-        $data['type']=0;
+
         $this->allowField(true)->save($data);
         return $this->id;
     }
@@ -32,7 +32,7 @@ class Privilege extends Model
         return self::get($id)->toArray();
     }
     public function getTree(){
-        $data =$this->where('type=0')->select()->toArray();
+        $data =$this->select()->toArray();
 
         return $this->_reSort($data);
     }
