@@ -22,12 +22,6 @@ instance.interceptors.response.use(
     response => {
         const resp = response.data
 
-<<<<<<< Updated upstream
-=======
-        // console.log('******************');
-        // console.log(response)
-
->>>>>>> Stashed changes
         if (response.status === 200) {
             return resp
         }

@@ -96,9 +96,8 @@ new Vue({
 
         submit() {
             let that = this;
-
             if (that.$refs.form.validate()) {
-                that.$api.user.checkPassworkSMS({
+                that.$api.user.checkPasswordSMS({
                     data: that.data
                 }).then((res) => {
 
@@ -107,7 +106,7 @@ new Vue({
 
                         setTimeout(() => {
                             //TODO
-                            window.location.href = '/';
+                            window.location.href = res.data.url;
                         }, 3000);
                     } else {
                         this.showMessage(true, res.msg, 'error');

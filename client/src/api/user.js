@@ -12,7 +12,7 @@ export function sendPasswordSMS(data) {
 //检查修改密码的短信校验码
 export function checkPasswordSMS(data) {
     return request({
-        url: '/user/check_password_sms',
+        url: '/user/doCheckCode',
         method: 'post',
         data: data
     })
