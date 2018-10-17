@@ -69,6 +69,7 @@ new Vue({
                 if (that.identifyBtnText == 1) {
 
                     that.sending = false;
+                    //因为直接写watch会出现无法监听sending，所以写到这里
                     that.smsDisabled = !that.phoneRex.test(that.data.phone_num);
                     that.identifyBtnText = '发送验证码';
                     
@@ -80,7 +81,7 @@ new Vue({
 
             }, 1000);
 
-            that.$api.common.sendPasswordSMS({
+            that.$api.user.sendPasswordSMS({
                 data: that.data
             }).then((res) => {
                 if (res.code == 0) {
@@ -97,7 +98,7 @@ new Vue({
             let that = this;
 
             if (that.$refs.form.validate()) {
-                that.$api.common.checkPassworkSMS({
+                that.$api.user.checkPassworkSMS({
                     data: that.data
                 }).then((res) => {
 

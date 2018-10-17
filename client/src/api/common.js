@@ -18,20 +18,3 @@ export function logout(data) {
     })
 }
 
-//检查修改密码的短信校验码
-export function sendPasswordSMS(data) {
-    return request({
-        url: '/user/sendMessage',
-        method: 'post',
-        data: data
-    })
-}
-
-//检查修改密码的短信校验码
-export function checkPasswordSMS(data) {
-    return request({
-        url: '/user/check_password_sms',
-        method: 'post',
-        data: data
-    })
-}
