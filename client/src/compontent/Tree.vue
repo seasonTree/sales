@@ -40,7 +40,8 @@ export default {
                 this.parentField,
                 this.idField,
                 this.rootValue,
-                (item, parentID) => { //递归底部向上调用的
+                (item, parentID) => {
+                    //递归底部向上调用的
                     //找到当前的id
                     var cid = item[this.idField];
 
@@ -70,19 +71,33 @@ export default {
 
                     //如果当前是选中了，并且select表没有数据，就保存
                     if (hasSelect[cid] && !this.select[cid]) {
-                        this.select[cid] = JSON.parse(JSON.stringify(item));
+                        var sitem = JSON.parse(JSON.stringify(item));
+
+                        //删除children
+                        delete sitem.children;
+
+                        this.select[cid] = sitem;
                     }
 
-                    if (!!!hasSelect[cid]) {
+                    //没有选中，但子类选中了就加横杆
+                    //选中了，但是子类所有没有选中也加横杆
+                    if (
+                        !!!hasSelect[cid] ||
+                        (!!hasSelect[cid] &&
+                            railList[cid] != item.children.length)
+                    ) {
                         //没有选中就显示横杆
                         //!!转boolean
                         item["_rail"] = !!railList[cid];
 
                         if (!!railList[cid]) {
+                            var pitem = JSON.parse(JSON.stringify(item));
+
+                            //删除children
+                            delete pitem.children;
+
                             //如果加了横杆，parentSelect也记录下
-                            this.parentSelect[cid] = JSON.parse(
-                                JSON.stringify(item)
-                            );
+                            this.parentSelect[cid] = pitem;
                         }
                     }
                 }
@@ -93,6 +108,7 @@ export default {
                 items.forEach(sitem => {
                     var jitem = JSON.parse(JSON.stringify(sitem));
 
+                    //删除children
                     delete jitem.children;
 
                     this.select[jitem[this.idField]] = jitem["_checked"]
@@ -110,8 +126,14 @@ export default {
             item["_rail"] = rail;
             item["_checked"] = check;
 
-            //也记录父级别的，返回数据可以有父级的
             var pitem = JSON.parse(JSON.stringify(item));
+
+            //删除children
+            delete pitem.children;
+
+            //如果父的选中了，添加
+            this.select[item[this.idField]] = item["_checked"] ? pitem : null;
+
             if (rail) {
                 this.parentSelect[pitem[this.idField]] = pitem;
             } else {
@@ -281,7 +303,8 @@ export default {
             }
 
             for (var i in pobj) {
-                if (pobj[i] && !hasInsert[i]) { //已经插入的不重复插入了
+                if (pobj[i] && !hasInsert[i]) {
+                    //已经插入的不重复插入了
                     var item = JSON.parse(JSON.stringify(pobj[i]));
 
                     delete item["_open"];

@@ -47,7 +47,7 @@ new Vue({
                 }
             ],
 
-            selected: [4]
+            selected: [1, 4]
         };
     }
 })
