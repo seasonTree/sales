@@ -17,7 +17,6 @@ export const guid = (separator) => {
 }
 
 /**
- * 
  * @param {Object | Array} data 要复制的数据
  * 
  * @return 返回复制后的数据
@@ -25,11 +24,13 @@ export const guid = (separator) => {
 export const deepClone = (data) => {
     var o,
         ostr = Object.prototype.toString;
+    
+    
 
     if (ostr.call(data) == '[object String]') {
         o = {};
 
-        for(var i in data){
+        for (var i in data) {
             o[i] = deepClone(data[i]);
         }
 
@@ -52,18 +53,22 @@ export const deepClone = (data) => {
  * @param {Array} data 要生成树的数据
  * @param {String} idField 当前id的字段名称
  * @param {String | Number} parentID 父节点的值
+ * @param {Function} callBack 每行回调方法
  * 
  * @return Array, 返回树的结构
  */
-export const buildTree = (data, idField, parentID) => {
+export const buildTree = (data, parentField, idField, parentID, callBack) => {
 
-    let _data = deepClone(data),
+    let _data = data,
         rdata = [];
 
     _data.forEach((item) => {
-        if(item[idField] == parentID){
-            item.children = buildTree(data, idField, item[idField]);            
+
+        if (item[parentField] == parentID) {
+            item.children = buildTree(_data, parentField, idField, item[idField], callBack);
             rdata.push(item);
+
+            callBack && callBack(item, parentID);
         }
     });
 

@@ -1,10 +1,20 @@
 import Vue from './base';
-import Tree from './component/Tree'
+import Tree from '../compontent/Tree';
+
 new Vue({
     el: '#app',
 
     components: {
         Tree
+    },
+
+    methods:{
+        aaa(){
+
+            console.log(this.$refs.tree.getSelectItem());
+
+            console.log(this.$refs.tree.getSelectItemAndParent())
+        }
     },
 
     data() {
@@ -27,31 +37,17 @@ new Vue({
                 },
                 {
                     id: 4,
+                    parentID: 1,
+                    text: '节点44444'
+                },
+                {
+                    id: 5,
                     parentID: 2,
                     text: '节点4'
                 }
-            ]
-        };
+            ],
 
-        // treeData: {
-        //     type: Array,
-        //     default: []
-        // },
-        // idField: {
-        //     type: String,
-        //     required: true
-        // },
-        // valueFiled: {
-        //     type: String,
-        //     required: true
-        // },
-        // rootValue: [String, Number],
-        // useCheck: {
-        //     type: Boolean,
-        //     default: false
-        // },
-        // handlerSelect: {
-        //     type: Function
-        // }
+            selected: [4]
+        };
     }
 })

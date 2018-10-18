@@ -6,18 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link href="__basePath__/css/vendor.css" rel="stylesheet" />
+    <link href="__basePath__/css/test.css" rel="stylesheet" />
+
 </head>
 
 <body>
-    <div>
-        <tree :data="data"
-              idField="id",
-              valueFiled="text"
-              rootValue="0",
-              useCheck="true"
-        ></tree>
-    </div>
+    <div id="app">
 
+        1231312312
+        <div>
+            <tree :init-select="selected"  ref="tree" :expend="true" :tree-data="data" id-field="id" value-filed="text" root-value="0" parent-field="parentID"></tree>
+        </div>
+
+        <button @click="aaa">123123</button>
+    </div>
+    <script src="__basePath__/js/runtime.js?date=__date__"></script>
+    <script src="__basePath__/js/chunks/base.js?date=__date__"></script>
+    <script src="__basePath__/js/chunks/vendor.js?date=__date__"></script>
     <script src="__basePath__/js/chunks/test.js?date=__date__"></script>
 </body>
 
