@@ -1,11 +1,11 @@
 import Vue from './base';
-import Tree from '../compontent/Tree';
+import STree from '../compontent/STree';
 
 new Vue({
     el: '#app',
 
     components: {
-        Tree
+        STree
     },
 
     methods:{

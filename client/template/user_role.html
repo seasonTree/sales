@@ -22,7 +22,6 @@
     }
 </style>
 
-<link href="__basePath__/css/user_role.css" rel="stylesheet" />
 {/block}
 
 {block name="body"}
@@ -68,7 +67,7 @@
 
                 <div class="role-container">
                     <div>
-                        <tree :init-select="selected"  ref="tree" :expend="true" :tree-data="checkBoxData" id-field="id" value-filed="pri_name" root-value="0" parent-field="parent_id"></tree>
+                        <s-tree :init-select="selected"  ref="tree" :expend="true" :tree-data="checkBoxData" id-field="id" value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>
                     </div>
                     <!--<div class="role role-title">-->
                         <!--<v-checkbox label="会员管理" hide-details color="info"></v-checkbox>-->
