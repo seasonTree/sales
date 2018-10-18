@@ -24,6 +24,7 @@ export default {
     mounted() {
         //如果是父组件就复制并生成树列表
         if (this.$parent.$options.name != "tree") {
+
             this.rootParent = this;
 
             var hasSelect = {}, //记录已经选中的，用于树递归向上的时候判断是否要选中
@@ -153,7 +154,9 @@ export default {
     props: {
         treeData: {
             type: Array,
-            default: []
+            default: () => {
+                return [];
+            }
         },
         parentField: {
             type: String,

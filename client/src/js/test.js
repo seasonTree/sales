@@ -10,7 +10,6 @@ new Vue({
 
     methods:{
         aaa(){
-
             console.log(this.$refs.tree.getSelectItem());
 
             console.log(this.$refs.tree.getSelectItemAndParent())

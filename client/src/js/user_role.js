@@ -1,6 +1,11 @@
 import Vue from './base';
+import Tree from '../compontent/Tree';
 new Vue({
     el: '#app',
+
+    components: {
+        Tree
+    },
 
     created(){
         let that = this;
@@ -9,10 +14,10 @@ new Vue({
         that.$api.role.get().then((data) =>{
             that.tdata = data.data;
 
-            that.priData =that.getChildren(data.priData,1,true) ;
+            this.checkBoxData = data.priData;
+            // that.addItem.checkBoxData =data.priData ;
 
-            console.log(data.priData);
-
+            console.log(this.checkBoxData);
 
 
         }).catch((data) =>{
@@ -26,8 +31,42 @@ new Vue({
         return {
             showAdd: false,
             prevData:[],
-            addItem:{},
-            priData:[],
+
+            checkBoxData:[
+                {
+                    id: 1,
+                    parentID: 0,
+                    text: '节点1'
+                },
+                {
+                    id: 2,
+                    parentID: 0,
+                    text: '节点2'
+                },
+                {
+                    id: 3,
+                    parentID: 1,
+                    text: '节点3'
+                },
+                {
+                    id: 4,
+                    parentID: 1,
+                    text: '节点44444'
+                },
+                {
+                    id: 5,
+                    parentID: 2,
+                    text: '节点4'
+                }
+
+            ],
+
+            addItem:{
+                // checkBoxData:[],
+            },
+
+            selected: [],
+
             items: ['页面1', '页面2'],
 
             theader: [{
@@ -66,17 +105,17 @@ new Vue({
     },
     methods:{
 
-        getChildren(obj,parent_id=0,isClear) {
-            let that = this;
-            isClear? that.prevData=[]:null;
-            obj.forEach(function (value, index) {
-                if(value.parent_id == parent_id){
-                    that.prevData.push(value.id);
-                    that.getChildren(obj,value.id,false);
-                }
-            })
-            return that.prevData;
-        },
+        // getChildren(obj,parent_id=0,isClear) {
+        //     let that = this;
+        //     isClear? that.prevData=[]:null;
+        //     obj.forEach(function (value, index) {
+        //         if(value.parent_id == parent_id){
+        //             that.prevData.push(value.id);
+        //             that.getChildren(obj,value.id,false);
+        //         }
+        //     })
+        //     return that.prevData;
+        // },
     }
 });
 

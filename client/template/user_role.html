@@ -21,6 +21,8 @@
         display: inline-block;
     }
 </style>
+
+<link href="__basePath__/css/user_role.css" rel="stylesheet" />
 {/block}
 
 {block name="body"}
@@ -65,17 +67,20 @@
                 <v-text-field label="角色名称" v-model="addItem.role_name"></v-text-field>
 
                 <div class="role-container">
-                    <div class="role role-title">
-                        <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
+                    <div>
+                        <tree :init-select="selected"  ref="tree" :expend="true" :tree-data="checkBoxData" id-field="id" value-filed="pri_name" root-value="0" parent-field="parent_id"></tree>
                     </div>
-                    <ul class="role">
-                        <li>
-                            <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
-                        </li>
-                        <li>
-                            <v-checkbox label="会员管理" hide-details color="info"></v-checkbox>
-                        </li>
-                    </ul>
+                    <!--<div class="role role-title">-->
+                        <!--<v-checkbox label="会员管理" hide-details color="info"></v-checkbox>-->
+                    <!--</div>-->
+                    <!--<ul class="role">-->
+                        <!--<li>-->
+                            <!--<v-checkbox label="会员管理" hide-details color="info"></v-checkbox>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<v-checkbox label="会员管理" hide-details color="info"></v-checkbox>-->
+                        <!--</li>-->
+                    <!--</ul>-->
                 </div>
             </v-form>
         </v-card-text>
