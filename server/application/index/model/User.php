@@ -23,6 +23,12 @@ class User extends Model
     	return $res;
     }
 
+    public function getSales($uid){
+    	//获取销售员
+    	$res = User::where('parent_id',$uid)->select();
+    	return $res;
+    }
+
 
 
 

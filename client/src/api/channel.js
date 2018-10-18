@@ -16,3 +16,12 @@ export function add(data) {
         data: data
     })
 }
+
+export function showSales(data) {
+
+    return request({
+        url: '/channel/showSales',
+        method: 'post',
+        data: data
+    })
+}

@@ -142,7 +142,7 @@
                         </div>
                     </td>
                     <td class="text-xs-left" ref="td5">
-                        {{ props.item.url_code }}
+                        <div @click.stop="CopyUrl(props.item.url_code)">{{ props.item.url_code }}</div>
                         <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'">下载二维码</a>
                     </td>
                     <td class="text-xs-right" ref="td6">
@@ -194,7 +194,7 @@
                             <td class="text-xs-left" :style="subWidth.td4">
                             </td>
                             <td class="text-xs-left" :style="subWidth.td5">
-                                {{ props.item.url_code }}
+                                <div @click.stop="CopyUrl(props.item.url_code)">{{ props.item.url_code }}</div>
                                 <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'">下载二维码</a>
                             </td>
                             <td class="text-xs-right" :style="subWidth.td6">
@@ -284,7 +284,7 @@
                 
 
                 <div class="text-xs-center">
-                    <v-btn color="s-primary" class="my-2" @click="showAddSales = true">
+                    <v-btn color="s-primary" class="my-2" @click="showSales">
                         <v-icon dark>add</v-icon>新增销售员
                     </v-btn>
                 </div>

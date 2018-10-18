@@ -36,11 +36,17 @@ class User
 		if (!isset($data['uid'])) {
 			return json(['code' => 3,'msg' => '非法操作']);
 		}
+		if (strlen($data['password']) < 6 || strlen($data['password']) > 30 ) {
+			return json(['code' => 4,'msg' => '密码长度只能在6到30位之间']);
+		}
+		if (!checkPassword($data['password'])) {
+			return json(['code' => 5,'msg' => '密码由数字字母下划线和.组成']);
+		}
 		$data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
 		$user_model = new UserModel();
 		$res = $user_model->updatePassword($data);
 		if (!$res) {
-			return json(['code' => 4,'msg' => '修改失败']);
+			return json(['code' => 6,'msg' => '修改失败']);
 		}
 		return json(['code' => 0,'msg' => '修改成功' ,'data' => [ 'url' => '/']]);
 
@@ -81,6 +87,12 @@ class User
             if (!checkPhone($phone)) {
             	return json(['resp_code' => '3', 'msg' => '请填写正确的电话号码']);
             }
+
+            $user_info = new UserInfoModel();
+            $res = $user_info->findUserId($phone);
+            if (!$res) {
+            	return json(['resp_code' => '4', 'msg' => '电话号码不存在']);
+            }
             //电话号码
             // $section = input('section');
             $section = '86';
@@ -89,15 +101,15 @@ class User
             //随机验证码
             $redis->set('user:' . $phone, $code);
             $redis->setex('user:' . $phone, 300, $code);
-            // $message = new \ShortMessage();
-            // $result = $message->sendSms('00' . $section . $phone, $code);
-            // // dump($result);
-            // if ($result->Message == 'OK' && $result->Code == 'OK') {
-            //     return json(['resp_code' => '0', 'msg' => '发送成功']);
-            // }
-            // else{
-            // 	return json(['resp_code' => '1', 'msg' => '发送失败']);
-            // }
+            $message = new \ShortMessage();
+            $result = $message->sendSms('00' . $section . $phone, $code);
+            // dump($result);
+            if ($result->Message == 'OK' && $result->Code == 'OK') {
+                return json(['resp_code' => '0', 'msg' => '发送成功']);
+            }
+            else{
+            	return json(['resp_code' => '1', 'msg' => '发送失败']);
+            }
         }
     }
 
