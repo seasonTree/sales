@@ -123,7 +123,7 @@ class Channel extends Model
         $res = Channel::alias('a')
                       ->join('sales_user_info b','a.user_id = b.user_id','left')
                       ->field('a.channel_name,a.chan_pfm_obj,a.chan_doc_num,b.phone,b.first_name,b.last_name')
-                      ->where()
+                      // ->where()
                       ->select();
     }
 }
