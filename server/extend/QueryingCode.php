@@ -45,9 +45,9 @@ class QueryingCode
             exit;
         } else {
             if ($option == 'sales') {
-                $bg = config('template.client_image') . 'sales_qrcode_bg.jpg';
+                $bg = dirname(Env::get('ROOT_PATH')).'/client/dist/image/sales_qrcode_bg.jpg';
             } else {
-                $bg = config('template.client_image') . 'doctor_qrcode_bg.jpg';
+                $bg = dirname(Env::get('ROOT_PATH')).'/client/dist/image/doctor_qrcode_bg.jpg';
             }
             $img_bg = imagecreatefromstring(file_get_contents($bg));
             //list($qCodeWidth, $qCodeHight, $qCodeType) = getimagesize($QR);

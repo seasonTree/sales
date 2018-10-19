@@ -1,4 +1,5 @@
 import Vue from './base';
+
 new Vue({
     el: '#app',
 
@@ -95,13 +96,58 @@ new Vue({
             });
 
         },
-        showSales(){
+        showSales(channel_id,channel_name){
 
         	let that = this;
+        	that.$api.channel.getSales({
+        		data:{'channel_id':channel_id}
+        	}).then((res) => {
+	            that.saliesLists = res.data.sales;
+	            //绑定数据
+	            that.select = res.data.child;
+	            //选中的数据
 
+	        }).catch((res) => {
+	            console.log('eeeeeeeeeeeee');
+	            console.log(res);
+	        });
+	        that.channel_id = channel_id;
+	        that.channel_name = channel_name;
         	that.showAddSales = true;
-        	alert('aa');
 
+
+        },
+
+        addSales(){
+
+        	let that = this;
+        	that.select.push(that.channel_name);
+        	that.select.push(that.channel_id);
+        	that.$api.channel.addSales({
+                data: that.select
+            }).then((res) => {
+                if (res.code == 0) {
+                    that.message.text = res.msg;
+                    that.message.color = 'success';
+                    that.message.show = true;
+                    // that.showAdd = false;
+                    //重刷页面,后台负责跳转
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                } else {
+                    that.message.text = res.msg;
+                    that.message.color = 'error';
+                    that.message.show = true;
+                    // that.submitLoading = false;
+                }
+
+
+            }).catch((res) => {
+                console.log('***********')
+            });
+
+        	// console.log(that.select);
 
         },
 
@@ -177,8 +223,15 @@ new Vue({
 	    }
     },
 
+
     data() {
         return {
+        	select:[
+
+        	],
+
+        	channel_id:'',
+        	channel_name:'',
 
             subWidth: {
                 table: {
@@ -254,9 +307,14 @@ new Vue({
 
             show_pass: false,
 
-            saliesLists: [
-                '大大',
-                '小小'
+            saliesLists:[
+
+            	{
+            		username: '',
+            		uid:''
+            	},
+
+
             ],
 
             chips: [],

@@ -17,10 +17,19 @@ export function add(data) {
     })
 }
 
-export function showSales(data) {
+export function getSales(data) {
 
     return request({
-        url: '/channel/showSales',
+        url: '/channel/getSales',
+        method: 'post',
+        data: data
+    })
+}
+
+export function addSales(data) {
+
+    return request({
+        url: '/channel/addSales',
         method: 'post',
         data: data
     })

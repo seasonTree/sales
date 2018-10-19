@@ -3,6 +3,7 @@ import axios from 'axios';
 const instance = axios.create({
     baseURL: '', // api的base_url
     timeout: 6000 // 请求超时时间
+
 })
 // request拦截器
 instance.interceptors.request.use(
@@ -31,5 +32,7 @@ instance.interceptors.response.use(
         return Promise.reject(error);
     }
 )
+
+
 
 export default instance;

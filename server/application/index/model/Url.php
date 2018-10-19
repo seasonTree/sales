@@ -17,5 +17,10 @@ class Url extends Model
         return $res;
     }
 
+    public function delUrl($where){
+        //删除url
+        $res = Url::where($where)->delete();
+        return $res;
+    }
 
 }
