@@ -257,18 +257,18 @@ export default {
                 );
 
                 //总的父类记录已经选中的
-                this.$on("_select", items => {
-                    items.forEach(sitem => {
-                        var jitem = JSON.parse(JSON.stringify(sitem));
-
-                        //删除children
-                        delete jitem.children;
-
-                        this.select[jitem[this.idField]] = jitem["_checked"]
-                            ? jitem
-                            : null;
-                    });
-                });
+                // this.$on("_select", items => {
+                //     items.forEach(sitem => {
+                //         var jitem = JSON.parse(JSON.stringify(sitem));
+                //
+                //         //删除children
+                //         delete jitem.children;
+                //
+                //         this.select[jitem[this.idField]] = jitem["_checked"]
+                //             ? jitem
+                //             : null;
+                //     });
+                // });
             } else {
                 //如果是子类型的自己使用已经转了的tree
                 this.data = this.treeData;
@@ -285,15 +285,15 @@ export default {
                 delete pitem.children;
 
                 //如果父的选中了，添加
-                this.select[item[this.idField]] = item["_checked"]
-                    ? pitem
-                    : null;
+                // this.select[item[this.idField]] = item["_checked"]
+                //     ? pitem
+                //     : null;
 
-                if (rail) {
-                    this.parentSelect[pitem[this.idField]] = pitem;
-                } else {
-                    this.parentSelect[pitem[this.idField]] = null;
-                }
+                // if (rail) {
+                //     this.parentSelect[pitem[this.idField]] = pitem;
+                // } else {
+                //     this.parentSelect[pitem[this.idField]] = null;
+                // }
 
                 //强制更新
                 this.$forceUpdate();
@@ -387,43 +387,52 @@ export default {
             this.$forceUpdate();
 
             //通知选中
-            if (this.rootNode) {
-                this.rootNode.$emit("_select", emitData);
-            } else {
-                this.$emit("_select", emitData);
-            }
+            // if (this.rootNode) {
+            //     this.rootNode.$emit("_select", emitData);
+            // } else {
+            //     this.$emit("_select", emitData);
+            // }
 
             //通知父级更新
             this.noftifyParent();
         },
 
         //获取所有选择的
-        getSelectItem() {
-            var arr = [],
-                obj = this.select;
+        genSelectItem(data, result) {
+            var result = result || {};
 
-            for (var i in obj) {
-                if (obj[i]) {
-                    var item = JSON.parse(JSON.stringify(obj[i]));
+            data.froeach()
 
-                    delete item["_open"];
-                    delete item["_checked"];
-                    delete item["_rail"];
-
-                    arr.push(item);
-                }
-            }
-
-            return arr;
+            // var arr = [],
+            //     obj = this.select;
+            //
+            // for (var i in obj) {
+            //     if (obj[i]) {
+            //         var item = JSON.parse(JSON.stringify(obj[i]));
+            //
+            //         delete item["_open"];
+            //         delete item["_checked"];
+            //         delete item["_rail"];
+            //
+            //         arr.push(item);
+            //     }
+            // }
+            //
+            // return arr;
         },
 
         //获取所有选择的和同时获取选择的父类
-        getSelectItemAndParent() {
+        getSelect() {
             var hasInsert = {},
                 arr = [],
                 parr = [],
                 obj = this.select,
                 pobj = this.parentSelect;
+
+            // console.log('*******************************');
+            // console.log(obj)
+            // console.log(pobj)
+            // console.log('*******************************');
 
             for (var i in obj) {
                 if (obj[i]) {

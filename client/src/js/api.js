@@ -9,7 +9,7 @@ const apis = {
     user, //user: user
     privilege,
     channel,
-    role
+    role,
 }
 
 const install = function (Vue) {
