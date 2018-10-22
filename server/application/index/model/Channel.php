@@ -121,7 +121,7 @@ class Channel extends Model
     public function getTeamChannel($where){
         //获取团队渠道
         $res = Channel::where($where)
-                       ->field('channel_name,chan_pfm_obj,chan_doc_num')
+                       ->field('id,channel_name,chan_pfm_obj,chan_doc_num')
                        ->select()
                        ->toArray();
         return $res;
