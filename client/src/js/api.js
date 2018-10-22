@@ -3,13 +3,15 @@ import * as user from '../api/user'
 import * as privilege from '../api/privilege';
 import * as channel from '../api/channel';
 import * as role from '../api/role';
+import * as team from '../api/team';
 
 const apis = {
     common,
     user, //user: user
     privilege,
     channel,
-    role
+    role,
+    team
 }
 
 const install = function (Vue) {

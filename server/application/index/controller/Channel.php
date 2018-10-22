@@ -160,7 +160,7 @@ class Channel
     public function QrCode()
     {	
     	//二维码
-        $url= urldecode(input('url_code'));
+        $url = urldecode(input('url_code'));
         $option = input('option');
         $logoPath = dirname(Env::get('ROOT_PATH')).'/client/dist/image/logo.jpg';
         $code = new \QueryingCode();

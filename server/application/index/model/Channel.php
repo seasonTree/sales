@@ -118,12 +118,14 @@ class Channel extends Model
         return $res;
     }
 
-    public function getTeam(){
-        //获取团队
-        $res = Channel::alias('a')
-                      ->join('sales_user_info b','a.user_id = b.user_id','left')
-                      ->field('a.channel_name,a.chan_pfm_obj,a.chan_doc_num,b.phone,b.first_name,b.last_name')
-                      // ->where()
-                      ->select();
+    public function getTeamChannel($where){
+        //获取团队渠道
+        $res = Channel::where($where)
+                       ->field('channel_name,chan_pfm_obj,chan_doc_num')
+                       ->select()
+                       ->toArray();
+        return $res;
     }
+
+
 }
