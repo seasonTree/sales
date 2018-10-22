@@ -35,6 +35,25 @@ class User extends Model
     	return $res;
     }
 
+    public function getTeamUser($where){
+    	//获取团队主页的用户信息
+    	//无child结构
+    	$res = User::alias('a')
+		    	    ->join('sales_channel b','a.id = b.user_id','left')
+		    	    ->join('sales_user_info c','a.id = c.user_id','left')
+		    	    ->field('b.channel_name,b.chan_pfm_obj,b.chan_doc_num,a.phone,c.first_name,c.last_name')
+		    	    ->where($where)
+		    	    ->select();
+
+		//有child结构
+		// $res = User::alias('a')
+		// 		   ->join('sales_user_info b','a.id = b.user_id','left')
+		// 		   ->field('a.id,a.username,a.phone,b.first_name,b.last_name')
+		// 		   ->where($where)
+		// 		   ->select()
+		// 		   ->toArray();
+    	return $res;
+    }
 
 
 

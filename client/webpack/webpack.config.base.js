@@ -20,6 +20,20 @@ const srcPath = path.resolve(__dirname, '../src');
 
 const copyFile = require('copy-webpack-plugin');
 
+//读取php配置
+function loadGlobalConfig(){
+
+    let filenamePath = path.resolve(__dirname, '../../config.json'),
+        globalConfig = JSON.parse(fs.readFileSync(filenamePath, { encoding: 'utf-8' }));    
+
+    return globalConfig;
+
+}
+
+const globalCfg = loadGlobalConfig();
+//这个publicPath只用于image， fonts
+const publicPath = globalCfg.publicPath;
+
 //移除dist生成的path
 function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
@@ -83,7 +97,9 @@ module.exports = {
         filename: 'js/[name].js',
         // chunkFilename: 'js/chunks/[name][hash:4].js',
         chunkFilename: 'js/chunks/[name].js',
-        publicPath: '/',
+        publicPath: `${publicPath}`,
+
+        // publicPath: `${publicPath}`
     },
     resolve: {
         //一定要添加，不然无法找到文件
@@ -229,15 +245,25 @@ module.exports = {
                 options: {
                     limit: 10000,
                     name: `image/[name].[hash:7].[ext]`,
+                    publicPath: `${publicPath}`
                 }
             },
             {
                 test: /\.(woff2?|woff|eot|ttf|otf)(\?.*)?$/,
+
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     name: `fonts/[name].[hash:7].[ext]`,
+                    publicPath: `${publicPath}`
                 }
+
+                // loader: 'url-loader',
+                // options: {
+                //     limit: 10000,
+                //     name: `client/fonts/[name].[hash:7].[ext]`,
+                //     publicPath: '/fonts/'
+                // }
             }
         ],
     }
