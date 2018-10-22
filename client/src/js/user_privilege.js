@@ -1,4 +1,4 @@
-import Vue from './base';
+import Vue from './base_ext';
 // import * as privilege from "../api/privilege";
 
 new Vue({

@@ -8,7 +8,18 @@ const minxin = {
             },
 
             //messageTimeout
-            messageTimeout: null
+            messageTimeout: null,
+
+            global: {
+                cPassword: {
+                    valid : false,
+                    show: false,
+                    passVis: false,
+                    passVis1: false,
+                    passValue: '',
+                    passValue1: ''
+                }
+            }
         };
     },
 

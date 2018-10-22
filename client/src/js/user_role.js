@@ -1,4 +1,4 @@
-import Vue from './base';
+import Vue from './base_ext';
 import STree from '../compontent/STree';
 
 new Vue({
