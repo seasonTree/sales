@@ -39,11 +39,9 @@ return [
 //        '__JS__' => '',
 //        '__IMG__' => '',
 //        '__FONTS__' => '',
-        '__basePath__' => '',
+        '__basePath__' => '/client',
         '__date__'=>time(),
     ],
-    'client_temp'=>'../../client/template/',
-    'client_image' =>  '../../client/src/image/',
     'view_path'=> dirname(Env::get('ROOT_PATH')).'/client/template/',
   
 ];

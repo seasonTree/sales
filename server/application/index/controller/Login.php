@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\index\model\User as UserModel;
 use think\facade\Cookie;
+use think\facade\Request;
 use think\facade\Session;
 
 class Login
@@ -52,6 +53,11 @@ class Login
 
         return json(['code' => 0,'msg' => '正在登录','data'=>'/channel/index']);
 
+    }
 
+    public function loginVerify()
+    {
+        if(!Request::param('username')) return json(['code'=>'1','msg'=>'用户名不能为空']);
+        if(!Request::param('password')) return json(['code'=>'','msg'=>'密码不能为空']);
     }
 }
