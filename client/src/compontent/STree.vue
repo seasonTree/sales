@@ -70,8 +70,8 @@ export default {
         return {
             data: [],
             checkList: {},
-            select: {},
-            parentSelect: {},
+            // select: {},
+            // parentSelect: {},
             rootParent: null,
             parent: null
         };
@@ -136,15 +136,15 @@ export default {
                     hasSelect[cid] = true;
                 }
 
-                //如果当前是选中了，并且select表没有数据，就保存
-                if (hasSelect[cid] && !this.select[cid]) {
-                    var sitem = JSON.parse(JSON.stringify(item));
+                // //如果当前是选中了，并且select表没有数据，就保存
+                // if (hasSelect[cid] && !this.select[cid]) {
+                //     var sitem = JSON.parse(JSON.stringify(item));
 
-                    //删除children
-                    delete sitem.children;
+                //     //删除children
+                //     delete sitem.children;
 
-                    this.select[cid] = sitem;
-                }
+                //     this.select[cid] = sitem;
+                // }
 
                 //没有选中，但子类选中了就加横杆
                 //选中了，但是子类所有没有选中也加横
@@ -156,15 +156,15 @@ export default {
                     //!!转boolean
                     item["_rail"] = !!railList[cid];
 
-                    if (!!railList[cid]) {
-                        var pitem = JSON.parse(JSON.stringify(item));
+                    // if (!!railList[cid]) {
+                    //     var pitem = JSON.parse(JSON.stringify(item));
 
-                        //删除children
-                        delete pitem.children;
+                    //     //删除children
+                    //     delete pitem.children;
 
-                        //如果加了横杆，parentSelect也记录下
-                        this.parentSelect[cid] = pitem;
-                    }
+                    //     //如果加了横杆，parentSelect也记录下
+                    //     this.parentSelect[cid] = pitem;
+                    // }
                 }
             });
 
@@ -222,15 +222,15 @@ export default {
                             hasSelect[cid] = true;
                         }
 
-                        //如果当前是选中了，并且select表没有数据，就保存
-                        if (hasSelect[cid] && !this.select[cid]) {
-                            var sitem = JSON.parse(JSON.stringify(item));
+                        // //如果当前是选中了，并且select表没有数据，就保存
+                        // if (hasSelect[cid] && !this.select[cid]) {
+                        //     var sitem = JSON.parse(JSON.stringify(item));
 
-                            //删除children
-                            delete sitem.children;
+                        //     //删除children
+                        //     delete sitem.children;
 
-                            this.select[cid] = sitem;
-                        }
+                        //     this.select[cid] = sitem;
+                        // }
 
                         //没有选中，但子类选中了就加横杆
                         //选中了，但是子类所有没有选中也加横杆
@@ -243,15 +243,15 @@ export default {
                             //!!转boolean
                             item["_rail"] = !!railList[cid];
 
-                            if (!!railList[cid]) {
-                                var pitem = JSON.parse(JSON.stringify(item));
+                            // if (!!railList[cid]) {
+                            //     var pitem = JSON.parse(JSON.stringify(item));
 
-                                //删除children
-                                delete pitem.children;
+                            //     //删除children
+                            //     delete pitem.children;
 
-                                //如果加了横杆，parentSelect也记录下
-                                this.parentSelect[cid] = pitem;
-                            }
+                            //     //如果加了横杆，parentSelect也记录下
+                            //     this.parentSelect[cid] = pitem;
+                            // }
                         }
                     }
                 );
@@ -399,9 +399,22 @@ export default {
 
         //获取所有选择的
         genSelectItem(data, result) {
-            var result = result || {};
+            // var result = result;
 
-            data.froeach()
+            data.forEach(item => {
+                if (item["_checked"] || item["_rail"]) {
+                    result.push(item);
+
+                    if (item.children.length) {
+                        this.genSelectItem(item.children, result);
+                    }
+
+                    delete item.children;
+                    delete item["_open"];
+                    delete item["_checked"];
+                    delete item["_rail"];
+                }
+            });
 
             // var arr = [],
             //     obj = this.select;
@@ -423,46 +436,52 @@ export default {
 
         //获取所有选择的和同时获取选择的父类
         getSelect() {
-            var hasInsert = {},
-                arr = [],
-                parr = [],
-                obj = this.select,
-                pobj = this.parentSelect;
+            let data = JSON.parse(JSON.stringify(this.data)),
+                result = [];
 
-            // console.log('*******************************');
-            // console.log(obj)
-            // console.log(pobj)
-            // console.log('*******************************');
+            this.genSelectItem(data, result);
 
-            for (var i in obj) {
-                if (obj[i]) {
-                    var item = JSON.parse(JSON.stringify(obj[i]));
+            // console.log("eeeeeeeeeeeeeeee");
+            // console.log(result);
 
-                    delete item["_open"];
-                    delete item["_checked"];
-                    delete item["_rail"];
+            return result;
 
-                    //主要处理重复
-                    hasInsert[i] = true;
+            //     var hasInsert = {},
+            //         arr = [],
+            //         parr = [],
+            //         obj = this.select,
+            //         pobj = this.parentSelect;
 
-                    arr.push(item);
-                }
-            }
+            //     for (var i in obj) {
+            //         if (obj[i]) {
+            //             var item = JSON.parse(JSON.stringify(obj[i]));
 
-            for (var i in pobj) {
-                if (pobj[i] && !hasInsert[i]) {
-                    //已经插入的不重复插入了
-                    var item = JSON.parse(JSON.stringify(pobj[i]));
+            //             delete item["_open"];
+            //             delete item["_checked"];
+            //             delete item["_rail"];
 
-                    delete item["_open"];
-                    delete item["_checked"];
-                    delete item["_rail"];
+            //             //主要处理重复
+            //             hasInsert[i] = true;
 
-                    parr.push(item);
-                }
-            }
+            //             arr.push(item);
+            //         }
+            //     }
 
-            return arr.concat(parr);
+            //     for (var i in pobj) {
+            //         if (pobj[i] && !hasInsert[i]) {
+            //             //已经插入的不重复插入了
+            //             var item = JSON.parse(JSON.stringify(pobj[i]));
+
+            //             delete item["_open"];
+            //             delete item["_checked"];
+            //             delete item["_rail"];
+
+            //             parr.push(item);
+            //         }
+            //     }
+
+            //     return arr.concat(parr);
+            // }
         }
     }
 };

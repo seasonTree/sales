@@ -15,12 +15,7 @@ new Vue({
         that.$api.role.get().then((data) =>{
             that.tdata = data.data;
             this.checkBoxData = data.priData;
-            // that.addItem.checkBoxData =data.priData ;
-            setTimeout(()=>{
-                console.log('set................')
 
-                // that.selected = [21, 22];
-            }, 500)
 
 
         }).catch((data) =>{
@@ -98,7 +93,7 @@ new Vue({
             let that = this,
                 data={};
             data.role_name =that.addItem.role_name;
-            data.selected =this.$refs.treeAdd.getSelectItemAndParent();
+            data.selected =this.$refs.treeAdd.getSelect();
 
             that.$api.role.add({
                 data: data
@@ -123,7 +118,7 @@ new Vue({
             let that = this,
                 data={};
             data.role_name =that.editItem.role_name;
-            data.selected =this.$refs.treeEdit.getSelectItemAndParent();
+            data.selected =this.$refs.treeEdit.getSelect();
             console.log(data);
             that.$api.role.edit({
                 data: data
