@@ -23,11 +23,18 @@ class User extends Model
     	return $res;
     }
 
-    public function getSales($uid){
-    	//获取销售员
-    	$res = User::where('parent_id',$uid)->select();
+    public function getChildSales($uid){
+    	//获取下级销售员
+    	$res = User::where('parent_id',$uid)->field('id,username,parent_id')->select();
     	return $res;
     }
+
+    public function getSales($where){
+    	//获取销售员
+    	$res = User::where(array('id'=>$where))->field('id,username,parent_id')->select();
+    	return $res;
+    }
+
 
 
 

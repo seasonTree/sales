@@ -1,10 +1,11 @@
 import Vue from './base';
-import Tree from '../compontent/Tree';
+import STree from '../compontent/STree';
+
 new Vue({
     el: '#app',
 
     components: {
-        Tree
+        STree
     },
 
     created(){
@@ -14,10 +15,18 @@ new Vue({
         that.$api.role.get().then((data) =>{
             that.tdata = data.data;
 
+            console.log('wwwwwwwwwwwwww')
+
             this.checkBoxData = data.priData;
             // that.addItem.checkBoxData =data.priData ;
 
             console.log(this.checkBoxData);
+
+            setTimeout(()=>{
+                console.log('set................')
+
+                that.selected = [21, 22];
+            }, 500)
 
 
         }).catch((data) =>{
@@ -33,31 +42,31 @@ new Vue({
             prevData:[],
 
             checkBoxData:[
-                {
-                    id: 1,
-                    parentID: 0,
-                    text: '节点1'
-                },
-                {
-                    id: 2,
-                    parentID: 0,
-                    text: '节点2'
-                },
-                {
-                    id: 3,
-                    parentID: 1,
-                    text: '节点3'
-                },
-                {
-                    id: 4,
-                    parentID: 1,
-                    text: '节点44444'
-                },
-                {
-                    id: 5,
-                    parentID: 2,
-                    text: '节点4'
-                }
+                // {
+                //     id: 1,
+                //     parentID: 0,
+                //     text: '节点1'
+                // },
+                // {
+                //     id: 2,
+                //     parentID: 0,
+                //     text: '节点2'
+                // },
+                // {
+                //     id: 3,
+                //     parentID: 1,
+                //     text: '节点3'
+                // },
+                // {
+                //     id: 4,
+                //     parentID: 1,
+                //     text: '节点44444'
+                // },
+                // {
+                //     id: 5,
+                //     parentID: 2,
+                //     text: '节点4'
+                // }
 
             ],
 

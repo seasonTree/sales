@@ -58,9 +58,9 @@ class Channel extends Model
         return $res;
     }
 
-    public function findChannel($data){
+    public function findChannel($where){
         //检查渠道
-        $res = Channel::where(['user_id'=>$data['user_id'],'channel_name'=>$data['channel_name']])->find();
+        $res = Channel::where(['user_id'=>$where['user_id'],'channel_name'=>$where['channel_name']])->find();
         return $res;
     }
 
@@ -68,5 +68,62 @@ class Channel extends Model
         //检查渠道条数
         $res = Channel::where('user_id',$uid)->count();
         return $res;
+    }
+
+    public function getChannelSales($channel_id){
+        //获取这个渠道下的销售员id
+        $res = Channel::where('p_id',$channel_id)
+                        ->where('status',1)
+                        ->field('user_id')
+                        ->select()
+                        ->toArray();
+        return $res;
+    }
+
+    public function delAllChannel($where){
+        //删除所有的渠道
+        $res = Channel::where($where)->delete();
+        return $res;
+    }
+
+    public function getChannelName($where){
+        //获取渠道名字
+        $res = Channel::where($where)->value('channel_name');
+        return $res;
+    }
+
+    public function getChannelIds($where){
+        //获取渠道ID集合
+        $res = Channel::where($where)->field('id')->select()->toArray();
+        return $res;
+    }
+
+    public function getNotInChannelIds($where,$channel_name){
+        //获取不包括该渠道的id集合
+        $res = Channel::where('channel_name',$channel_name)
+                      ->where('user_id','not in',$where)
+                      ->where('p_id','<>',0)
+                      ->field('id')
+                      ->select()
+                      ->toArray();
+        return $res;
+    }
+
+    public function delNotInChannel($where,$channel_name,$channel_ids){
+        //删除没有被选中的渠道
+        $res = Channel::where('channel_name',$channel_name)
+                      ->where($where)
+                      ->where($channel_ids)
+                      ->delete();
+        return $res;
+    }
+
+    public function getTeam(){
+        //获取团队
+        $res = Channel::alias('a')
+                      ->join('sales_user_info b','a.user_id = b.user_id','left')
+                      ->field('a.channel_name,a.chan_pfm_obj,a.chan_doc_num,b.phone,b.first_name,b.last_name')
+                      // ->where()
+                      ->select();
     }
 }

@@ -5,8 +5,9 @@ use app\index\model\Url as UrlModel;
 use app\index\model\User as UserModel;
 use think\facade\Cookie;
 use think\facade\Session;
+use think\facade\Env;
 
-require_once '../extend/QueryingCode.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/QueryingCode.php';
 
 class Channel
 {
@@ -65,16 +66,103 @@ class Channel
     public function getSales(){
     	//获取销售员
     	$user = new UserModel();
-    	$res = $user->getSales(Session::get('user.userid'));
-    	dump($res);
+    	$data = $user->getChildSales(Session::get('user.userid'));
+    	// dump($data);
+    	$channel_id = input('post.data.channel_id');
+    	$channel_model = new ChannelModel();
+    	$user_id = $channel_model->getChannelSales($channel_id);
+    	$user_id = array_column($user_id, 'user_id');
+    	$child_data = $user->getSales($user_id);
+
+    	return json(['code' => 0,'msg' => '获取销售员成功', 'data' => [ 'sales' => $data,'child' => $child_data ]]);
     }
+
+    public function addSales(){
+    	//添加销售员到渠道
+
+    	$data = input('post.data');
+    	$channel_id = array_pop($data);
+    	$channel_name = array_pop($data);
+    	$uid = array_column($data,'id');
+    	$channel_model = new ChannelModel();
+    	$url_model = new UrlModel();
+
+    	if (empty($uid)) {
+    		//一个销售都没有选中
+    		$channel_where = array('p_id' => $channel_id);
+
+    		try {
+    			$channel_ids = $channel_model->getChannelIds($channel_where);
+    			$channel_ids = array_column($channel_ids, 'id');
+	            $channel_model->delAllChannel($channel_where);
+	            $url_model->delUrl(array('channel_id' => $channel_ids));
+
+	            return json(['code' => 0,'msg' => '操作成功', 'data' => '']);
+	        } catch (\Exception $e) {
+	            // echo $e->getMessage();
+	        	return json(['code' => 1,'msg' => '操作失败' , 'data' => '']);
+	        }
+    		
+    	}
+    	
+    	try {
+
+    			$channel_ids = $channel_model->getNotInChannelIds($uid,$channel_name);
+
+    			if ($channel_ids) {
+    				$channel_ids = array_column($channel_ids, 'id');
+			        $channel_model->delNotInChannel(array('p_id' => $channel_id),$channel_name,array('id' => $channel_ids));
+			        $url_model->delUrl(array('channel_id' => $channel_ids));
+    			}
+	            // return json(['code' => 0,'msg' => '操作成功', 'data' => '']);
+	        } catch (\Exception $e) {
+	            // echo $e->getMessage();
+	        	return json(['code' => 1,'msg' => '操作失败' , 'data' => '']);
+	        }
+    	
+
+        $channel_arr = array(
+    					'p_id' => $channel_id,
+    					'channel_name' => $channel_name
+    						);
+
+    	foreach ($uid as $k => $v) {
+
+    		$channel_arr['user_id'] = $v;
+
+    		try {
+    			$find = $channel_model->findChannel(array('channel_name' => $channel_name,'user_id' => $v));
+    			
+    			if (!$find) {
+    				$c_id = $channel_model->addChannel($channel_arr);
+		    		//渠道URL
+		    		$url = getShortUrl("http://app.kooa.vip/signup?channelId=" . $c_id . "&referralCode=" . $v);
+
+		    		$insert_url['channel_id'] = $c_id;
+	    			$insert_url['url_code'] = $url;
+
+		            $url_model->addUrl($insert_url);
+    				
+    			}
+    			
+	        } catch (\Exception $e) {
+	            // echo $e->getMessage();
+	        	return json(['code' => 1,'msg' => '操作失败' , 'data' => '']);
+	        }
+
+    	}
+
+    	return json(['code' => 0,'msg' => '操作成功' , 'data' => '']);
+
+    }
+    
 
     public function QrCode()
     {	
     	//二维码
         $url= urldecode(input('url_code'));
         $option = input('option');
-        $logoPath = config('template.client_image').'logo.jpg';
+        $logoPath = dirname(Env::get('ROOT_PATH')).'/client/dist/image/logo.jpg';
         $code = new \QueryingCode();
         $code->makeQueryingCode($url,$logoPath,$option);
     }

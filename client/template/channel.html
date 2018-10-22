@@ -284,7 +284,7 @@
                 
 
                 <div class="text-xs-center">
-                    <v-btn color="s-primary" class="my-2" @click="showSales">
+                    <v-btn color="s-primary" class="my-2" @click="showSales(props.item.id,props.item.channel_name)">
                         <v-icon dark>add</v-icon>新增销售员
                     </v-btn>
                 </div>
@@ -326,15 +326,21 @@
             </v-card-title>
 
             <v-card-text>
-                <v-form>
-                    <v-combobox v-model="chips" :items="saliesLists" label="请选择销售员" chips clearable prepend-icon="filter_list"
+                <v-flex>
+
+                    <v-select v-model="select" return-object :items="saliesLists" item-text="username" item-value="uid" attach chips label="请选择销售员" multiple full-width>
+                          
+                    </v-select>
+
+
+                    <!-- <v-select v-model="" :items="saliesLists" label="请选择销售员" chips clearable prepend-icon="filter_list"
                         solo multiple>
-                        <template slot="selection" slot-scope="data">
-                            <v-chip :selected="data.selected" close @input="remove(data)">
+                        <template slot="selection" slot-scope="data" >
+                            <v-chip :selected="data.selected" close @input="remove(data)" >
                                 <strong>{{ data.item }}</strong>&nbsp;
                             </v-chip>
                         </template>
-                    </v-combobox>
+                    </v-select> -->
                 </v-form>
             </v-card-text>
 
@@ -342,7 +348,7 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="showAddSales = false">
+                <v-btn color="s-primary" @click="addSales()">
                     确认
                 </v-btn>
                 <v-btn color="primary" flat @click="showAddSales = false">
