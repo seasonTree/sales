@@ -15,20 +15,6 @@
 
         <v-toolbar-items class="hidden-sm-and-down">
             <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
-            <v-menu offset-y>
-                <v-btn flat primary slot="activator">用户中心</v-btn>
-                <v-list dense class="language-dropdown">
-                    <v-list-tile @click="">
-                        <v-list-tile-title>
-                            个人资料
-                        </v-list-tile-title>
-                    </v-list-tile>
-
-                    <v-list-tile @click="">
-                        <v-list-tile-title>修改密码</v-list-tile-title>
-                    </v-list-tile>
-                </v-list>
-            </v-menu>
 
             <v-btn href="{:url('Team/index')}" flat>团队</v-btn>
             <v-btn href="{:url('Channel/index')}" flat>渠道</v-btn>
@@ -247,42 +233,63 @@
                     </div>
                 </v-list>
             </v-menu>
-            <v-btn href="{:url('Login/loginOut')}" flat>登出</v-btn>
+
+            <v-menu offset-y>
+                <v-btn flat primary slot="activator">用户中心</v-btn>
+                <v-list dense class="language-dropdown">
+                    <v-list-tile @click="">
+                        <v-list-tile-title>
+                            个人资料
+                        </v-list-tile-title>
+                    </v-list-tile>
+
+                    <v-list-tile @click="global.changePassword.show = true">
+                        <v-list-tile-title>修改密码</v-list-tile-title>
+                    </v-list-tile>
+
+                    <v-list-tile href="{:url('Login/loginOut')}">
+                        <v-list-tile-title>登出</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>
+            </v-menu>
+            <!-- <v-btn href="{:url('Login/loginOut')}" flat>登出</v-btn> -->
         </v-toolbar-items>
     </v-toolbar>
 </div>
-<!-- 
-<v-dialog scrollable v-model="global.cPassword.show" width="500">
+
+<v-dialog scrollable persistent v-model="global.changePassword.show" width="500">
     <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
             修改密码
         </v-card-title>
 
         <v-card-text>
-            <v-form vaild="global.cPassword.valid">
-                <v-text-field label="密码" :append-icon="global.cPassword.passVis ? 'visibility_off' : 'visibility'" v-model.trim="global.cPassword.passValue"
-                    :type="global.cPassword.passVis1s ? 'text' : 'password'" :rules="[v => !!v || '密码是必填']" @click:append="global.cPassword.passVis = !global.cPassword.passVis"></v-text-field>
+            <v-form ref="globalPassRef" vaild="global.changePassword.valid">
+                <v-text-field label="密码" :append-icon="global.changePassword.passVis ? 'visibility_off' : 'visibility'"
+                    v-model.trim="global.changePassword.password" :type="global.changePassword.passVis ? 'text' : 'password'"
+                    :rules="[v => !!v || '密码是必填']" @click:append="global.changePassword.passVis = !global.changePassword.passVis"></v-text-field>
 
-                <v-text-field label="再次输入密码" :append-icon="global.cPassword.passVis1 ? 'visibility_off' : 'visibility'" v-model.trim="global.cPassword.passValue1"
-                    :type="global.cPassword.passVis1 ? 'text' : 'password'" :rules="[
+                <v-text-field label="再次输入密码" :append-icon="global.changePassword.passVis1 ? 'visibility_off' : 'visibility'"
+                    v-model.trim="global.changePassword.rePassword" :type="global.changePassword.passVis1 ? 'text' : 'password'"
+                    :rules="[
                              v => !!v || '确认密码是必填',
-                             v => global.cPassword.passValue == v || '两次输入的密码不一致' 
+                             v => global.changePassword.password == v || '两次输入的密码不一致' 
                             ]"
-                    @click:append="global.cPassword.passVis1 = !global.cPassword.passVis1"></v-text-field>
+                    @click:append="global.changePassword.passVis1 = !global.changePassword.passVis1"></v-text-field>
             </v-form>
         </v-card-text>
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="addChannel" :loading="submitLoading">
+            <v-btn color="s-primary" @click="globalCommitPassword" :loading="global.changePassword.submitLoading">
                 确认
             </v-btn>
-            <v-btn color="primary" flat @click="showAdd = false">
+            <v-btn color="primary" flat @click="global.changePassword.show = false">
                 取消
             </v-btn>
         </v-card-actions>
     </v-card>
-</v-dialog> -->
+</v-dialog>
 
 {/block}
 
