@@ -69,14 +69,14 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
         <template slot="items" slot-scope="props">
-                <td class="text-xs-left">{{ props.item.first_name }}{{ props.item.last_name }}</td>
-                <td class="text-xs-left">{{ props.item.phone }}</td>
-                <td class="text-xs-right">{{ props.item.c }}</td>
-                <td class="text-xs-left">{{ props.item.d }}</td>
-                <td class="text-xs-left">{{ props.item.e }}</td>
-                <td class="text-xs-left">
-                    <v-checkbox color="info" hide-details></v-checkbox>
-                </td>
+            <td class="text-xs-left">{{ props.item.first_name }}{{ props.item.last_name }}</td>
+            <td class="text-xs-left">{{ props.item.phone }}</td>
+            <td class="text-xs-center">{{ props.item.c }}</td>
+            <td class="text-xs-left">{{ props.item.d }}</td>
+            <td class="text-xs-left">{{ props.item.e }}</td>
+            <td class="text-xs-left">
+                <v-checkbox color="info" hide-details></v-checkbox>
+            </td>
             
         </template>
     </v-data-table>
