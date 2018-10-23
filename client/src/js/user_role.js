@@ -86,6 +86,7 @@ new Vue({
             this.showEdit = true;
             let that = this;
             that.editItem.role_name = item.role_name;
+            that.editItem.id = item.id;
             this.selected = item.pri_id.split(',');
 
         },
@@ -118,16 +119,19 @@ new Vue({
             let that = this,
                 data={};
             data.role_name =that.editItem.role_name;
+            data.id =that.editItem.id;
             data.selected =this.$refs.treeEdit.getSelect();
-            console.log(data);
             that.$api.role.edit({
                 data: data
             }).then((data) => {
-                // that.editItem.id = data.id;
+
                 that.showEdit = false;
                 that.message.text = data.message;
                 that.message.color = 'success';
                 that.message.show = true;
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
             }).catch((data) =>{ //function(data){}
                 // console.log('失败了')
 
