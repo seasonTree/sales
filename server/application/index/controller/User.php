@@ -1,5 +1,7 @@
 <?php
 namespace app\index\controller;
+use think\facade\Env;
+use think\facade\Session;
 use app\index\model\UserInfo as UserInfoModel;
 use app\index\model\User as UserModel;
 
@@ -139,11 +141,11 @@ class User
     	$user = $user_model->checkUserType(array('id' => $user_id));
     	if ($user['parent_id'] == 0) {
     		//这是公司账户
-    		
+    		return view('/company_detail');
     	}
     	else{
     		//这是个人账户
-
+    		return view('/person_detail');
     	}
 
 
