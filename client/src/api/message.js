@@ -17,3 +17,12 @@ export function getMessageCount(){
         data: null
     })
 }
+//标记已读
+export function isRead(data) {
+    return request({
+        url: '/message/isRead',
+        method: 'post',
+        data: data
+    })
+}
+

@@ -23,6 +23,16 @@ new Vue({
 
         // console.log(that.m_content);
 
+        that.$api.message.isRead({
+            data:that.m_id
+        }).then((res) => {
+            // that.tdata = res.data;
+            that.globalShowMessage(true, res.msg, 'success');
+        }).catch((res) => {
+            console.log('eeeeeeeeeeeee');
+            console.log(res);
+        });
+
         that.viewMessage = true;
 
 

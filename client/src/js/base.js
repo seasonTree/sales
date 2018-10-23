@@ -85,7 +85,7 @@ Vue.mixin({
 
             found = found || 'zh-cn';
 
-            this.toolbar.language = found;
+            this.global.toolbar.language = found;
         }
     }
 });

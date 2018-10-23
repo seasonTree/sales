@@ -29,4 +29,17 @@ class Message extends Model
     	return $res;
     }
 
+    public function getMessageCount($where){
+    	//获取未读信息条数
+    	$res = Message::where($where)->count('id');
+    	// echo Message::getlastsql();exit;
+    	return $res;
+    }
+
+    public function isRead($where){
+    	//标记已读
+    	$res = Message::where($where)->update(array('status' => 1));
+    	return $res;
+    }
+
 }
