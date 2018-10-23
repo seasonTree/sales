@@ -25,7 +25,7 @@ class User extends Model
 
     public function getChildSales($uid){
     	//获取下级销售员
-    	$res = User::where('parent_id',$uid)->field('id,username,parent_id')->select();
+    	$res = User::where('parent_id',$uid)->where('status',1)->field('id,username,parent_id')->select();
     	return $res;
     }
 
