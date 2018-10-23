@@ -70,8 +70,8 @@ export default {
         return {
             data: [],
             checkList: {},
-            select: {},
-            parentSelect: {},
+            // select: {},
+            // parentSelect: {},
             rootParent: null,
             parent: null
         };
@@ -136,15 +136,15 @@ export default {
                     hasSelect[cid] = true;
                 }
 
-                //如果当前是选中了，并且select表没有数据，就保存
-                if (hasSelect[cid] && !this.select[cid]) {
-                    var sitem = JSON.parse(JSON.stringify(item));
+                // //如果当前是选中了，并且select表没有数据，就保存
+                // if (hasSelect[cid] && !this.select[cid]) {
+                //     var sitem = JSON.parse(JSON.stringify(item));
 
-                    //删除children
-                    delete sitem.children;
+                //     //删除children
+                //     delete sitem.children;
 
-                    this.select[cid] = sitem;
-                }
+                //     this.select[cid] = sitem;
+                // }
 
                 //没有选中，但子类选中了就加横杆
                 //选中了，但是子类所有没有选中也加横
@@ -156,15 +156,15 @@ export default {
                     //!!转boolean
                     item["_rail"] = !!railList[cid];
 
-                    if (!!railList[cid]) {
-                        var pitem = JSON.parse(JSON.stringify(item));
+                    // if (!!railList[cid]) {
+                    //     var pitem = JSON.parse(JSON.stringify(item));
 
-                        //删除children
-                        delete pitem.children;
+                    //     //删除children
+                    //     delete pitem.children;
 
-                        //如果加了横杆，parentSelect也记录下
-                        this.parentSelect[cid] = pitem;
-                    }
+                    //     //如果加了横杆，parentSelect也记录下
+                    //     this.parentSelect[cid] = pitem;
+                    // }
                 }
             });
 
@@ -222,15 +222,15 @@ export default {
                             hasSelect[cid] = true;
                         }
 
-                        //如果当前是选中了，并且select表没有数据，就保存
-                        if (hasSelect[cid] && !this.select[cid]) {
-                            var sitem = JSON.parse(JSON.stringify(item));
+                        // //如果当前是选中了，并且select表没有数据，就保存
+                        // if (hasSelect[cid] && !this.select[cid]) {
+                        //     var sitem = JSON.parse(JSON.stringify(item));
 
-                            //删除children
-                            delete sitem.children;
+                        //     //删除children
+                        //     delete sitem.children;
 
-                            this.select[cid] = sitem;
-                        }
+                        //     this.select[cid] = sitem;
+                        // }
 
                         //没有选中，但子类选中了就加横杆
                         //选中了，但是子类所有没有选中也加横杆
@@ -243,32 +243,32 @@ export default {
                             //!!转boolean
                             item["_rail"] = !!railList[cid];
 
-                            if (!!railList[cid]) {
-                                var pitem = JSON.parse(JSON.stringify(item));
+                            // if (!!railList[cid]) {
+                            //     var pitem = JSON.parse(JSON.stringify(item));
 
-                                //删除children
-                                delete pitem.children;
+                            //     //删除children
+                            //     delete pitem.children;
 
-                                //如果加了横杆，parentSelect也记录下
-                                this.parentSelect[cid] = pitem;
-                            }
+                            //     //如果加了横杆，parentSelect也记录下
+                            //     this.parentSelect[cid] = pitem;
+                            // }
                         }
                     }
                 );
 
                 //总的父类记录已经选中的
-                this.$on("_select", items => {
-                    items.forEach(sitem => {
-                        var jitem = JSON.parse(JSON.stringify(sitem));
-
-                        //删除children
-                        delete jitem.children;
-
-                        this.select[jitem[this.idField]] = jitem["_checked"]
-                            ? jitem
-                            : null;
-                    });
-                });
+                // this.$on("_select", items => {
+                //     items.forEach(sitem => {
+                //         var jitem = JSON.parse(JSON.stringify(sitem));
+                //
+                //         //删除children
+                //         delete jitem.children;
+                //
+                //         this.select[jitem[this.idField]] = jitem["_checked"]
+                //             ? jitem
+                //             : null;
+                //     });
+                // });
             } else {
                 //如果是子类型的自己使用已经转了的tree
                 this.data = this.treeData;
@@ -285,15 +285,15 @@ export default {
                 delete pitem.children;
 
                 //如果父的选中了，添加
-                this.select[item[this.idField]] = item["_checked"]
-                    ? pitem
-                    : null;
+                // this.select[item[this.idField]] = item["_checked"]
+                //     ? pitem
+                //     : null;
 
-                if (rail) {
-                    this.parentSelect[pitem[this.idField]] = pitem;
-                } else {
-                    this.parentSelect[pitem[this.idField]] = null;
-                }
+                // if (rail) {
+                //     this.parentSelect[pitem[this.idField]] = pitem;
+                // } else {
+                //     this.parentSelect[pitem[this.idField]] = null;
+                // }
 
                 //强制更新
                 this.$forceUpdate();
@@ -387,73 +387,101 @@ export default {
             this.$forceUpdate();
 
             //通知选中
-            if (this.rootNode) {
-                this.rootNode.$emit("_select", emitData);
-            } else {
-                this.$emit("_select", emitData);
-            }
+            // if (this.rootNode) {
+            //     this.rootNode.$emit("_select", emitData);
+            // } else {
+            //     this.$emit("_select", emitData);
+            // }
 
             //通知父级更新
             this.noftifyParent();
         },
 
         //获取所有选择的
-        getSelectItem() {
-            var arr = [],
-                obj = this.select;
+        genSelectItem(data, result) {
+            // var result = result;
 
-            for (var i in obj) {
-                if (obj[i]) {
-                    var item = JSON.parse(JSON.stringify(obj[i]));
+            data.forEach(item => {
+                if (item["_checked"] || item["_rail"]) {
+                    result.push(item);
 
+                    if (item.children.length) {
+                        this.genSelectItem(item.children, result);
+                    }
+
+                    delete item.children;
                     delete item["_open"];
                     delete item["_checked"];
                     delete item["_rail"];
-
-                    arr.push(item);
                 }
-            }
+            });
 
-            return arr;
+            // var arr = [],
+            //     obj = this.select;
+            //
+            // for (var i in obj) {
+            //     if (obj[i]) {
+            //         var item = JSON.parse(JSON.stringify(obj[i]));
+            //
+            //         delete item["_open"];
+            //         delete item["_checked"];
+            //         delete item["_rail"];
+            //
+            //         arr.push(item);
+            //     }
+            // }
+            //
+            // return arr;
         },
 
         //获取所有选择的和同时获取选择的父类
-        getSelectItemAndParent() {
-            var hasInsert = {},
-                arr = [],
-                parr = [],
-                obj = this.select,
-                pobj = this.parentSelect;
+        getSelect() {
+            let data = JSON.parse(JSON.stringify(this.data)),
+                result = [];
 
-            for (var i in obj) {
-                if (obj[i]) {
-                    var item = JSON.parse(JSON.stringify(obj[i]));
+            this.genSelectItem(data, result);
 
-                    delete item["_open"];
-                    delete item["_checked"];
-                    delete item["_rail"];
+            // console.log("eeeeeeeeeeeeeeee");
+            // console.log(result);
 
-                    //主要处理重复
-                    hasInsert[i] = true;
+            return result;
 
-                    arr.push(item);
-                }
-            }
+            //     var hasInsert = {},
+            //         arr = [],
+            //         parr = [],
+            //         obj = this.select,
+            //         pobj = this.parentSelect;
 
-            for (var i in pobj) {
-                if (pobj[i] && !hasInsert[i]) {
-                    //已经插入的不重复插入了
-                    var item = JSON.parse(JSON.stringify(pobj[i]));
+            //     for (var i in obj) {
+            //         if (obj[i]) {
+            //             var item = JSON.parse(JSON.stringify(obj[i]));
 
-                    delete item["_open"];
-                    delete item["_checked"];
-                    delete item["_rail"];
+            //             delete item["_open"];
+            //             delete item["_checked"];
+            //             delete item["_rail"];
 
-                    parr.push(item);
-                }
-            }
+            //             //主要处理重复
+            //             hasInsert[i] = true;
 
-            return arr.concat(parr);
+            //             arr.push(item);
+            //         }
+            //     }
+
+            //     for (var i in pobj) {
+            //         if (pobj[i] && !hasInsert[i]) {
+            //             //已经插入的不重复插入了
+            //             var item = JSON.parse(JSON.stringify(pobj[i]));
+
+            //             delete item["_open"];
+            //             delete item["_checked"];
+            //             delete item["_rail"];
+
+            //             parr.push(item);
+            //         }
+            //     }
+
+            //     return arr.concat(parr);
+            // }
         }
     }
 };

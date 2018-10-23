@@ -53,11 +53,11 @@ new Vue({
 
     methods: {
 
-        showMessage(show, text, color) {
-            this.message.text = text || '';
-            this.message.color = color;
-            this.message.show = show;
-        },
+        // showMessage(show, text, color) {
+        //     this.message.text = text || '';
+        //     this.message.color = color;
+        //     this.message.show = show;
+        // },
 
         sendSMS() {
             let that = this;
@@ -85,12 +85,12 @@ new Vue({
                 data: that.data
             }).then((res) => {
                 if (res.code == 0) {
-                    that.showMessage(true, res.msg, 'success');
+                    that.globalShowMessage(true, res.msg, 'success');
                 } else {
-                    that.showMessage(true, res.msg, 'error');
+                    that.globalShowMessage(true, res.msg, 'error');
                 }
             }).catch((res) => {
-                that.showMessage(true, '发送失败,请重试.', 'error');
+                that.globalShowMessage(true, '发送失败,请重试.', 'error');
             })
         },
 
@@ -102,18 +102,17 @@ new Vue({
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        this.showMessage(true, res.msg, 'success');
+                        this.globalShowMessage(true, res.msg, 'success');
 
                         setTimeout(() => {
-                            //TODO
                             window.location.href = res.data.url+'?uid='+res.data.uid;
                         }, 3000);
                     } else {
-                        this.showMessage(true, res.msg, 'error');
+                        this.globalShowMessage(true, res.msg, 'error');
                     }
 
                 }).catch((res) => {
-                    this.showMessage(true, '验证失败,请重试.', 'error');
+                    this.globalShowMessage(true, '验证失败,请重试.', 'error');
                 });
             }
         }

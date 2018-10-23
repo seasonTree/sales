@@ -13,7 +13,9 @@ const apis = {
     channel,
     role,
     team,
-    message
+    message,
+    team
+
 }
 
 const install = function (Vue) {

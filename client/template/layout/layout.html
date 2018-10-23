@@ -17,9 +17,16 @@
 <body>
     <div id="app" v-cloak>
         <v-app>
-            
-        {block name="_head"}{/block}
-        {block name="body"}{/block}
+
+            {block name="_head"}{/block}
+            {block name="body"}{/block}
+
+            <v-snackbar :color="global.message.color" v-model="global.message.show" :timeout="global.message.time" top>
+                {{ global.message.text }}
+                <v-btn color="blue" flat @click="global.message.show = false">
+                    关闭
+                </v-btn>
+            </v-snackbar>
 
         </v-app>
     </div>

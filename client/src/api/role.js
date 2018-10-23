@@ -10,21 +10,21 @@ export function get(data) {
 
 export function edit(data){
     return request({
-        url: '/privilege/edit',
+        url: '/role/edit',
         method: 'post',
         data: data
     })
 }
 export function add(data){
     return request({
-        url: '/privilege/add',
+        url: '/role/add',
         method: 'post',
         data: data
     })
 }
 export function del(data){
     return request({
-        url: '/privilege/del',
+        url: '/role/del',
         method: 'post',
         data: data
     })

@@ -1,4 +1,4 @@
-import Vue from './base';
+import Vue from './base_ext';
 import STree from '../compontent/STree';
 
 new Vue({
@@ -14,19 +14,8 @@ new Vue({
 
         that.$api.role.get().then((data) =>{
             that.tdata = data.data;
-
-            console.log('wwwwwwwwwwwwww')
-
             this.checkBoxData = data.priData;
-            // that.addItem.checkBoxData =data.priData ;
 
-            console.log(this.checkBoxData);
-
-            setTimeout(()=>{
-                console.log('set................')
-
-                that.selected = [21, 22];
-            }, 500)
 
 
         }).catch((data) =>{
@@ -39,41 +28,15 @@ new Vue({
     data() {
         return {
             showAdd: false,
+            showEdit: false,
             prevData:[],
-
-            checkBoxData:[
-                // {
-                //     id: 1,
-                //     parentID: 0,
-                //     text: '节点1'
-                // },
-                // {
-                //     id: 2,
-                //     parentID: 0,
-                //     text: '节点2'
-                // },
-                // {
-                //     id: 3,
-                //     parentID: 1,
-                //     text: '节点3'
-                // },
-                // {
-                //     id: 4,
-                //     parentID: 1,
-                //     text: '节点44444'
-                // },
-                // {
-                //     id: 5,
-                //     parentID: 2,
-                //     text: '节点4'
-                // }
-
-            ],
-
             addItem:{
                 // checkBoxData:[],
             },
-
+            editItem:{
+                // checkBoxData:[],
+            },
+            checkBoxData:[],
             selected: [],
 
             items: ['页面1', '页面2'],
@@ -110,10 +73,90 @@ new Vue({
                 }
             ],
             tdata: [],
+            message: {
+                show: false,
+                text: '',
+                time: 3000,
+                color: 'success'
+            },
         }
     },
     methods:{
+        edit (item) {
+            this.showEdit = true;
+            let that = this;
+            that.editItem.role_name = item.role_name;
+            this.selected = item.pri_id.split(',');
 
+        },
+        addCommit(){
+            let that = this,
+                data={};
+            data.role_name =that.addItem.role_name;
+            data.selected =this.$refs.treeAdd.getSelect();
+
+            that.$api.role.add({
+                data: data
+            }).then((res) => {
+                // that.editItem.id = data.id;
+                that.showAdd = false;
+                that.message.text = res.message;
+                that.message.color = 'success';
+                that.message.show = true;
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
+            }).catch((data) =>{ //function(data){}
+
+                that.message.text = data.message;
+                that.message.color = 'error';
+                that.message.show = true;
+                that.submitLoading = false;
+            });
+        },
+        editCommit(){
+            let that = this,
+                data={};
+            data.role_name =that.editItem.role_name;
+            data.selected =this.$refs.treeEdit.getSelect();
+            console.log(data);
+            that.$api.role.edit({
+                data: data
+            }).then((data) => {
+                // that.editItem.id = data.id;
+                that.showEdit = false;
+                that.message.text = data.message;
+                that.message.color = 'success';
+                that.message.show = true;
+            }).catch((data) =>{ //function(data){}
+                // console.log('失败了')
+
+                that.message.text = data.message;
+                that.message.color = 'error';
+                that.message.show = true;
+                that.submitLoading = false;
+            });
+
+        },
+        del(id){
+            let that = this;
+            that.$api.role.del({
+                data: id
+            }).then((data) => {
+                that.message.text = data.message;
+                that.message.color = 'success';
+                that.message.show = true;
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
+
+            }).catch((data) =>{ //function(data){}
+                that.message.text = data.message;
+                that.message.color = 'error';
+                that.message.show = true;
+                // that.submitLoading = false;
+            });
+        },
         // getChildren(obj,parent_id=0,isClear) {
         //     let that = this;
         //     isClear? that.prevData=[]:null;
