@@ -35,9 +35,18 @@ class User
 		if ($data['rePassword'] != $data['password']) {
 			return json(['code' => 2,'msg' => '两次输入密码不一致']);
 		}
-		if (!isset($data['uid'])) {
-			return json(['code' => 3,'msg' => '非法操作']);
+
+		$check_has = Session::has('user.userid');
+		if (!$check_has) {
+			if (!isset($data['uid'])) {
+				return json(['code' => 3,'msg' => '非法操作']);
+			}
 		}
+		else{
+
+			$data['uid'] = Session::get('user.userid');
+		}
+
 		if (strlen($data['password']) < 6 || strlen($data['password']) > 30 ) {
 			return json(['code' => 4,'msg' => '密码长度只能在6到30位之间']);
 		}
