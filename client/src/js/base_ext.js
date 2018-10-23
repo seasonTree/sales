@@ -15,7 +15,10 @@ Vue.mixin({
                     password: '',
                     rePassword: '',
                     submitLoading: false
-                }
+                },
+
+                messageCount: 0,
+                messageTimeout: null,
             }
         };
     },
@@ -28,11 +31,15 @@ Vue.mixin({
                     this.$refs.globalPassRef.reset();
                     this.global.changePassword.passVis = false;
                     this.global.changePassword.passVis1 = false;
-                    this.global.changePassword.submitLoading = false;                    
+                    this.global.changePassword.submitLoading = false;
                 }
             },
         }
     },
+
+    // mounted() {
+    //     this.__checkMessage();
+    // },
 
     methods: {
 
@@ -66,21 +73,25 @@ Vue.mixin({
             }
         },
 
-        // globalLogout() {
-        //     this.$api.user.logout().then((data) => {
-        //         window.location.reload();
-        //     }).catch((data) => {
-        //         window.location.reload();
-        //     });
-        // },
-
-
         //检查是否有新的消息
-        checkMessage() {
+        __checkMessage() {
+            var that = this;
 
+            that.messageTimeout = setTimeout(() => {
+                that.$api.message.getMessageCount().then((res) => {
+
+                    if (res.code == 0) {
+                        this.global.messageCount = res.data.count;
+                    }
+
+                    // that.__checkMessage();
+                }).catch((res) => {
+                    that.global.messageCount = 0;
+
+                    // that.__checkMessage();
+                });                
+            }, 1000);
         },
-
-
     }
 });
 

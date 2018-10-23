@@ -23,8 +23,8 @@
 
             <v-btn href="{:url('Message/index')}" flat>
                 消息
-                <v-badge right class="toolbar-message-tip">
-                    <span slot="badge">6</span>
+                <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
+                    <span slot="badge">{{global.messageCount}}</span>
                 </v-badge>
             </v-btn>
 
@@ -34,17 +34,19 @@
             <v-menu offset-y>
                 <v-btn flat primary slot="activator">语言</v-btn>
                 <v-list dense class="language-dropdown">
-                    <v-list-tile @click="">
+
+                    <v-list-tile :class="{'language-select': global.toolbar.language == 'zh-cn' }" @click="globalChangeLanguage('zh-cn')">
+                        <v-list-tile-title>简体中文</v-list-tile-title>
+                    </v-list-tile>
+
+                    <v-list-tile :class="{'language-select': global.toolbar.language == 'zh-hk' }" @click="globalChangeLanguage('zh-hk')">
                         <v-list-tile-title>
-                            English
+                            繁体中文
                         </v-list-tile-title>
                     </v-list-tile>
 
-                    <v-list-tile @click="">
-                        <v-list-tile-title>简体中文</v-list-tile-title>
-                    </v-list-tile>
-                    <v-list-tile @click="">
-                        <v-list-tile-title>繁体中文</v-list-tile-title>
+                    <v-list-tile :class="{'language-select': global.toolbar.language == 'en-us' }" @click="globalChangeLanguage('en-us')">
+                        <v-list-tile-title>English</v-list-tile-title>
                     </v-list-tile>
                 </v-list>
             </v-menu>

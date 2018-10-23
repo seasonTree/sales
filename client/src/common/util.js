@@ -24,8 +24,8 @@ export const guid = (separator) => {
 export const deepClone = (data) => {
     var o,
         ostr = Object.prototype.toString;
-    
-    
+
+
 
     if (ostr.call(data) == '[object String]') {
         o = {};
@@ -73,4 +73,54 @@ export const buildTree = (data, parentField, idField, parentID, callBack) => {
     });
 
     return rdata;
+}
+
+/**
+ * 设置cookie
+ * 
+ * @param {String} name cookie名称
+ * @param {String|Number} value cookie值
+ * @param {Number} exp 过期时间
+ */
+export const setCookie = (name, value, exp) => {
+
+    let now = Date.now;
+
+    if (typeof exp == 'number') {
+        exp = now.setTime(now + exp);
+    } else {
+        exp = now.setTime(now + 30 * 24 * 60 * 60 * 1000);
+    }
+
+    document.cookie = name + "=" + escape(value) + ";expires=" + (new Date(exp)).toGMTString();
+}
+
+/**
+ * 获取cookie
+ * 
+ * @param {String} name 获取cookie的名字
+ * 
+ * @returns value
+ */
+export const getCookie = (name) => {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = document.cookie.match(reg)) {
+        return unescape(arr[2]);
+    } else {
+        return null;
+    }
+}
+
+/**
+ * 删除cookie
+ * 
+ * @param {String} name 要删除cookie的名称
+ */
+export const delCookie = (name) => {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+
+    var cval = getCookie(name);
+    if (cval != null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 }

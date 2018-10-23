@@ -9,3 +9,11 @@ export function lst(data) {
     })
 }
 
+//获取未读信息数量
+export function getMessageCount(){
+    return request({
+        url: '/message/getMessageCount',
+        method: 'get',
+        data: null
+    })
+}
