@@ -94,7 +94,7 @@
         <v-card-text>
             <v-form>
                 <v-text-field label="角色名称" v-model="editItem.role_name"></v-text-field>
-
+                <input type="hidden"  v-model="editItem.id" name="id">
                 <div class="role-container">
                     <div>
                         <s-tree :init-select="selected"  ref="treeEdit" :expend="true" :tree-data="checkBoxData" id-field="id" value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>

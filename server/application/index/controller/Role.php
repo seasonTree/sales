@@ -40,7 +40,22 @@ class Role
         }
     }
     public function edit(){
-
+        $data =input('post.data');
+        $arr['role_name'] = $data['role_name'];
+        $arr['id'] = $data['id'];
+        foreach ($data['selected'] as $k =>$v){
+            $arr['pri_id'][] =$v['id'];
+        }
+        $data = $arr;
+        $validate =validate('Role');
+        if (!$validate->check($data)){
+            $error =$validate->getError();
+            return json(['message'=>$error]);
+        }
+        $id=model('Role')->edit($data);
+        if($id){
+            return json(['message'=>'修改成功']);
+        }
     }
     public function del(){
 	    $id =input('post.data');
