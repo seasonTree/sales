@@ -26,10 +26,9 @@ new Vue({
                         window.location.href = res.data;
                     }, 3000);
                 } else {
-                    this.showMessage(true, res.msg, 'error');
+                    this.showMessage(false, res.msg, 'error');
                 }
 
-                that.submitLoading = false;
             }).catch((res) => {
                 this.showMessage(true, '登录失败,请重试.', 'error')
                 that.submitLoading = false;

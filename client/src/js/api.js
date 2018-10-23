@@ -4,6 +4,7 @@ import * as privilege from '../api/privilege';
 import * as channel from '../api/channel';
 import * as role from '../api/role';
 import * as team from '../api/team';
+import * as message from '../api/message';
 
 const apis = {
     common,
@@ -11,7 +12,8 @@ const apis = {
     privilege,
     channel,
     role,
-    team
+    team,
+    message
 }
 
 const install = function (Vue) {

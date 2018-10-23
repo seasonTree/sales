@@ -3,8 +3,8 @@ namespace app\index\controller;
 use app\index\model\UserInfo as UserInfoModel;
 use app\index\model\User as UserModel;
 
-require_once '../extend/ShortMessage.php';
-require_once '../extend/Mailer.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/ShortMessage.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 
 class User
 {
@@ -127,6 +127,26 @@ class User
             $code .= substr($char, (mt_rand() % strlen($char)), 1);
         }
         return $code;
+    }
+
+    public function userInfo(){
+    	//个人资料
+    	// input('post.');
+    	// return json(['msg' => '成功','code' => 0,'data' => ]);
+    	$user_id = Session::get('user.userid');
+
+    	$user_model = new UserModel();
+    	$user = $user_model->checkUserType(array('id' => $user_id));
+    	if ($user['parent_id'] == 0) {
+    		//这是公司账户
+    		
+    	}
+    	else{
+    		//这是个人账户
+
+    	}
+
+
     }
 
 

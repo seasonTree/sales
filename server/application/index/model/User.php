@@ -55,6 +55,12 @@ class User extends Model
     	return $res;
     }
 
+    public function checkUserType($where){
+    	//检测用户类型
+    	$res = User::where($where)->find();
+    	return $res;
+    }
+
 
 
 

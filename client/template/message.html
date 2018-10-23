@@ -12,11 +12,11 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
         <template slot="items" slot-scope="props">
-            <tr @click="viewMessage=true">
-                <td class="text-xs-left">{{ props.item.a }}</td>
-                <td class="text-xs-left">{{ props.item.b }}</td>
-                <td class="text-xs-left">{{ props.item.c }}</td>
-                <td class="text-xs-left">{{ props.item.d }}</td>
+            <tr @click="showMessage(props.index)">
+                <td class="text-xs-left">{{ props.item.id }}</td>
+                <td class="text-xs-left">{{ props.item.title }}</td>
+                <td class="text-xs-left">{{ props.item.first_name }}{{ props.item.last_name }}</td>
+                <td class="text-xs-left">{{ props.item.create_time }}</td>
                 <td class="text-xs-left">
                     <v-icon small title="标记已读" class="mr-3">
                         check
@@ -33,11 +33,11 @@
 <v-dialog scrollable v-model="viewMessage" width="500">
     <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
-            查看消息
+            {{ m_title }}
         </v-card-title>
 
         <v-card-text>
-            消息内容
+            {{ m_content }}
         </v-card-text>
 
         <v-divider></v-divider>

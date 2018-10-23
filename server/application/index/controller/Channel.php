@@ -32,6 +32,9 @@ class Channel
     public function add(){
     	//添加渠道
     	$data = input('post.data');
+    	if (empty($data['channel_name'])) {
+    		return json(['msg' => '渠道名字不能为空' ,'code' => 4 ]);
+    	}
     	// $data['user_id'] = Session::has('user.userid');
     	$data['user_id'] = Session::get('user.userid');
     	$channel = new ChannelModel();
