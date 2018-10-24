@@ -53,14 +53,13 @@ class OperateBehavior extends Controller
             //获取当前访问路由
             $url=$this->getActionUrl();
             if(empty(Session::get())&&!in_array($url,$this->login)&&!in_array(strtolower(Request::module()),$this->module)){
-                $this->error('please login first','/index/index');
+                $this->error('please login first','/login/index');
             }
             //用户所拥有的权限路由
             $auth=Session::get('auth.url')?Session::get('auth.url'):[];
             if(!$auth&&!in_array($url,$this->login)&&!in_array($url,$this->exclude)&&!in_array(strtolower(Request::module()),$this->module)){
-                $this->error('please login first','/index/index');
+                $this->error('please login first','/login/index');
             }
-
             if(!in_array($url, $auth) && !in_array($url, $this->exclude) && !in_array(strtolower(Request::module()), $this->moudel)){
                 $this->error('无权限访问1');
             }
