@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\facade\Env;
+use think\facade\Request;
 use think\facade\Session;
 use app\index\model\UserInfo as UserInfoModel;
 use app\index\model\User as UserModel;
@@ -157,6 +158,33 @@ class User
     		return view('/person_detail');
     	}
 
+
+    }
+
+    public function upload(){
+    	//上传
+    	//先检测目录是否存在
+    	if (!is_dir(dirname(Env::get('ROOT_PATH')).'/client/dist/upload')) {
+            $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload';
+            mkdir($file_path);
+            chown($file_path, 777);
+        }
+    	// 获取表单上传文件
+	    $file = request()->file('image');
+	    // 移动到框架应用根目录/uploads/ 目录下
+	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move(dirname(Env::get('ROOT_PATH')).'/client/dist/upload/');
+	    if($info){
+	        // 成功上传后 获取上传信息
+	        // 输出 jpg
+	        echo $info->getExtension();
+	        // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+	        echo $info->getSaveName();
+	        // 输出 42a79759f284b767dfcb2a0197904287.jpg
+	        echo $info->getFilename(); 
+	    }else{
+	        // 上传失败获取错误信息
+	        echo $file->getError();
+	    }
 
     }
 

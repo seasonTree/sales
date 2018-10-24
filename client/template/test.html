@@ -14,6 +14,11 @@
 <body>
     <div id="app">
 
+        <form action="{:url('user/upload')}" enctype="multipart/form-data" method="post">
+            <input type="file" name="image">
+            <input type="submit" name="">
+        </form>
+        
         1231312312
         <div>
             <s-tree :init-select="selected"  ref="tree" :expend="true" :tree-data="data" id-field="id" value-filed="text" root-value="0" parent-field="parentID"></s-tree>
