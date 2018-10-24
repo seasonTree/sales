@@ -3,11 +3,19 @@ namespace app\index\controller;
 
 use app\index\model\User as UserModel;
 use think\facade\Cookie;
+use think\facade\Log;
 use think\facade\Request;
 use think\facade\Session;
+use think\Model;
 
 class Login
 {
+    private $userModel;
+    public function __construct(UserModel $userModel)
+    {
+        $this->userModel=$userModel;
+    }
+
     public function searchPass()
     {
         //找回密码界面
@@ -34,8 +42,8 @@ class Login
             return json(['code' => 2,'msg' => '密码不能为空']);
         }
 
-        $user = new UserModel();
-        $res = $user->findUser($username);
+        //$user = new UserModel();
+        $res = $this->userModel->findUser($username);
 
         if (!$res) {
             return json(['code' => 3,'msg' => '用户名不存在']);
@@ -58,7 +66,16 @@ class Login
 
     public function loginVerify()
     {
-        if(!Request::param('username')) return json(['code'=>'1','msg'=>'用户名不能为空']);
-        if(!Request::param('password')) return json(['code'=>'','msg'=>'密码不能为空']);
+        if(!Request::param('username')) return json(['code'=>1,'msg'=>'用户名不能为空']);
+        if(!Request::param('password')) return json(['code'=>2,'msg'=>'密码不能为空']);
+        $info=$this->userModel->loginVerify(Request::param('username'),Request::param('password'));
+        if(false===$info) return json(['code'=>3,'msg'=>'登陆错误']);
+        if(-1===$info) return json(['code'=>4,'msg'=>'账号不存在']);
+        if(-2===$info) return json(['code'=>5,'msg'=>'密码错误']);
+        if(-3===$info) return json(['code'=>6,'msg'=>'账号未通过审核']);
+        if(-4===$info) return json(['code'=>7,'msg'=>'账号被禁用']);
+        if(-5===$info) return json(['code'=>8,'msg'=>'账号被拉入黑名单']);
+        if($info) Log::record('login:登陆成功','operate');
+        return json(['code'=>0,'msg'=>'登陆成功','url'=>'/index/profile']);
     }
 }

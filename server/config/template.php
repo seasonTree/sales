@@ -42,6 +42,9 @@ return [
         '__basePath__' => '/client',
         '__date__'=>time(),
     ],
+<<<<<<< Updated upstream
+=======
+    //'client_temp'=>'../../client/template/',
+>>>>>>> Stashed changes
     'view_path'=> dirname(Env::get('ROOT_PATH')).'/client/template/',
-  
 ];
