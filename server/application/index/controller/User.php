@@ -179,7 +179,7 @@ class User
     	//先检测目录是否存在
     	if (!is_dir(dirname(Env::get('ROOT_PATH')).'/client/dist/upload')) {
             $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload';
-            mkdir($file_path);
+            mkdir($file_path,0777);
             // chown($file_path, 775);
         }
     	// 获取表单上传文件
