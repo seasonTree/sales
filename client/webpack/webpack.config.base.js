@@ -24,7 +24,7 @@ const copyFile = require('copy-webpack-plugin');
 try {
     fs.statSync(outputPath);
 } catch (error) {
-    fs.mkdirSync(outputPath);
+    fs.mkdirSync(outputPath);        
 }
 
 //读取php配置

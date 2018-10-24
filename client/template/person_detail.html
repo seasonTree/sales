@@ -17,6 +17,10 @@
         margin: 10px 0;
         width: 100%;
     }
+
+    .image-upload{
+        min-height: 140px;
+    }
 </style>
 {/block}
 
@@ -37,11 +41,11 @@
         <v-text-field label="移动电话"></v-text-field>
 
         <v-layout row wrap>
-            <v-flex md6 xs12>
+            <v-flex md6 xs12 class="image-upload">
                 <upload-image content="个人照片"></upload-image>
             </v-flex>
 
-            <v-flex md6 xs12>
+            <v-flex md6 xs12 class="image-upload">
                 <upload-image content="身份证照片"></upload-image>
             </v-flex>
         </v-layout>
