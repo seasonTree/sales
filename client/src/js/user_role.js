@@ -1,8 +1,10 @@
-import Vue from './base_ext';
-import STree from '../compontent/STree';
+import Vue from './base';
+import STree from '../compontent/stree/STree';
+import mixin from './mixin';
 
 new Vue({
     el: '#app',
+    mixins: [mixin],
 
     components: {
         STree

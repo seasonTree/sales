@@ -1,12 +1,10 @@
-import Vue from './base';
-
-Vue.mixin({
+export default {
     data() {
         return {
-
             global: {
+                messageCount: 0,
+                messageTimeout: null,
 
-                //修改密码
                 changePassword: {
                     valid: false,
                     show: false,
@@ -16,11 +14,12 @@ Vue.mixin({
                     rePassword: '',
                     submitLoading: false
                 },
-
-                messageCount: 0,
-                messageTimeout: null,
             }
         };
+    },
+
+    mounted() {
+        this._checkMessage();
     },
 
     watch: {
@@ -34,14 +33,35 @@ Vue.mixin({
                     this.global.changePassword.submitLoading = false;
                 }
             },
-        }
+        },
     },
 
-    // mounted() {
-    //     this.__checkMessage();
-    // },
-
     methods: {
+
+        //检查是否有新的消息
+        _checkMessage() {
+            var that = this;
+
+            clearTimeout(that.global.messageTimeout);
+
+            that.$api.message
+                .getMessageCount()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.global.messageCount = res.data.count;
+                    }
+                    that.messageTimeout = setTimeout(() => {
+                        that._checkMessage();
+                    }, 1000 * 60);
+                })
+                .catch(res => {
+                    that.global.messageCount = 0;
+
+                    that.messageTimeout = setTimeout(() => {
+                        that._checkMessage();
+                    }, 1000 * 60);
+                });
+        },
 
         globalCommitPassword() {
 
@@ -72,27 +92,5 @@ Vue.mixin({
                 });
             }
         },
-
-        //检查是否有新的消息
-        __checkMessage() {
-            var that = this;
-
-            that.messageTimeout = setTimeout(() => {
-                that.$api.message.getMessageCount().then((res) => {
-
-                    if (res.code == 0) {
-                        this.global.messageCount = res.data.count;
-                    }
-
-                    // that.__checkMessage();
-                }).catch((res) => {
-                    that.global.messageCount = 0;
-
-                    // that.__checkMessage();
-                });                
-            }, 1000);
-        },
     }
-});
-
-export default Vue;
+};

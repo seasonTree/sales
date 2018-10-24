@@ -1,4 +1,4 @@
-import Vue from './base_ext';
+import Vue from './base';
 new Vue({
     el: '#app',
 

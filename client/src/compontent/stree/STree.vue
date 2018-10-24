@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { deepClone, buildTree } from "../common/util";
+import { deepClone, buildTree } from "@common/util";
 export default {
     name: "s-tree",
 

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { guid } from "../common/util";
+import { guid } from "@common/util";
 
 // 依赖vuetify的图标
 
