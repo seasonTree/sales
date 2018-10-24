@@ -1,5 +1,5 @@
-import Vue from './base_ext';
-import uploadImage from '../compontent/UploadImage'
+import Vue from './base';
+import uploadImage from '../compontent/uploadimage/UploadImage'
 import '@css/user_info';
 
 new Vue({

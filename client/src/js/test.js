@@ -1,5 +1,5 @@
 import Vue from './base';
-import STree from '../compontent/STree';
+import STree from '../compontent/common/STree';
 
 new Vue({
     el: '#app',

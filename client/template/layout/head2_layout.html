@@ -35,17 +35,17 @@
                 <v-btn flat primary slot="activator">语言</v-btn>
                 <v-list dense class="language-dropdown">
 
-                    <v-list-tile :class="{'language-select': global.toolbar.language == 'zh-cn' }" @click="globalChangeLanguage('zh-cn')">
+                    <v-list-tile :class="{'language-select': global.language == 'zh-cn' }" @click="">
                         <v-list-tile-title>简体中文</v-list-tile-title>
                     </v-list-tile>
 
-                    <v-list-tile :class="{'language-select': global.toolbar.language == 'zh-hk' }" @click="globalChangeLanguage('zh-hk')">
+                    <v-list-tile :class="{'language-select': global.language == 'zh-hk' }" @click="">
                         <v-list-tile-title>
                             繁体中文
                         </v-list-tile-title>
                     </v-list-tile>
 
-                    <v-list-tile :class="{'language-select': global.toolbar.language == 'en-us' }" @click="globalChangeLanguage('en-us')">
+                    <v-list-tile :class="{'language-select': global.language == 'en-us' }" @click="">
                         <v-list-tile-title>English</v-list-tile-title>
                     </v-list-tile>
                 </v-list>
@@ -296,5 +296,5 @@
 {/block}
 
 {block name="_script"}
-<script src="__basePath__/js/chunks/base_ext.js?date=__date__"></script>
+<script src="__basePath__/js/chunks/base.js?date=__date__"></script>
 {/block}

@@ -97,7 +97,7 @@ module.exports = {
         filename: 'js/[name].js',
         // chunkFilename: 'js/chunks/[name][hash:4].js',
         chunkFilename: 'js/chunks/[name].js',
-        publicPath: `${publicPath}`,
+        publicPath: `${publicPath}/`,
 
         // publicPath: `${publicPath}`
     },
@@ -107,6 +107,8 @@ module.exports = {
         alias: {
             'vue': 'vue/dist/vue.js',
             '@css': path.resolve(srcPath, 'css'),
+            '@common': path.resolve(srcPath, 'common'),
+            '@compontent': path.resolve(srcPath, 'compontent'),
         }
     },
 
