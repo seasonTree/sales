@@ -23,6 +23,10 @@ class User
             $error =$validate->getError();
             return json(['message'=>$error]);
         }
+        $id=model('User')->add($data);
+        if($id){
+            return json(['message'=>'新增成功']);
+        }
     }
 
 	public function personInfo(){

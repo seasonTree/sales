@@ -13,7 +13,6 @@ const apis = {
     privilege,
     channel,
     role,
-    team,
     message,
     team,
     config
