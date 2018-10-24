@@ -180,7 +180,7 @@ class User
     	if (!is_dir(dirname(Env::get('ROOT_PATH')).'/client/dist/upload')) {
             $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload';
             mkdir($file_path);
-            chown($file_path, 777);
+            chown($file_path, 775);
         }
     	// 获取表单上传文件
 	    $file = request()->file('image');
