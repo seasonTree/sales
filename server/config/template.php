@@ -43,5 +43,4 @@ return [
         '__date__'=>time(),
     ],
     'view_path'=> dirname(Env::get('ROOT_PATH')).'/client/template/',
-  
 ];

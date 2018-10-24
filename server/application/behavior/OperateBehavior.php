@@ -19,7 +19,6 @@ class OperateBehavior extends Controller
      */
     protected $exclude =[
         'index/index/index',
-
     ];
 
     /**
