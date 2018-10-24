@@ -1,6 +1,11 @@
 import Vue from './base';
+import {
+    baseMixin
+} from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [baseMixin],
 
     data() {
         return {
@@ -13,12 +18,12 @@ new Vue({
             valid: false,
             sending: false,
 
-            phoneRex: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(19[0-9])|16[6])\d{8}$/, 
+            phoneRex: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(19[0-9])|16[6])\d{8}$/,
 
             phoneRoules: [
                 value => !!value || '手机号必填',
                 value => {
-                   return this.phoneRex.test(value) || '手机号不正确'
+                    return this.phoneRex.test(value) || '手机号不正确'
                 }
             ],
 
@@ -72,7 +77,7 @@ new Vue({
                     //因为直接写watch会出现无法监听sending，所以写到这里
                     that.smsDisabled = !that.phoneRex.test(that.data.phone_num);
                     that.identifyBtnText = '发送验证码';
-                    
+
                     clearInterval(that.sendInterval);
 
                 } else {
@@ -105,7 +110,7 @@ new Vue({
                         this.globalShowMessage(true, res.msg, 'success');
 
                         setTimeout(() => {
-                            window.location.href = res.data.url+'?uid='+res.data.uid;
+                            window.location.href = res.data.url + '?uid=' + res.data.uid;
                         }, 3000);
                     } else {
                         this.globalShowMessage(true, res.msg, 'error');

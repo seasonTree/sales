@@ -1,11 +1,11 @@
-import * as common from '../api/common'
-import * as user from '../api/user'
-import * as privilege from '../api/privilege';
-import * as channel from '../api/channel';
-import * as role from '../api/role';
-import * as team from '../api/team';
-import * as message from '../api/message';
-import * as config from '../api/config';
+import * as common from './common'
+import * as user from './user'
+import * as privilege from './privilege';
+import * as channel from './channel';
+import * as role from './role';
+import * as team from './team';
+import * as message from './message';
+import * as config from './config';
 
 const apis = {
     common,
@@ -13,7 +13,6 @@ const apis = {
     privilege,
     channel,
     role,
-    team,
     message,
     team,
     config

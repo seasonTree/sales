@@ -8,11 +8,14 @@
 namespace app\common\validate;
 use think\Validate;
 
-class Role extends Validate{
+class User extends Validate{
     protected $rule=[
-        'role_name'=>'require',
+        'username'=>'require',
+        'password'=>'require|confirm',
+
     ];
     protected $message=[
-        'role_name'=>'角色名称不能为空',
+        'username'=>'用户名不能为空',
+        'password' =>'密码不一致'
     ];
 }

@@ -45,17 +45,35 @@
 
             <v-card-text>
                 <v-form>
-                    <v-text-field label="用户名"></v-text-field>
+                    <v-text-field label="用户名" v-model = "addData.username"></v-text-field>
                     <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
-                        :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass"></v-text-field>
+                        :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass" v-model = "addData.password"></v-text-field>
                     <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
-                        :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1"></v-text-field>
+                        :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1" v-model = "addData.password_confirm"></v-text-field>
+                    <template>
+                        <v-card flat>
+                          <v-card-text>
+                            <v-container fluid>
+                              <v-layout row wrap>
+                                <v-flex xs12 sm4 md4 v-for="(item, index) in rolesAll" :key="index">
+                                  <v-checkbox xs12 sm4 md4
+                                    v-model = "addData.role_id"
+                                    :label="item.role_name"
+                                    :value="item.id"
+                                    hide-details
+                                  ></v-checkbox>
+                                </v-flex>
+                              </v-layout>
+                            </v-container>
+                          </v-card-text>
+                        </v-card>
+                      </template>
                 </v-form>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="showAdd = false">
+                <v-btn color="s-primary" @click="addCommit()">
                     确认
                 </v-btn>
                 <v-btn color="primary" flat @click="showAdd = false">

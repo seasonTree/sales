@@ -1,9 +1,12 @@
 import Vue from './base';
-import mixin from './mixin';
+import {
+    mixinExt
+} from './mixin';
 
 new Vue({
     el: '#app',
-    mixins: [mixin],
+    mixins: [mixinExt],
+    
     created() {
         let that = this;
 
@@ -15,27 +18,27 @@ new Vue({
         });
     },
     methods: {
-    showMessage(list){
+        showMessage(list) {
 
-        let that = this;
+            let that = this;
 
-        that.m_id = that.tdata[list].id;
-        that.m_title = that.tdata[list].title;
-        that.m_content = that.tdata[list].content;
+            that.m_id = that.tdata[list].id;
+            that.m_title = that.tdata[list].title;
+            that.m_content = that.tdata[list].content;
 
-        // console.log(that.m_content);
+            // console.log(that.m_content);
 
-        that.$api.message.isRead({
-            data:that.m_id
-        }).then((res) => {
-            // that.tdata = res.data;
-            that.globalShowMessage(true, res.msg, 'success');
-        }).catch((res) => {
-            console.log('eeeeeeeeeeeee');
-            console.log(res);
-        });
+            that.$api.message.isRead({
+                data: that.m_id
+            }).then((res) => {
+                // that.tdata = res.data;
+                that.globalShowMessage(true, res.msg, 'success');
+            }).catch((res) => {
+                console.log('eeeeeeeeeeeee');
+                console.log(res);
+            });
 
-        that.viewMessage = true;
+            that.viewMessage = true;
 
 
         }
@@ -46,9 +49,9 @@ new Vue({
 
             viewMessage: false,
 
-            m_id : '',
-            m_title : '',
-            m_content : '',
+            m_id: '',
+            m_title: '',
+            m_content: '',
 
             theader: [{
                     text: 'id',

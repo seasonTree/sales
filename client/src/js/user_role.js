@@ -1,10 +1,12 @@
 import Vue from './base';
 import STree from '../compontent/stree/STree';
-import mixin from './mixin';
+import {
+    mixinExt
+} from './mixin';
 
 new Vue({
     el: '#app',
-    mixins: [mixin],
+    mixins: [mixinExt],
 
     components: {
         STree

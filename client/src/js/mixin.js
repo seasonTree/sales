@@ -1,7 +1,41 @@
-export default {
+import {
+    getCookie
+} from '../common/util';
+
+const base = {
     data() {
         return {
             global: {
+                language: 'zh-cn',
+                currentView: ''
+            }
+        }
+    },
+
+    mounted() {
+        this._checkLanguage();
+        this._checkLocation();
+    },
+
+    methods: {
+        _checkLanguage() {
+            this.global.language = getCookie('_language') || 'zh-cn';
+        },
+
+        _checkLocation() {
+            let href = window.location.href.replace(/(\.html|\/index.html|index)$/, '');
+            this.global.currentView = href.split('/').pop();
+        }
+    }
+};
+
+const mixin = {
+    extends: base,
+
+    data() {
+        return {
+            global: {
+
                 messageCount: 0,
                 messageTimeout: null,
 
@@ -94,3 +128,6 @@ export default {
         },
     }
 };
+
+export const baseMixin = base;
+export const mixinExt = mixin;

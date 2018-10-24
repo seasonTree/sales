@@ -1,6 +1,9 @@
 import Vue from './base';
+import { baseMixin }  from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [baseMixin],
 
     methods: {
 
@@ -16,11 +19,23 @@ new Vue({
 
                     window.location.href = res.data;
                 } else {
-                    this.globalShowMessage(true, res.msg, 'error');
+                    // this.globalShowMessage(true, res.msg, 'error');
+
+                    this.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    })
+
                     that.submitLoading = false;
                 }                
             }).catch((res) => {
-                this.globalShowMessage(true, '登录失败,请重试.', 'error');
+                this.$comp.toast({
+                    text: '登录失败,请重试.',
+                    color: 'error'
+                })
+
+                // this.globalShowMessage(true, '登录失败,请重试.', 'error');
+
                 that.submitLoading = false;
             });
         }

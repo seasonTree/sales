@@ -1,7 +1,7 @@
 const i18n = {
-    'zh-cn': require('../i18n/zh-cn'),
-    'zh-hk': require('../i18n/zh-hk'),
-    'en-us': require('../i18n/en-us'),
+    'zh-cn': require('./zh-cn'),
+    'zh-hk': require('./zh-hk'),
+    'en-us': require('./en-us'),
 }
 
 let locale = 'zh-cn';

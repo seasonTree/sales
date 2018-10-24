@@ -16,7 +16,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn href="/" flat class="active">主页</v-btn>
+            <v-btn href="/" flat :class="{'active': global.currentView == ''}">主页</v-btn>
         </v-toolbar-items>
 
         <v-toolbar-items>
