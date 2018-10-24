@@ -37,6 +37,7 @@ class User extends Model
     }
 
 
+    //登陆验证
     public function loginVerify($name,$pwd)
     {
         if (!$name) return false;
@@ -89,6 +90,7 @@ class User extends Model
     	return $res;
     }
 
+    //根据用户id获取角色名称
     public function getUserRoleName($id)
     {
         if(!is_numeric($id)) return '';
@@ -102,7 +104,8 @@ class User extends Model
         return $roleName;
     }
 
-    public function  _getAuth($id)
+    //根据用户id获取权限
+    private function  _getAuth($id)
     {
 
     }
