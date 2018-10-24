@@ -129,5 +129,5 @@ const mixin = {
     }
 };
 
-export const baseMixin = mixin;
-export const mixinExt = base;
+export const baseMixin = base;
+export const mixinExt = mixin;
