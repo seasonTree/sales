@@ -16,12 +16,12 @@
         <v-toolbar-items class="hidden-sm-and-down">
             <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
 
-            <v-btn href="{:url('Team/index')}" flat :class="{'active': global.currentView == 'team'}">团队</v-btn>
-            <v-btn href="{:url('Channel/index')}" flat :class="{'active': global.currentView == 'channel'}">渠道</v-btn>
-            <v-btn href="{:url('Achievement/index')}" flat :class="{'active': global.currentView == 'achievement'}">业绩</v-btn>
-            <v-btn href="{:url('Achievement/distributionNetwork')}" flat :class="{'active': global.currentView == 'distributionnetwork'}">销售网络</v-btn>
+            <v-btn href="{:url('Team/index')}" flat :class="{'toolbar-active': global.currentView == 'team'}">团队</v-btn>
+            <v-btn href="{:url('Channel/index')}" flat :class="{'toolbar-active': global.currentView == 'channel'}">渠道</v-btn>
+            <v-btn href="{:url('Achievement/index')}" flat :class="{'toolbar-active': global.currentView == 'achievement'}">业绩</v-btn>
+            <v-btn href="{:url('Achievement/distributionNetwork')}" flat :class="{'toolbar-active': global.currentView == 'distributionnetwork'}">销售网络</v-btn>
 
-            <v-btn href="{:url('Message/index')}" flat :class="{'active': global.currentView == 'message'}">
+            <v-btn href="{:url('Message/index')}" flat :class="{'toolbar-active': global.currentView == 'message'}">
                 消息
                 <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
                     <span slot="badge">{{global.messageCount}}</span>
@@ -35,17 +35,17 @@
                 <v-btn flat primary slot="activator">语言</v-btn>
                 <v-list dense class="language-dropdown">
 
-                    <v-list-tile :class="{'language-select': global.language == 'zh-cn' }" @click="">
+                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" @click="">
                         <v-list-tile-title>简体中文</v-list-tile-title>
                     </v-list-tile>
 
-                    <v-list-tile :class="{'language-select': global.language == 'zh-hk' }" @click="">
+                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="">
                         <v-list-tile-title>
                             繁体中文
                         </v-list-tile-title>
                     </v-list-tile>
 
-                    <v-list-tile :class="{'language-select': global.language == 'en-us' }" @click="">
+                    <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" @click="">
                         <v-list-tile-title>English</v-list-tile-title>
                     </v-list-tile>
                 </v-list>
@@ -54,11 +54,11 @@
 
         <v-toolbar-items class="hidden-sm-and-down">
             <v-menu offset-y>
-                <v-btn flat primary slot="activator">系统信息</v-btn>
+                <v-btn flat primary slot="activator" :class="{'toolbar-active': global.viewSelect.system }">系统信息</v-btn>
                 <v-list dense class="toolbar-dropdown">
                     <div>
                         <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="">
+                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.user}">
                                 <v-list-tile-action>
                                     <v-icon>chevron_left</v-icon>
                                 </v-list-tile-action>
@@ -69,17 +69,17 @@
 
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Privilege/index')}" :class="{'active': global.currentView == 'privilege'}">
+                                <v-list-tile href="{:url('Privilege/index')}" :class="{'sub-item-select': global.currentView == 'privilege'}">
                                     <v-list-tile-title>
                                         权限
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-list-tile href="{:url('Role/index')}">
+                                <v-list-tile href="{:url('Role/index')}" :class="{'sub-item-select': global.currentView == 'role'}">
                                     <v-list-tile-title>
                                         角色
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-list-tile href="{:url('User/index')}">
+                                <v-list-tile href="{:url('User/index')}" :class="{'sub-item-select': global.currentView == 'user'}">
                                     <v-list-tile-title>
                                         用户
                                     </v-list-tile-title>
@@ -90,7 +90,7 @@
 
                     <div>
                         <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="">
+                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.commision}">
                                 <v-list-tile-action>
                                     <v-icon>chevron_left</v-icon>
                                 </v-list-tile-action>
@@ -100,7 +100,7 @@
                                 </v-list-tile-title>
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Commision/index')}">
+                                <v-list-tile href="{:url('Commision/index')}" :class="{'sub-item-select': global.currentView == 'commision'}">
                                     <v-list-tile-title>
                                         佣金设置
                                     </v-list-tile-title>
@@ -163,7 +163,7 @@
 
                     <div>
                         <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="">
+                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.setting}">
                                 <v-list-tile-action>
                                     <v-icon>chevron_left</v-icon>
                                 </v-list-tile-action>
@@ -173,19 +173,14 @@
                                 </v-list-tile-title>
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Config/regSetting')}">
-                                    <v-list-tile-title>
-                                        注册设置
-                                    </v-list-tile-title>
-                                </v-list-tile>
 
-                                <v-list-tile href="{:url('Config/notifySetting')}">
+                                <v-list-tile href="{:url('Config/notifySetting')}" :class="{'sub-item-select': global.currentView == 'notifysetting'}">
                                     <v-list-tile-title>
                                         消息设置
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile href="{:url('Config/protocolSetting')}">
+                                <v-list-tile href="{:url('Config/protocolSetting')}" :class="{'sub-item-select': global.currentView == 'protocolsetting'}">
                                     <v-list-tile-title>
                                         协议设置
                                     </v-list-tile-title>
@@ -208,7 +203,7 @@
 
                     <div>
                         <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="">
+                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.audit}">
                                 <v-list-tile-action>
                                     <v-icon>chevron_left</v-icon>
                                 </v-list-tile-action>
@@ -218,7 +213,7 @@
                                 </v-list-tile-title>
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Audit/regAudit')}">
+                                <v-list-tile href="{:url('Audit/regAudit')}" :class="{'sub-item-select': global.currentView == 'regaudit'}">
                                     <v-list-tile-title>
                                         注册审核
                                     </v-list-tile-title>
@@ -236,9 +231,9 @@
             </v-menu>
 
             <v-menu offset-y>
-                <v-btn flat primary slot="activator">用户中心</v-btn>
+                <v-btn flat primary slot="activator" :class="{'toolbar-active': global.currentView == 'userinfo'}">用户中心</v-btn>
                 <v-list dense class="language-dropdown">
-                    <v-list-tile href="{:url('user/userInfo')}">
+                    <v-list-tile href="{:url('user/userInfo')}" :class="{'sub-item-select': global.currentView == 'userinfo'}">
                         <v-list-tile-title>
                             个人资料
                         </v-list-tile-title>
