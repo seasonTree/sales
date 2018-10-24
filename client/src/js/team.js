@@ -3,6 +3,9 @@ import {
     mixinExt
 } from './mixin';
 
+console.log('**************');
+console.log(mixinExt);
+
 new Vue({
     el: '#app',
     mixins: [mixinExt],
