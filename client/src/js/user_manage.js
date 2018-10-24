@@ -7,12 +7,25 @@ new Vue({
     el: '#app',
     mixins: [mixinExt],
 
+    created(){
+        let that = this;
+        that.$api.user.get().then((data) =>{
+            that.rolesAll = data.data;
+        }).catch((data) =>{
+            console.log('eeeeeeeeeeeee');
+            console.log(data);
+        });
+
+    },
     data() {
         return {
 
             show_pass: false,
             show_pass1: false,
-
+            rolesAll:{},
+            addData:{
+                role_id:[],
+            },
             showAdd: false,
 
             theader: [{
@@ -53,5 +66,32 @@ new Vue({
                 d: '是',
             }]
         };
+    },
+    methods :{
+        addCommit(){
+            let that = this,
+                data={};
+           // console.log(that.addData);
+
+            that.$api.user.add({
+                data: that.addData
+            }).then((res) => {
+
+                // that.showAdd = false;
+                console.log(res);
+                // that.message.text = res.message;
+                // that.message.color = 'success';
+                // that.message.show = true;
+                // setTimeout(function () {
+                //     window.location.reload();
+                // },2000)
+            }).catch((data) =>{ //function(data){}
+
+                that.message.text = data.message;
+                that.message.color = 'error';
+                that.message.show = true;
+                that.submitLoading = false;
+            });
+        },
     }
 })
