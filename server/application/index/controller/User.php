@@ -189,16 +189,31 @@ class User
 	    if($info){
 	        // 成功上传后 获取上传信息
 	        // 输出 jpg
-	        echo $info->getExtension();
-	        // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-	        echo $info->getSaveName();
-	        // 输出 42a79759f284b767dfcb2a0197904287.jpg
-	        echo $info->getFilename(); 
+	        // echo $info->getExtension();
+	        // // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getSaveName();
+	        // // 输出 42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getFilename(); 
+
+	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => dirname(Env::get('ROOT_PATH')).'/client/dist/upload/'.$info->getSaveName() ] ]);
 	    }else{
 	        // 上传失败获取错误信息
-	        echo $file->getError();
+	        // echo $file->getError();
+	        return json(['msg' => $file->getError(),'code' => 0]);
 	    }
 
+    }
+
+    public function createThumb($option){
+    	//生成缩略图
+    	if (!is_dir(dirname(Env::get('ROOT_PATH')).'/client/dist/upload')) {
+            $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload';
+            mkdir($file_path);
+            chown($file_path, 777);
+        }
+    	$image = \think\Image::open($option['image_url']);
+		// 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+		$image->thumb(120, 100)->save($file_path.'/test.jpg');
     }
 
 
