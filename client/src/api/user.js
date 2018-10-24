@@ -26,3 +26,19 @@ export function resetPassword(data) {
         data: data
     })
 }
+//获取所有角色
+export function get(data) {
+    return request({
+        url: '/role/lst',
+        method: 'post',
+        data: data
+    })
+}
+//管理员添加账号
+export function add(data){
+    return request({
+        url: '/user/add',
+        method: 'post',
+        data: data
+    })
+}

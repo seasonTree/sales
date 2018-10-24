@@ -1,0 +1,7 @@
+.content {
+  max-width: 1000px;
+}
+.content .s-primary {
+  margin: 10px 0;
+  width: 100%;
+}

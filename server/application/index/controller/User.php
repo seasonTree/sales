@@ -15,6 +15,15 @@ class User
 		//用户主页
 		return view('/user_manage');
 	}
+	//添加账号
+	public function add(){
+	    $data = input('post.data');
+        $validate =validate('User');
+        if (!$validate->check($data)){
+            $error =$validate->getError();
+            return json(['message'=>$error]);
+        }
+    }
 
 	public function personInfo(){
 		//个人信息
