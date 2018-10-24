@@ -27,10 +27,21 @@ class Config
     		echo 1;
     	}
     	else{
-    		$sel_model = new SelConfigModel();
-    		$data = $sel_model->getSelConfig(array('select_name' => '消息类型'));
-    		$data['child'] = $sel_model->getSelConfig(array('p_id' => $data[0]['id']));
-    		dump($data);
+
+    		try {
+
+    			$sel_model = new SelConfigModel();
+	    		$data = $sel_model->getSelConfig(array('select_name' => '消息类型','status' => 1));
+	    		$data['child'] = $sel_model->getSelConfig(array('p_id' => $data[0]['id'],'status' => 1));
+	    		// dump($data);
+    			return json(['msg' => '获取下拉框成功','code' => 0 , 'data' => $data]);
+    			
+	        } catch (\Exception $e) {
+	            // echo $e->getMessage();
+	        	return json(['code' => 1,'msg' => '获取下拉框失败' , 'data' => '']);
+	        }
+
+    		
     	}
     }
 

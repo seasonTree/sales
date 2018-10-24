@@ -13,7 +13,7 @@ class SelConfig extends Model
 
     public function getSelConfig($where){
         //获取下拉框选项
-        $res = SelConfig::where($where)->select();
+        $res = SelConfig::where($where)->field('id,select_name,p_id')->select();
         return $res;
     }
 

@@ -5,6 +5,7 @@ import * as channel from '../api/channel';
 import * as role from '../api/role';
 import * as team from '../api/team';
 import * as message from '../api/message';
+import * as config from '../api/config';
 
 const apis = {
     common,
@@ -14,7 +15,8 @@ const apis = {
     role,
     team,
     message,
-    team
+    team,
+    config
 
 }
 

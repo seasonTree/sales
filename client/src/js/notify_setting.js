@@ -2,12 +2,40 @@ import Vue from './base_ext';
 new Vue({
     el: '#app',
 
+    methods: {
+    showAddDig(){
+
+        let that = this;
+
+        that.$api.config.addSel().then((res) => {
+            // that.tdata = res.data;
+            that.items = res.data[0].select_name;
+            that.item_child = res.data.child;
+            
+        }).catch((res) => {
+            console.log('eeeeeeeeeeeee');
+            console.log(res);
+        });
+
+        that.showAdd = true;
+
+
+        }
+    },
+
     data() {
         return {
+
+
             showAdd: false,
 
-            items: [
-                '佣金变动消息'
+            items: '',
+
+            item_child:[
+                {
+                 id:'',
+                 select_name:''   
+                }
             ],
 
             theader: [{
