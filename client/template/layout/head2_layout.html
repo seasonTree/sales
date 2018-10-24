@@ -16,12 +16,12 @@
         <v-toolbar-items class="hidden-sm-and-down">
             <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
 
-            <v-btn href="{:url('Team/index')}" flat>团队</v-btn>
-            <v-btn href="{:url('Channel/index')}" flat>渠道</v-btn>
-            <v-btn href="{:url('Achievement/index')}" flat>业绩</v-btn>
-            <v-btn href="{:url('Achievement/distributionNetwork')}" flat>销售网络</v-btn>
+            <v-btn href="{:url('Team/index')}" flat :class="{'active': global.currentView == 'team'}">团队</v-btn>
+            <v-btn href="{:url('Channel/index')}" flat :class="{'active': global.currentView == 'channel'}">渠道</v-btn>
+            <v-btn href="{:url('Achievement/index')}" flat :class="{'active': global.currentView == 'achievement'}">业绩</v-btn>
+            <v-btn href="{:url('Achievement/distributionNetwork')}" flat :class="{'active': global.currentView == 'distributionnetwork'}">销售网络</v-btn>
 
-            <v-btn href="{:url('Message/index')}" flat>
+            <v-btn href="{:url('Message/index')}" flat :class="{'active': global.currentView == 'message'}">
                 消息
                 <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
                     <span slot="badge">{{global.messageCount}}</span>
@@ -56,7 +56,6 @@
             <v-menu offset-y>
                 <v-btn flat primary slot="activator">系统信息</v-btn>
                 <v-list dense class="toolbar-dropdown">
-
                     <div>
                         <v-menu offset-x left open-on-hover>
                             <v-list-tile slot="activator" @click="">
@@ -70,7 +69,7 @@
 
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Privilege/index')}">
+                                <v-list-tile href="{:url('Privilege/index')}" :class="{'active': global.currentView == 'privilege'}">
                                     <v-list-tile-title>
                                         权限
                                     </v-list-tile-title>

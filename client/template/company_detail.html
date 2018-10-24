@@ -39,22 +39,28 @@
         <v-text-field label="联系人邮箱"></v-text-field>
 
         <v-layout row wrap>
-            <v-flex xs4>
+            <v-flex xs6>
                 <upload-image content="公司营业执照"></upload-image>
             </v-flex>
 
-            <v-flex xs4>
+            <v-flex xs6>
                 <upload-image content="法人个人照片"></upload-image>
             </v-flex>
 
-            <v-flex xs4>
-                <upload-image content="法人身份证照片"></upload-image>
+            <v-flex xs6>
+                <upload-image content="法人身份证正面"></upload-image>
+            </v-flex>
+
+            <v-flex xs6>
+                <upload-image content="法人身份证反面"></upload-image>
             </v-flex>
         </v-layout>
 
         <div class="protocol">
             <a href="javascript:void(0)">＜同意xxx协议＞</a>
         </div>
+
+        <input type="file" url=""/>
 
         <v-btn color="s-primary">注册</v-btn>
     </v-form>
@@ -64,5 +70,5 @@
 {/block}
 
 {block name="script"}
-<script src="__basePath__/js/chunks/company_reg.js?date=__date__"></script>
+<script src="__basePath__/js/chunks/company_detail.js?date=__date__"></script>
 {/block}

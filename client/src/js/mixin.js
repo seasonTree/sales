@@ -23,8 +23,8 @@ const base = {
         },
 
         _checkLocation() {
-            let href = window.location.href.replace(/(\.html|\/index.html|index)$/, '');
-            this.global.currentView = href.split('/').pop();
+            let href = window.location.href.replace(/(\.html|\/index.html|\/index)$/, '');
+            this.global.currentView = href.split('/').pop().toLocaleLowerCase();
         }
     }
 };

@@ -100,26 +100,17 @@ export default {
         background: rgba(255, 255, 255, 0.6);
     }
 
-    // height: 100%;
-    // line-height: 140px;
-    // text-align: center;
-    //
-    // cursor: pointer;
-    //
     &:hover .image-content {
         transition: all 0.2s;
         cursor: pointer;
     }
 
     &:hover {
-        // color: #5d5d5d;
         box-shadow: 4px 4px 5px #e3e3e3;
     }
 
     &:hover .image-content {
         transform: scale(1.12);
-        // color: #5d5d5d;
-        // box-shadow: 4px 4px 5px #e3e3e3;
     }
 }
 </style>
