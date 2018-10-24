@@ -1,6 +1,11 @@
 import Vue from './base';
+import {
+    baseMixin
+} from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [baseMixin],
 
     data() {
         return {
@@ -13,12 +18,12 @@ new Vue({
             valid: false,
             sending: false,
 
-            phoneRex: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(19[0-9])|16[6])\d{8}$/, 
+            phoneRex: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(19[0-9])|16[6])\d{8}$/,
 
             phoneRoules: [
                 value => !!value || '手机号必填',
                 value => {
-                   return this.phoneRex.test(value) || '手机号不正确'
+                    return this.phoneRex.test(value) || '手机号不正确'
                 }
             ],
 
@@ -53,11 +58,11 @@ new Vue({
 
     methods: {
 
-        showMessage(show, text, color) {
-            this.message.text = text || '';
-            this.message.color = color;
-            this.message.show = show;
-        },
+        // showMessage(show, text, color) {
+        //     this.message.text = text || '';
+        //     this.message.color = color;
+        //     this.message.show = show;
+        // },
 
         sendSMS() {
             let that = this;
@@ -72,7 +77,7 @@ new Vue({
                     //因为直接写watch会出现无法监听sending，所以写到这里
                     that.smsDisabled = !that.phoneRex.test(that.data.phone_num);
                     that.identifyBtnText = '发送验证码';
-                    
+
                     clearInterval(that.sendInterval);
 
                 } else {
@@ -85,12 +90,12 @@ new Vue({
                 data: that.data
             }).then((res) => {
                 if (res.code == 0) {
-                    that.showMessage(true, res.msg, 'success');
+                    that.globalShowMessage(true, res.msg, 'success');
                 } else {
-                    that.showMessage(true, res.msg, 'error');
+                    that.globalShowMessage(true, res.msg, 'error');
                 }
             }).catch((res) => {
-                that.showMessage(true, '发送失败,请重试.', 'error');
+                that.globalShowMessage(true, '发送失败,请重试.', 'error');
             })
         },
 
@@ -102,18 +107,17 @@ new Vue({
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        this.showMessage(true, res.msg, 'success');
+                        this.globalShowMessage(true, res.msg, 'success');
 
                         setTimeout(() => {
-                            //TODO
-                            window.location.href = res.data.url+'?uid='+res.data.uid;
+                            window.location.href = res.data.url + '?uid=' + res.data.uid;
                         }, 3000);
                     } else {
-                        this.showMessage(true, res.msg, 'error');
+                        this.globalShowMessage(true, res.msg, 'error');
                     }
 
                 }).catch((res) => {
-                    this.showMessage(true, '验证失败,请重试.', 'error');
+                    this.globalShowMessage(true, '验证失败,请重试.', 'error');
                 });
             }
         }

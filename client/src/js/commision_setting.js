@@ -1,6 +1,9 @@
 import Vue from './base';
+import { mixinExt }  from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [mixinExt],
 
     mounted() {
         for (let i = 0; i < this.tdata.length; i += 1) {

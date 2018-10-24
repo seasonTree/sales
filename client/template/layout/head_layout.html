@@ -16,7 +16,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn href="/" flat class="active">主页</v-btn>
+            <v-btn href="/" flat :class="{'active': global.currentView == ''}">主页</v-btn>
         </v-toolbar-items>
 
         <v-toolbar-items>
@@ -24,17 +24,19 @@
             <v-menu offset-y>
                 <v-btn flat primary slot="activator">语言</v-btn>
                 <v-list dense class="language-dropdown">
-                    <v-list-tile @click="">
+
+                    <v-list-tile :class="{'language-select': global.language == 'zh-cn' }" @click="">
+                        <v-list-tile-title>简体中文</v-list-tile-title>
+                    </v-list-tile>
+
+                    <v-list-tile :class="{'language-select': global.language == 'zh-hk' }" @click="">
                         <v-list-tile-title>
-                            English
+                            繁体中文
                         </v-list-tile-title>
                     </v-list-tile>
 
-                    <v-list-tile @click="">
-                        <v-list-tile-title>简体中文</v-list-tile-title>
-                    </v-list-tile>
-                    <v-list-tile @click="">
-                        <v-list-tile-title>繁体中文</v-list-tile-title>
+                    <v-list-tile :class="{'language-select': global.language == 'en-us' }" @click="">
+                        <v-list-tile-title>English</v-list-tile-title>
                     </v-list-tile>
                 </v-list>
             </v-menu>

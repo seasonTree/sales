@@ -20,6 +20,27 @@ const srcPath = path.resolve(__dirname, '../src');
 
 const copyFile = require('copy-webpack-plugin');
 
+//如果dist文件不存在就创建
+try {
+    fs.statSync(outputPath);
+} catch (error) {
+    fs.mkdirSync(outputPath);
+}
+
+//读取php配置
+function loadGlobalConfig(){
+
+    let filenamePath = path.resolve(__dirname, '../../config.json'),
+        globalConfig = JSON.parse(fs.readFileSync(filenamePath, { encoding: 'utf-8' }));    
+
+    return globalConfig;
+
+}
+
+const globalCfg = loadGlobalConfig();
+//这个publicPath只用于image， fonts
+const publicPath = globalCfg.publicPath;
+
 //移除dist生成的path
 function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
@@ -83,7 +104,9 @@ module.exports = {
         filename: 'js/[name].js',
         // chunkFilename: 'js/chunks/[name][hash:4].js',
         chunkFilename: 'js/chunks/[name].js',
-        publicPath: '/',
+        publicPath: `${publicPath}/`,
+
+        // publicPath: `${publicPath}`
     },
     resolve: {
         //一定要添加，不然无法找到文件
@@ -91,6 +114,8 @@ module.exports = {
         alias: {
             'vue': 'vue/dist/vue.js',
             '@css': path.resolve(srcPath, 'css'),
+            '@common': path.resolve(srcPath, 'common'),
+            '@compontent': path.resolve(srcPath, 'compontent'),
         }
     },
 
@@ -229,15 +254,25 @@ module.exports = {
                 options: {
                     limit: 10000,
                     name: `image/[name].[hash:7].[ext]`,
+                    publicPath: `${publicPath}`
                 }
             },
             {
                 test: /\.(woff2?|woff|eot|ttf|otf)(\?.*)?$/,
+
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     name: `fonts/[name].[hash:7].[ext]`,
+                    publicPath: `${publicPath}`
                 }
+
+                // loader: 'url-loader',
+                // options: {
+                //     limit: 10000,
+                //     name: `client/fonts/[name].[hash:7].[ext]`,
+                //     publicPath: '/fonts/'
+                // }
             }
         ],
     }

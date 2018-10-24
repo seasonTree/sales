@@ -24,7 +24,8 @@ class Login
 
     public function loginOut(){
         //退出登录
-        return view('/index');
+        Session::clear();
+        return redirect('/');
     }
 
     public function login(){

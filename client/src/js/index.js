@@ -1,13 +1,11 @@
 import Vue from './base';
+import { baseMixin }  from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [baseMixin],
 
     methods: {
-        showMessage(show, text, color){
-            this.message.text = text || '';
-            this.message.color = color;
-            this.message.show = show;
-        },
 
         handlerSubmit() {
             let that = this;
@@ -19,19 +17,25 @@ new Vue({
             }).then((res) => {
                 if (res.code == 0) {
 
-                    this.showMessage(true, res.msg, 'success');
-
-                    //重刷页面,后台负责跳转
-                    setTimeout(() => {
-                        window.location.href = res.data;
-                    }, 3000);
+                    window.location.href = res.data;
                 } else {
-                    this.showMessage(true, res.msg, 'error');
-                }
+                    // this.globalShowMessage(true, res.msg, 'error');
 
-                that.submitLoading = false;
+                    this.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    })
+
+                    that.submitLoading = false;
+                }                
             }).catch((res) => {
-                this.showMessage(true, '登录失败,请重试.', 'error')
+                this.$comp.toast({
+                    text: '登录失败,请重试.',
+                    color: 'error'
+                })
+
+                // this.globalShowMessage(true, '登录失败,请重试.', 'error');
+
                 that.submitLoading = false;
             });
         }

@@ -1,10 +1,12 @@
 <?php
 namespace app\index\controller;
+use think\facade\Env;
+use think\facade\Session;
 use app\index\model\UserInfo as UserInfoModel;
 use app\index\model\User as UserModel;
 
-require_once '../extend/ShortMessage.php';
-require_once '../extend/Mailer.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/ShortMessage.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 
 class User
 {
@@ -13,6 +15,15 @@ class User
 		//用户主页
 		return view('/user_manage');
 	}
+	//添加账号
+	public function add(){
+	    $data = input('post.data');
+        $validate =validate('User');
+        if (!$validate->check($data)){
+            $error =$validate->getError();
+            return json(['message'=>$error]);
+        }
+    }
 
 	public function personInfo(){
 		//个人信息
@@ -33,9 +44,18 @@ class User
 		if ($data['rePassword'] != $data['password']) {
 			return json(['code' => 2,'msg' => '两次输入密码不一致']);
 		}
-		if (!isset($data['uid'])) {
-			return json(['code' => 3,'msg' => '非法操作']);
+
+		$check_has = Session::has('user.userid');
+		if (!$check_has) {
+			if (!isset($data['uid'])) {
+				return json(['code' => 3,'msg' => '非法操作']);
+			}
 		}
+		else{
+
+			$data['uid'] = Session::get('user.userid');
+		}
+
 		if (strlen($data['password']) < 6 || strlen($data['password']) > 30 ) {
 			return json(['code' => 4,'msg' => '密码长度只能在6到30位之间']);
 		}
@@ -127,6 +147,26 @@ class User
             $code .= substr($char, (mt_rand() % strlen($char)), 1);
         }
         return $code;
+    }
+
+    public function userInfo(){
+    	//个人资料
+    	// input('post.');
+    	// return json(['msg' => '成功','code' => 0,'data' => ]);
+    	$user_id = Session::get('user.userid');
+
+    	$user_model = new UserModel();
+    	$user = $user_model->checkUserType(array('id' => $user_id));
+    	if ($user['parent_id'] == 0) {
+    		//这是公司账户
+    		return view('/company_detail');
+    	}
+    	else{
+    		//这是个人账户
+    		return view('/person_detail');
+    	}
+
+
     }
 
 

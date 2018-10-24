@@ -1,8 +1,11 @@
 import Vue from './base';
-// import * as privilege from "../api/privilege";
+import {
+    mixinExt
+} from './mixin';
 
 new Vue({
     el: '#app',
+    mixins: [mixinExt],
 
     created(){
         let that = this;

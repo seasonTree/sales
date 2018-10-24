@@ -1,14 +1,17 @@
 import Vue from './base';
+import { baseMixin }  from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [baseMixin],
 
     methods: {
 
-        showMessage(show, text, color) {
-            this.message.text = text || '';
-            this.message.color = color;
-            this.message.show = show;
-        },
+        // showMessage(show, text, color) {
+        //     this.message.text = text || '';
+        //     this.message.color = color;
+        //     this.message.show = show;
+        // },
 
         commit() {
             let that = this;
@@ -19,17 +22,31 @@ new Vue({
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        that.showMessage(true, res.msg, 'success');
+                        // that.globalShowMessage(true, res.msg, 'success');
+
+                        this.$comp.toast({
+                            text: res.msg
+                        })
 
                         setTimeout(() => {
                             window.location.href = res.data.url;
                         }, 3000);
                     } else {
-                        that.showMessage(true, res.msg, 'error');
+                        // that.globalShowMessage(true, res.msg, 'error');
+
+                        this.$comp.toast({
+                            text: res.msg,
+                            color: 'error'
+                        })
                     }
 
                 }).catch((res) => {
-                    that.showMessage(true, '修改失败,请重试.', 'error');
+                    this.$comp.toast({
+                        text: '修改失败,请重试.',
+                        color: 'error'
+                    })
+
+                    // that.globalShowMessage(true, '修改失败,请重试.', 'error');
                 });
             }
         }

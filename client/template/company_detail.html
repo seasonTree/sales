@@ -1,0 +1,68 @@
+<!-- 公司注册 -->
+{extend name="layout:head2_layout"/}
+
+{block name="css"}
+<style>
+    .content {
+        max-width: 1000px;
+    }
+
+    .s-primary {
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    .protocol {
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+{/block}
+
+
+{block name="body"}
+<v-container class="content" grid-list-md text-xs-center>
+    <div class="content-header">
+        公司资料修改
+    </div>
+
+    <v-form>
+        <v-text-field label="姓"></v-text-field>
+        <v-text-field label="名字"></v-text-field>
+        <v-text-field label="公司名称"></v-text-field>
+        <v-text-field label="银行账号"></v-text-field>
+        <v-text-field label="开户银行名称"></v-text-field>
+        <v-text-field label="开户银行地址"></v-text-field>
+        <v-text-field label="公司地址"></v-text-field>
+        <v-text-field label="联系人"></v-text-field>
+        <v-text-field label="联系人手机"></v-text-field>
+        <v-text-field label="联系人邮箱"></v-text-field>
+
+        <v-layout row wrap>
+            <v-flex xs4>
+                <upload-image content="公司营业执照"></upload-image>
+            </v-flex>
+
+            <v-flex xs4>
+                <upload-image content="法人个人照片"></upload-image>
+            </v-flex>
+
+            <v-flex xs4>
+                <upload-image content="法人身份证照片"></upload-image>
+            </v-flex>
+        </v-layout>
+
+        <div class="protocol">
+            <a href="javascript:void(0)">＜同意xxx协议＞</a>
+        </div>
+
+        <v-btn color="s-primary">注册</v-btn>
+    </v-form>
+
+</v-container>
+
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/company_reg.js?date=__date__"></script>
+{/block}

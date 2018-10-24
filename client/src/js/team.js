@@ -1,6 +1,23 @@
 import Vue from './base';
+import {
+    mixinExt
+} from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [mixinExt],
+
+    created() {
+        let that = this;
+
+        that.$api.team.lst().then((res) => {
+            that.tdata = res.data;
+        }).catch((res) => {
+            console.log('eeeeeeeeeeeee');
+            console.log(res);
+        });
+    },
+
 
     data() {
         return {
@@ -46,28 +63,29 @@ new Vue({
                     sortable: false,
                 },
             ],
-            tdata: [{
-                    a: '王成',
-                    b: '187563245',
-                    c: '微信1(大众点评)',
-                    d: '50000',
-                    e: '10000',
-                },
+            tdata: [
+            // {
+            //         a: '王成',
+            //         b: '187563245',
+            //         c: '微信1(大众点评)',
+            //         d: '50000',
+            //         e: '10000',
+            //     },
 
-                {
-                    a: '',
-                    b: '',
-                    c: '微信1(大众点评)',
-                    d: '50000',
-                    e: '10000',
-                },
-                {
-                    a: '李成功',
-                    b: '1821503112',
-                    c: '医生合作',
-                    d: '50000',
-                    e: '10000',
-                }
+            //     {
+            //         a: '',
+            //         b: '',
+            //         c: '微信1(大众点评)',
+            //         d: '50000',
+            //         e: '10000',
+            //     },
+            //     {
+            //         a: '李成功',
+            //         b: '1821503112',
+            //         c: '医生合作',
+            //         d: '50000',
+            //         e: '10000',
+            //     }
             ]
         };
     }

@@ -11,7 +11,7 @@
     </div>
 
     <div class="action-bar">
-        <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
+        <v-btn color="s-primary" class="ml-0" @click="showAddDig">
             <v-icon dark>add</v-icon>新增
         </v-btn>
     </div>
@@ -52,7 +52,11 @@
 
             <v-card-text>
                 <v-form>
-                    <v-select :items="items" label="类型"></v-select>
+                    <!-- <v-select :items="items" label="类型"></v-select> -->
+                    <v-select return-object :items="item_child" item-text="select_name" item-value="id" attach chips :label="items">
+                          
+                    </v-select>
+
                     <v-textarea label="消息内容" value="消息内容" hint="请输入消息内容"></v-textarea>
                 </v-form>
             </v-card-text>

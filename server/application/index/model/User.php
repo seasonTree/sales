@@ -26,7 +26,7 @@ class User extends Model
 
     public function getChildSales($uid){
     	//获取下级销售员
-    	$res = User::where('parent_id',$uid)->field('id,username,parent_id')->select();
+    	$res = User::where('parent_id',$uid)->where('status',1)->field('id,username,parent_id')->select();
     	return $res;
     }
 
@@ -36,30 +36,57 @@ class User extends Model
     	return $res;
     }
 
+
     public function loginVerify($name,$pwd)
     {
-        if(!$name) return false;
-        if(!$pwd) return false;
+        if (!$name) return false;
+        if (!$pwd) return false;
         //定义存session时候需要排除的个人信息
-        $unField=['password','create_time','update_time','ip','login_time'];
-        $userInfo=self::where('username|phone','=',$name)->find();
-        if(!$userInfo) return -1; //账号不存在
-        if(!password_verify($pwd,$userInfo['password'])) return -2;//密码不正确
-        if(0==$userInfo['status']) return -3;//未通过审核
-        if(2==$userInfo['status']) return -4;//账号被禁用
-        if(3==$userInfo['status']) return -5;//账号被拉入黑名单
-        $data['login_time']=time();
-        $data['ip']=getClientIp();
-        self::where('id',$userInfo['id'])->update($data);
-        foreach ($unField as $key=>$value) {
+        $unField = ['password', 'create_time', 'update_time', 'ip', 'login_time'];
+        $userInfo = self::where('username|phone', '=', $name)->find();
+        if (!$userInfo) return -1; //账号不存在
+        if (!password_verify($pwd, $userInfo['password'])) return -2;//密码不正确
+        if (0 == $userInfo['status']) return -3;//未通过审核
+        if (2 == $userInfo['status']) return -4;//账号被禁用
+        if (3 == $userInfo['status']) return -5;//账号被拉入黑名单
+        $data['login_time'] = time();
+        $data['ip'] = getClientIp();
+        self::where('id', $userInfo['id'])->update($data);
+        foreach ($unField as $key => $value) {
             unset($userInfo[$value]);
         }
-        $roleName=$this->getUserRoleName($userInfo['id']);
-        $userInfo['role_name']=$roleName;
-        $auth=$this->_getAuth($userInfo['id']);
-        Session::set('user_info',$userInfo->toArray());
-        Session::set('auth',$auth);
+        $roleName = $this->getUserRoleName($userInfo['id']);
+        $userInfo['role_name'] = $roleName;
+        $auth = $this->_getAuth($userInfo['id']);
+        Session::set('user_info', $userInfo->toArray());
+        Session::set('auth', $auth);
         return true;
+    }
+
+    public function getTeamUser($where){
+    	//获取团队主页的用户信息
+    	//无child结构
+    	$res = User::alias('a')
+		    	    ->join('sales_channel b','a.id = b.user_id','left')
+		    	    ->join('sales_user_info c','a.id = c.user_id','left')
+		    	    ->field('b.channel_name,b.chan_pfm_obj,b.chan_doc_num,a.phone,c.first_name,c.last_name')
+		    	    ->where($where)
+		    	    ->select();
+
+		//有child结构
+		// $res = User::alias('a')
+		// 		   ->join('sales_user_info b','a.id = b.user_id','left')
+		// 		   ->field('a.id,a.username,a.phone,b.first_name,b.last_name')
+		// 		   ->where($where)
+		// 		   ->select()
+		// 		   ->toArray();
+    	return $res;
+    }
+
+    public function checkUserType($where){
+    	//检测用户类型
+    	$res = User::where($where)->find();
+    	return $res;
     }
 
     public function getUserRoleName($id)

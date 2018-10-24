@@ -1,13 +1,47 @@
 import Vue from './base';
+import {
+    mixinExt
+} from './mixin';
+
+
 new Vue({
     el: '#app',
+    mixins: [mixinExt],
+
+    methods: {
+    showAddDig(){
+
+        let that = this;
+
+        that.$api.config.addSel().then((res) => {
+            // that.tdata = res.data;
+            that.items = res.data[0].select_name;
+            that.item_child = res.data.child;
+            
+        }).catch((res) => {
+            console.log('eeeeeeeeeeeee');
+            console.log(res);
+        });
+
+        that.showAdd = true;
+
+
+        }
+    },
 
     data() {
         return {
+
+
             showAdd: false,
 
-            items: [
-                '佣金变动消息'
+            items: '',
+
+            item_child:[
+                {
+                 id:'',
+                 select_name:''   
+                }
             ],
 
             theader: [{

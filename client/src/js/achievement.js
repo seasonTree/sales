@@ -1,6 +1,9 @@
 import Vue from './base';
+import { mixinExt }  from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [mixinExt],
 
     methods: {
         createPie() {}

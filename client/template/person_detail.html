@@ -1,0 +1,41 @@
+{extend name="layout:head2_layout"/}
+
+{block name="css"}
+<link href="__basePath__/css/person_detail.css" rel="stylesheet" />
+{/block}
+
+{block name="body"}
+<v-container class="content" grid-list-md text-xs-center>
+    <div class="content-header">
+        个人资料修改
+    </div>
+
+    <v-form>
+        <v-text-field label="姓"></v-text-field>
+        <v-text-field label="名字"></v-text-field>
+        <v-text-field label="银行账号"></v-text-field>
+        <v-text-field label="银行名称"></v-text-field>
+        <v-text-field label="银行地址"></v-text-field>
+        <v-text-field label="开户名"></v-text-field>
+        <v-text-field label="固定电话"></v-text-field>
+        <v-text-field label="移动电话"></v-text-field>
+
+        <v-layout row wrap>
+            <v-flex md6 xs12>
+                <upload-image content="个人照片"></upload-image>
+            </v-flex>
+
+            <v-flex md6 xs12>
+                <upload-image content="身份证照片"></upload-image>
+            </v-flex>
+        </v-layout>
+
+
+        <v-btn color="s-primary">注册</v-btn>
+    </v-form>
+</v-container>
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/person_reg.js?date=__date__"></script>
+{/block}
