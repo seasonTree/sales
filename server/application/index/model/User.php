@@ -11,7 +11,11 @@ class User extends Model
     protected $table = 'sales_user';
     // 主键
     protected $pk = 'id';
-
+    //添加账号
+    public function add($data){
+        $this->allowField(true)->save($data);
+        return $this->id;
+    }
     public function findUser($user){
     	//查找用户名
     	$res = User::where('username',$user)->find();

@@ -274,7 +274,7 @@
                     v-model.trim="global.changePassword.rePassword" :type="global.changePassword.passVis1 ? 'text' : 'password'"
                     :rules="[
                              v => !!v || '确认密码是必填',
-                             v => global.changePassword.password == v || '两次输入的密码不一致' 
+                             v => global.changePassword.password == v || '两次输入的密码不一致'
                             ]"
                     @click:append="global.changePassword.passVis1 = !global.changePassword.passVis1"></v-text-field>
             </v-form>
