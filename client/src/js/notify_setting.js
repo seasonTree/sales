@@ -1,9 +1,12 @@
 import Vue from './base';
-import mixin from './mixin';
+import {
+    mixinExt
+} from './mixin';
+
 
 new Vue({
     el: '#app',
-    mixins: [mixin],
+    mixins: [mixinExt],
 
     data() {
         return {

@@ -20,6 +20,13 @@ const srcPath = path.resolve(__dirname, '../src');
 
 const copyFile = require('copy-webpack-plugin');
 
+//如果dist文件不存在就创建
+try {
+    fs.statSync(outputPath);
+} catch (error) {
+    fs.mkdirSync(outputPath);
+}
+
 //读取php配置
 function loadGlobalConfig(){
 

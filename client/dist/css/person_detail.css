@@ -1,0 +1,11 @@
+.content {
+  max-width: 1000px;
+}
+.content .s-primary {
+  margin: 10px 0;
+  width: 100%;
+}
+.content .protocol {
+  text-align: center;
+  margin-top: 10px;
+}

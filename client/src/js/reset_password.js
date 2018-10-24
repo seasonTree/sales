@@ -1,6 +1,9 @@
 import Vue from './base';
+import { baseMixin }  from './mixin';
+
 new Vue({
     el: '#app',
+    mixins: [baseMixin],
 
     methods: {
 
@@ -19,17 +22,31 @@ new Vue({
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        that.globalShowMessage(true, res.msg, 'success');
+                        // that.globalShowMessage(true, res.msg, 'success');
+
+                        this.$comp.toast({
+                            text: res.msg
+                        })
 
                         setTimeout(() => {
                             window.location.href = res.data.url;
                         }, 3000);
                     } else {
-                        that.globalShowMessage(true, res.msg, 'error');
+                        // that.globalShowMessage(true, res.msg, 'error');
+
+                        this.$comp.toast({
+                            text: res.msg,
+                            color: 'error'
+                        })
                     }
 
                 }).catch((res) => {
-                    that.globalShowMessage(true, '修改失败,请重试.', 'error');
+                    this.$comp.toast({
+                        text: '修改失败,请重试.',
+                        color: 'error'
+                    })
+
+                    // that.globalShowMessage(true, '修改失败,请重试.', 'error');
                 });
             }
         }
