@@ -12,7 +12,7 @@
         </div>
 
         <div class="mask" v-if="progress.show">
-            <v-progress-circular class="s-up-progress" :rotate="-90" size="30" :width="5" :value="progress.value" color="info"></v-progress-circular>
+            <v-progress-circular :indeterminate="progress.indeterminate" class="s-up-progress" :rotate="-90" size="30" :width="5" :value="progress.value" color="info"></v-progress-circular>
         </div>
     </div>
 
@@ -85,7 +85,8 @@ export default {
 
             progress: {
                 show: false,
-                value: 0
+                value: 0,
+                indeterminate: false
             },
 
             imageFiled: [],
@@ -95,8 +96,29 @@ export default {
     },
 
     watch: {
-        imageUrl(newValue, oldValue) {
-            this.style.backgroundImage = "url(" + newValue + ")";
+        imageUrl: {
+            handler(newValue, oldValue) {
+                
+                if (newValue) {
+                    let that = this;
+
+                    that.progress.show = true;
+                    that.progress.indeterminate = true;
+
+                    let img = new Image();
+
+                    img.onload = () => {
+                        that.progress.show = false;
+                        that.progress.indeterminate = false;
+
+                        that.style.backgroundImage = "url(" + newValue + ")";
+                    };
+
+                    img.src = newValue;
+                }
+            },
+            //初始马上执行
+            immediate: true
         }
     },
 
@@ -185,11 +207,11 @@ export default {
                     var result = JSON.parse(res.target.responseText);
 
                     //如果有设置imageFile的话，就循环遍历找到url
-                    if (imageFiled.length) {
+                    if (that.imageFiled.length) {
                         let url = result;
 
-                        for (var i = 0; i < imageFiled.length; i++) {
-                            url = url[imageFiled[i]];
+                        for (var i = 0; i < that.imageFiled.length; i++) {
+                            url = url[that.imageFiled[i]];
                         }
 
                         if (url) {
@@ -274,7 +296,7 @@ export default {
 
     .mask {
         z-index: 100;
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.2);
     }
 
     .image-content {
