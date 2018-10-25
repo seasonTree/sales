@@ -197,6 +197,15 @@ class User
     	// input('post.');
     	// return json(['msg' => '成功','code' => 0,'data' => ]);
     	$user_id = Session::get('user.userid');
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/temp'.$user_id;
+    	$has_temp = Session::has('temp'.$user_id);
+    	//检测是否存在临时session图片路径记录
+    	if (!$has_temp) {
+    		//如果不存在，则删除相应的文件夹
+    		delDir($file_path.'/');
+    		//删除空目录
+    		@rmdir($file_path);
+    	}
 
     	$user_model = new UserModel();
     	$user = $user_model->checkUserType(array('id' => $user_id));
@@ -219,13 +228,87 @@ class User
 
     public function upload(){
     	//上传
+    	$userid = Session::get('user.userid');
+
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/temp'.$userid;
+    	$save_path = 'upload/temp'.$userid.'/';
+    	
+    	// 创建临时文件夹
+    	if (!is_dir($file_path)) {
+            mkdir($file_path,0777,true);
+        }
+
+        // 获取表单上传文件
+	    $file = request()->file('image');
+
+	    // 移动到框架应用根目录/uploads/ 目录下
+	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move($file_path.'/');
+	    if($info){
+	        // 成功上传后 获取上传信息
+	        // 输出 jpg
+	        // echo $info->getExtension();
+	        // // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getSaveName();
+	        // // 输出 42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getFilename(); 
+
+	    	$type = request()->get('type');
+	    	//判断上传图片的类型
+	    	switch ($type) {
+	    		case '1':
+	    		//营业执照
+	    			Session::set('business_licence',$file_path.'/'.$info->getSaveName());
+	    			break;
+	    		
+	    		case '2':
+	    		//个人照片
+	    			Session::set('photo_self',$file_path.'/'.$info->getSaveName());
+	    			break;
+
+	    		case '3':
+	    		//身份证正面
+	    			Session::set('id_card_front',$file_path.'/'.$info->getSaveName());
+	    			break;
+	    			
+	    		case '4':
+	    		//身份证反面
+	    			Session::set('id_card_back',$file_path.'/'.$info->getSaveName());
+	    			break;		
+	    	}
+
+	    	$option = array(
+	    		'image_url' => $file_path.'/'.$info->getSaveName(),
+	    		'pic_name' => $info->getFilename(),
+	    		'save_path' => $save_path
+	    		);
+
+	    	$thumb = $this->createThumb($option);
+	    	// dump($thumb);exit;
+	    	
+	    	Session::set('temp'.$userid,1);
+
+	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb ] ]);
+	    }else{
+	        // 上传失败获取错误信息
+	        // echo $file->getError();
+	        return json(['msg' => $file->getError(),'code' => 1]);
+	    }
+
+
+    }
+
+    public function moveImage(){
+    	//上传
     	//先检测目录是否存在
-    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard';
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image';
     	if (!is_dir($file_path)) {
             mkdir($file_path,0777,true);
         }
     	// 获取表单上传文件
 	    $file = request()->file('image');
+	    $type = request()->get('type');
+	    //判断上传图片的类型
+
 	    // 移动到框架应用根目录/uploads/ 目录下
 	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move($file_path.'/');
 	    if($info){
@@ -240,7 +323,9 @@ class User
 	    		'image_url' => $file_path.'/'.$info->getSaveName(),
 	    		'pic_name' => $info->getFilename()
 	    		);
+
 	    	$thumb = $this->createThumb($option);
+	    	// dump($thumb);exit;
 
 	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb ] ]);
 	    }else{
@@ -252,8 +337,12 @@ class User
     }
 
     public function createThumb($option){
-    	//生成缩略图,参数1,image_rul,图片的url地址。参数2,pic_name,图片的名称。
-    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard_thumb';
+    	//生成缩略图,
+    	//参数1,image_rul,图片的url地址。
+    	//参数2,pic_name,图片的名称。
+    	//参数3,save_path,保存地址。
+    	// $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image_thumb';
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/'.$option['save_path'];
     	if (!is_dir($file_path)) {
             //创建目录
             mkdir($file_path,0777,true);
@@ -263,7 +352,7 @@ class User
 		// 按照原图的比例生成一个最大为120*100的缩略图并保存为以下名字
 		$image->thumb(120, 100)->save($file_path.'/thumb_'.$option['pic_name']);
 
-		return $file_path.'/thumb_'.$option['pic_name'];
+		return '/client/'.$option['save_path'].'thumb_'.$option['pic_name'];
     }
 
 
