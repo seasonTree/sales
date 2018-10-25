@@ -42,6 +42,14 @@ export function add(data){
         data: data
     })
 }
+
+//获取当前用户的信息
+export function getOneUser(data){
+    return request({
+        url: '/user/getOneUser',
+        method: 'get',
+    })
+}
 //删除账号
 export function del(data){
     return request({
