@@ -1,6 +1,6 @@
 <template>
-    <div class="upload-container" @dragenter.prevent.stop="dropEnter" @dragover.prevent.stop="dragOver" @dragleave.prevent.stop="dropLeave" @drop.prevent.stop="drop($event)">
-        <label :for="id" class="upload" :style="style" :class="{ 'drop-hover': dragInContainer }"></label>
+    <div class="upload-container" :class="{ 'drop-hover': dragInContainer }" @dragenter.prevent.stop="dropEnter" @dragover.prevent.stop="dragOver" @dragleave.prevent.stop="dropLeave" @drop.prevent.stop="drop($event)">
+        <label :for="id" class="upload" :style="style"></label>
         <input hidden :id="id" type="file" @change="handleUpload($event)" capture="video" :accept="accept" />
         <div class="image-content">
             <div>
@@ -32,7 +32,7 @@ export default {
         },
         errorTip: {
             type: String,
-            default: "上传失败"
+            default: "上传失败, 请重试。"
         },
         content: {
             type: String,
@@ -53,12 +53,24 @@ export default {
         notSendTip: {
             type: String,
             default: "不能上传不允许的图片类型"
+        },
+        imageUrl: {
+            type: String,
+            default: ""
+        },
+        dataField: {
+            type: String,
+            default: ""
         }
     },
 
     mounted() {
         //id
         this.id = guid(false).substr(0, 6);
+
+        if (this.dataField) {
+            this.imageFiled = this.dataField.split(".");
+        }
     },
 
     data() {
@@ -76,11 +88,17 @@ export default {
                 value: 0
             },
 
+            imageFiled: [],
+
             dragInContainer: false
         };
     },
 
-    computed: {},
+    watch: {
+        imageUrl(newValue, oldValue) {
+            this.style.backgroundImage = "url(" + newValue + ")";
+        }
+    },
 
     methods: {
         dropEnter() {
@@ -90,7 +108,7 @@ export default {
         dragOver() {},
 
         dropLeave() {
-            this.dragEnter = false;
+            this.dragInContainer = false;
         },
 
         drop(evt) {
@@ -98,6 +116,8 @@ export default {
             if (this.progress.show) {
                 return;
             }
+
+            this.dragInContainer = false;
 
             let file = evt.dataTransfer.files[0];
 
@@ -130,37 +150,60 @@ export default {
                 return;
             }
 
-            if (!that.url) {
-                let fr = new FileReader();
+            that.beforeUpload && that.beforeUpload(f);
 
-                that.beforeUpload && that.beforeUpload(f);
+            if (that.url) {
+                let fr = new FileReader();
 
                 //选择用readAsDataURL(),读取方式读取
                 fr.readAsDataURL(f);
                 //开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容。
                 //FileReader.onload 处理load事件。该事件在读取操作完成时触发
                 fr.onload = function(evt) {
-                    if (evt.target.status != 200) {
+                    that.style.backgroundImage =
+                        "url(" + evt.target.result + ")";
+                };
+
+                let form = new FormData(), // FormData 对象
+                    xhr = new XMLHttpRequest(); // XMLHttpRequest 对象
+
+                form.append("image", f); // 文件对象
+                xhr.open("post", that.url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
+
+                //连接上了
+                xhr.onload = res => {
+                    //请求成功
+                    that.progress.show = false;
+
+                    if (res.target.status != 200) {
                         that.$comp.toast({
                             text: that.errorTip,
                             color: "error"
                         });
-                    } else {
-                        that.style.backgroundImage =
-                            "url(" + evt.target.result + ")";
                     }
+
+                    var result = JSON.parse(res.target.responseText);
+
+                    //如果有设置imageFile的话，就循环遍历找到url
+                    if (imageFiled.length) {
+                        let url = result;
+
+                        for (var i = 0; i < imageFiled.length; i++) {
+                            url = url[imageFiled[i]];
+                        }
+
+                        if (url) {
+                            that.style.backgroundImage = "url(" + url + ")";
+                        }
+                    }
+
+                    that.afterUpload && that.afterUpload(result);
                 };
 
-                let form = new FormData(); // FormData 对象
-                form.append("image", f); // 文件对象
+                //连接完毕,支持不怎么好
+                xhr.onloadend = evt => {};
 
-                let xhr = new XMLHttpRequest(); // XMLHttpRequest 对象
-                xhr.open("post", "/user/upload", true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
-
-                xhr.onload = res => {
-                    //请求成功
-                    that.progress.show = false;
-                };
+                //链接错误
                 xhr.onerror = res => {
                     //请求失败
                     that.$comp.toast({
@@ -169,22 +212,19 @@ export default {
                     });
 
                     that.style.backgroundImage = "";
-                    this.progress.show = false;
+                    that.progress.show = false;
                 };
-
-                //上传完毕
-                xhr.onloadend = () => {};
 
                 xhr.upload.onprogress = res => {
                     //【上传进度调用方法实现】
-                    this.progress.value = Math.round(
+                    that.progress.value = Math.round(
                         (evt.loaded / evt.total) * 100
                     );
                 };
 
                 //开始上传
                 xhr.upload.onloadstart = () => {
-                    this.progress.show = true;
+                    that.progress.show = true;
                 };
 
                 xhr.send(form); //开始上传，发送form数据
@@ -237,22 +277,21 @@ export default {
         background: rgba(0, 0, 0, 0.4);
     }
 
-    &:hover .image-content {
+    .image-content {
         transition: all 0.2s;
         cursor: pointer;
     }
 
     &:hover,
-    .drop-hover {
+    &.drop-hover {
         box-shadow: 4px 4px 5px #e3e3e3;
 
         .upload {
             transform: scale(1.12);
         }
-    }
-
-    &:hover .image-content {
-        transform: scale(1.12);
+        .image-content {
+            transform: scale(1.12);
+        }
     }
 }
 </style>
