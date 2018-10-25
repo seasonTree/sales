@@ -2,7 +2,7 @@
     <div class="upload-container" :class="{ 'drop-hover': dragInContainer }" @dragenter.prevent.stop="dropEnter" @dragover.prevent.stop="dragOver" @dragleave.prevent.stop="dropLeave" @drop.prevent.stop="drop($event)">
         <label :for="id" class="upload" :style="style"></label>
         <input hidden :id="id" type="file" @change="handleUpload($event)" capture="video" :accept="accept" />
-        <div class="image-content">
+        <div class="image-content" v-show="contentShow">
             <div>
                 <v-icon x-large>image</v-icon>
             </div>
@@ -61,6 +61,14 @@ export default {
         dataField: {
             type: String,
             default: ""
+        },
+        uploadSize: {
+            type: Number,
+            default: 0
+        },
+        overUploadSizeText:{
+            type: String,
+            default: '超过上传限制的大小.'
         }
     },
 
@@ -80,14 +88,17 @@ export default {
             files: [],
 
             style: {
-                backgroundImage: ""
+                backgroundImage: "",
+                opacity: 0
             },
 
             progress: {
                 show: false,
                 value: 0,
-                indeterminate: false
+                indeterminate: false //一直转圈
             },
+
+            contentShow: false,
 
             imageFiled: [],
 
@@ -96,12 +107,22 @@ export default {
     },
 
     watch: {
+        "progress.show": {
+            handler(newValue, oldValue) {
+                let that = this;
+
+                setTimeout(() => {
+                    that.contentShow = !newValue;
+                }, 300);
+            },
+            immediate: true
+        },
+
         imageUrl: {
             handler(newValue, oldValue) {
-                
-                if (newValue) {
-                    let that = this;
+                let that = this;
 
+                if (newValue) {
                     that.progress.show = true;
                     that.progress.indeterminate = true;
 
@@ -112,9 +133,12 @@ export default {
                         that.progress.indeterminate = false;
 
                         that.style.backgroundImage = "url(" + newValue + ")";
+                        that.style.opacity = 1;
                     };
 
                     img.src = newValue;
+                } else {
+                    that.style.opacity = 1;
                 }
             },
             //初始马上执行
@@ -153,6 +177,15 @@ export default {
                 acp = this.accept.split(","),
                 isImg = false;
 
+            if (that.uploadSize != 0 && f.size >= that.uploadSize) {
+                that.$comp.toast({
+                    text: that.overUploadSizeText,
+                    color: "error"
+                });
+
+                return;
+            }
+
             for (var i = 0; i < acp.length; i++) {
                 var item = acp[i],
                     rex = new RegExp(item);
@@ -172,7 +205,11 @@ export default {
                 return;
             }
 
-            that.beforeUpload && that.beforeUpload(f);
+            //如果before返回false的话就停止上传
+            let afv = that.beforeUpload && that.beforeUpload(f);
+            if (afv === false) {
+                return;
+            }
 
             if (that.url) {
                 let fr = new FileReader();
@@ -260,7 +297,7 @@ export default {
 .upload-container {
     position: relative;
     transition: all 0.2s;
-    border: 1px solid #efefef;
+    border: 2px solid #efefef;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
@@ -284,7 +321,7 @@ export default {
         cursor: pointer;
         background-size: 100% 100%;
         z-index: 100;
-        transition: all 0.2s;
+        transition: all 0.3s;
     }
 
     .s-up-progress {
@@ -296,7 +333,7 @@ export default {
 
     .mask {
         z-index: 100;
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(189, 186, 186, 0.3);
     }
 
     .image-content {

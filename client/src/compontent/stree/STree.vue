@@ -114,62 +114,123 @@ export default {
                     this.updateSelect(item.children, cid, hasSelect, railList);
                 }
 
-                //判断是否选中了，运行双！！转boolean
-                item["_checked"] = !!hasSelect[cid];
+                //设置选中
+                this.setCheckOrRail(cid, parentID, item, hasSelect, railList);
 
-                //运用递归底部向上走的原理，先记录底部选中，然后向上走的时候
-                //自动上第一个元素加横杆
-                //如果子也有横杆，父也要加横杆railList[cid]
-                if (!!hasSelect[cid] || !!railList[cid]) {
-                    //双叹号，不存在的时候转boolean
-                    //如果子为选择就显示横杆
-                    railList[parentID]
-                        ? railList[parentID]++
-                        : (railList[parentID] = 1);
-                }
+                // //判断是否选中了，运行双！！转boolean
+                // item["_checked"] = !!hasSelect[cid];
 
-                //如果所有子的都选中了，则父类就选中
-                if (railList[cid] == item.children.length) {
-                    item["_checked"] = true;
-
-                    //设置当前id选中了
-                    hasSelect[cid] = true;
-                }
-
-                // //如果当前是选中了，并且select表没有数据，就保存
-                // if (hasSelect[cid] && !this.select[cid]) {
-                //     var sitem = JSON.parse(JSON.stringify(item));
-
-                //     //删除children
-                //     delete sitem.children;
-
-                //     this.select[cid] = sitem;
+                // //运用递归底部向上走的原理，先记录底部选中，然后向上走的时候
+                // //自动上第一个元素加横杆
+                // //如果子也有横杆，父也要加横杆railList[cid]
+                // if (!!hasSelect[cid] || !!railList[cid]) {
+                //     //双叹号，不存在的时候转boolean
+                //     //如果子为选择就显示横杆
+                //     railList[parentID]
+                //         ? railList[parentID]++
+                //         : (railList[parentID] = 1);
                 // }
 
-                //没有选中，但子类选中了就加横杆
-                //选中了，但是子类所有没有选中也加横
-                if (
-                    !!!hasSelect[cid] ||
-                    (!!hasSelect[cid] && railList[cid] != item.children.length)
-                ) {
-                    //没有选中就显示横杆
-                    //!!转boolean
-                    item["_rail"] = !!railList[cid];
+                // //如果所有子的都选中了，则父类就选中
+                // if (railList[cid] == item.children.length) {
+                //     item["_checked"] = true;
 
-                    // if (!!railList[cid]) {
-                    //     var pitem = JSON.parse(JSON.stringify(item));
+                //     //设置当前id选中了
+                //     hasSelect[cid] = true;
+                // }
 
-                    //     //删除children
-                    //     delete pitem.children;
+                // // //如果当前是选中了，并且select表没有数据，就保存
+                // // if (hasSelect[cid] && !this.select[cid]) {
+                // //     var sitem = JSON.parse(JSON.stringify(item));
 
-                    //     //如果加了横杆，parentSelect也记录下
-                    //     this.parentSelect[cid] = pitem;
-                    // }
-                }
+                // //     //删除children
+                // //     delete sitem.children;
+
+                // //     this.select[cid] = sitem;
+                // // }
+
+                // //没有选中，但子类选中了就加横杆
+                // //选中了，但是子类所有没有选中也加横
+                // if (
+                //     !!!hasSelect[cid] ||
+                //     (!!hasSelect[cid] && railList[cid] != item.children.length)
+                // ) {
+                //     //没有选中就显示横杆
+                //     //!!转boolean
+                //     item["_rail"] = !!railList[cid];
+
+                //     // if (!!railList[cid]) {
+                //     //     var pitem = JSON.parse(JSON.stringify(item));
+
+                //     //     //删除children
+                //     //     delete pitem.children;
+
+                //     //     //如果加了横杆，parentSelect也记录下
+                //     //     this.parentSelect[cid] = pitem;
+                //     // }
+                // }
             });
 
             //批量更新树元素
             this.$forceUpdate();
+        },
+
+        setCheckOrRail(cid, parentID, item, hasSelect, railList) {
+            //判断是否选中了，运行双！！转boolean
+            item["_checked"] = !!hasSelect[cid];
+
+            //运用递归底部向上走的原理，先记录底部选中，然后向上走的时候
+            //自动上第一个元素加横杆
+            //如果子也有横杆，父也要加横杆railList[cid]
+            if (!!hasSelect[cid] || !!railList[cid]) {
+                //双叹号，不存在的时候转boolean
+                //如果子为选择就显示横杆
+                railList[parentID]
+                    ? railList[parentID]++
+                    : (railList[parentID] = 1);
+            }
+
+            //判断是否展开
+            item["_open"] = item["_open"] || this.expend;
+
+            //如果所有子的都选中了，则父类就选中
+            if (railList[cid] == item.children.length) {
+                item["_checked"] = true;
+
+                //设置当前id选中了
+                hasSelect[cid] = true;
+            }
+
+            // //如果当前是选中了，并且select表没有数据，就保存
+            // if (hasSelect[cid] && !this.select[cid]) {
+            //     var sitem = JSON.parse(JSON.stringify(item));
+
+            //     //删除children
+            //     delete sitem.children;
+
+            //     this.select[cid] = sitem;
+            // }
+
+            //没有选中，但子类选中了就加横杆
+            //选中了，但是子类所有没有选中也加横杆
+            if (
+                !!!hasSelect[cid] ||
+                (!!hasSelect[cid] && railList[cid] != item.children.length)
+            ) {
+                //没有选中就显示横杆
+                //!!转boolean
+                item["_rail"] = !!railList[cid];
+
+                // if (!!railList[cid]) {
+                //     var pitem = JSON.parse(JSON.stringify(item));
+
+                //     //删除children
+                //     delete pitem.children;
+
+                //     //如果加了横杆，parentSelect也记录下
+                //     this.parentSelect[cid] = pitem;
+                // }
+            }
         },
 
         createTree() {
@@ -184,7 +245,7 @@ export default {
                 this.initSelect.forEach(iimte => {
                     hasSelect[iimte] = true;
                 });
-
+                
                 //构建树
                 this.data = buildTree(
                     // deepClone(this.treeData),
@@ -197,62 +258,7 @@ export default {
                         //找到当前的id
                         var cid = item[this.idField];
 
-                        //判断是否选中了，运行双！！转boolean
-                        item["_checked"] = !!hasSelect[cid];
-
-                        //运用递归底部向上走的原理，先记录底部选中，然后向上走的时候
-                        //自动上第一个元素加横杆
-                        //如果子也有横杆，父也要加横杆railList[cid]
-                        if (!!hasSelect[cid] || !!railList[cid]) {
-                            //双叹号，不存在的时候转boolean
-                            //如果子为选择就显示横杆
-                            railList[parentID]
-                                ? railList[parentID]++
-                                : (railList[parentID] = 1);
-                        }
-
-                        //判断是否展开
-                        item["_open"] = item["_open"] || this.expend;
-
-                        //如果所有子的都选中了，则父类就选中
-                        if (railList[cid] == item.children.length) {
-                            item["_checked"] = true;
-
-                            //设置当前id选中了
-                            hasSelect[cid] = true;
-                        }
-
-                        // //如果当前是选中了，并且select表没有数据，就保存
-                        // if (hasSelect[cid] && !this.select[cid]) {
-                        //     var sitem = JSON.parse(JSON.stringify(item));
-
-                        //     //删除children
-                        //     delete sitem.children;
-
-                        //     this.select[cid] = sitem;
-                        // }
-
-                        //没有选中，但子类选中了就加横杆
-                        //选中了，但是子类所有没有选中也加横杆
-                        if (
-                            !!!hasSelect[cid] ||
-                            (!!hasSelect[cid] &&
-                                railList[cid] != item.children.length)
-                        ) {
-                            //没有选中就显示横杆
-                            //!!转boolean
-                            item["_rail"] = !!railList[cid];
-
-                            // if (!!railList[cid]) {
-                            //     var pitem = JSON.parse(JSON.stringify(item));
-
-                            //     //删除children
-                            //     delete pitem.children;
-
-                            //     //如果加了横杆，parentSelect也记录下
-                            //     this.parentSelect[cid] = pitem;
-                            // }
-                        }
+                        this.setCheckOrRail(cid, parentID, item, hasSelect, railList);
                     }
                 );
 
