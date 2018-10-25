@@ -61,6 +61,14 @@ export default {
         dataField: {
             type: String,
             default: ""
+        },
+        uploadSize: {
+            type: Number,
+            default: 0
+        },
+        overUploadSizeText:{
+            type: String,
+            default: '超过上传限制的大小.'
         }
     },
 
@@ -169,6 +177,15 @@ export default {
                 acp = this.accept.split(","),
                 isImg = false;
 
+            if (that.uploadSize != 0 && f.size >= that.uploadSize) {
+                that.$comp.toast({
+                    text: that.overUploadSizeText,
+                    color: "error"
+                });
+
+                return;
+            }
+
             for (var i = 0; i < acp.length; i++) {
                 var item = acp[i],
                     rex = new RegExp(item);
@@ -188,7 +205,11 @@ export default {
                 return;
             }
 
-            that.beforeUpload && that.beforeUpload(f);
+            //如果before返回false的话就停止上传
+            let afv = that.beforeUpload && that.beforeUpload(f);
+            if (afv === false) {
+                return;
+            }
 
             if (that.url) {
                 let fr = new FileReader();
