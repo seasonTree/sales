@@ -81,7 +81,7 @@ export default {
 
     methods: {
         handleUpload(evt) {
-            if (this.url) {
+            if (!this.url) {
                 let that = this,
                     f = evt.target.files[0],
                     fr = new FileReader();
@@ -104,10 +104,14 @@ export default {
                 xhr.open("post", "/user/upload", true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
 
                 xhr.onload = res => {
+
+                debugger
                     //请求成功
                     this.progress.show = false;
                 };
                 xhr.onerror = res => {
+
+
                     //请求失败
                     this.$comp.toast({
                         text: that.errorTip,

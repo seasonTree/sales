@@ -177,15 +177,15 @@ class User
     public function upload(){
     	//上传
     	//先检测目录是否存在
-    	if (!is_dir(dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard')) {
-            $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard';
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard';
+    	if (!is_dir($file_path)) {
             mkdir($file_path,0777,true);
             // chown($file_path, 775);
         }
     	// 获取表单上传文件
 	    $file = request()->file('image');
 	    // 移动到框架应用根目录/uploads/ 目录下
-	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move(dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard/');
+	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move($file_path.'/');
 	    if($info){
 	        // 成功上传后 获取上传信息
 	        // 输出 jpg
@@ -195,9 +195,8 @@ class User
 	        // // 输出 42a79759f284b767dfcb2a0197904287.jpg
 	        // echo $info->getFilename(); 
 	    	$option = array(
-	    		'image_url' => dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard/'.$info->getSaveName(),
-	    		'pic_name' => $info->getFilename(),
-	    		'pic_ex' => $info->getExtension()
+	    		'image_url' => $file_path.'/'.$info->getSaveName(),
+	    		'pic_name' => $info->getFilename()
 	    		);
 	    	$thumb = $this->createThumb($option);
 
@@ -212,17 +211,18 @@ class User
 
     public function createThumb($option){
     	//生成缩略图
-    	if (!is_dir(dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard_thumb')) {
-            $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard_thumb';
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard_thumb';
+    	if (!is_dir($file_path)) {
+            
             mkdir($file_path,0777,true);
             // chown($file_path, 775);
         }
+
     	$image = \think\Image::open($option['image_url']);
 		// 按照原图的比例生成一个最大为120*100的缩略图并保存为thumb.png
-		$image->thumb(120, 100)->save($file_path.'/'.$option['pic_name'].'.'.$option['pic_ex']);
+		$image->thumb(120, 100)->save($file_path.'/thumb_'.$option['pic_name']);
 
-		return $file_path.'/'.$option['pic_name'].'.'.$option['pic_ex'];
+		return $file_path.'/thumb_'.$option['pic_name'];
     }
-
 
 }
