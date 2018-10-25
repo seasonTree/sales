@@ -29,7 +29,7 @@ export function resetPassword(data) {
 //获取所有角色
 export function get(data) {
     return request({
-        url: '/role/lst',
+        url: '/user/lst',
         method: 'post',
         data: data
     })
@@ -38,6 +38,22 @@ export function get(data) {
 export function add(data){
     return request({
         url: '/user/add',
+        method: 'post',
+        data: data
+    })
+}
+//删除账号
+export function del(data){
+    return request({
+        url: '/user/del',
+        method: 'post',
+        data: data
+    })
+}
+//修改账号
+export function edit(data){
+    return request({
+        url: '/user/edit',
         method: 'post',
         data: data
     })
