@@ -1,7 +1,7 @@
 <template>
-    <div class="upload-container">
-        <label :for="id" class="upload" :style="style"></label>
-        <input hidden :id="id" type="file" @change="handleUpload($event)" capture="video" accept="image/jpe,image/jpeg,image/png" />
+    <div class="upload-container" @dragenter.prevent.stop="dropEnter" @dragover.prevent.stop="dragOver" @dragleave.prevent.stop="dropLeave" @drop.prevent.stop="drop($event)">
+        <label :for="id" class="upload" :style="style" :class="{ 'drop-hover': dragInContainer }"></label>
+        <input hidden :id="id" type="file" @change="handleUpload($event)" capture="video" :accept="accept" />
         <div class="image-content">
             <div>
                 <v-icon x-large>image</v-icon>
@@ -45,19 +45,20 @@ export default {
         afterUpload: {
             type: Function,
             default: null
+        },
+        accept: {
+            type: String,
+            default: "image/jpe,image/jpeg,image/png"
+        },
+        notSendTip: {
+            type: String,
+            default: "不能上传不允许的图片类型"
         }
     },
 
     mounted() {
-        // //宽度
-        // this.style.width = this.width ? this.width : this.style.width;
-        // //高度
-        // this.style.height = this.height ? this.height : this.style.height;
         //id
         this.id = guid(false).substr(0, 6);
-
-        //TODO 拖动上传
-        
     },
 
     data() {
@@ -73,18 +74,64 @@ export default {
             progress: {
                 show: false,
                 value: 0
-            }
+            },
+
+            dragInContainer: false
         };
     },
 
     computed: {},
 
     methods: {
-        handleUpload(evt) {
-            if (this.url) {
-                let that = this,
-                    f = evt.target.files[0],
-                    fr = new FileReader();
+        dropEnter() {
+            this.dragInContainer = true;
+        },
+
+        dragOver() {},
+
+        dropLeave() {
+            this.dragEnter = false;
+        },
+
+        drop(evt) {
+            //如果正在上传就忽略
+            if (this.progress.show) {
+                return;
+            }
+
+            let file = evt.dataTransfer.files[0];
+
+            this.handleUpload(evt, file);
+        },
+
+        handleUpload(evt, file) {
+            let that = this,
+                f = file || evt.target.files[0],
+                type = f.type,
+                acp = this.accept.split(","),
+                isImg = false;
+
+            for (var i = 0; i < acp.length; i++) {
+                var item = acp[i],
+                    rex = new RegExp(item);
+
+                if (rex.test(type)) {
+                    isImg = true;
+                    break;
+                }
+            }
+
+            if (!isImg) {
+                that.$comp.toast({
+                    text: that.notSendTip,
+                    color: "error"
+                });
+
+                return;
+            }
+
+            if (!that.url) {
+                let fr = new FileReader();
 
                 that.beforeUpload && that.beforeUpload(f);
 
@@ -93,8 +140,15 @@ export default {
                 //开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容。
                 //FileReader.onload 处理load事件。该事件在读取操作完成时触发
                 fr.onload = function(evt) {
-                    that.style.backgroundImage =
-                        "url(" + evt.target.result + ")";
+                    if (evt.target.status != 200) {
+                        that.$comp.toast({
+                            text: that.errorTip,
+                            color: "error"
+                        });
+                    } else {
+                        that.style.backgroundImage =
+                            "url(" + evt.target.result + ")";
+                    }
                 };
 
                 let form = new FormData(); // FormData 对象
@@ -105,11 +159,11 @@ export default {
 
                 xhr.onload = res => {
                     //请求成功
-                    this.progress.show = false;
+                    that.progress.show = false;
                 };
                 xhr.onerror = res => {
                     //请求失败
-                    this.$comp.toast({
+                    that.$comp.toast({
                         text: that.errorTip,
                         color: "error"
                     });
@@ -117,6 +171,9 @@ export default {
                     that.style.backgroundImage = "";
                     this.progress.show = false;
                 };
+
+                //上传完毕
+                xhr.onloadend = () => {};
 
                 xhr.upload.onprogress = res => {
                     //【上传进度调用方法实现】
@@ -185,7 +242,8 @@ export default {
         cursor: pointer;
     }
 
-    &:hover {
+    &:hover,
+    .drop-hover {
         box-shadow: 4px 4px 5px #e3e3e3;
 
         .upload {
