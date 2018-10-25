@@ -55,6 +55,9 @@ export default {
         // this.style.height = this.height ? this.height : this.style.height;
         //id
         this.id = guid(false).substr(0, 6);
+
+        //TODO 拖动上传
+        
     },
 
     data() {
