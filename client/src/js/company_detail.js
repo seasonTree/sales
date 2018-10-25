@@ -11,8 +11,21 @@ new Vue({
         uploadImage
     },
 
+    created() {
+        let that = this;
+
+        that.$api.user.getOneUser().then((res) => {
+            that.userData = res.data;
+        }).catch((res) => {
+            console.log('eeeeeeeeeeeee');
+            console.log(res);
+        });
+    },
+
     data() {
         return {
+
+            userData:[],
 
         }
     }

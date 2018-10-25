@@ -174,13 +174,17 @@ class User
 
     }
 
+    public function getOneUser(){
+    	//获取当前的个人信息
+    	
+    }
+
     public function upload(){
     	//上传
     	//先检测目录是否存在
     	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard';
     	if (!is_dir($file_path)) {
             mkdir($file_path,0777,true);
-            // chown($file_path, 775);
         }
     	// 获取表单上传文件
 	    $file = request()->file('image');
@@ -204,25 +208,26 @@ class User
 	    }else{
 	        // 上传失败获取错误信息
 	        // echo $file->getError();
-	        return json(['msg' => $file->getError(),'code' => 0]);
+	        return json(['msg' => $file->getError(),'code' => 1]);
 	    }
 
     }
 
     public function createThumb($option){
-    	//生成缩略图
+    	//生成缩略图,参数1,image_rul,图片的url地址。参数2,pic_name,图片的名称。
     	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/idcard_thumb';
     	if (!is_dir($file_path)) {
-            
+            //创建目录
             mkdir($file_path,0777,true);
-            // chown($file_path, 775);
         }
 
     	$image = \think\Image::open($option['image_url']);
-		// 按照原图的比例生成一个最大为120*100的缩略图并保存为thumb.png
+		// 按照原图的比例生成一个最大为120*100的缩略图并保存为以下名字
 		$image->thumb(120, 100)->save($file_path.'/thumb_'.$option['pic_name']);
 
 		return $file_path.'/thumb_'.$option['pic_name'];
     }
+
+
 
 }
