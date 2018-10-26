@@ -24,6 +24,8 @@ class Message extends Model
     	$res = Message::where($where)
     				  ->alias('a')
     				  ->join('sales_user_info b','a.sender = b.user_id','left')
+                      ->order('status')
+                      ->order('create_time','desc')
     				  ->field('a.*,b.first_name,b.last_name')
     				  ->select();
     	return $res;
@@ -40,6 +42,12 @@ class Message extends Model
     	//标记已读
     	$res = Message::where($where)->update(array('status' => 1));
     	return $res;
+    }
+
+    public function delMessage($where){
+        //删除信息
+        $res = Message::where($where)->delete();
+        return $res;
     }
 
 }

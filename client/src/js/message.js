@@ -47,6 +47,7 @@ new Vue({
         },
 
         delMessage(id) {
+            let that = this;
             that.$api.message.delMessage({
                 data: id
             }).then((res) => {
