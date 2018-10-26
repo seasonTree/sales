@@ -12,7 +12,7 @@ class Privilege extends Controller
         $model =model('Privilege');
         $data = $model->getTree();
         $count = count($data);
-        return json(['data'=>$data,'count'=>$count,'code'=>200,'message'=>'权限列表数据']);
+        return json(['data'=>$data,'count'=>$count,'code'=>0,'msg'=>'权限列表数据']);
     }
     public function edit(){
         $priModel = model('Privilege');
@@ -22,7 +22,7 @@ class Privilege extends Controller
         $validate =validate('Privilege');
         if (!$validate->check($data)){
             $error =$validate->getError();
-            return json(['message'=>$error]);
+            return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
 
         try{
@@ -30,18 +30,19 @@ class Privilege extends Controller
 
         }catch(\Exception $e){
             $error =$e->getMessage();
-            return json(['message'=>$error]);
+            return json(['data'=>'','code'=>1,'msg'=>$error]);
 
         }
 
-	    return json(['message'=>'修改成功']);
+	    return json(['data'=>'ok','code'=>0,'msg'=>'修改成功']);
+
     }
     public function add(){
 	    $data = input('post.data');
         $validate =validate('Privilege');
         if (!$validate->check($data)){
             $error =$validate->getError();
-            return json(['message'=>$error]);
+             return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
         try{
             $id =model('Privilege')->add($data);
@@ -49,15 +50,16 @@ class Privilege extends Controller
             $error =$e->getMessage();
             return json(['message'=>$error]);
         }
-        return json(['message'=>'新增成功']);
+        return json(['data'=>'ok','code'=>0,'msg'=>'新增成功']);
+
     }
     public function del(){
 	    $id = input('post.data');
         $res['msg'] = \app\index\model\Privilege::destroy($id);
         if ($res['msg']){
-            return json(['message'=>'删除成功']);
+            return json(['data'=>'ok','code'=>0,'msg'=>'删除成功']);
         }else{
-            return json(['message'=>'删除失败']);
+            return json(['data'=>'','code'=>1,'msg'=>'删除失败']);
         }
 
     }

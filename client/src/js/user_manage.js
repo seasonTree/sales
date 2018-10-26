@@ -80,16 +80,16 @@ new Vue({
 
                 that.showAdd = false;
                 that.$comp.toast({
-                    text: res.message,
+                    text: res.msg,
                 });
-                if(res.error ==0){
+                if(res.code ==0){
                     setTimeout(function () {
                         window.location.reload();
                     },2000)
                 }
             }).catch((data) =>{ //function(data){}
                 that.$comp.toast({
-                    text: data.message,
+                    text: data.msg,
                     color:'error',
                 });
 
@@ -102,7 +102,7 @@ new Vue({
             }).then((data) => {
 
                 that.$comp.toast({
-                    text: data.message,
+                    text: data.msg,
                 });
 
                 setTimeout(function () {
@@ -111,7 +111,7 @@ new Vue({
 
             }).catch((data) =>{ //function(data){}
                 that.$comp.toast({
-                    text: data.message,
+                    text: data.msg,
                     color:'error',
                 });
             });
@@ -131,14 +131,14 @@ new Vue({
 
                 that.showEdit = false;
                 that.$comp.toast({
-                    text: data.message,
+                    text: data.msg,
                 });
                 setTimeout(function () {
                     window.location.reload();
                 },2000)
             }).catch((data) =>{ //function(data){}
                 that.$comp.toast({
-                    text: data.message,
+                    text: data.msg,
                     color:'error',
                 });
             });

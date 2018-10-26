@@ -18,7 +18,7 @@ class Role
             $v['pri_id'] =array_unique(explode(',',$v['pri_id']));$data[$k]['pri_id'] =implode(',',$v['pri_id']);
         }
         $priData =model('privilege')->getTree();
-        return json(['data'=>$data,'priData'=>$priData]);
+        return json(['data'=>$data,'priData'=>$priData,'code'=>0,'msg'=>'获取数据成功']);
     }
     public function add(){
 	    $data = input('post.data');
@@ -29,14 +29,13 @@ class Role
         $data = $arr;
         $validate =validate('Role');
         if (!$validate->check($data)){
-//                $this->error($validate->getError());
             $error =$validate->getError();
-            return json(['message'=>$error]);
+            return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
 
         $id=model('Role')->add($data);
         if($id){
-            return json(['message'=>'新增成功']);
+            return json(['data'=>'','code'=>0,'msg'=>'新增成功']);
         }
     }
     public function edit(){
@@ -50,19 +49,19 @@ class Role
         $validate =validate('Role');
         if (!$validate->check($data)){
             $error =$validate->getError();
-            return json(['message'=>$error]);
+            return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
         $id=model('Role')->edit($data);
         if($id){
-            return json(['message'=>'修改成功']);
+            return json(['data'=>'','code'=>0,'msg'=>'修改成功']);
         }
     }
     public function del(){
 	    $id =input('post.data');
         if (model('role')->del($id)){
-            return json(['message'=>'删除成功']);
+            return json(['data'=>'','code'=>0,'msg'=>'删除成功']);
         }else{
-            return json(['message'=>'失败成功']);
+            return json(['data'=>'','code'=>1,'msg'=>'删除失败']);
         }
     }
 }

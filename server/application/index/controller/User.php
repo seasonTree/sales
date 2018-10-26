@@ -21,18 +21,18 @@ class User
 	    $data = input('post.data');
 	    $user =model('User')->findUser($data['username']);
 	    if($user){
-            return json(['message'=>'账号名已存在','error'=>'1']);
+            return json(['msg'=>'账号名已存在','code'=>1]);
         }
         $validate =validate('User');
         if (!$validate->check($data)){
             $error =$validate->getError();
-            return json(['message'=>$error,'error'=>'1']);
+            return json(['msg'=>$error,'code'=>1]);
         }
         $data['password']= password_hash($data['password'],PASSWORD_DEFAULT);
         $data['status']= 1;
         $id=model('User')->add($data);
         if($id){
-            return json(['message'=>'新增成功','error'=>'0']);
+            return json(['msg'=>'新增成功','code'=>0]);
         }
     }
     //修改账号
@@ -47,24 +47,24 @@ class User
         $id=model('User')->edit($arr);
 
         if($id){
-            return json(['message'=>'修改成功','error'=>'0']);
+            return json(['msg'=>'修改成功','code'=>'0']);
         }else{
-            return json(['message'=>'修改失败','error'=>'1']);
+            return json(['msg'=>'修改失败','code'=>'1']);
         }
     }
     //用户列表展示
     public function lst($where = ['type'=>'0']){
         $data =model('Role')->lst();
          $res=  model('User')->lst($where);
-         return json(['Userdata'=>$res,'data'=>$data]);
+         return json(['Userdata'=>$res,'data'=>$data,'code'=>0,'msg'=>'用户列表展示数据']);
     }
     //删除账号
     public function del(){
         $id =input('post.data');
         if (model('user')->del($id)){
-            return json(['message'=>'删除成功']);
+            return json(['msg'=>'删除成功','code'=>'0']);
         }else{
-            return json(['message'=>'失败成功']);
+            return json(['msg'=>'删除失败','code'=>'1']);
         }
     }
 
