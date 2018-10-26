@@ -29,7 +29,7 @@ export function isRead(data) {
 //删除消息
 export function delMessage(data) {
     return request({
-        url: '/message/del',
+        url: '/message/delMessage',
         method: 'post',
         data: data
     });

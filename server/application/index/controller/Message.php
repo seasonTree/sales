@@ -40,4 +40,17 @@ class Message
 		return json(['msg' => '已标记已读','code' => 0 ,'data' => '']);
 	}
 
+	public function delMessage(){
+		//删除信息
+		$m_id = input('post.data');
+		$message_model = new MessageModel();
+		$res = $message_model->delMessage(array('id' => $m_id));
+		if ($res) {
+			return json(['msg' => '删除成功','code' => 0 ,'data' => '']);
+		}
+		else{
+			return json(['msg' => '删除失败','code' => 1 ,'data' => '']);
+		}
+	}
+
 }
