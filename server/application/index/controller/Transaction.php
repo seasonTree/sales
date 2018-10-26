@@ -12,9 +12,9 @@ class Transaction extends Controller
 {
     public function index()
     {
-        $referralCode = session('userid');
-        $list = model('RegisterApi')->getTranReport($referralCode);
-        $this->assign('list', $list);
+//        $referralCode = session('userid');
+//        $list = model('RegisterApi')->getTranReport($referralCode);
+//        $this->assign('list', $list);
         return view('/transaction_report');
     }
     //提供权限数据
@@ -22,7 +22,8 @@ class Transaction extends Controller
         $referralCode = session('userid');
         $referralCode = 1;
         $list = model('RegisterApi')->getTranReport($referralCode);
-        return json(['list'=>$list]);
+        $page = $list->render();
+        return json(['list'=>$list,'page'=>$page]);
 //        $this->assign('list', $list);
 //        return json(['data'=>$data,'count'=>$count,'code'=>200,'message'=>'权限列表数据']);
     }

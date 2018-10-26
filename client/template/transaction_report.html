@@ -12,15 +12,16 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
-            <td class="text-xs-left">{{ props.item.a }}</td>
-            <td class="text-xs-left">{{ props.item.b }}</td>
-            <td class="text-xs-right">{{ props.item.c }}</td>
-            <td class="text-xs-left">{{ props.item.d }}</td>
-            <td class="text-xs-left">{{ props.item.e }}</td>
+            <td class="text-xs-left">{{ props.item.firstName }}</td>
+            <td class="text-xs-left">{{ props.item.phone }}</td>
+            <td class="text-xs-right">{{ props.item.unitprice * props.item.quantity }}</td>
+            <td class="text-xs-left">{{ props.item.description }}</td>
+            <td class="text-xs-left">{{ props.item.created_at }}</td>
         </template>
     </v-data-table>
 
     <div class="text-md-center">
+        {{page}}
         <v-pagination length="4" class="pager" v-model="pageIdx"></v-pagination>
     </div>
 
