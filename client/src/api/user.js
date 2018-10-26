@@ -1,7 +1,7 @@
 import request from '../common/request';
 
 //检查修改密码的短信校验码
-export function sendPasswordSMS(data) {
+export function sendSMS(data) {
     return request({
         url: '/user/sendMessage',
         method: 'post',

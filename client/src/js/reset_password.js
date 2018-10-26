@@ -66,12 +66,12 @@ new Vue({
                 uid: ''
             },
             
-            message: {
-                show: false,
-                text: '',
-                time: 3000,
-                color: 'success'
-            },
+            // message: {
+            //     show: false,
+            //     text: '',
+            //     time: 3000,
+            //     color: 'success'
+            // },
         }
     }
 });

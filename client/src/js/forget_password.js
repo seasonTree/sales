@@ -31,13 +31,6 @@ new Vue({
                 value => !!value || '验证码必填',
             ],
 
-            message: {
-                show: false,
-                text: '',
-                time: 3000,
-                color: 'success'
-            },
-
             identifyBtnText: '发送验证码',
 
             sendInterval: null,
@@ -86,7 +79,7 @@ new Vue({
 
             }, 1000);
 
-            that.$api.user.sendPasswordSMS({
+            that.$api.user.sendSMS({
                 data: that.data
             }).then((res) => {
                 if (res.code == 0) {
