@@ -18,17 +18,10 @@ class Register
         // $this->redis->select(Config::get('redis.db_index'));
     }
 
-    public function companyReg(){
-    	//公司注册
-    	return view('/company_reg');
+    public  function index()
+    {
+        return view('/user_reg');
     }
-
-    public function personReg(){
-    	//个人注册
-    	return view('/person_reg');
-    }
-
-
 
 /**
      * @return \think\response\Json

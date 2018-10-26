@@ -46,7 +46,7 @@ new Vue({
             }).catch((res) => { });
         },
 
-        delMessage(id) {
+        delMessage(id, index) {
             let that = this;
             that.$api.message.delMessage({
                 data: id
@@ -55,6 +55,8 @@ new Vue({
                     that.$comp.toast({
                         text: res.msg,
                     });
+
+                    that.tdata.splice(index, 1);
                 } else {
                     that.$comp.toast({
                         text: res.msg || '删除失败，请重试.',

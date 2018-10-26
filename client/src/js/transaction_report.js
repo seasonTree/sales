@@ -6,50 +6,61 @@ import {
 new Vue({
     el: '#app',
     mixins: [mixinExt],
+    created(){
+        let that = this;
 
+
+        that.$api.transaction.get().then((data) =>{
+            that.tdata = data.list.data;
+            that.page = data.page;
+            console.log(data.list);
+
+
+
+        }).catch((data) =>{
+            console.log('eeeeeeeeeeeee');
+            console.log(data);
+        });
+
+    },
     data() {
         return {
 
             pageIdx: 1,
+            page:{},
 
             theader: [{
                     text: 'Firt Name',
                     align: 'left',
-                    value: 'a',
+                    value: 'firstName',
                     sortable: false,
                 },
                 {
                     text: 'Phone',
                     align: 'left',
-                    value: 'b',
+                    value: 'phone',
                     sortable: false,
                 },
                 {
                     text: 'Amount',
                     align: 'right',
-                    value: 'c',
+                    value: 'quantity * unitprice ',
                     sortable: false,
                 },
                 {
                     text: 'Usage',
                     align: 'left',
-                    value: 'd',
+                    value: 'description',
                     sortable: false,
                 },
                 {
                     text: 'Date',
                     align: 'left',
-                    value: 'e',
+                    value: 'created_at',
                     sortable: false,
                 },
             ],
-            tdata: [{
-                a: '123',
-                b: '111111',
-                c: '111111',
-                d: '111111',
-                e: '111111',
-            }]
+            tdata: []
         };
     }
 });

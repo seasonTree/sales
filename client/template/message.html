@@ -14,7 +14,7 @@
         系统消息
     </div>
 
-    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
+    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
             <tr @click.stop="showMessage(props.item)" :class="[props.item.status != 0? 'has-read' : '']">
                 <!-- <td class="text-xs-left">{{ props.item.id }}</td> -->
@@ -30,7 +30,7 @@
                         drafts
                     </v-icon>
 
-                    <v-icon small title="删除" @click.stop="delMessage(props.item.id)">
+                    <v-icon small title="删除" @click.stop="delMessage(props.item.id, props.index)">
                         delete
                     </v-icon>
                 </td>

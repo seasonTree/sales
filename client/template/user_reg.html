@@ -3,6 +3,10 @@
 {block name="css"}
 <style>
     .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         max-width: 600px;
     }
 
@@ -15,7 +19,7 @@
         text-align: center;
         margin-top: 10px;
     }
-    </style>
+</style>
 {/block}
 
 
@@ -25,15 +29,29 @@
         注册
     </div>
 
-    <v-form>
+    <v-form >
         <v-text-field label="用户名"></v-text-field>
-        <v-text-field label="密码" type="password"></v-text-field>
-        <v-text-field label="确认密码" type="password"></v-text-field>
+        <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" v-model.trim="data.password"
+            :type="show_pass ? 'text' : 'password'" :rules="passwordRoules" @click:append="show_pass = !show_pass"></v-text-field>
+
+        <v-text-field label="再次输入密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'" v-model.trim="data.rePassword"
+            :type="show_pass1 ? 'text' : 'password'" :rules="rePasswordRoules" @click:append="show_pass1 = !show_pass1"></v-text-field>
+
+        <v-layout row wrap align-center>
+            <v-flex xs9>
+                <v-text-field label="手机号" :rules="phoneRoules" v-model.trim="data.phone_num"></v-text-field>
+            </v-flex>
+            <v-flex xs3 class="text-xs-right">
+                <v-btn class="s-primary mr-0" @click="sendSMS" :rules="IdentifyingCodeRoules" :disabled="smsDisabled">{{identifyBtnText}}</v-btn>
+            </v-flex>
+        </v-layout>
+
+        <v-text-field label="验证码" :rules="IdentifyingCodeRoules" v-model.trim="data.identify_code"></v-text-field>
 
         <div class="protocol">
             <a href="javascript:void(0)" @click="dialog = true">＜同意xxx协议＞</a>
         </div>
-        <v-btn color="s-primary reg-btn">注册</v-btn>
+        <v-btn color="s-primary reg-btn" :disabled="!valid || submitLoading" :loading="submitLoading">注册</v-btn>
     </v-form>
 
 </v-container>
@@ -62,5 +80,5 @@
 {/block}
 
 {block name="script"}
-<script src="__basePath__/js/chunks/company_reg.js?date=__date__"></script>
+<script src="__basePath__/js/chunks/user_reg.js?date=__date__"></script>
 {/block}

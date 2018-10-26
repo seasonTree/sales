@@ -78,15 +78,15 @@ class Api
 
     }
     //获得推荐人和医生的关联数据
+
     public function getUsageHistory($startDate, $endDate)
     {
 
         date_default_timezone_set('UTC');
         $timeStamp = date('Y-m-d\TH', time());
-        $key = 'vGaPb2eu1b9dtfGMJ8';
+        $key = 'GbwS8JFxJfW3uj86S';
         $signature = $this->getSignature($timeStamp, $key);
         $url = "https://app.kooa.vip/usage?startDate={$startDate}&endDate={$endDate}&secret={$signature}";
-
         $result = $this->httpGet($url);
         return $result;
     }
@@ -99,12 +99,12 @@ class Api
         $key = 'GVz7V95yI0BalgPZFv';
         $signature = $this->getSignature($timeStamp, $key);
         $url = "http://ec.kooa.ai/eCommerce/API/token/index.php/API/user/usages?userid={$user_id}&startdate={$startDate}&enddate={$endDate}&secret={$signature}";
-//        $result=$this->httpGet($url);
-        $result = $this->httpGet($url);
 
-        return $result;
-//            return $url;
+        return $result = $this->httpGet($url);
+
+
     }
+
 
     public function httpGet($url)
     {
