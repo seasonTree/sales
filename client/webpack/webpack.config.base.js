@@ -116,6 +116,7 @@ module.exports = {
             '@css': path.resolve(srcPath, 'css'),
             '@common': path.resolve(srcPath, 'common'),
             '@compontent': path.resolve(srcPath, 'compontent'),
+            '@pageCompontent': path.resolve(srcPath, 'page_compontent'),
         }
     },
 

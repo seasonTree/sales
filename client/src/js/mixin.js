@@ -127,7 +127,7 @@ const mixin = {
 
             var that = this;
 
-            that.global.changePassword.submitLoading = false;
+            that.global.changePassword.submitLoading = true;
 
             if (that.$refs.globalPassRef.validate()) {
                 that.$api.user.resetPassword({
@@ -135,18 +135,32 @@ const mixin = {
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        that.globalShowMessage(true, res.msg, 'success');
+                        this.$comp.toast({
+                            text: res.msg,
+                        });
+
+                        // that.globalShowMessage(true, res.msg, 'success');
 
                         setTimeout(() => {
                             that.global.changePassword.show = false;
                         }, 3000);
                     } else {
-                        that.globalShowMessage(true, res.msg, 'error');
+                        this.$comp.toast({
+                            text: res.msg,
+                            color: 'error'
+                        });
+
+                        // that.globalShowMessage(true, res.msg, 'error');
                         that.global.changePassword.submitLoading = false;
                     }
 
                 }).catch((res) => {
-                    that.globalShowMessage(true, '修改失败,请重试.', 'error');
+                    this.$comp.toast({
+                        text: '修改失败,请重试.',
+                        color: 'error'
+                    });
+
+                    // that.globalShowMessage(true, '修改失败,请重试.', 'error');
 
                     this.global.changePassword.submitLoading = false;
                 });

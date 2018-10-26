@@ -1,4 +1,3 @@
-<!-- 公司注册 -->
 {extend name="layout:head_layout"/}
 
 {block name="css"}
@@ -29,6 +28,8 @@
     <v-form>
         <v-text-field label="用户名"></v-text-field>
         <v-text-field label="密码" type="password"></v-text-field>
+        <v-text-field label="确认密码" type="password"></v-text-field>
+
         <div class="protocol">
             <a href="javascript:void(0)" @click="dialog = true">＜同意xxx协议＞</a>
         </div>

@@ -277,7 +277,7 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="globalCommitPassword" :loading="global.changePassword.submitLoading">
+            <v-btn color="s-primary" @click="globalCommitPassword" :loading="global.changePassword.submitLoading" :disabled="global.changePassword.submitLoading">
                 确认
             </v-btn>
             <v-btn color="primary" flat @click="global.changePassword.show = false">
