@@ -76,7 +76,6 @@ class Channel
     	$user_id = $channel_model->getChannelSales($channel_id);
     	$user_id = array_column($user_id, 'user_id');
     	$child_data = $user->getSales($user_id);
-
     	return json(['code' => 0,'msg' => '获取销售员成功', 'data' => [ 'sales' => $data,'child' => $child_data ]]);
     }
 
