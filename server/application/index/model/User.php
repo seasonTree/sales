@@ -11,7 +11,45 @@ class User extends Model
     protected $table = 'sales_user';
     // 主键
     protected $pk = 'id';
+    //钩子初始化
+    protected static function init()
+    {
+        User::event('after_insert',function ($User){
+            $roleIds=$User->role_id;
+            if (!empty($roleIds)){
+                foreach($roleIds as $k=>$v){
+                    $data[]=[
+                        'user_id'=>$User->id,
+                        'role_id'=>$v,
+                    ];
+                }
+                model("UserRole")->insertAll($data);
+            }
+        });
+    }
 
+    //添加账号
+    public function add($data){
+        $this->allowField(true)->save($data);
+        return $this->id;
+    }
+    //修改账号
+    public function edit($data){
+        model("UserRole")->where(['user_id'=>$data[0]['user_id']])->delete();
+        return model("UserRole")->allowField(true)->insertAll($data);
+    }
+    //获取非代理商的数据
+    public function lst($where){
+        return $this->alias('U')->where($where)->field('U.id,U.username,U.status,group_concat(R.role_name) role_name,group_concat(R.id) role_id')
+            ->join('user_role UR','U.id=UR.user_id','left')
+            ->join('role R','R.id=UR.role_id','left')
+            ->group('U.id')
+            ->select();
+    }
+    //真删除账号
+    public function del($id){
+        return $this->destroy($id);
+    }
     public function findUser($user){
     	//查找用户名
     	$res = User::where('username',$user)->find();

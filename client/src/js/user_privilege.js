@@ -101,7 +101,7 @@ new Vue({
             that.$api.privilege.del({
                 data: id
             }).then((data) => {
-                that.message.text = data.message;
+                that.message.text = data.msg;
                 that.message.color = 'success';
                 that.message.show = true;
                 setTimeout(function () {
@@ -109,7 +109,7 @@ new Vue({
                 },2000)
 
             }).catch((data) =>{ //function(data){}
-                that.message.text = data.message;
+                that.message.text = data.msg;
                 that.message.color = 'error';
                 that.message.show = true;
                 // that.submitLoading = false;
@@ -124,7 +124,7 @@ new Vue({
 
                 // that.editItem.id = data.id;
                 that.showAdd = false;
-                that.message.text = res.message;
+                that.message.text = res.msg;
                 that.message.color = 'success';
                 that.message.show = true;
 
@@ -141,7 +141,7 @@ new Vue({
             }).catch((data) =>{ //function(data){}
                 // console.log('失败了')
 
-                that.message.text = data.message;
+                that.message.text = data.msg;
                 that.message.color = 'error';
                 that.message.show = true;
                 that.submitLoading = false;
@@ -155,13 +155,13 @@ new Vue({
             }).then((data) => {
                 // that.editItem.id = data.id;
                 that.showEdit = false;
-                that.message.text = data.message;
+                that.message.text = data.msg;
                 that.message.color = 'success';
                 that.message.show = true;
             }).catch((data) =>{ //function(data){}
                 // console.log('失败了')
 
-                that.message.text = data.message;
+                that.message.text = data.msg;
                 that.message.color = 'error';
                 that.message.show = true;
                 that.submitLoading = false;

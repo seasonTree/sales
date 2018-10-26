@@ -25,12 +25,13 @@ new Vue({
                         // that.globalShowMessage(true, res.msg, 'success');
 
                         this.$comp.toast({
-                            text: res.msg
+                            text: res.msg,
+                            timeout: 1200
                         })
 
                         setTimeout(() => {
                             window.location.href = res.data.url;
-                        }, 3000);
+                        }, 1500);
                     } else {
                         // that.globalShowMessage(true, res.msg, 'error');
 

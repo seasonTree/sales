@@ -37,7 +37,7 @@
     </div>
 
 
-    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
+    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
             <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.role_name }}</td>
@@ -54,6 +54,7 @@
         </template>
     </v-data-table>
 </v-container>
+
 <!--新增模块-->
 <v-dialog scrollable v-model="showAdd" width="500">
     <v-card>
@@ -66,9 +67,8 @@
                 <v-text-field label="角色名称" v-model="addItem.role_name"></v-text-field>
 
                 <div class="role-container">
-                    <div>
-                        <s-tree :init-select="selected"  ref="treeAdd" :expend="true" :tree-data="checkBoxData" id-field="id" value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>
-                    </div>
+                    <s-tree :init-select="selected" ref="treeAdd" :expend="true" :tree-data="checkBoxData" id-field="id"
+                        value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>
                 </div>
             </v-form>
         </v-card-text>
@@ -94,11 +94,10 @@
         <v-card-text>
             <v-form>
                 <v-text-field label="角色名称" v-model="editItem.role_name"></v-text-field>
-                <input type="hidden"  v-model="editItem.id" name="id">
+                <input type="hidden" v-model="editItem.id" name="id">
                 <div class="role-container">
-                    <div>
-                        <s-tree :init-select="selected"  ref="treeEdit" :expend="true" :tree-data="checkBoxData" id-field="id" value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>
-                    </div>
+                    <s-tree :init-select="selected" ref="treeEdit" :expend="true" :tree-data="checkBoxData" id-field="id"
+                        value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>
                 </div>
             </v-form>
         </v-card-text>
@@ -115,13 +114,6 @@
     </v-card>
 </v-dialog>
 
-<!--提示模块-->
-<v-snackbar v-model="message.show" :timeout="message.time" top>
-    {{ message.text }}
-    <v-btn color="pink" flat @click="message.show = false">
-        关闭
-    </v-btn>
-</v-snackbar>
 {/block}
 
 {block name="script"}

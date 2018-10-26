@@ -23,8 +23,8 @@ const base = {
         },
 
         _checkLocation() {
-            let href = window.location.href.replace(/(\.html|\/index.html|index)$/, '');
-            this.global.currentView = href.split('/').pop();
+            let href = window.location.href.replace(/(\.html|\/index.html|\/index)$/, '');
+            this.global.currentView = href.split('/').pop().toLocaleLowerCase();
         }
     }
 };
@@ -48,6 +48,14 @@ const mixin = {
                     rePassword: '',
                     submitLoading: false
                 },
+
+                viewSelect: {
+                    system: false,
+                    user: false,
+                    commision: false,
+                    setting: false,
+                    audit: false
+                }
             }
         };
     },
@@ -68,6 +76,24 @@ const mixin = {
                 }
             },
         },
+
+        'global.currentView': {
+            handler(newValue, oldValue) {
+                this.global.viewSelect.user = (newValue == 'privilege' ||
+                    newValue == 'role' ||
+                    newValue == 'user');
+
+                this.global.viewSelect.commision = (newValue == 'commision_manage');
+
+                this.global.viewSelect.setting = (newValue == 'notifysetting' ||
+                    newValue == 'protocolsetting');
+
+                this.global.viewSelect.audit = (newValue == 'regaudit');
+
+                this.global.viewSelect.system = this.global.viewSelect.user || this.global.viewSelect.commision ||
+                    this.global.viewSelect.setting || this.global.viewSelect.audit
+            },
+        }
     },
 
     methods: {
@@ -101,7 +127,7 @@ const mixin = {
 
             var that = this;
 
-            that.global.changePassword.submitLoading = false;
+            that.global.changePassword.submitLoading = true;
 
             if (that.$refs.globalPassRef.validate()) {
                 that.$api.user.resetPassword({
@@ -109,18 +135,32 @@ const mixin = {
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        that.globalShowMessage(true, res.msg, 'success');
+                        this.$comp.toast({
+                            text: res.msg,
+                        });
+
+                        // that.globalShowMessage(true, res.msg, 'success');
 
                         setTimeout(() => {
                             that.global.changePassword.show = false;
                         }, 3000);
                     } else {
-                        that.globalShowMessage(true, res.msg, 'error');
+                        this.$comp.toast({
+                            text: res.msg,
+                            color: 'error'
+                        });
+
+                        // that.globalShowMessage(true, res.msg, 'error');
                         that.global.changePassword.submitLoading = false;
                     }
 
                 }).catch((res) => {
-                    that.globalShowMessage(true, '修改失败,请重试.', 'error');
+                    this.$comp.toast({
+                        text: '修改失败,请重试.',
+                        color: 'error'
+                    });
+
+                    // that.globalShowMessage(true, '修改失败,请重试.', 'error');
 
                     this.global.changePassword.submitLoading = false;
                 });

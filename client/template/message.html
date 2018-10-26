@@ -1,7 +1,11 @@
 {extend name="layout:head2_layout"/}
 
 {block name="css"}
-
+    <style>
+        .has-read, .has-read .theme--light.v-icon{
+            color: #969696;
+        }        
+    </style>
 {/block}
 
 {block name="body"}
@@ -10,18 +14,23 @@
         系统消息
     </div>
 
-    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-1 s-table">
+    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
-            <tr @click="showMessage(props.index)">
-                <td class="text-xs-left">{{ props.item.id }}</td>
+            <tr @click.stop="showMessage(props.item)" :class="[props.item.status != 0? 'has-read' : '']">
+                <!-- <td class="text-xs-left">{{ props.item.id }}</td> -->
                 <td class="text-xs-left">{{ props.item.title }}</td>
                 <td class="text-xs-left">{{ props.item.first_name }}{{ props.item.last_name }}</td>
                 <td class="text-xs-left">{{ props.item.create_time }}</td>
                 <td class="text-xs-left">
-                    <v-icon small title="标记已读" class="mr-3">
-                        check
+                    <v-icon v-if="props.item.status == 0" small title="未读" class="mr-3">
+                        mail
                     </v-icon>
-                    <v-icon small title="删除">
+
+                    <v-icon v-if="props.item.status != 0" small title="已读" class="mr-3">
+                        drafts
+                    </v-icon>
+
+                    <v-icon small title="删除" @click.stop="delMessage(props.item.id, props.index)">
                         delete
                     </v-icon>
                 </td>
@@ -30,24 +39,21 @@
     </v-data-table>
 </v-container>
 
-<v-dialog scrollable v-model="viewMessage" width="500">
+<v-dialog scrollable v-model="message.show" width="500">
     <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
-            {{ m_title }}
+            {{ message.title }}
         </v-card-title>
 
         <v-card-text>
-            {{ m_content }}
+            {{ message.content }}
         </v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="viewMessage = false">
-                标记已读
-            </v-btn>
-            <v-btn color="primary" flat @click="viewMessage = false">
+            <v-btn color="primary" flat @click="message.show = false">
                 关闭
             </v-btn>
         </v-card-actions>

@@ -90,12 +90,26 @@ new Vue({
                 data: that.data
             }).then((res) => {
                 if (res.code == 0) {
-                    that.globalShowMessage(true, res.msg, 'success');
+                    this.$comp.toast({
+                        text: res.msg,
+                    });
+
+                    // that.globalShowMessage(true, res.msg, 'success');
                 } else {
-                    that.globalShowMessage(true, res.msg, 'error');
+                    this.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    });
+
+                    // that.globalShowMessage(true, res.msg, 'error');
                 }
             }).catch((res) => {
-                that.globalShowMessage(true, '发送失败,请重试.', 'error');
+                this.$comp.toast({
+                    text: '发送失败,请重试.',
+                    color: 'error'
+                });
+
+                // that.globalShowMessage(true, '发送失败,请重试.', 'error');
             })
         },
 
@@ -107,17 +121,31 @@ new Vue({
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        this.globalShowMessage(true, res.msg, 'success');
+                        this.$comp.toast({
+                            text: res.msg
+                        });
+
+                        // this.globalShowMessage(true, res.msg, 'success');
 
                         setTimeout(() => {
                             window.location.href = res.data.url + '?uid=' + res.data.uid;
                         }, 3000);
                     } else {
-                        this.globalShowMessage(true, res.msg, 'error');
+                        this.$comp.toast({
+                            text: res.msg,
+                            color: 'error'
+                        });
+
+                        // this.globalShowMessage(true, res.msg, 'error');
                     }
 
                 }).catch((res) => {
-                    this.globalShowMessage(true, '验证失败,请重试.', 'error');
+                    this.$comp.toast({
+                        text: '验证失败,请重试.',
+                        color: 'error'
+                    });
+
+                    // this.globalShowMessage(true, '验证失败,请重试.', 'error');
                 });
             }
         }

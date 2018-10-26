@@ -24,7 +24,7 @@ const copyFile = require('copy-webpack-plugin');
 try {
     fs.statSync(outputPath);
 } catch (error) {
-    fs.mkdirSync(outputPath);
+    fs.mkdirSync(outputPath);        
 }
 
 //读取php配置
@@ -116,6 +116,7 @@ module.exports = {
             '@css': path.resolve(srcPath, 'css'),
             '@common': path.resolve(srcPath, 'common'),
             '@compontent': path.resolve(srcPath, 'compontent'),
+            '@pageCompontent': path.resolve(srcPath, 'page_compontent'),
         }
     },
 

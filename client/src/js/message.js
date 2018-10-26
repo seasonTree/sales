@@ -6,91 +6,114 @@ import {
 new Vue({
     el: '#app',
     mixins: [mixinExt],
-    
+
     created() {
         let that = this;
 
         that.$api.message.lst().then((res) => {
             that.tdata = res.data;
         }).catch((res) => {
-            console.log('eeeeeeeeeeeee');
-            console.log(res);
+            that.$comp.toast({
+                text: '获取数据失败，请刷新后重试.',
+                color: 'error'
+            });
         });
     },
+
     methods: {
-        showMessage(list) {
+        showMessage(item) {
 
-            let that = this;
+            let that = this,
+                citem = JSON.parse(JSON.stringify(item));
 
-            that.m_id = that.tdata[list].id;
-            that.m_title = that.tdata[list].title;
-            that.m_content = that.tdata[list].content;
+            that.message.id = citem.id;
+            that.message.title = citem.title;
+            that.message.content = citem.content;
 
-            // console.log(that.m_content);
+            that.message.show = true;
 
             that.$api.message.isRead({
-                data: that.m_id
+                data: citem.id
             }).then((res) => {
-                // that.tdata = res.data;
-                that.globalShowMessage(true, res.msg, 'success');
+                if(res.code == 0){
+                    var mcount = that.global.messageCount;
+
+                    that.global.messageCount = mcount-- < 0? 0: mcount --;
+
+                    //标记已读
+                    item.status = 1;
+                }
+            }).catch((res) => { });
+        },
+
+        delMessage(id, index) {
+            let that = this;
+            that.$api.message.delMessage({
+                data: id
+            }).then((res) => {
+                if (res.code == 0) {
+                    that.$comp.toast({
+                        text: res.msg,
+                    });
+
+                    that.tdata.splice(index, 1);
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '删除失败，请重试.',
+                        color: 'error'
+                    });
+                }
             }).catch((res) => {
-                console.log('eeeeeeeeeeeee');
-                console.log(res);
+                that.$comp.toast({
+                    text: res.msg || '删除失败，请重试.',
+                    color: 'error'
+                });
             });
-
-            that.viewMessage = true;
-
-
         }
     },
 
     data() {
         return {
 
-            viewMessage: false,
+            message: {
+                show: false,
+                id: '',
+                title: '',
+                content: ''
+            },
 
-            m_id: '',
-            m_title: '',
-            m_content: '',
-
-            theader: [{
-                    text: 'id',
-                    align: 'left',
-                    value: 'a',
-                    sortable: false,
-                },
+            theader: [
+                // {
+                //     text: 'id',
+                //     align: 'left',
+                //     value: 'id',
+                //     sortable: false,
+                // },
                 {
                     text: '标题',
                     align: 'left',
-                    value: 'b',
+                    value: 'title',
                     sortable: false,
                 },
                 {
                     text: '发送人',
                     align: 'left',
-                    value: 'c',
+                    value: 'name',
                     sortable: false,
                 },
                 {
                     text: '发送时间',
                     align: 'left',
-                    value: 'd',
+                    value: 'create_time',
                     sortable: false,
                 },
                 {
                     text: '',
                     align: 'left',
-                    // value: '',
                     sortable: false,
                 },
             ],
-            tdata: [{
-                // a: '123',
-                // b: '111111',
-                // c: '111111',
-                // d: '111111',
-                // e: '111111',
-            }]
+            tdata: [{}]
         };
     }
 })

@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\facade\Env;
+use think\facade\Request;
 use think\facade\Session;
 use app\index\model\UserInfo as UserInfoModel;
 use app\index\model\User as UserModel;
@@ -18,10 +19,52 @@ class User
 	//添加账号
 	public function add(){
 	    $data = input('post.data');
+	    $user =model('User')->findUser($data['username']);
+	    if($user){
+            return json(['msg'=>'账号名已存在','code'=>1]);
+        }
         $validate =validate('User');
         if (!$validate->check($data)){
             $error =$validate->getError();
-            return json(['message'=>$error]);
+            return json(['msg'=>$error,'code'=>1]);
+        }
+        $data['password']= password_hash($data['password'],PASSWORD_DEFAULT);
+        $data['status']= 1;
+        $id=model('User')->add($data);
+        if($id){
+            return json(['msg'=>'新增成功','code'=>0]);
+        }
+    }
+    //修改账号
+    public function edit(){
+        $data = input('post.data');
+        foreach ($data['role_id'] as $k =>$v){
+            $arr[]=[
+                'user_id'=>$data['id'],
+                'role_id'=>$v,
+            ];
+        }
+        $id=model('User')->edit($arr);
+
+        if($id){
+            return json(['msg'=>'修改成功','code'=>'0']);
+        }else{
+            return json(['msg'=>'修改失败','code'=>'1']);
+        }
+    }
+    //用户列表展示
+    public function lst($where = ['type'=>'0']){
+        $data =model('Role')->lst();
+         $res=  model('User')->lst($where);
+         return json(['Userdata'=>$res,'data'=>$data,'code'=>0,'msg'=>'用户列表展示数据']);
+    }
+    //删除账号
+    public function del(){
+        $id =input('post.data');
+        if (model('user')->del($id)){
+            return json(['msg'=>'删除成功','code'=>'0']);
+        }else{
+            return json(['msg'=>'删除失败','code'=>'1']);
         }
     }
 
@@ -154,6 +197,15 @@ class User
     	// input('post.');
     	// return json(['msg' => '成功','code' => 0,'data' => ]);
     	$user_id = Session::get('user.userid');
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/temp'.$user_id;
+    	$has_temp = Session::has('temp'.$user_id);
+    	//检测是否存在临时session图片路径记录
+    	if (!$has_temp) {
+    		//如果不存在，则删除相应的文件夹
+    		delDir($file_path.'/');
+    		//删除空目录
+    		@rmdir($file_path);
+    	}
 
     	$user_model = new UserModel();
     	$user = $user_model->checkUserType(array('id' => $user_id));
@@ -168,6 +220,141 @@ class User
 
 
     }
+
+    public function getOneUser(){
+    	//获取当前的个人信息
+    	
+    }
+
+    public function upload(){
+    	//上传
+    	$userid = Session::get('user.userid');
+
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/temp'.$userid;
+    	$save_path = 'upload/temp'.$userid.'/';
+    	
+    	// 创建临时文件夹
+    	if (!is_dir($file_path)) {
+            mkdir($file_path,0777,true);
+        }
+
+        // 获取表单上传文件
+	    $file = request()->file('image');
+
+	    // 移动到框架应用根目录/uploads/ 目录下
+	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move($file_path.'/');
+	    if($info){
+	        // 成功上传后 获取上传信息
+	        // 输出 jpg
+	        // echo $info->getExtension();
+	        // // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getSaveName();
+	        // // 输出 42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getFilename(); 
+
+	    	$type = request()->get('type');
+	    	//判断上传图片的类型
+	    	switch ($type) {
+	    		case '1':
+	    		//营业执照
+	    			Session::set('business_licence',$file_path.'/'.$info->getSaveName());
+	    			break;
+	    		
+	    		case '2':
+	    		//个人照片
+	    			Session::set('photo_self',$file_path.'/'.$info->getSaveName());
+	    			break;
+
+	    		case '3':
+	    		//身份证正面
+	    			Session::set('id_card_front',$file_path.'/'.$info->getSaveName());
+	    			break;
+	    			
+	    		case '4':
+	    		//身份证反面
+	    			Session::set('id_card_back',$file_path.'/'.$info->getSaveName());
+	    			break;		
+	    	}
+
+	    	$option = array(
+	    		'image_url' => $file_path.'/'.$info->getSaveName(),
+	    		'pic_name' => $info->getFilename(),
+	    		'save_path' => $save_path
+	    		);
+
+	    	$thumb = $this->createThumb($option);
+	    	// dump($thumb);exit;
+	    	
+	    	Session::set('temp'.$userid,1);
+
+	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb ] ]);
+	    }else{
+	        // 上传失败获取错误信息
+	        // echo $file->getError();
+	        return json(['msg' => $file->getError(),'code' => 1]);
+	    }
+
+
+    }
+
+    public function moveImage(){
+    	//上传
+    	//先检测目录是否存在
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image';
+    	if (!is_dir($file_path)) {
+            mkdir($file_path,0777,true);
+        }
+    	// 获取表单上传文件
+	    $file = request()->file('image');
+	    $type = request()->get('type');
+	    //判断上传图片的类型
+
+	    // 移动到框架应用根目录/uploads/ 目录下
+	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move($file_path.'/');
+	    if($info){
+	        // 成功上传后 获取上传信息
+	        // 输出 jpg
+	        // echo $info->getExtension();
+	        // // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getSaveName();
+	        // // 输出 42a79759f284b767dfcb2a0197904287.jpg
+	        // echo $info->getFilename(); 
+	    	$option = array(
+	    		'image_url' => $file_path.'/'.$info->getSaveName(),
+	    		'pic_name' => $info->getFilename()
+	    		);
+
+	    	$thumb = $this->createThumb($option);
+	    	// dump($thumb);exit;
+
+	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb ] ]);
+	    }else{
+	        // 上传失败获取错误信息
+	        // echo $file->getError();
+	        return json(['msg' => $file->getError(),'code' => 1]);
+	    }
+
+    }
+
+    public function createThumb($option){
+    	//生成缩略图,
+    	//参数1,image_rul,图片的url地址。
+    	//参数2,pic_name,图片的名称。
+    	//参数3,save_path,保存地址。
+    	// $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image_thumb';
+    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/'.$option['save_path'];
+    	if (!is_dir($file_path)) {
+            //创建目录
+            mkdir($file_path,0777,true);
+        }
+
+    	$image = \think\Image::open($option['image_url']);
+		// 按照原图的比例生成一个最大为120*100的缩略图并保存为以下名字
+		$image->thumb(120, 100)->save($file_path.'/thumb_'.$option['pic_name']);
+
+		return '/client/'.$option['save_path'].'thumb_'.$option['pic_name'];
+    }
+
 
 
 }

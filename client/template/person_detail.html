@@ -2,6 +2,26 @@
 
 {block name="css"}
 <link href="__basePath__/css/person_detail.css" rel="stylesheet" />
+
+<style>
+    .content {
+        max-width: 1000px;
+    }
+
+    .protocol {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .person-btn {
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    .image-upload{
+        min-height: 140px;
+    }
+</style>
 {/block}
 
 {block name="body"}
@@ -21,21 +41,21 @@
         <v-text-field label="移动电话"></v-text-field>
 
         <v-layout row wrap>
-            <v-flex md6 xs12>
+            <v-flex md6 xs12 class="image-upload">
                 <upload-image content="个人照片"></upload-image>
             </v-flex>
 
-            <v-flex md6 xs12>
+            <v-flex md6 xs12 class="image-upload">
                 <upload-image content="身份证照片"></upload-image>
             </v-flex>
         </v-layout>
 
 
-        <v-btn color="s-primary">注册</v-btn>
+        <v-btn color="s-primary person-btn">注册</v-btn>
     </v-form>
 </v-container>
 {/block}
 
 {block name="script"}
-<script src="__basePath__/js/chunks/person_reg.js?date=__date__"></script>
+<script src="__basePath__/js/chunks/person_detail.js?date=__date__"></script>
 {/block}

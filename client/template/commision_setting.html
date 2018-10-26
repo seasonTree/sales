@@ -42,7 +42,7 @@
         </v-btn>
     </div>
 
-    <v-data-table :headers="theader" :items="tdata" hide-actions item-key="a" expand class="elevation-1 s-table" ref="dTable">
+    <v-data-table :headers="theader" :items="tdata" hide-actions item-key="a" expand class="elevation-4 s-table" ref="dTable">
         <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
                 <td class="text-xs-left">{{ props.item.a }}</td>

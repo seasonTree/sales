@@ -10,7 +10,7 @@ export function lst(data) {
 }
 
 //获取未读信息数量
-export function getMessageCount(){
+export function getMessageCount() {
     return request({
         url: '/message/getMessageCount',
         method: 'get',
@@ -26,3 +26,11 @@ export function isRead(data) {
     })
 }
 
+//删除消息
+export function delMessage(data) {
+    return request({
+        url: '/message/delMessage',
+        method: 'post',
+        data: data
+    });
+}
