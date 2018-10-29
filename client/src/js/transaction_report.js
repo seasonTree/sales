@@ -132,17 +132,17 @@ new Vue({
         },
 
         dateFm(newValue, oldValue) {
-            that.getReomteData();
+            this.getReomteData();
         },
 
         dateTo(newValue, oldValue) {
-            that.getReomteData();
+            this.getReomteData();
         }
     },
 
     methods: {
         exportExcel() {
-            
+
         },
 
         getReomteData() {
