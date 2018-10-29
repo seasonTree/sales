@@ -11,6 +11,7 @@ class UserInfo extends Model
     // 主键
     protected $pk = 'id';
 
+
     public function findUserId($phone){
     	//使用电话号码查找id
     	$res = UserInfo::where('phone',$phone)->value('user_id');
@@ -35,6 +36,7 @@ class UserInfo extends Model
     	return $res;
 
     }
+
 
 
 
