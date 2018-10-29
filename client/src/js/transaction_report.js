@@ -127,9 +127,7 @@ new Vue({
                     that.theader = that.transactionHead;
                 } else if (newValue == 1) {
                     that.theader = that.registrationHead;
-                }
-
-                this.firstLoading = false;
+                }        
 
                 that.getReomteData();
             },
@@ -205,6 +203,9 @@ new Vue({
                     })
                 }
 
+                //检测是不是第一次加载
+                that.firstLoading && (that.firstLoading = false);
+
                 that.tableLoading = false;
             }).catch((res) => {
                 that.$comp.toast({
@@ -213,6 +214,9 @@ new Vue({
                 });
 
                 that.tableLoading = false;
+
+                //检测是不是第一次加载
+                that.firstLoading && (that.firstLoading = false);
             });
         }
     }
