@@ -164,4 +164,11 @@ class User extends Model
     {
 
     }
+
+    public function findUserId($phone){
+    	//使用电话号码查找id
+    	$res = User::where('phone',$phone)->value('id');
+    	return $res;
+    }
+
 }

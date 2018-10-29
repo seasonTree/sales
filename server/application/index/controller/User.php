@@ -142,7 +142,7 @@ class User
 	        $redis->select(config('config.redis.db_index'));
 
             $phone = input('post.data.phone_num');
-            // dump(input('post.'));exit;
+            // dump(input('post.data.phone_num'));exit;
             if ($phone == '') {
             	return json(['resp_code' => '2', 'msg' => '电话号码不能为空']);
             }
@@ -151,11 +151,11 @@ class User
             	return json(['resp_code' => '3', 'msg' => '请填写正确的电话号码']);
             }
 
-            $user_info = new UserInfoModel();
-            $res = $user_info->findUserId($phone);
-            if (!$res) {
-            	return json(['resp_code' => '4', 'msg' => '电话号码不存在']);
-            }
+            // $user_model = new UserModel();
+            // $res = $user_model->findUserId($phone);
+            // if (!$res) {
+            // 	return json(['resp_code' => '4', 'msg' => '电话号码不存在']);
+            // }
             //电话号码
             // $section = input('section');
             $section = '86';

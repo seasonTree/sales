@@ -17,7 +17,19 @@
 
     .protocol {
         text-align: center;
-        margin-top: 10px;
+        /* margin-top: 10px; */
+    }
+
+    .protocol div{
+        display: inline-block;
+    }
+
+    .protocol .v-input--checkbox{
+        margin-top: 0;
+    }
+
+    .protocol .v-input--selection-controls__input{
+        vertical-align: bottom;
     }
 </style>
 {/block}
@@ -29,8 +41,8 @@
         注册
     </div>
 
-    <v-form >
-        <v-text-field label="用户名"></v-text-field>
+    <v-form ref="form" v-model="valid">
+        <v-text-field label="用户名" :rules="userNameRoules" maxlength="12"></v-text-field>
         <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" v-model.trim="data.password"
             :type="show_pass ? 'text' : 'password'" :rules="passwordRoules" @click:append="show_pass = !show_pass"></v-text-field>
 
@@ -49,9 +61,15 @@
         <v-text-field label="验证码" :rules="IdentifyingCodeRoules" v-model.trim="data.identify_code"></v-text-field>
 
         <div class="protocol">
-            <a href="javascript:void(0)" @click="dialog = true">＜同意xxx协议＞</a>
+
+            <v-checkbox hide-details v-model="data.agree" :rules="checkAgree"></v-checkbox>
+            <span>
+                同意
+            </span>
+            <a href="javascript:void(0)" @click="dialog = true">＜xxx协议＞</a>
+            </v-layout>
         </div>
-        <v-btn color="s-primary reg-btn" :disabled="!valid || submitLoading" :loading="submitLoading">注册</v-btn>
+        <v-btn color="s-primary reg-btn" :disabled="!valid && !submitLoading" :loading="submitLoading">注册</v-btn>
     </v-form>
 
 </v-container>

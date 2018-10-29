@@ -1,32 +1,73 @@
 {extend name="layout:head2_layout"/}
 
 {block name="css"}
+<style>
+    .action-bar .v-messages.theme--light {
+        display: none;
+    }
 
+    .date-txt {
+        display: inline-block;
+        vertical-align: sub;
+    }
+</style>
 {/block}
 
 {block name="body"}
 <v-container class="content" grid-list-md text-xs-center>
     <div class="content-header">
-        Transaction History
+        <!-- Transaction History -->
+        交易报告
+    </div>
+    <div class="action-bar">
+        <v-layout row wrap>
+            <v-flex xs2>
+                <v-select :disabled="tableLoading" :items="tableType" v-model="currentDataType" item-text="text" item-value="value"></v-select>
+            </v-flex>
+            <v-spacer></v-spacer>
+            <v-flex class="text-xs-right">
+                <v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40" :return-value.sync="dateFm"
+                    lazy transition="scale-transition" offset-y>
+                    <v-text-field :disabled="tableLoading" slot="activator" v-model="dateFm" prepend-icon="event" readonly></v-text-field>
+                    <v-date-picker  no-title scrollable v-model="dateFm" @input="$refs.menu.save(dateFm)"></v-date-picker>
+                </v-menu>
+                </v-date-picker>
+                <span class="px-2 date-txt">至</span>
+                <v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40"
+                    :return-value.sync="dateTo" lazy transition="scale-transition" offset-y>
+                    <v-text-field :disabled="tableLoading" slot="activator" v-model="dateTo" prepend-icon="event" readonly></v-text-field>
+                    <v-date-picker no-title scrollable v-model="dateTo" @input="$refs.menu1.save(dateTo)"></v-date-picker>
+                </v-menu>
+            </v-flex>
+        </v-layout>
     </div>
 
-    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
-        <template slot="items" slot-scope="props">
-            <td class="text-xs-left">{{ props.item.firstName }}</td>
-            <td class="text-xs-left">{{ props.item.phone }}</td>
-            <td class="text-xs-right">{{ props.item.unitprice * props.item.quantity }}</td>
-            <td class="text-xs-left">{{ props.item.description }}</td>
-            <td class="text-xs-left">{{ props.item.created_at }}</td>
+    <v-data-table :loading="tableLoading" :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
+        <template slot="items" slot-scope="props" >
+            <tr v-if="currentDataType == 0">
+                <td class="text-xs-left">{{ props.item.firstName }}</td>
+                <td class="text-xs-left">{{ props.item.phone }}</td>
+                <td class="text-xs-right">{{ props.item.unitprice * props.item.quantity }}</td>
+                <td class="text-xs-left">{{ props.item.description }}</td>
+                <td class="text-xs-left">{{ props.item.created_at }}</td>
+            </tr>
+
+            <tr v-if="currentDataType == 1">
+                <td class="text-xs-left">{{ props.item.firstName }}</td>
+                <td class="text-xs-left">{{ props.item.phone }}</td>
+                <td class="text-xs-right">{{ props.item.referralCode }}</td>
+                <td class="text-xs-left">{{ props.item.created_at }}</td>
+            </tr>
         </template>
+
     </v-data-table>
 
     <div class="text-md-center">
-        {{page}}
-        <v-pagination length="4" class="pager" v-model="pageIdx"></v-pagination>
+        <v-pagination @input="changePage" :total-visible="pager.totalVisible" :length="pager.count" v-model="pager.index"></v-pagination>
     </div>
 
     <div class="text-md-right">
-        <v-btn color="s-primary" class="mr-0">Export Excel</v-btn>
+        <v-btn color="s-primary" class="mr-0" @click="exportExcel">Export Excel</v-btn>
     </div>
 
 </v-container>

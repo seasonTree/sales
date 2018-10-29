@@ -17,15 +17,17 @@ class Transaction extends Controller
 //        $this->assign('list', $list);
         return view('/transaction_report');
     }
-    //提供权限数据
+    //提供交易记录据
     public function lst(){
         $referralCode = session('userid');
+        $dd = input('post.data');
+
         $referralCode = 1;
-        $list = model('RegisterApi')->getTranReport($referralCode);
-        $page = $list->render();
-        return json(['list'=>$list,'page'=>$page]);
-//        $this->assign('list', $list);
-//        return json(['data'=>$data,'count'=>$count,'code'=>200,'message'=>'权限列表数据']);
+        $list = model('RegisterApi')->getTranReport($referralCode,'','',$dd['pageSize'], $dd['pageIndex']);
+        // halt($list);
+        // $page =$list->render();
+        return json(['data'=>$list,'code'=>0,'msg'=>'提供交易记录据']);
+
     }
     public function getMonthData()
     {
