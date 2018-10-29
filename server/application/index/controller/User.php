@@ -257,22 +257,22 @@ class User
 	    	switch ($type) {
 	    		case '1':
 	    		//营业执照
-	    			Session::set('business_licence',$file_path.'/'.$info->getSaveName());
+	    			Session::set('business_licence'.$userid,$file_path.'/'.$info->getSaveName());
 	    			break;
 	    		
 	    		case '2':
 	    		//个人照片
-	    			Session::set('photo_self',$file_path.'/'.$info->getSaveName());
+	    			Session::set('photo_self'.$userid,$file_path.'/'.$info->getSaveName());
 	    			break;
 
 	    		case '3':
 	    		//身份证正面
-	    			Session::set('id_card_front',$file_path.'/'.$info->getSaveName());
+	    			Session::set('id_card_front'.$userid,$file_path.'/'.$info->getSaveName());
 	    			break;
 	    			
 	    		case '4':
 	    		//身份证反面
-	    			Session::set('id_card_back',$file_path.'/'.$info->getSaveName());
+	    			Session::set('id_card_back'.$userid,$file_path.'/'.$info->getSaveName());
 	    			break;		
 	    	}
 
@@ -284,8 +284,14 @@ class User
 
 	    	$thumb = $this->createThumb($option);
 	    	// dump($thumb);exit;
+			Session::set('temp'.$userid,1);
+			
+	    	dump(Session::get('business_licence'.$userid));
+	    	dump(Session::get('photo_self'.$userid));
+	    	dump(Session::get('id_card_front'.$userid));
+	    	dump(Session::get('id_card_back'.$userid));
 	    	
-	    	Session::set('temp'.$userid,1);
+	    	
 
 	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb ] ]);
 	    }else{
