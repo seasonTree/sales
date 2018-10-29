@@ -54,8 +54,7 @@
         <template slot="items" slot-scope="props" v-if="currentDataType == 1">
             <td class="text-xs-left">{{ props.item.firstName }}</td>
             <td class="text-xs-left">{{ props.item.phone }}</td>
-            <td class="text-xs-right">{{ props.item.unitprice * props.item.quantity }}</td>
-            <td class="text-xs-left">{{ props.item.description }}</td>
+            <td class="text-xs-right">{{ props.item.referralCode }}</td>
             <td class="text-xs-left">{{ props.item.created_at }}</td>
         </template>
     </v-data-table>
