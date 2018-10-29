@@ -16,11 +16,13 @@ new Vue({
         that.dateFm = ltMonth.ltMonStart;
         that.dateTo = ltMonth.ltMonEnd;
 
-        that.getReomteData();
+        // that.getReomteData();
     },
 
     data() {
         return {
+
+            firstLoading: true,
 
             pager: {
                 totalVisible: 7,
@@ -110,7 +112,7 @@ new Vue({
 
             tdata: [],
 
-            // dataTimer: null
+            dataTimer: null
         };
     },
 
@@ -118,6 +120,7 @@ new Vue({
 
         currentDataType: {
             handler(newValue, oldValue) {
+
                 let that = this;
 
                 if (newValue == 0) {
@@ -126,16 +129,26 @@ new Vue({
                     that.theader = that.registrationHead;
                 }
 
+                this.firstLoading = false;
+
                 that.getReomteData();
             },
             immediate: true
         },
 
         dateFm(newValue, oldValue) {
-            this.getReomteData();
+            if(this.firstLoading){
+                return;
+            }
+
+            this.getReomteData();            
         },
 
         dateTo(newValue, oldValue) {
+            if(this.firstLoading){
+                return;
+            }
+
             this.getReomteData();
         }
     },
