@@ -150,14 +150,18 @@ new Vue({
             this.getReomteData();
         },
 
-        'pager.index'(){            
-            this.getReomteData();
-        }
+        // 'pager.index'(){            
+        //     this.getReomteData();
+        // }
     },
 
     methods: {
         exportExcel() {
 
+        },
+
+        changePage(){
+            this.getReomteData();
         },
 
         getReomteData() {

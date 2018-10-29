@@ -60,7 +60,7 @@
     </v-data-table>
 
     <div class="text-md-center">
-        <v-pagination :total-visible="pager.totalVisible" :length="pager.count" v-model="pager.index"></v-pagination>
+        <v-pagination @input="changePage" :total-visible="pager.totalVisible" :length="pager.count" v-model="pager.index"></v-pagination>
     </div>
 
     <div class="text-md-right">
