@@ -124,3 +124,29 @@ export const delCookie = (name) => {
     if (cval != null)
         document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 }
+
+/**
+ * 返回上个月的开始和结束日期，date数据格式
+ * @return { Object } 
+ *          ex: { ltMonStart: 2018-01-01, ltMonEnd: 2018-01-30 }
+ */
+export const getLtMonth = () => {
+    let now = new Date(),
+        year = now.getFullYear(),
+        month = now.getMonth();
+
+    if (month == 0) {
+        month = 12;
+        year = year - 1;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+
+    let ltData = new Date(year, month, 0);
+
+    return {
+        ltMonStart: year + "-" + month + "-" + "01",
+        ltMonEnd: year + "-" + month + "-" + ltData.getDate()
+    }
+}
