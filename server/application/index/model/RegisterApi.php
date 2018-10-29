@@ -39,7 +39,7 @@ class RegisterApi extends Model{
             ->join('ecommerce_api EA','R.userId=EA.userid','RIGHT')->order('created_at','desc')
             ->join('doc_user_info DUI','DUI.user_id =EA.userid','LEFT')->where($where);
             
-        $limitData = $sql->limit($offset, $per_page);
+        $limitData = $sql->limit($offset, $per_page)->select();
         $count = $sql->count();
         // $pageCount = intval(($count + $per_page - 1) / $per_page);
         $pageCount = ceil($count / $per_page);

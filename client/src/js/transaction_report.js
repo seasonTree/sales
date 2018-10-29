@@ -202,8 +202,8 @@ new Vue({
             }).then((res) => {
                 if (res.code == 0) {
                     that.tdata = res.data.data;
-                    that.pager.index = res.data.current_page;
-                    that.pager.count = res.data.last_page;
+                    // that.pager.index = res.data.current_page;
+                    that.pager.count = res.data.pageCount;
                 } else {
                     that.$comp.toast({
                         text: '获取失败，请重试.',
