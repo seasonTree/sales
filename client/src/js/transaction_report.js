@@ -28,7 +28,7 @@ new Vue({
                 totalVisible: 7,
                 count: 15,
                 index: 1,
-                size: 20
+                size: 10
             },
 
             tableType: [{
@@ -201,9 +201,9 @@ new Vue({
                 }
             }).then((res) => {
                 if (res.code == 0) {
-                    that.tdata = res.data.list;
+                    that.tdata = res.data.data;
                     // that.pager.index = res.data.pageIndex;
-                    that.pager.count = res.data.pageCount;
+                    that.pager.count = res.data.last_page;
                 } else {
                     that.$comp.toast({
                         text: '获取失败，请重试.',
