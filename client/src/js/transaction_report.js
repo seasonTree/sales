@@ -26,7 +26,7 @@ new Vue({
 
             pager: {
                 totalVisible: 7,
-                count: 1,
+                count: 15,
                 index: 1,
                 size: 20
             },
@@ -199,7 +199,7 @@ new Vue({
                 if (res.code == 0) {
                     that.tdata = res.data.list;
                     // that.pager.index = res.data.pageIndex;
-                    that.page.count = res.data.pageCount;
+                    that.pager.count = res.data.pageCount;
                 } else {
                     that.$comp.toast({
                         text: '获取失败，请重试.',
