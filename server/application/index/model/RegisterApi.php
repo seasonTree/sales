@@ -13,7 +13,7 @@ use think\Model;
 class RegisterApi extends Model{
     protected $table = 'sales_register_api';
     //获取交易报告数据
-    public function getTranReport($referalCode,$startDate=0,$endDate=0){
+    public function getTranReport($referalCode,$startDate=0,$endDate=0,$per_page){
         if(!$startDate){
             if($referalCode ==1){
                 $where=[];
@@ -31,7 +31,7 @@ class RegisterApi extends Model{
 
         $data =$this->alias('R')->field('R.referralCode,firstName,description,unitprice,quantity,created_at,contactPhone as phone')
             ->join('ecommerce_api EA','R.userId=EA.userid','RIGHT')->order('created_at','desc')
-            ->join('doc_user_info DUI','DUI.user_id =EA.userid','LEFT')->where($where)->paginate(10);
+            ->join('doc_user_info DUI','DUI.user_id =EA.userid','LEFT')->where($where)->paginate($per_page);
         return $data;
     }
     
