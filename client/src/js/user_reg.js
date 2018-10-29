@@ -30,8 +30,13 @@ new Vue({
 
             }, 1000);
 
+            // console.log('***********');
+            // console.log(that.data.phone_num);
+
             that.$api.user.sendSMS({
-                data: that.data
+                data: {
+                    phone_num: that.data.phone_num
+                }
             }).then((res) => {
                 if (res.code == 0) {
                     this.$comp.toast({
@@ -66,15 +71,24 @@ new Vue({
                 password: '',
                 rePassword: '',
                 phone_num: '',
-                identify_code: ''
+                identify_code: '',
+                agree: false
             },
 
             sending: false,
+
+            userRex: /^[a-zA-Z]([_a-zA-Z0-9]{6,12})+$/,
 
             phoneRex: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(19[0-9])|16[6])\d{8}$/,
 
             userNameRoules: [
                 value => !!value || '用户名必填',
+                value => {
+                    // console.log('eeeeeeeeeeeee');
+                    // console.log(this.userRex.test(value))
+
+                    return this.userRex.test(value) || '用户名6至12位，以字母开头,字母，数字，减号，下划线'
+                }
             ],
 
             phoneRoules: [
@@ -85,17 +99,22 @@ new Vue({
             ],
 
             passwordRoules: [
-                v => !!v || '密码是必填'
+                value => !!value || '密码是必填',
+                value => {
+                    return value.length >= 6 || '密码最少6位'
+                }
             ],
 
             rePasswordRoules: [
-                v => !!v || '确认密码是必填',
-                v => this.data.password == v || '两次输入的密码不一致'
+                value => !!value || '确认密码是必填',
+                value => this.data.password == value || '两次输入的密码不一致'
             ],
 
             IdentifyingCodeRoules: [
                 value => !!value || '验证码必填',
             ],
+
+            checkAgree: [value => !!value || ''],
 
             identifyBtnText: '发送验证码',
 
