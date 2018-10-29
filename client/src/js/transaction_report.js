@@ -148,6 +148,10 @@ new Vue({
             }
 
             this.getReomteData();
+        },
+
+        'pager.index'(){            
+            this.getReomteData();
         }
     },
 
@@ -194,7 +198,7 @@ new Vue({
             }).then((res) => {
                 if (res.code == 0) {
                     that.tdata = res.data.list;
-                    that.pager.index = res.data.pageIndex;
+                    // that.pager.index = res.data.pageIndex;
                     that.page.count = res.data.pageCount;
                 } else {
                     that.$comp.toast({
