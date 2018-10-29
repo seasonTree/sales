@@ -17,6 +17,25 @@ class UserInfo extends Model
     	return $res;
     }
 
+    public function insertPic($data){
+    	//插入图片
+    	$res = UserInfo::update($data);
+    	return $res;
+    }
+
+    public function insertUserInfo($data){
+    	//插入用户详细信息
+    	$res = UserInfo::insertGetId($data);
+    	return $res;
+    }
+
+    public function updateUserInfo($data){
+    	//更新用户详细信息
+    	$res = UserInfo::update($data);
+    	return $res;
+
+    }
+
 
 
 

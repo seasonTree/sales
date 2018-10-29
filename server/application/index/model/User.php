@@ -74,6 +74,23 @@ class User extends Model
     	return $res;
     }
 
+    public function getOneUser($where){
+    	//获取一个用户的信息
+    	$res = User::alias('a')
+    			   ->join('sales_user_info b','a.id = b.user_id','left')
+    			   ->field('a.phone,b.*')
+    			   ->where($where)
+    			   ->find();
+    	return $res;
+
+    }
+
+    public function updateUser($data){
+    	//更新用户信息
+    	$res = User::update($data);
+    	return $res;
+    }
+
 
     //登陆验证
     public function loginVerify($name,$pwd)

@@ -66,3 +66,12 @@ export function edit(data){
         data: data
     })
 }
+
+//更新个人信息
+export function insUserInfo(data){
+    return request({
+        url: '/user/insUserInfo',
+        method: 'post',
+        data: data
+    })
+}

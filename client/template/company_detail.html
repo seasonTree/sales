@@ -31,16 +31,16 @@
     </div>
 
     <v-form>
-        <v-text-field label="姓"></v-text-field>
-        <v-text-field label="名字"></v-text-field>
-        <v-text-field label="公司名称"></v-text-field>
-        <v-text-field label="银行账号"></v-text-field>
-        <v-text-field label="开户银行名称"></v-text-field>
-        <v-text-field label="开户银行地址"></v-text-field>
-        <v-text-field label="公司地址"></v-text-field>
-        <v-text-field label="联系人"></v-text-field>
-        <v-text-field label="联系人手机"></v-text-field>
-        <v-text-field label="联系人邮箱"></v-text-field>
+        <v-text-field label="姓" v-model.trim="data.first_name"></v-text-field>
+        <v-text-field label="名字" v-model.trim="data.last_name"></v-text-field>
+        <v-text-field label="公司名称" v-model.trim="data.company_name"></v-text-field>
+        <v-text-field label="银行账号" v-model.trim="data.bank_account"></v-text-field>
+        <v-text-field label="开户银行名称" v-model.trim="data.bank_name"></v-text-field>
+        <v-text-field label="开户银行地址" v-model.trim="data.bank_address"></v-text-field>
+        <v-text-field label="公司地址" v-model.trim="data.address"></v-text-field>
+        <v-text-field label="联系人" v-model.trim="data.contacts"></v-text-field>
+        <v-text-field label="联系人手机" v-model.trim="data.phone"></v-text-field>
+        <v-text-field label="联系人邮箱" v-model.trim="data.email"></v-text-field>
 
         <v-layout row wrap>
             <v-flex xs6 class="image-upload">
@@ -64,7 +64,7 @@
             <a href="javascript:void(0)">＜同意xxx协议＞</a>
         </div>
 
-        <v-btn color="s-primary company-btn">确定</v-btn>
+        <v-btn color="s-primary company-btn" @click="submit">确定</v-btn>
     </v-form>
 
 </v-container>

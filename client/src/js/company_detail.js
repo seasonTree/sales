@@ -15,17 +15,37 @@ new Vue({
         let that = this;
 
         that.$api.user.getOneUser().then((res) => {
-            that.userData = res.data;
+            that.data = res.data;
         }).catch((res) => {
             console.log('eeeeeeeeeeeee');
             console.log(res);
         });
     },
 
+    methods :{
+        submit(){
+            let that = this;
+
+            that.$api.user.insUserInfo({
+                data:that.data
+            }).then((res) => {
+                // that.data = res.data;
+            }).catch((res) => {
+                console.log('eeeeeeeeeeeee');
+                console.log(res);
+            });
+
+        },
+    },
+    
+
     data() {
         return {
 
-            userData:[],
+            data:[
+                
+
+            ],
 
         }
     }
