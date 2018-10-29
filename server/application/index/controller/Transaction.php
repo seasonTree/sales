@@ -23,8 +23,9 @@ class Transaction extends Controller
         $dd = input('post.data');
 
         $referralCode = 1;
-        $list = model('RegisterApi')->getTranReport($referralCode,'','',$dd['pageSize']);
-        $page =$list->render();
+        $list = model('RegisterApi')->getTranReport($referralCode,'','',$dd['pageSize'], $dd['pageIndex']);
+        halt($list);
+        // $page =$list->render();
         return json(['data'=>$list,'code'=>0,'msg'=>'提供交易记录据']);
 
     }
