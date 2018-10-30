@@ -21,12 +21,16 @@ class Transaction extends Controller
     public function lst(){
         $referralCode = session('userid');
         $dd = input('post.data');
-
         $referralCode = 1;
-        $list = model('RegisterApi')->getTranReport($referralCode,'','',$dd['pageSize'], $dd['pageIndex']);
-        // halt($list);
-        // $page =$list->render();
-        return json(['data'=>$list,'code'=>0,'msg'=>'提供交易记录据']);
+        if($dd['type'] == 0){
+            $list = model('RegisterApi')->getTranReport($referralCode,$dd['dateFm'],$dd['dateTo'],$dd['pageSize'], $dd['pageIndex']);
+
+        }elseif ($dd['type']==1){
+            $list = model('DocUserInfo')->getTranReport($referralCode,$dd['dateFm'],$dd['dateTo'],$dd['pageSize'], $dd['pageIndex']);
+        }
+
+
+        return json(['data'=>$list,'code'=>0,'msg'=>'提供交易记录据','dd'=>$dd]);
 
     }
     public function getMonthData()

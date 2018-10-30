@@ -3,7 +3,7 @@ import {
     mixinExt
 } from './mixin';
 import {
-    getLtMonth
+    getCurMonthDay
 } from '../common/util'
 
 new Vue({
@@ -11,12 +11,12 @@ new Vue({
     mixins: [mixinExt],
     created() {
         let that = this,
-            ltMonth = getLtMonth();
+            dyMonth = getCurMonthDay();
 
-        that.dateFm = ltMonth.ltMonStart;
-        that.dateTo = ltMonth.ltMonEnd;
+        that.dateFm = dyMonth.monthDayStart;
+        that.dateTo = dyMonth.monthDayCur;
 
-        // that.getReomteData();
+        that.getReomteData();
     },
 
     data() {
@@ -26,7 +26,7 @@ new Vue({
 
             pager: {
                 totalVisible: 7,
-                count: 15,
+                count: 1,
                 index: 1,
                 size: 10
             },
@@ -127,7 +127,13 @@ new Vue({
                     that.theader = that.transactionHead;
                 } else if (newValue == 1) {
                     that.theader = that.registrationHead;
-                }        
+                }
+
+                if(this.firstLoading){
+                    return;
+                }
+
+                this.pager.index = 1;
 
                 that.getReomteData();
             },

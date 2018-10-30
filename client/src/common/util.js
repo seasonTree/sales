@@ -150,3 +150,19 @@ export const getLtMonth = () => {
         ltMonEnd: year + "-" + month + "-" + ltData.getDate()
     }
 }
+
+/**
+ * 返回当前月的开始到当前，date数据格式
+ * @return { Object }
+ *          ex: { monthDayStart: 2018-01-01, monthDayCur: 2018-01-30 }
+ */
+export const getCurMonthDay = () => {
+    let now = new Date(),
+        year = now.getFullYear(),
+        month = now.getMonth() + 1;
+
+    return {
+        monthDayStart: year + "-" + month + "-" + "01",
+        monthDayCur: year + "-" + month + "-" + now.getDate()
+    }
+}
