@@ -24,14 +24,16 @@ const copyFile = require('copy-webpack-plugin');
 try {
     fs.statSync(outputPath);
 } catch (error) {
-    fs.mkdirSync(outputPath);        
+    fs.mkdirSync(outputPath);
 }
 
 //读取php配置
-function loadGlobalConfig(){
+function loadGlobalConfig() {
 
     let filenamePath = path.resolve(__dirname, '../../config.json'),
-        globalConfig = JSON.parse(fs.readFileSync(filenamePath, { encoding: 'utf-8' }));    
+        globalConfig = JSON.parse(fs.readFileSync(filenamePath, {
+            encoding: 'utf-8'
+        }));
 
     return globalConfig;
 
@@ -122,28 +124,39 @@ module.exports = {
 
     optimization: {
         splitChunks: {
-            chunks: 'all',
-            minChunks: 2,
-            // cacheGroups: {
-            //     vendor: {
-            //         test: /[\\/]node_modules[\\/]/,
-            //         // priority: 0,
-            //         name: 'vendor'
-            //     },
-            //     common: {
-            //         minChunks: 2,
-            //         // priority: 10,
-            //         reuseExistingChunk: true,
-            //         name: 'common'
-            //     }
-            // }
+            // chunks: 'all',
+            // minChunks: 2,
+            // name: 'vendor'
 
-            name: 'vendor'
-            // cacheGroups:{
-            //     common: {
-            //         name: 'common'                
-            //     }
-            // }
+            cacheGroups: {
+                // frame: {                    
+                //     test: /[\\/]node_modules[\\/](vue|vuetify)[\\/]/,
+                //     name: 'frame',
+                //     chunks: 'all',
+                //     minChunks: 1,
+                //     priority: -10,
+                //     minSize: 0
+                // },
+
+                vendor: {                    
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all',
+                    minChunks: 1,
+                    priority: -20,
+                    minSize: 0
+                },
+
+                common: {
+                    test: /[\\/]src[\\/]/,
+                    name: 'common',
+                    chunks: 'all',
+                    minChunks: 2,
+                    priority: -30,
+                    minSize: 0,
+                    reuseExistingChunk: true
+                }
+            },
         },
 
         runtimeChunk: {
