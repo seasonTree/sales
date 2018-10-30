@@ -18,5 +18,27 @@ class DocUserInfo extends Model
     protected $table = 'sales_doc_user_info';
     // 主键
     protected $pk = 'id';
+    public function getTranReport($referalCode,$start,$end,$per_page=10, $pageIndex=1){
+        if($referalCode ==1){
+            $where=[];
+        }else{
+            $where =['referralCode'=>$referalCode];
+        }
+        if($pageIndex < 1){
+            $pageIndex = 1;
+        }
+        $offset = ($pageIndex - 1) * $per_page;
+        $sql =$this->field('referralCode,firstName,create_time as created_at,contactPhone as phone')
+           ->order('create_time','desc')
+           ->where($where)->where('create_time','between',[$start,$end]);
+        $limitData = $sql->limit($offset, $per_page)->select();
+        $count = $sql->count();
+        $pageCount = ceil($count / $per_page);
+        $data = [
+            'data' => $limitData,
+            'pageCount' => $pageCount
+        ];
 
+        return $data;
+    }
 }
