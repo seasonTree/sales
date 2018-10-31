@@ -1,7 +1,7 @@
 {extend name="layout:head2_layout"/}
 
 {block name="css"}
-<link href="__basePath__/css/person_detail.css" rel="stylesheet" />
+<!-- <link href="__basePath__/css/person_detail.css" rel="stylesheet" /> -->
 
 <style>
     .content {
@@ -31,27 +31,31 @@
     </div>
 
     <v-form>
-        <v-text-field label="姓"></v-text-field>
-        <v-text-field label="名字"></v-text-field>
-        <v-text-field label="银行账号"></v-text-field>
-        <v-text-field label="银行名称"></v-text-field>
-        <v-text-field label="银行地址"></v-text-field>
-        <v-text-field label="开户名"></v-text-field>
-        <v-text-field label="固定电话"></v-text-field>
-        <v-text-field label="移动电话"></v-text-field>
+        <v-text-field label="姓" v-model.trim="data.first_name"></v-text-field>
+        <v-text-field label="名字" v-model.trim="data.last_name"></v-text-field>
+        <v-text-field label="银行账号" v-model.trim="data.bank_account"></v-text-field>
+        <v-text-field label="银行名称" v-model.trim="data.bank_name"></v-text-field>
+        <v-text-field label="银行地址" v-model.trim="data.first_name"></v-text-field>
+        <v-text-field label="开户名" v-model.trim="data.account_name"></v-text-field>
+        <v-text-field label="固定电话" v-model.trim="data.fixed_tel"></v-text-field>
+        <v-text-field label="移动电话" v-model.trim="data.phone"></v-text-field>
 
         <v-layout row wrap>
-            <v-flex md6 xs12 class="image-upload">
-                <upload-image content="个人照片"></upload-image>
+            <v-flex md4 xs12 class="image-upload">
+                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2"  content="个人照片"></upload-image>
             </v-flex>
 
-            <v-flex md6 xs12 class="image-upload">
-                <upload-image content="身份证照片"></upload-image>
+            <v-flex md4 xs12 class="image-upload">
+                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3"  content="身份证正面"></upload-image>
+            </v-flex>
+
+            <v-flex md4 xs12 class="image-upload">
+                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4"  content="身份证反面"></upload-image>
             </v-flex>
         </v-layout>
 
 
-        <v-btn color="s-primary person-btn">注册</v-btn>
+        <v-btn color="s-primary person-btn" @click="submit">确定</v-btn>
     </v-form>
 </v-container>
 {/block}

@@ -44,25 +44,21 @@
 
         <v-layout row wrap>
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" image-url="" url="/user/upload?type=1"  content="公司营业执照"></upload-image>
+                <upload-image data-field="data.image_url"  url="/user/upload?type=1"  content="公司营业执照" :image-url="data.business_licence"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" image-url="" url="/user/upload?type=2"  content="公司营业执照"></upload-image>
+                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2"  content="个人照片"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" image-url="" url="/user/upload?type=3"  content="公司营业执照"></upload-image>
+                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3"  content="身份证正面"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" image-url="" url="/user/upload?type=4"  content="公司营业执照"></upload-image>
+                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4"  content="身份证反面"></upload-image>
             </v-flex>
         </v-layout>
-
-        <div class="protocol">
-            <a href="javascript:void(0)">＜同意xxx协议＞</a>
-        </div>
 
         <v-btn color="s-primary company-btn" @click="submit">确定</v-btn>
     </v-form>

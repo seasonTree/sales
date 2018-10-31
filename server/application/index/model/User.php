@@ -80,7 +80,8 @@ class User extends Model
     			   ->join('sales_user_info b','a.id = b.user_id','left')
     			   ->field('a.phone,b.*')
     			   ->where($where)
-    			   ->find();
+    			   ->find()
+                   ->toArray();
     	return $res;
 
     }

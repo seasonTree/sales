@@ -224,9 +224,32 @@ class User
     public function getOneUser(){
     	//获取当前的个人信息
     	$uid = Session::get('user.userid');
-
     	$user_model = new UserModel();
     	$data = $user_model->getOneUser(array('a.id' => $uid));
+    	$field = array(
+			    		'thumb_business_licence',
+			    		'business_licence',
+			    		'thumb_photo_self',
+			    		'photo_self',
+			    		'thumb_id_card_front',
+			    		'id_card_front',
+			    		'thumb_id_card_back',
+			    		'id_card_back'
+    				);
+    	// $path = json_decode(config('template.tpl_replace_string.__basePath__'), true);
+    	$path = config('template.tpl_replace_string.__basePath__');
+    	foreach ($data as $k => $v) {
+    		if (in_array($k, $field)) {
+    			// $data[$k] = $path['publicPath'].$data[$k];
+    			if ($data[$k] != '') {
+    				$data[$k] = $path.$data[$k];
+    			}
+    			// else{
+    			// 	$data[$k] = '/client/image/default.jpg';
+    			// }
+    			
+    		}
+    	}
     	return json(['msg' => '获取成功','code' => 0,'data' => $data]);
     	// dump($user);
     }
@@ -235,6 +258,10 @@ class User
     	//插入个人详细资料
     	$data = input('post.data');
     	$data['user_id'] = Session::get('user.userid');
+    	if (Session::has('user_info_id'.$data['user_id'])) {
+    		//检测是否设置了user_info_id
+    		$data['id'] = Session::get('user_info_id'.$data['user_id']);
+    	}
     	$phone = array(
     						'id' => $data['user_id'],
     						'phone' => $data['phone']
@@ -244,10 +271,12 @@ class User
     	$user_model = new UserModel();
     	$res = $user_model->updateUser($phone);
     	$user_info_model = new UserInfoModel();
-
+    	// dump($data);
     	if ($data['id'] == '') {
     		unset($data['id']);
     		$id = $user_info_model->insertUserInfo($data);
+    		//设置一个user_info_id
+    		Session::set('user_info_id'.$data['user_id'],$id);
     	}
 
     	else{
@@ -259,8 +288,10 @@ class User
     	
     	if ($res) {
 
-    		$this->moveImage($user_info_model,$id);
+    		$this->moveImage($user_info_model,$id,$data);
     	}
+
+    	return json(['msg' => '修改成功','code' => 0]);
 
     	
 
@@ -284,14 +315,6 @@ class User
 	    // 移动到框架应用根目录/uploads/ 目录下
 	    $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move($file_path.'/');
 	    if($info){
-	        // 成功上传后 获取上传信息
-	        // 输出 jpg
-	        // echo $info->getExtension();
-	        // // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-	        // echo $info->getSaveName();
-	        // // 输出 42a79759f284b767dfcb2a0197904287.jpg
-	        // echo $info->getFilename(); 
-
 
 	    	$option = array(
 	    		'image_url' => $file_path.'/'.$info->getSaveName(),
@@ -334,10 +357,6 @@ class User
 	    	}
 			
 	    	// dump(Session::get('business_licence'.$userid));
-	    	// dump(Session::get('photo_self'.$userid));
-	    	// dump(Session::get('id_card_front'.$userid));
-	    	// dump(Session::get('id_card_back'.$userid));
-	    	
 
 	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb[0] ] ]);
 	    }else{
@@ -349,139 +368,64 @@ class User
 
     }
 
-    // public function moveImage(){
-    // 	//上传
-    // 	//先检测目录是否存在
-    // 	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image';
-    // 	if (!is_dir($file_path)) {
-    //         mkdir($file_path,0777,true);
-    //     }
-    // 	// 获取表单上传文件
-	   //  $file = request()->file('image');
-	   //  $type = request()->get('type');
-	   //  //判断上传图片的类型
-
-	   //  // 移动到框架应用根目录/uploads/ 目录下
-	   //  $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,jpeg'])->move($file_path.'/');
-	   //  if($info){
-	   //      // 成功上传后 获取上传信息
-	   //  	$option = array(
-	   //  		'image_url' => $file_path.'/'.$info->getSaveName(),
-	   //  		'pic_name' => $info->getFilename()
-	   //  		);
-
-	   //  	$thumb = $this->createThumb($option);
-	   //  	// dump($thumb);exit;
-
-	   //      return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb ] ]);
-	   //  }else{
-	   //      // 上传失败获取错误信息
-	   //      // echo $file->getError();
-	   //      return json(['msg' => $file->getError(),'code' => 1]);
-	   //  }
-
-    // }
-
-    public function moveImage($obj,$id){
+    public function moveImage($obj,$id,$data){
     	//移动图片
-    	//先检测身份证目录是否存在
-    	$id_card_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image/id_card';
-    	if (!is_dir($id_card_path)) {
-            mkdir($id_card_path,0777,true);
-        }
-
-        //先检测营业执照目录是否存在
-    	$business_licence_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image/business_licence';
-    	if (!is_dir($business_licence_path)) {
-            mkdir($business_licence_path,0777,true);
-        }
-
-        //先检测头像目录是否存在
-    	$photo_self_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image/photo_self';
-    	if (!is_dir($photo_self_path)) {
-            mkdir($photo_self_path,0777,true);
-        }
-
+    	$id_card_path = createDir('id_card_front');
+        $id_card_back_path = createDir('id_card_back');
+    	$business_licence_path = createDir('business_licence');
+    	$photo_self_path = createDir('photo_self');
+    	//创建并获取路径
+        // dump($data);exit;
         $userid = Session::get('user.userid');
-        $save_path = '/client/upload/image/';
+        $save_path = '/upload/image/';
+        //存储路径
+        $del_path = dirname(Env::get('ROOT_PATH')).'/client/dist/';
+        //删除路径
+
+        if (Session::has('user_data'.$userid)) {
+        	//获取session中的user_data
+        	$data = unserialize(Session::pull('user_data'.$userid));
+        }
 
         $user_info_model = new UserInfoModel();
-        //身份证
-        if (Session::has('id_card_front'.$userid)) {
-        	$id_card_front = Session::get('id_card_front'.$userid);
-        	$thumb_id_card_front = Session::get('thumb_id_card_front'.$userid);
-        	//获取临时文件的地址
-        	$ext = strrchr($id_card_front,'.');
-        	//获取文件后缀名
-        	$pic_path = $id_card_path.'/'.$userid.$ext;
-        	$thumb_pic_path = $id_card_path.'/'.$userid.'thumb'.$ext;
-        	//生成移动后的路径
-        	@rename($id_card_front, $pic_path);
-        	@rename($thumb_id_card_front, $thumb_pic_path);
-        	//移动文件
-
-        	$obj->insertPic(
+        $field = array( 
+        				'id_card_front' => $id_card_path,
+        				'id_card_back' => $id_card_back_path,
+        				'business_licence' => $business_licence_path,
+        				'photo_self' => $photo_self_path
+        			);
+        //设置4个字段,字段名 = 地址
+        foreach ($field as $k => $v) {
+        	if (Session::has($k.$userid)) {
+        		$pic = Session::pull($k.$userid);
+        		$thumb_pic = Session::pull('thumb_'.$k.$userid);
+        		//获取临时文件的地址,并删除该session
+        		$ext = strstr($pic, '.');
+        		//获取文件后缀名
+        		$pic_path = $v.'/'.$userid.$ext;
+        		$thumb_pic_path = $v.'/'.$userid.'thumb'.$ext;
+        		//生成移动后的路径
+        		@unlink($del_path.strstr($data[$k],'upload/'));
+	        	@unlink($del_path.strstr($data['thumb_'.$k],'upload/'));
+	        	//删除旧文件
+	        	@rename($pic, $pic_path);
+	        	@rename($thumb_pic, $thumb_pic_path);
+	        	//移动新文件
+	        	$obj->insertPic(
         				array(
-        					'id_card_front' => $_SERVER['SERVER_NAME'].$save_path.'id_card/'.$userid.'front'.$ext,
-        					'thumb_id_card_front' => $_SERVER['SERVER_NAME'].$save_path.'id_card/'.$userid.'thumb_front'.$ext,
+        					$k => $save_path.$k.'/'.date('Ymd',time()).'/'.$userid.$ext,
+        					'thumb_'.$k => $save_path.$k.'/'.date('Ymd',time()).'/'.$userid.'thumb'.$ext,
         					'id' => $id
         				)
         			);
-        	//入库
+        		//入库
+	        	$data[$k] = $save_path.$k.'/'.date('Ymd',time()).'/'.$userid.$ext;
+	        	$data['thumb_'.$k] = $save_path.$k.'/'.date('Ymd',time()).'/'.$userid.'thumb'.$ext;
+	        	//更新这个用户的图片存储地址的路径
+        	}
         }
-
-        if (Session::has('id_card_back'.$userid)) {
-        	$id_card_back = Session::get('id_card_back'.$userid);
-        	$thumb_id_card_back = Session::get('thumb_id_card_back'.$userid);
-        	$ext = strrchr($id_card_back,'.');
-        	$pic_path = $id_card_path.'/'.$userid.$ext;
-        	$thumb_pic_path = $id_card_path.'/'.$userid.'thumb'.$ext;
-        	@rename($id_card_back, $pic_path);
-        	@rename($thumb_id_card_back, $thumb_pic_path);
-
-        	$obj->insertPic(
-        				array('id_card_back' => $_SERVER['SERVER_NAME'].$save_path.'id_card/'.$userid.$ext,
-        					  'thumb_id_card_back' => $_SERVER['SERVER_NAME'].$save_path.'id_card/'.$userid.'thumb'.$ext,
-        					  'id' => $id
-        					)
-        			);
-        }
-
-        //营业执照
-        if (Session::has('business_licence'.$userid)) {
-        	$business_licence = Session::get('business_licence'.$userid);
-        	$thumb_business_licence = Session::get('thumb_business_licence'.$userid);
-        	$ext = strrchr($business_licence,'.');
-        	$pic_path = $business_licence_path.'/'.$userid.$ext;
-        	$thumb_pic_path = $business_licence_path.'/'.$userid.'thumb'.$ext;
-        	@rename($business_licence, $pic_path);
-        	@rename($thumb_business_licence, $thumb_pic_path);
-
-        	$obj->insertPic(
-        				array('business_licence' => $_SERVER['SERVER_NAME'].$save_path.'business_licence/'.$userid.$ext,
-        					  'thumb_business_licence' => $_SERVER['SERVER_NAME'].$save_path.'business_licence/'.$userid.'thumb'.$ext,
-        					  'id' => $id
-        					)
-        			);
-        }
-
-        //头像
-        if (Session::has('photo_self'.$userid)) {
-        	$photo_self = Session::get('photo_self'.$userid);
-        	$thumb_photo_self = Session::get('thumb_photo_self'.$userid);
-        	$ext = strrchr($photo_self,'.');
-        	$pic_path = $photo_self_path.'/'.$userid.$ext;
-        	$thumb_pic_path = $photo_self_path.'/'.$userid.'thumb'.$ext;
-        	@rename($photo_self, $pic_path);
-        	@rename($thumb_photo_self, $thumb_pic_path);
-
-        	$obj->insertPic(
-        				array('photo_self' => $_SERVER['SERVER_NAME'].$save_path.'photo_self/'.$userid.$ext,
-        					  'thumb_photo_self' => $_SERVER['SERVER_NAME'].$save_path.'thumb_photo_self/'.$userid.'thumb'.$ext,
-        					  'id' => $id
-        					)
-        			);
-        }
+        Session::set('user_data'.$userid,serialize($data));
+        //把数据存回session,保证下次调用的时候是最新数据
 
     }
 

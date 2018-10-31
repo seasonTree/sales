@@ -40,6 +40,7 @@ return [
 //        '__IMG__' => '',
 //        '__FONTS__' => '',
         '__basePath__' => '/client',
+        // '__basePath__' => file_get_contents(dirname(Env::get('ROOT_PATH')).'/config.json'),
         '__date__'=>time(),
     ],
     'view_path'=> dirname(Env::get('ROOT_PATH')).'/client/template/',
