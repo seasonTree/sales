@@ -42,7 +42,7 @@
     </div>
 
     <v-form ref="form" v-model="valid">
-        <v-text-field label="用户名" :rules="userNameRoules" maxlength="12"></v-text-field>
+        <v-text-field label="用户名" :rules="userNameRoules" maxlength="12" v-model.trim="data.username"></v-text-field>
         <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" v-model.trim="data.password"
             :type="show_pass ? 'text' : 'password'" :rules="passwordRoules" @click:append="show_pass = !show_pass"></v-text-field>
 
@@ -69,7 +69,7 @@
             <a href="javascript:void(0)" @click="dialog = true">＜xxx协议＞</a>
             </v-layout>
         </div>
-        <v-btn color="s-primary reg-btn" :disabled="!valid && !submitLoading" :loading="submitLoading">注册</v-btn>
+        <v-btn color="s-primary reg-btn" :disabled="!valid && !submitLoading" :loading="submitLoading" @click="submit">注册</v-btn>
     </v-form>
 
 </v-container>

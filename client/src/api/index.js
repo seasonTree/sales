@@ -7,6 +7,7 @@ import * as team from './team';
 import * as message from './message';
 import * as config from './config';
 import * as transaction from './transaction';
+import * as register from './register';
 
 const apis = {
     common,
@@ -17,7 +18,8 @@ const apis = {
     transaction,
     message,
     team,
-    config
+    config,
+    register
 
 }
 

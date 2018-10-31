@@ -37,6 +37,12 @@ class UserInfo extends Model
 
     }
 
+    public function getUrlCode($where){
+        //获取邀请注册的url地址
+        $res = UserInfo::where($where)->field('id,url_code')->find()->toArray();
+        return $res;
+    }
+
 
 
 

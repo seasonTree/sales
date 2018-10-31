@@ -8,6 +8,19 @@ new Vue({
     mixins: [baseMixin],
 
     methods: {
+
+        submit(){
+            let that = this;
+
+            that.$api.register.userRegister({
+                data:that.data
+            }).then((res) => {
+                // that.tdata = res.data;
+            }).catch((res) => {
+                console.log('eeeeeeeeeeeee');
+                console.log(res);
+            });
+        },
         sendSMS() {
             let that = this;
 
@@ -68,6 +81,7 @@ new Vue({
             submitLoading: false,
 
             data: {
+                username:'',
                 password: '',
                 rePassword: '',
                 phone_num: '',

@@ -23,7 +23,14 @@ class Register
         return view('/user_reg');
     }
 
-/**
+
+    public function userRegister(){
+    	//用户注册
+    	$data = input('post.data');
+    	dump($data);
+    }
+
+	/**
      * @return \think\response\Json
      * 发送短信验证码
      */

@@ -9,3 +9,11 @@ export function lst(data) {
     })
 }
 
+//团队列表
+export function showQrCode(data) {
+    return request({
+        url: '/team/showInvitation',
+        method: 'get',
+        data: data
+    })
+}
