@@ -57,8 +57,11 @@ class Role
         }
     }
     public function del(){
-	    $id =input('post.data');
-        if (model('role')->del($id)){
+	    $data =input('post.data');
+	    if(!empty($data['username'])){
+            return json(['data'=>'','code'=>1,'msg'=>'请清空用户列表']);
+        }
+        if (model('role')->del($data['id'])){
             return json(['data'=>'','code'=>0,'msg'=>'删除成功']);
         }else{
             return json(['data'=>'','code'=>1,'msg'=>'删除失败']);

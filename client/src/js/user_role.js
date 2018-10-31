@@ -102,21 +102,20 @@ new Vue({
 
             that.$api.role.add({
                 data: data
-            }).then((res) => {
+            }).then((data) => {
                 // that.editItem.id = data.id;
                 that.showAdd = false;
-                that.message.text = res.msg;
-                that.message.color = 'success';
-                that.message.show = true;
+                that.$comp.toast({
+                    text: data.msg,
+                });
                 setTimeout(function () {
                     window.location.reload();
                 },2000)
             }).catch((data) =>{ //function(data){}
-
-                that.message.text = data.msg;
-                that.message.color = 'error';
-                that.message.show = true;
-                that.submitLoading = false;
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
             });
         },
         editCommit(){
@@ -128,21 +127,18 @@ new Vue({
             that.$api.role.edit({
                 data: data
             }).then((data) => {
-
                 that.showEdit = false;
-                that.message.text = data.msg;
-                that.message.color = 'success';
-                that.message.show = true;
+                that.$comp.toast({
+                    text: data.msg,
+                });
                 setTimeout(function () {
                     window.location.reload();
                 },2000)
             }).catch((data) =>{ //function(data){}
-                // console.log('失败了')
-
-                that.message.text = data.msg;
-                that.message.color = 'error';
-                that.message.show = true;
-                that.submitLoading = false;
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
             });
 
         },
@@ -151,17 +147,18 @@ new Vue({
             that.$api.role.del({
                 data: id
             }).then((data) => {
-                that.message.text = data.msg;
-                that.message.color = 'success';
-                that.message.show = true;
+                that.$comp.toast({
+                    text: data.msg,
+                });
                 setTimeout(function () {
                     window.location.reload();
                 },2000)
 
             }).catch((data) =>{ //function(data){}
-                that.message.text = data.msg;
-                that.message.color = 'error';
-                that.message.show = true;
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
                 // that.submitLoading = false;
             });
         },

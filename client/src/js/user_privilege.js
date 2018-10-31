@@ -9,11 +9,9 @@ new Vue({
 
     created(){
         let that = this;
-        // console.log(this);
-
         that.$api.privilege.get().then((data) =>{
                 that.tdata = data.data;
-                 that.tdata.unshift({parent_id:0,pri_name:'顶级权限',level:0});
+                 that.tdata.unshift({parent_id:0,pri_name:'顶级权限',id:0,level:0});
                 that.items = that.tdata.map(function (item) {
                      item.pri_name = new Array(item.level+1).join('------')+item.pri_name;
                     return item;
@@ -93,7 +91,6 @@ new Vue({
     methods:{
         edit (item) {
             this.editItem = item;
-
             this.showEdit = true;
         },
         del(id){
@@ -120,31 +117,23 @@ new Vue({
             let that = this;
             that.$api.privilege.add({
                 data: that.addItem
-            }).then((res) => {
-
-                // that.editItem.id = data.id;
+            }).then((data) => {
                 that.showAdd = false;
-                that.message.text = res.msg;
-                that.message.color = 'success';
-                that.message.show = true;
-
-                // that.addItem.id = res.data.id
-
+                that.$comp.toast({
+                    text: data.msg,
+                });
 
                 setTimeout(function () {
                     window.location.reload();
                 },2000)
-
-
                 // that.tdata.unshift(that.addItem);
 
             }).catch((data) =>{ //function(data){}
                 // console.log('失败了')
-
-                that.message.text = data.msg;
-                that.message.color = 'error';
-                that.message.show = true;
-                that.submitLoading = false;
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
             });
         },
 
@@ -155,16 +144,14 @@ new Vue({
             }).then((data) => {
                 // that.editItem.id = data.id;
                 that.showEdit = false;
-                that.message.text = data.msg;
-                that.message.color = 'success';
-                that.message.show = true;
+                that.$comp.toast({
+                    text: data.msg,
+                });
             }).catch((data) =>{ //function(data){}
-                // console.log('失败了')
-
-                that.message.text = data.msg;
-                that.message.color = 'error';
-                that.message.show = true;
-                that.submitLoading = false;
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
             });
 
             this.editItem;
