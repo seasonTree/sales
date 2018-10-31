@@ -1,4 +1,5 @@
-import '@css/reset';
+// import '@css/reset';
+import '@css/normalize';
 import 'vuetify/dist/vuetify.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@css/fonts';

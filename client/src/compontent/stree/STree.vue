@@ -1,6 +1,6 @@
 <template>
-    <ul class="tree-node">
-        <li v-for="(item, index) in data" :key="index" class="tree-item">
+    <dl class="tree-node">
+        <dd v-for="(item, index) in data" :key="index" class="tree-item">
 
             <template v-if="item.children.length">
                 <v-icon @click="toggle(index, item)" :class="{ 'active' :item['_open']}">chevron_right</v-icon>
@@ -11,9 +11,9 @@
             <transition name="fade">
                 <s-tree v-if="item.children.length && item['_open']" class="sub-tree-node" :tree-data="item.children" :id-field="idField" :parent-field="parentField" :value-filed="valueFiled" :root-node="rootParent" :parent-node="parent" :parent-item="item"></s-tree>
             </transition>
-        </li>
+        </dd>
 
-    </ul>
+    </dl>
 </template>
 
 <script>

@@ -8,6 +8,7 @@ import * as message from './message';
 import * as config from './config';
 import * as transaction from './transaction';
 import * as register from './register';
+import * as protocol from './protocol';
 
 const apis = {
     common,
@@ -19,8 +20,8 @@ const apis = {
     message,
     team,
     config,
-    register
-
+    register,
+    protocol
 }
 
 const install = function (Vue) {

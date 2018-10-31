@@ -25,8 +25,8 @@
             ref="dTable">
 
             <template slot="items" slot-scope="props">
-                <tr @click="props.expanded = !props.expanded">
-                    <td class="text-xs-left" ref="td1">
+                <tr @click.stop="showDialog(item, true)">
+                    <td class="text-xs-left">
                         {{ props.item.a }}
                     </td>
                     <td class="text-xs-left">
@@ -35,43 +35,89 @@
                     <td class="text-xs-left">
                         {{ props.item.c }}
                     </td>
+                    <td class="text-xs-left">
+                        {{ props.item.d }}
+                    </td>
                     <td class="text-xs-center">
-                        <v-icon small class="mr-2">
+                        <v-icon small class="mr-2" @click.stop="showDialog(props.item, false)">
                             edit
                         </v-icon>
-                        <v-icon small>
+                        <v-icon small @click.stop="del(props.item.id, props.index)">
                             delete
                         </v-icon>
                     </td>
                 </tr>
             </template>
         </v-data-table>
-
     </v-layout>
 
-    <v-dialog scrollable v-model="showAdd" width="800">
+    <v-dialog persistent scrollable v-model="showAdd" width="800">
         <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>
                 新增协议
             </v-card-title>
 
             <v-card-text>
-                <v-form>
-                    <v-text-field label="协议名称"></v-text-field>
-
-                    <textarea name="content" id="editor" placeholder="协议内容">
-                    </textarea>
-
+                <v-form ref="addForm" v-model="addValid">
+                    <v-text-field :rules="rules" label="协议名称" v-model.trim="addItem.title"></v-text-field>
+                    <ck-editor language="zh-cn" ref="addEditor" :content="addItem.content"></ck-editor>
                 </v-form>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="showAdd = false">
+                <v-btn color="s-primary" @click="addCommit" :disabled="addValid">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showAdd = false">
+                <v-btn color="primary" flat @click="hideDialog('add')">
                     取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog persistent scrollable v-model="showEdit" width="800">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                修改协议
+            </v-card-title>
+
+            <v-card-text>
+                <v-form ref="editForm" v-model="editValid">
+                    <v-text-field :rules="rules" label="协议名称" v-model.trim="editItem.title"></v-text-field>
+                    <ck-editor language="zh-cn" ref="editEditor" :content="editItem.content"></ck-editor>
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="editCommit" :disabled="addValid">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="hideDialog('edit')">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog persistent scrollable v-model="showView" width="800">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                查看协议
+            </v-card-title>
+
+            <v-card-text>
+                <v-form >
+                    <v-text-field :readonly="true" label="协议名称" v-model.trim="editItem.title"></v-text-field>
+                    <ck-editor language="zh-cn" :disabled="true" :content="editItem.content"></ck-editor>
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" flat @click="hideDialog('view')">
+                    关闭
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -81,5 +127,6 @@
 {/block}
 
 {block name="script"}
+<script src="__basePath__/js/editor/ckeditor.js?date=__date__"></script>
 <script src="__basePath__/js/chunks/protocol_setting.js?date=__date__"></script>
 {/block}

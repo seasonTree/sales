@@ -1,7 +1,7 @@
 const path = require('path');
 const extractTextPlugin = require("extract-text-webpack-plugin");
 const vueLoaderPlugin = require('vue-loader/lib/plugin');
-const htmlPlugin = require('html-webpack-plugin');
+// const htmlPlugin = require('html-webpack-plugin');
 const fs = require('fs');
 // 自动查找后缀文件
 // const glob = require('glob');
@@ -17,6 +17,8 @@ const outputPath = path.resolve(__dirname, '../dist');
 const entryPath = path.resolve(__dirname, '../src/js');
 
 const srcPath = path.resolve(__dirname, '../src');
+
+// const nodeModulesPath = path.resolve(__dirname, '../../node_modules/');
 
 const copyFile = require('copy-webpack-plugin');
 
@@ -48,7 +50,7 @@ function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
 
     files.forEach((item) => {
-        if (item !== 'upload' && item && item != 'image' && item != 'fonts') {
+        if (item !== 'upload' && item != 'js' && item != 'editor' && item != 'image' && item != 'fonts') {
             var fpath = path.resolve(outputPath, item),
                 fstat = fs.statSync(fpath);
 
@@ -110,12 +112,19 @@ module.exports = {
 
         // publicPath: `${publicPath}`
     },
+
+    externals: {
+        'CKEDITOR': 'window.CKEDITOR'
+    },
+
     resolve: {
         //一定要添加，不然无法找到文件
         extensions: ['.vue', '.js', '.less', '.css', '.json'],
         alias: {
             'vue': 'vue/dist/vue.js',
             '@css': path.resolve(srcPath, 'css'),
+            // '@image': path.resolve(srcPath, 'image'),
+            // '@fonts': path.resolve(srcPath, 'fonts'),
             '@common': path.resolve(srcPath, 'common'),
             '@compontent': path.resolve(srcPath, 'compontent'),
             '@pageCompontent': path.resolve(srcPath, 'page_compontent'),
@@ -138,7 +147,7 @@ module.exports = {
                 //     minSize: 0
                 // },
 
-                vendor: {                    
+                vendor: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendor',
                     chunks: 'all',
@@ -222,7 +231,21 @@ module.exports = {
                 from: `${srcPath}/fonts`,
                 to: `${outputPath}/fonts`,
                 force: true,
+            },
+
+            //ckeditor
+            {
+                from: `/${srcPath}/common/editor`,
+                to: `${outputPath}/js/editor`,
+                force: true,
             }
+
+            // //tinymce
+            // {
+            //     from: `/${nodeModulesPath}/tinymce/skins/lightgray`,
+            //     to: `${outputPath}/css/editor`,
+            //     force: true,
+            // },
         ])
     ],
     module: {
