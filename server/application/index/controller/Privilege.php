@@ -51,7 +51,6 @@ class Privilege extends Controller
             return json(['message'=>$error]);
         }
         return json(['data'=>'ok','code'=>0,'msg'=>'新增成功']);
-
     }
     public function del(){
 	    $id = input('post.data');
