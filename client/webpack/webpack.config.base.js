@@ -50,7 +50,7 @@ function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
 
     files.forEach((item) => {
-        if (item !== 'upload' && item != 'js' && item != 'editor' && item != 'image' && item != 'fonts') {
+        if (item !== 'upload' && item != 'js' && item != 'image' && item != 'fonts') {
             var fpath = path.resolve(outputPath, item),
                 fstat = fs.statSync(fpath);
 
