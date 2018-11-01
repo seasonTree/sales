@@ -17,7 +17,7 @@ new Vue({
             }).then((res) => {
                 if (res.code == 0) {
 
-                    window.location.href = res.data;
+                    window.location.href = res.data.url;
                 } else {
                     // this.globalShowMessage(true, res.msg, 'error');
 

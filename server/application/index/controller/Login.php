@@ -75,7 +75,7 @@ class Login
         if(-4===$info) return json(['code'=>7,'msg'=>'账号被禁用']);
         if(-5===$info) return json(['code'=>8,'msg'=>'账号被拉入黑名单']);
         if($info) Log::record('login:登陆成功','operate');
-        return json(['code'=>0,'msg'=>'登陆成功','url'=>'/user/userinfo']);
+        return json(['code'=>0,'msg'=>'登陆成功','data'=>['url'=>'/user/userInfo']]);
     }
 
     public function testPassword()
@@ -90,10 +90,6 @@ class Login
 
     public function testGetIp()
     {
-      dump(getenv("HTTP_CLIENT_IP"));
-      PHP_EOL;
-      dump(getenv("HTTP_X_FORWARDED_FOR"));
-      PHP_EOL;
-      dump(getenv('REMOTE_ADDR'));
+      dump(getClientIp());
     }
 }

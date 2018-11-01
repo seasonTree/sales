@@ -16,20 +16,20 @@ class Check
 
     }
     public function isLogin(){
-        $user =session('user','');
-        if ($user && $user['userid']){
+        $user =session('user_info');
+        if ($user && $user['id']){
             return true;
         }
         return false;
     }
     public function isHasCheckPri(){
-        $user =session('user');
+        $user =session('user_info');
 
-        if ($user && $user['userid']){
-            if($user['userid'] === 1){
+        if ($user && $user['id']){
+            if($user['id'] === 1){
                 return true;
             }
-          $res = model('User')->chkPri( $user['userid']);
+          $res = model('User')->chkPri( $user['id']);
             if($res['has']){
                 return true;
             }else{
