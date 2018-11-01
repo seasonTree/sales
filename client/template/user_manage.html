@@ -92,10 +92,10 @@
             <v-card-text>
                 <v-form>
                     <v-text-field label="用户名" v-model = "editData.username" disabled></v-text-field>
-                    <!--<v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"-->
-                                  <!--:type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass" v-model = "editData.password"></v-text-field>-->
-                    <!--<v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"-->
-                                  <!--:type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1" v-model = "editData.password_confirm"></v-text-field>-->
+                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
+                                  :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass" v-model = "editData.password"></v-text-field>
+                    <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
+                                  :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1" v-model = "editData.password_confirm"></v-text-field>
                     <template>
                         <v-card flat>
                             <v-card-text>

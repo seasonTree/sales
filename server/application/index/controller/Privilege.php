@@ -10,6 +10,7 @@ class Privilege extends Controller
 	    if($request->error){
 	        return $request->error;
         }
+//        halt($request->priData);
 		return view('/user_privilege');
 
 	}

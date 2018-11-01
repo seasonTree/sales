@@ -3,7 +3,7 @@ namespace app\index\controller;
 
 class Role
 {
-    
+    protected $middleware =['Check'];
 	public function index(){
        
 		//角色主页

@@ -119,7 +119,7 @@ new Vue({
         edit (item) {
             item.role_id =item.role_id ? item.role_id.split(',').map(item =>{
                 return parseInt(item, 10)
-            }):null;
+            }):[];
             this.editData = item;
             this.showEdit = true;
         },
@@ -133,9 +133,9 @@ new Vue({
                 that.$comp.toast({
                     text: data.msg,
                 });
-                setTimeout(function () {
-                    window.location.reload();
-                },2000)
+                // setTimeout(function () {
+                //     window.location.reload();
+                // },2000)
             }).catch((data) =>{ //function(data){}
                 that.$comp.toast({
                     text: data.msg,
