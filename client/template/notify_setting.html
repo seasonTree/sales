@@ -11,18 +11,17 @@
     </div>
 
     <div class="action-bar">
-        <v-btn color="s-primary" class="ml-0" @click="showAddDig">
+        <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
             <v-icon dark>add</v-icon>新增
         </v-btn>
     </div>
 
     <v-layout>
-        <v-data-table :headers="theader" :items="tdata" hide-actions item-key="a" expand class="elevation-4 s-table"
-            ref="dTable">
+        <v-data-table :headers="theader" :items="tdata" hide-actions item-key="a" class="elevation-4 s-table" ref="dTable">
 
             <template slot="items" slot-scope="props">
-                <tr @click="props.expanded = !props.expanded">
-                    <td class="text-xs-left" ref="td1">
+                <tr>
+                    <td class="text-xs-left">
                         {{ props.item.a }}
                     </td>
                     <td class="text-xs-left">
@@ -32,10 +31,19 @@
                         {{ props.item.c }}
                     </td>
                     <td class="text-xs-center">
-                        <v-icon small class="mr-2">
+                        <v-icon small @click.stop="setUse(props.item, ture)" class="mr-2" v-if="!props.item.status"
+                            color="red" title="停止">
+                            block
+                        </v-icon>
+
+                        <v-icon small @click.stop="setUse(props.item, false)" class="mr-2" v-if="props.item.status"
+                            color="light-green" title="开始">
+                            lens
+                        </v-icon>
+                        <v-icon small class="mr-2" @click.stop="showEditDialog(props.item)">
                             edit
                         </v-icon>
-                        <v-icon small>
+                        <v-icon small @click.stop="del(props.item.id, props.index)">
                             delete
                         </v-icon>
                     </td>
@@ -52,21 +60,48 @@
 
             <v-card-text>
                 <v-form>
-                    <!-- <v-select :items="items" label="类型"></v-select> -->
-                    <v-select return-object :items="item_child" item-text="select_name" item-value="id" attach chips :label="items">
-                          
+                    <v-select :rules="rules" v-model="addItem.type" :items="select" item-text="text" item-value="id"
+                        label="消息类型">
                     </v-select>
 
-                    <v-textarea label="消息内容" value="消息内容" hint="请输入消息内容"></v-textarea>
+                    <v-textarea label="消息内容" v-model="addItem.content"></v-textarea>
                 </v-form>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="showAdd = false">
+                <v-btn color="s-primary" @click="addCommit" :disabled="addValid">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showAdd = false">
+                <v-btn color="primary" flat @click="hideDialog('add')">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog scrollable v-model="showEdit" width="500">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                修改
+            </v-card-title>
+
+            <v-card-text>
+                <v-form>
+                    <v-select :rules="rules" v-model="editItem.type" :items="select" item-text="text" item-value="id"
+                        label="消息类型">
+                    </v-select>
+
+                    <v-textarea label="消息内容" v-model="editItem.content"></v-textarea>
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="editCommit" :disabled="editValid">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="hideDialog('edit')">
                     取消
                 </v-btn>
             </v-card-actions>
