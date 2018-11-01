@@ -82,6 +82,12 @@ class User extends Model
     	return $res;
     }
 
+    public function findPhone($phone){
+        //查找电话
+        $res = User::where('phone',$phone)->find();
+        return $res;
+    }
+
     public function updatePassword($data){
     	//修改密码
     	$res = User::where('id',$data['uid'])->update(['password'=>$data['password']]);
