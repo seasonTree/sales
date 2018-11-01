@@ -1,0 +1,22 @@
+{extend name='layout:layout'/}
+
+{block name="_css"}
+
+{/block}
+
+{block name="_head"}
+<div class="header">
+    <v-toolbar>
+        <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
+        <v-toolbar-title>
+            <v-img class="toolbar-img" src="__basePath__/image/kooa_logo.png" contain></v-img>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+    </v-toolbar>
+</div>
+
+{/block}
+
+{block name="_script"}
+<script src="__basePath__/js/chunks/base.js?date=__date__"></script>
+{/block}
