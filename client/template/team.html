@@ -3,11 +3,10 @@
 {block name="css"}
 
 <style>
-
-    .invite-container{
+    .invite-container {
         background-color: white;
         padding: 16px;
-    }    
+    }
 
     .main-table-sub {
         color: #c5c4c4;
@@ -30,15 +29,13 @@
         background-color: #2196f3;
     }
 
-    .copy-url{
+    .copy-url {
         cursor: pointer;
     }
 
-    .copy-url:hover{
+    .copy-url:hover {
         color: #2196f3;
     }
-
-
 </style>
 {/block}
 
@@ -48,21 +45,13 @@
         团队
     </div>
 
-    <!-- <div class=""> -->
-    <!-- <v-container fluid> -->
     <v-layout row align-left>
-        <v-flex xs6>
-            主账号：正崎代理(上海)有限公司
-            &nbsp;&nbsp;
-            <v-btn color="s-primary" class="ml-0" @click="showEdit = true">
-                <v-icon dark>edit</v-icon>修改资料
-            </v-btn>
+        <v-flex xs8>
+            <span class="mr-3">正崎代理(上海)有限公司</span>
+            <span>负责人：陈大文</span>
         </v-flex>
-        <v-flex xs4>
-            <v-card-text class="pa-0">KOOA客服：武勇 1234567890</v-card-text>
-        </v-flex>
-        <v-flex xs2>
-            负责人：陈大文
+        <v-flex xs4 class="text-xs-right">
+            KOOA客服：武勇 1234567890
         </v-flex>
     </v-layout>
 

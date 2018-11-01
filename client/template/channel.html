@@ -49,16 +49,16 @@
         width: 100%;
     }
 
-    .sub-item > div {
+    .sub-item>div {
         padding: 0 24px !important;
     }
 
-    .sub-tabel{
+    .sub-tabel {
         margin-bottom: 0;
     }
 
-    .sub-tabel tr:last-of-type{
-        border-bottom: 1px solid rgba(0,0,0,.12);
+    .sub-tabel tr:last-of-type {
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
     }
 
     .line {
@@ -94,18 +94,12 @@
     </div>
 
     <v-layout row align-center>
-        <v-flex xs6>
-            主账号：正崎代理(上海)有限公司
-            &nbsp;&nbsp;
-            <v-btn color="s-primary" class="ml-0" @click="showEdit = true">
-                <v-icon dark>edit</v-icon>修改资料
-            </v-btn>
+        <v-flex xs8>
+            <span class="mr-3">正崎代理(上海)有限公司</span>
+            <span>负责人：陈大文</span>
         </v-flex>
-        <v-flex xs4>
-            <v-card-text class="pa-0">KOOA客服：武勇 1234567890</v-card-text>
-        </v-flex>
-        <v-flex xs2>
-            负责人：陈大文
+        <v-flex xs4 class="text-xs-right">
+            KOOA客服：武勇 1234567890
         </v-flex>
     </v-layout>
 
@@ -170,8 +164,8 @@
             </template>
 
             <template slot="expand" slot-scope="props">
-                <v-data-table v-if="props.item.children.length" :style="subWidth.table" :headers="theader" :items="props.item.children" hide-headers
-                    hide-actions item-key="id" expand class="s-table sub-tabel">
+                <v-data-table v-if="props.item.children.length" :style="subWidth.table" :headers="theader" :items="props.item.children"
+                    hide-headers hide-actions item-key="id" expand class="s-table sub-tabel">
 
                     <template slot="items" slot-scope="props">
                         <tr @click="props.expanded = !props.expanded" ref="tr">
@@ -185,7 +179,7 @@
                                     {{ props.item.username }}
                                 </span>
                             </td>
-                            <td class="text-xs-left" :style="subWidth.td3" >
+                            <td class="text-xs-left" :style="subWidth.td3">
                                 <div class="qr-container">
                                     <v-img :src="'/channel/QrCode?url_code='+ props.item.url_code" class="qrcode-image"
                                         contain>
@@ -219,7 +213,7 @@
                                 </v-icon>
                             </td>
                         </tr>
-                    </template>                    
+                    </template>
                 </v-data-table>
 
                 <div class="text-xs-center my-2" v-if="props.item.children.length == 0">
@@ -281,7 +275,7 @@
 
                 </div> -->
 
-                
+
 
                 <div class="text-xs-center">
                     <v-btn color="s-primary" class="my-2" @click="showSales(props.item.id,props.item.channel_name)">
@@ -328,8 +322,9 @@
             <v-card-text>
                 <v-flex>
 
-                    <v-select v-model="select" return-object :items="saliesLists" item-text="username" item-value="uid" attach chips label="请选择销售员" multiple full-width>
-                          
+                    <v-select v-model="select" return-object :items="saliesLists" item-text="username" item-value="uid"
+                        attach chips label="请选择销售员" multiple full-width>
+
                     </v-select>
 
 
@@ -341,7 +336,7 @@
                             </v-chip>
                         </template>
                     </v-select> -->
-                </v-form>
+                    </v-form>
             </v-card-text>
 
             <v-btn color="s-primary" @click="showAddUser = true">开通账号</v-btn>
