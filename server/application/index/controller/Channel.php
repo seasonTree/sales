@@ -23,7 +23,7 @@ class Channel
     	//获取渠道列表
     	$channel = new ChannelModel();
     	// $userid = Session::has('user.userid');
-    	$userid = Session::get('user.userid');
+    	$userid = Session::get('user_info')['id'];
     	$data = $channel->getChannel($userid);
     	// dump($userid);
     	return json(['data'=>$data,'code'=>200,'msg'=>'']);
@@ -36,7 +36,7 @@ class Channel
     		return json(['msg' => '渠道名字不能为空' ,'code' => 4 ]);
     	}
     	// $data['user_id'] = Session::has('user.userid');
-    	$data['user_id'] = Session::get('user.userid');
+    	$data['user_id'] = Session::get('user_info')['id'];
     	$channel = new ChannelModel();
 
     	$count = $channel->countChannel($data['user_id']);
@@ -164,7 +164,7 @@ class Channel
     	//二维码
         $url = urldecode(input('url_code'));
         $option = input('option');
-        $logoPath = dirname(Env::get('ROOT_PATH')).'/client/dist/image/logo.jpg';
+        $logoPath = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/image/logo.jpg';
         $code = new \QueryingCode();
         $code->makeQueryingCode($url,$logoPath,$option);
     }

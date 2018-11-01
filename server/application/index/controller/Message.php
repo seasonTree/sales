@@ -14,7 +14,7 @@ class Message
 	public function lst(){
 		//信息列表
 		$message_model = new MessageModel();
-		$userid = Session::get('user.userid');
+		$userid = Session::get('user_info')['id'];
 		$data = $message_model->getMessage(array('receiver' => $userid));
 		if ($data) {
 			return json(['msg' => '获取成功','code' => 0,'data' => $data]);
@@ -26,7 +26,7 @@ class Message
 
 	public function getMessageCount(){
 		//获取未读信息条数
-		$userid = Session::get('user.userid');
+		$userid = Session::get('user_info')['id'];
 		$message_model = new MessageModel();
 		$count = $message_model->getMessageCount(array('receiver' => $userid,'status' => 0));
 		return json(['msg' => '获取未读信息条数成功','code' => 0,'data'=>['count'=>$count]]);
