@@ -74,7 +74,7 @@ export default {
 
     mounted() {
         //id
-        this.id = guid(false).substr(0, 6);
+        // this.id = guid(false).substr(0, 6);
 
         if (this.dataField) {
             this.imageFiled = this.dataField.split(".");
@@ -83,7 +83,7 @@ export default {
 
     data() {
         return {
-            id: 0,
+            id: guid(false).substr(0, 6),
 
             files: [],
 

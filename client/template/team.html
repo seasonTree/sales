@@ -10,48 +10,50 @@
         .export .s-primary {
             margin-right: 0;
         } */
-        .main-table-sub {
-            color: #c5c4c4;
-            border: 1px solid #e3e3e3;
-            padding: 4px;
-            margin: 6px 0;
+    .main-table-sub {
+        color: #c5c4c4;
+        border: 1px solid #e3e3e3;
+        padding: 4px;
+        margin: 6px 0;
         /* text-align: center; */
-        }
-        .download-qrcode {
-            color: #2196f3;
-            border-color: #2196f3;
-            border-radius: 6px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-        }
-        .download-qrcode:hover {
-            color: white;
-            background-color: #2196f3;
-        }
+    }
+
+    .download-qrcode {
+        color: #2196f3;
+        border-color: #2196f3;
+        border-radius: 6px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+
+    .download-qrcode:hover {
+        color: white;
+        background-color: #2196f3;
+    }
 
 
-        .upload-container {
-            height: 100%;
-            line-height: 140px;
-            text-align: center;
-            border: 4px dotted #efefef;
-            cursor: pointer;
-            margin-left: 6px;
-            /* margin-right: 0; */
-        }
+    .upload-container {
+        height: 100%;
+        line-height: 140px;
+        text-align: center;
+        border: 4px dotted #efefef;
+        cursor: pointer;
+        margin-left: 6px;
+        /* margin-right: 0; */
+    }
 
-        .upload-container:first-of-type{
-            margin-right: 6px;
-            margin-left: 0;
-        }
-        /* .v-card__text {
+    .upload-container:first-of-type {
+        margin-right: 6px;
+        margin-left: 0;
+    }
+
+    /* .v-card__text {
             padding: 6px; 
             width: 100%;
             margin-bottom: 30px;
         } */
-
-    </style>
+</style>
 {/block}
 
 {block name="body"}
@@ -78,9 +80,6 @@
         </v-flex>
     </v-layout>
 
-    <!-- </v-container> -->
-    <!-- </div> -->
-
     <div class="action-bar">
         <v-btn color="s-primary" class="ml-0" @click="showInvitation">
             <v-icon dark>add</v-icon>新增成员
@@ -89,116 +88,50 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
-                <td class="text-xs-left">{{ props.item.first_name }}{{ props.item.last_name }}</td>
-                <td class="text-xs-left">{{ props.item.phone }}</td>
-                <td class="text-xs-right">{{ props.item.channel_name }}</td>
-                <td class="text-xs-left">{{ props.item.chan_pfm_obj }}</td>
-                <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
-                <td class="text-xs-left">
-                    <v-checkbox color="info" hide-details></v-checkbox>
-                </td>
-            
+            <td class="text-xs-left">{{ props.item.first_name }}{{ props.item.last_name }}</td>
+            <td class="text-xs-left">{{ props.item.phone }}</td>
+            <td class="text-xs-right">{{ props.item.channel_name }}</td>
+            <td class="text-xs-left">{{ props.item.chan_pfm_obj }}</td>
+            <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
+            <td class="text-xs-left">
+                <v-checkbox color="info" hide-details></v-checkbox>
+            </td>
+
         </template>
     </v-data-table>
 </v-container>
 
-<v-dialog scrollable v-model="showAdd" width="300">
-    <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>
-            邀请
-        </v-card-title>
+<v-dialog scrollable v-model="showAdd" width="400">
 
-        <v-card-text>
-            <!-- <v-form>
-                <v-text-field label="用户名"></v-text-field>
-                <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
-                    @click:append="show_pass = !show_pass"></v-text-field>
-                <v-text-field label="姓"></v-text-field>
-                <v-text-field label="名字"></v-text-field>
-                <v-text-field label="银行账号"></v-text-field>
-                <v-text-field label="银行名称"></v-text-field>
-                <v-text-field label="银行地址"></v-text-field>
-                <v-text-field label="开户名"></v-text-field>
-                <v-text-field label="固定电话"></v-text-field>
-                <v-text-field label="移动电话"></v-text-field>
-
-                <v-layout row wrap>
-                    <v-flex xs6>
-                        <div class="upload-container">
-                            个人照片
-                        </div>
-                    </v-flex>
-
-                    <v-flex xs6>
-                        <div class="upload-container">
-                            身份证照片
-                        </div>
-                    </v-flex>
-                </v-layout>
-            </v-form> -->
-           
-            <!-- <template>
-
-              <td class="text-xs-right">
-                  <div class="qr-container">
-                            <v-img src="/client/image/default.jpg" class="qrcode-image" contain>
-                  </div>
-              </td>
-              <td class="text-xs-right">11</td>
-              <td class="text-xs-right">22</td>
-            </template> -->
-
-            <v-layout row>
-              <v-flex xs12 order-md2 order-xs1 text-xs-center>
-                <v-card  tile flat >
-                  <v-card-text>
+    <v-layout column text-xs-center>
+        <v-flex xs12>
+            <v-card tile flat>
+                <v-card-text>
                     <div class="qr-container">
-                            <v-img :src="'/channel/QrCode?url_code='+ qr_code.url_code" class="qrcode-image" contain>
+                        <v-img :src="'/channel/QrCode?url_code='+ qr_code.url_code" class="qrcode-image" contain>
                     </div>
-                  </v-card-text>
-                </v-card>
-              </v-flex>
-              </v-layout>
-              <v-layout row>
-              <v-flex xs12 order-md3 order-xs2 text-xs-center>
-                <v-card  tile flat >
-                  <v-card-text>
-                    <div @click.stop="CopyUrl(qr_code.url_code)">{{ qr_code.url_code }}<br/>(点击复制)</div>
-                  </v-card-text>
-                </v-card>
-              </v-flex>
-              </v-layout>
-              <v-layout row>
-              <v-flex xs12 order-md1 order-xs3 text-xs-center>
-                <v-card  tile flat >
-                  <v-card-text>
-                     <a class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ qr_code.url_code +'&option=sales'">下载二维码</a>
-                  </v-card-text>
-                </v-card>
-              </v-flex>
-            </v-layout>
-      
-            
+                </v-card-text>
+            </v-card>
+        </v-flex>
 
-        </v-card-text>
+        <v-flex xs12>
+            <v-card tile flat>
+                <v-card-text>
+                    <div @click.stop="CopyUrl(qr_code.url_code)">{{ qr_code.url_code }}<br />(点击复制)</div>
+                </v-card-text>
+            </v-card>
+        </v-flex>
 
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <!-- <v-btn color="s-primary" @click="showAdd = false">
-                确认
-            </v-btn> -->
-            <v-btn color="primary" flat @click="showAdd = false">
-                关闭
-            </v-btn>
-        </v-card-actions>
-    </v-card>
-</v-dialog>
-
-<!-- 编辑资料 -->
-<v-dialog scrollable v-model="showEdit" width="600">
+        <v-flex xs12>
+            <v-card tile flat>
+                <v-card-text>
+                    <a class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ qr_code.url_code +'&option=sales'">下载二维码</a>
+                </v-card-text>
+            </v-card>
+        </v-flex>
+    </v-layout>
 
 </v-dialog>
-
 
 
 {/block}
