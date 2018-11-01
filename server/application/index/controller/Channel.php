@@ -69,7 +69,7 @@ class Channel
     public function getSales(){
     	//获取销售员
     	$user = new UserModel();
-    	$data = $user->getChildSales(Session::get('user.userid'));
+    	$data = $user->getChildSales(Session::get('user_info')['id']);
     	// dump($data);
     	$channel_id = input('post.data.channel_id');
     	$channel_model = new ChannelModel();
@@ -165,7 +165,14 @@ class Channel
         $url = urldecode(input('url_code'));
         $option = input('option');
         $logoPath = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/image/logo.jpg';
+
+        if ($option == 'doc') {
+        	$file_name = input('file_name');
+        }
+        else{
+        	$file_name = '销售注册二维码';
+        }
         $code = new \QueryingCode();
-        $code->makeQueryingCode($url,$logoPath,$option);
+        $code->makeQueryingCode($url,$logoPath,$option,$file_name);
     }
 }

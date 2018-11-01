@@ -2,10 +2,11 @@
 namespace app\index\controller;
 
 use \think\Request;
+use think\facade\Env;
+use app\index\model\User as UserModel;
 
-
-require '../extend/ShortMessage.php';
-require '../extend/Mailer.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/ShortMessage.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 
 class Register
 {
@@ -52,9 +53,13 @@ class Register
     	}
 
     	$user_model = new UserModel();
-    	$find = $user_model->findUser($data['username']);
-    	if ($find) {
+    	$find_user = $user_model->findUser($data['username']);
+    	if ($find_user) {
     		return json(['msg' => '用户名已经存在','code' => 12]);
+    	}
+    	$find_phone = $user_model->findPhone($data['phone_num']);
+    	if ($find_phone) {
+    		return json(['msg' => '电话已经存在','code' => 13]);
     	}
 
     	$redis = new \Redis();

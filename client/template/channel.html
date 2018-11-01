@@ -136,7 +136,7 @@
                     </td>
                     <td class="text-xs-left" ref="td5">
                         <div @click.stop="CopyUrl(props.item.url_code)">{{ props.item.url_code }}</div>
-                        <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'">下载二维码</a>
+                        <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'+'&file_name='+props.item.channel_name+'_医生注册二维码'">下载二维码</a>
                     </td>
                     <td class="text-xs-right" ref="td6">
                         医生
@@ -188,7 +188,7 @@
                             </td>
                             <td class="text-xs-left" :style="subWidth.td5">
                                 <div @click.stop="CopyUrl(props.item.url_code)">{{ props.item.url_code }}</div>
-                                <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'">下载二维码</a>
+                                <a @click.stop="null" class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ props.item.url_code +'&option=doc'+'&file_name='+props.item.channel_name+'_医生注册二维码'">下载二维码</a>
                             </td>
                             <td class="text-xs-right" :style="subWidth.td6">
                                 医生
