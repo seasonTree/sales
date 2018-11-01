@@ -39,13 +39,8 @@ return [
 //        '__JS__' => '',
 //        '__IMG__' => '',
 //        '__FONTS__' => '',
-<<<<<<< Updated upstream
-        '__basePath__' => '/client',
-        // '__basePath__' => file_get_contents(dirname(Env::get('ROOT_PATH')).'/config.json'),
-=======
        '__basePath__' =>file_get_contents(dirname(Env::get('ROOT_PATH')).'/config.json'),
        // '__basePath__' => '/client',
->>>>>>> Stashed changes
         '__date__'=>time(),
     ],
     'view_path'=> dirname(Env::get('ROOT_PATH')).'/client/template/',
