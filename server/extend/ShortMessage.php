@@ -61,10 +61,4 @@ class ShortMessage
         );
         return $content;
     }
-//ini_set("display_errors", "on"); // 显示错误提示，仅用于测试时排查问题
-// error_reporting(E_ALL); // 显示所有错误提示，仅用于测试时排查问题
-//set_time_limit(0); // 防止脚本超时，仅用于测试使用，生产环境请按实际情况设置
-//header("Content-Type: text/plain; charset=utf-8"); // 输出为utf-8的文本格式，仅用于测试
-// 验证发送短信(SendSms)接口
-//print_r(sendSms($phone='',$code='123456'));
 }
