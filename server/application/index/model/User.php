@@ -35,8 +35,12 @@ class User extends Model
     }
     //修改账号
     public function edit($data){
-        model("UserRole")->where(['user_id'=>$data[0]['user_id']])->delete();
-        return model("UserRole")->allowField(true)->insertAll($data);
+        if(!empty($data['role_id'])){
+            model("UserRole")->where(['user_id'=>$data['id']])->delete();
+            model("UserRole")->allowField(true)->insertAll($data['role_id']);
+        }
+       return $this->allowField(true)->save($data,['id'=>$data['id']]);
+//        return model("UserRole")->allowField(true)->insertAll($data);
     }
     //获取非代理商的数据
     public function lst($where){
@@ -74,6 +78,33 @@ class User extends Model
             ->where($where)
             ->find()->toArray();
         return $data;
+    }
+    //获取_menu权限列表
+    public function getBtns(){
+        $user = session('user_info');
+        $id = $user['id'];
+        if ($id ==1){
+            $priData =\Db::name('privilege')->select();
+        }else{
+            $priData=$this->alias('U')->field('P.*')
+                ->join('user_role UR','U.id=UR.user_id','left')
+                ->join('role_pri RP','UR.role_id=RP.role_id','left')
+                ->join('privilege P','P.id=RP.pri_id','left')
+                ->where('U.id='.$id)
+                ->select()->toArray();
+        }
+        $ret =array();
+        foreach($priData as $v){
+            if ($v['parent_id'] ==0){
+                foreach($priData as $v1){
+                    if ($v1['parent_id']==$v['id']){
+                        $v['children'][]=$v1;
+                    }
+                }
+                $ret[]=$v;
+            }
+        }
+        return $ret;
     }
 
     public function findUser($user){

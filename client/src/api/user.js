@@ -29,7 +29,7 @@ export function resetPassword(data) {
 //获取所有角色
 export function get(data) {
     return request({
-        url: '/user/lst',
+        url: '/Auser/lst',
         method: 'post',
         data: data
     })
@@ -37,7 +37,7 @@ export function get(data) {
 //管理员添加账号
 export function add(data){
     return request({
-        url: '/user/add',
+        url: '/Auser/add',
         method: 'post',
         data: data
     })
@@ -53,7 +53,7 @@ export function getOneUser(data){
 //删除账号
 export function del(data){
     return request({
-        url: '/user/del',
+        url: '/Auser/del',
         method: 'post',
         data: data
     })
@@ -61,7 +61,7 @@ export function del(data){
 //修改账号
 export function edit(data){
     return request({
-        url: '/user/edit',
+        url: '/Auser/edit',
         method: 'post',
         data: data
     })
