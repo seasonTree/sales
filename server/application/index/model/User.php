@@ -50,6 +50,13 @@ class User extends Model
     public function del($id){
         return $this->destroy($id);
     }
+
+    public function insertSales($data){
+        //添加一个销售员
+        $res = User::insertGetId($data);
+        return $res;
+    }
+
     public function findUser($user){
     	//查找用户名
     	$res = User::where('username',$user)->find();

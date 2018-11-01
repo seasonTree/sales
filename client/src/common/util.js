@@ -177,7 +177,7 @@ export const getUrlParams = (key) => {
     let URLParams = new Array(),
         params = document.location.search.substr(1).split('&');
 
-    for (i = 0; i < params.length; i++) {
+    for (var i = 0; i < params.length; i++) {
         var aParam = params[i].split('=');
         URLParams[aParam[0]] = aParam[1];
     }

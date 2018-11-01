@@ -2,6 +2,7 @@ import Vue from './base';
 import {
     baseMixin
 } from './mixin';
+import { getUrlParams } from "@common/util";
 
 new Vue({
     el: '#app',
@@ -11,6 +12,8 @@ new Vue({
 
         submit(){
             let that = this;
+
+            that.data.referralCode = getUrlParams('referralCode');
 
             that.$api.register.userRegister({
                 data:that.data

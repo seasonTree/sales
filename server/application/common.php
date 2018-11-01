@@ -22,15 +22,15 @@ function getShortUrl($url){
 
 }
 
-function checkPassword($password){
-	//检查密码
-	$rule = "/^[a-zA-Z0-9_\.]+$/";
+// function checkPassword($password){
+// 	//检查密码
+// 	$rule = "/^[a-zA-Z0-9_\.]+$/";
 
-	if (!preg_match($rule, $password)) {
-		return false;
-	}
-	return true;
-}
+// 	if (!preg_match($rule, $password)) {
+// 		return false;
+// 	}
+// 	return true;
+// }
 
 function checkPhone($phone){
 	//检查电话号码
@@ -40,6 +40,25 @@ function checkPhone($phone){
 		return false;
 	}
 	return true;
+}
+
+function checkUser($username){
+  //检查用户名
+  $rule = "/^[a-zA-Z]([_a-zA-Z0-9]{6,12})+$/";
+
+  if (!preg_match($rule, $username)) {
+    return false;
+  }
+  return true;
+}
+
+function checkPassword($password){
+  //检查密码
+
+  if (strlen($password) < 6 ) {
+    return false;
+  }
+  return true;
 }
 
 function getClientIp()
