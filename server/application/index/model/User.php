@@ -51,10 +51,29 @@ class User extends Model
         return $this->destroy($id);
     }
 
+
     public function insertSales($data){
         //添加一个销售员
         $res = User::insertGetId($data);
         return $res;
+    }
+
+
+    //判断登入者是否有权限
+    public function chkPri($id){
+        $where=[
+            'module_name'=>request()->module(),
+            'controller_name'=>request()->controller(),
+            'action_name'=>request()->action(),
+        ];
+        $data=$this->alias('A')->field('count(A.id) has')
+            ->join('user_role AR','A.id=AR.user_id','left')
+            ->join('role_pri RP','AR.role_id=RP.role_id','left')
+            ->join('privilege P','P.id=RP.pri_id','left')
+            ->where('A.id='.$id)
+            ->where($where)
+            ->find()->toArray();
+        return $data;
     }
 
     public function findUser($user){

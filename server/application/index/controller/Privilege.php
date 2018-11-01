@@ -1,11 +1,17 @@
 <?php
 namespace app\index\controller;
 use \think\Controller;
+use think\Request;
+
 class Privilege extends Controller
 {
-    
-	public function index (){
+    protected $middleware =['Check'];
+	public function index (Request $request){
+	    if($request->error){
+	        return $request->error;
+        }
 		return view('/user_privilege');
+
 	}
 	//提供权限数据
 	public function lst(){
