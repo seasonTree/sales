@@ -128,7 +128,9 @@ export default {
 
                     let img = new Image();
 
-                    img.onload = () => {
+                    // debugger;
+
+                    img.onload = img.onerror = () => {
                         that.progress.show = false;
                         that.progress.indeterminate = false;
 

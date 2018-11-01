@@ -166,3 +166,26 @@ export const getCurMonthDay = () => {
         monthDayCur: year + "-" + month + "-" + now.getDate()
     }
 }
+
+/**
+ * 返回当前url params的值
+ * @param {String} key 要获取params的key
+ * 
+ * @returns {String} value
+ */
+export const getUrlParams = (key) => {
+    let URLParams = new Array(),
+        params = document.location.search.substr(1).split('&');
+
+    for (i = 0; i < params.length; i++) {
+        var aParam = params[i].split('=');
+        URLParams[aParam[0]] = aParam[1];
+    }
+
+    let value = null;
+    if (URLParams[key]) {
+        value = decodeURIComponent(URLParams[key])
+    }
+
+    return value;
+}
