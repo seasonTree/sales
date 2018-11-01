@@ -120,16 +120,15 @@ class User extends Model
 
 
     //登陆验证
-    public function loginVerify($name,$pwd)
+    public function loginVerify($username,$pwd,$remember)
     {
-        if (!$name) return false;
+        if (!$username) return false;
         if (!$pwd) return false;
         //定义存session时候需要排除的个人信息
-        $unField = ['password', 'create_time', 'update_time', 'ip', 'login_time'];
-        $userInfo = self::where('username|phone', '=', $name)->find();
+        $unField = ['password', 'create_time', 'update_time', 'ip', 'phone','login_time'];
+        $userInfo = self::where('username|phone', '=', $username)->find();
         if (!$userInfo) return -1; //账号不存在
         if (!password_verify($pwd, $userInfo['password'])) return -2;//密码不正确
-        if (0 == $userInfo['status']) return -3;//未通过审核
         if (2 == $userInfo['status']) return -4;//账号被禁用
         if (3 == $userInfo['status']) return -5;//账号被拉入黑名单
         $data['login_time'] = time();
@@ -140,9 +139,14 @@ class User extends Model
         }
         $roleName = $this->getUserRoleName($userInfo['id']);
         $userInfo['role_name'] = $roleName;
-        $auth = $this->_getAuth($userInfo['id']);
+        //$auth = $this->_getAuth($userInfo['id']);
         Session::set('user_info', $userInfo->toArray());
-        Session::set('auth', $auth);
+       // Session::set('auth', $auth);
+        if($remember != ''){
+            $cookieInfo['username']=$username;
+            $cookieInfo['password']=encrypt($pwd);
+            Cookie::set('user_info',$cookieInfo,30*24*60*60);
+        }
         return true;
     }
 
