@@ -45,9 +45,9 @@ class QueryingCode
             exit;
         } else {
             if ($option == 'sales') {
-                $bg = dirname(Env::get('ROOT_PATH')).'/client/dist/image/sales_qrcode_bg.jpg';
+                $bg = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/image/sales_qrcode_bg.jpg';
             } else {
-                $bg = dirname(Env::get('ROOT_PATH')).'/client/dist/image/doctor_qrcode_bg.jpg';
+                $bg = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/image/doctor_qrcode_bg.jpg';
             }
             $img_bg = imagecreatefromstring(file_get_contents($bg));
             //list($qCodeWidth, $qCodeHight, $qCodeType) = getimagesize($QR);

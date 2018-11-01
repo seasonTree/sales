@@ -107,7 +107,7 @@ function delDir($path){
 function createDir($file_name)
 {
     //创建文件夹目录
-    $path = dirname(Env::get('ROOT_PATH')) . '/client/dist/upload/image/' . $file_name . '/' . date('Ymd', time());
+    $path = dirname(Env::get('ROOT_PATH')) . config('template.tpl_replace_string.__basePath__').'/dist/upload/image/' . $file_name . '/' . date('Ymd', time());
     if (!is_dir($path)) {
         mkdir($path, 0777, true);
     }
