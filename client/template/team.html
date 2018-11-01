@@ -3,19 +3,17 @@
 {block name="css"}
 
 <style>
-    /* .export {
-            text-align: right;
-        }
 
-        .export .s-primary {
-            margin-right: 0;
-        } */
+    .invite-container{
+        background-color: white;
+        padding: 16px;
+    }    
+
     .main-table-sub {
         color: #c5c4c4;
         border: 1px solid #e3e3e3;
         padding: 4px;
         margin: 6px 0;
-        /* text-align: center; */
     }
 
     .download-qrcode {
@@ -32,27 +30,15 @@
         background-color: #2196f3;
     }
 
-
-    .upload-container {
-        height: 100%;
-        line-height: 140px;
-        text-align: center;
-        border: 4px dotted #efefef;
+    .copy-url{
         cursor: pointer;
-        margin-left: 6px;
-        /* margin-right: 0; */
     }
 
-    .upload-container:first-of-type {
-        margin-right: 6px;
-        margin-left: 0;
+    .copy-url:hover{
+        color: #2196f3;
     }
 
-    /* .v-card__text {
-            padding: 6px; 
-            width: 100%;
-            margin-bottom: 30px;
-        } */
+
 </style>
 {/block}
 
@@ -103,31 +89,17 @@
 
 <v-dialog scrollable v-model="showAdd" width="400">
 
-    <v-layout column text-xs-center>
-        <v-flex xs12>
-            <v-card tile flat>
-                <v-card-text>
-                    <div class="qr-container">
-                        <v-img :src="'/channel/QrCode?url_code='+ qr_code.url_code" class="qrcode-image" contain>
-                    </div>
-                </v-card-text>
-            </v-card>
+    <v-layout column text-xs-center class="invite-container">
+        <v-flex xs12 class="mb-2">
+            <v-img :src="'/channel/QrCode?url_code='+ qr_code.url_code" class="qrcode-image" contain>
+        </v-flex>
+
+        <v-flex xs12 class="mb-2">
+            <div class="copy-url" @click.stop="CopyUrl(qr_code.url_code)">{{ qr_code.url_code }}<br />(点击复制)</div>
         </v-flex>
 
         <v-flex xs12>
-            <v-card tile flat>
-                <v-card-text>
-                    <div @click.stop="CopyUrl(qr_code.url_code)">{{ qr_code.url_code }}<br />(点击复制)</div>
-                </v-card-text>
-            </v-card>
-        </v-flex>
-
-        <v-flex xs12>
-            <v-card tile flat>
-                <v-card-text>
-                    <a class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ qr_code.url_code +'&option=sales'">下载二维码</a>
-                </v-card-text>
-            </v-card>
+            <a class="main-table-sub download-qrcode" :href="'/channel/QrCode?url_code='+ qr_code.url_code +'&option=sales'">下载二维码</a>
         </v-flex>
     </v-layout>
 
