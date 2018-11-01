@@ -57,6 +57,9 @@
             <v-menu offset-y>
                 <v-btn flat primary slot="activator" :class="{'toolbar-active': global.viewSelect.system }">系统信息</v-btn>
                 <v-list dense class="toolbar-dropdown">
+                    {php}$data =model('User')->getBtns();
+                    {/php}
+                    <?php foreach($data as $k=>$v):?>
                     <div>
                         <v-menu offset-x left open-on-hover>
                             <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.user}">
@@ -65,169 +68,173 @@
                                 </v-list-tile-action>
 
                                 <v-list-tile-title>
-                                    用户管理
+                                    {$v['pri_name']}
                                 </v-list-tile-title>
 
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Privilege/index')}" :class="{'sub-item-select': global.currentView == 'privilege'}">
+                                <?php foreach($v['children'] as $k1=>$v1):?>
+                                <?php $url =$v1['controller_name'].'/'.$v1['action_name']; $url=url($url);?>
+                                <v-list-tile href="{$url}" :class="{'sub-item-select': global.currentView == 'privilege'}">
                                     <v-list-tile-title>
-                                        权限
+                                        {$v1['pri_name']}
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-list-tile href="{:url('Role/index')}" :class="{'sub-item-select': global.currentView == 'role'}">
-                                    <v-list-tile-title>
-                                        角色
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile href="{:url('User/index')}" :class="{'sub-item-select': global.currentView == 'user'}">
-                                    <v-list-tile-title>
-                                        用户
-                                    </v-list-tile-title>
-                                </v-list-tile>
+                                <?php endforeach;?>
+                                <!--<v-list-tile href="{:url('Role/index')}" :class="{'sub-item-select': global.currentView == 'role'}">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--角色-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                                <!--<v-list-tile href="{:url('User/index')}" :class="{'sub-item-select': global.currentView == 'user'}">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--用户-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
                             </v-list>
                         </v-menu>
                     </div>
+                    <?php endforeach;?>
 
-                    <div>
-                        <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.commision}">
-                                <v-list-tile-action>
-                                    <v-icon>chevron_left</v-icon>
-                                </v-list-tile-action>
+                    <!--<div>-->
+                        <!--<v-menu offset-x left open-on-hover>-->
+                            <!--<v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.commision}">-->
+                                <!--<v-list-tile-action>-->
+                                    <!--<v-icon>chevron_left</v-icon>-->
+                                <!--</v-list-tile-action>-->
 
-                                <v-list-tile-title>
-                                    佣金管理
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Commision/index')}" :class="{'sub-item-select': global.currentView == 'commision'}">
-                                    <v-list-tile-title>
-                                        佣金设置
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </div>
+                                <!--<v-list-tile-title>-->
+                                    <!--佣金管理-->
+                                <!--</v-list-tile-title>-->
+                            <!--</v-list-tile>-->
+                            <!--<v-list dense class="toolbar-subdropdown">-->
+                                <!--<v-list-tile href="{:url('Commision/index')}" :class="{'sub-item-select': global.currentView == 'commision'}">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--佣金设置-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                            <!--</v-list>-->
+                        <!--</v-menu>-->
+                    <!--</div>-->
 
-                    <div>
-                        <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="">
-                                <v-list-tile-action>
-                                    <v-icon>chevron_left</v-icon>
-                                </v-list-tile-action>
+                    <!--<div>-->
+                        <!--<v-menu offset-x left open-on-hover>-->
+                            <!--<v-list-tile slot="activator" @click="">-->
+                                <!--<v-list-tile-action>-->
+                                    <!--<v-icon>chevron_left</v-icon>-->
+                                <!--</v-list-tile-action>-->
 
-                                <v-list-tile-title>
-                                    财务管理
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        财务资料
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        财务报表
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </div>
+                                <!--<v-list-tile-title>-->
+                                    <!--财务管理-->
+                                <!--</v-list-tile-title>-->
+                            <!--</v-list-tile>-->
+                            <!--<v-list dense class="toolbar-subdropdown">-->
+                                <!--<v-list-tile @click="">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--财务资料-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                                <!--<v-list-tile @click="">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--财务报表-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                            <!--</v-list>-->
+                        <!--</v-menu>-->
+                    <!--</div>-->
 
-                    <div>
-                        <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="">
-                                <v-list-tile-action>
-                                    <v-icon>chevron_left</v-icon>
-                                </v-list-tile-action>
+                    <!--<div>-->
+                        <!--<v-menu offset-x left open-on-hover>-->
+                            <!--<v-list-tile slot="activator" @click="">-->
+                                <!--<v-list-tile-action>-->
+                                    <!--<v-icon>chevron_left</v-icon>-->
+                                <!--</v-list-tile-action>-->
 
-                                <v-list-tile-title>
-                                    报表管理
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        经销商报表
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        内部销售员报表
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </div>
+                                <!--<v-list-tile-title>-->
+                                    <!--报表管理-->
+                                <!--</v-list-tile-title>-->
+                            <!--</v-list-tile>-->
+                            <!--<v-list dense class="toolbar-subdropdown">-->
+                                <!--<v-list-tile @click="">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--经销商报表-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                                <!--<v-list-tile @click="">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--内部销售员报表-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                            <!--</v-list>-->
+                        <!--</v-menu>-->
+                    <!--</div>-->
 
-                    <div>
-                        <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.setting}">
-                                <v-list-tile-action>
-                                    <v-icon>chevron_left</v-icon>
-                                </v-list-tile-action>
+                    <!--<div>-->
+                        <!--<v-menu offset-x left open-on-hover>-->
+                            <!--<v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.setting}">-->
+                                <!--<v-list-tile-action>-->
+                                    <!--<v-icon>chevron_left</v-icon>-->
+                                <!--</v-list-tile-action>-->
 
-                                <v-list-tile-title>
-                                    参数设置
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list dense class="toolbar-subdropdown">
+                                <!--<v-list-tile-title>-->
+                                    <!--参数设置-->
+                                <!--</v-list-tile-title>-->
+                            <!--</v-list-tile>-->
+                            <!--<v-list dense class="toolbar-subdropdown">-->
 
-                                <v-list-tile href="{:url('Config/notifySetting')}" :class="{'sub-item-select': global.currentView == 'notifysetting'}">
-                                    <v-list-tile-title>
-                                        消息设置
-                                    </v-list-tile-title>
-                                </v-list-tile>
+                                <!--<v-list-tile href="{:url('Config/notifySetting')}" :class="{'sub-item-select': global.currentView == 'notifysetting'}">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--消息设置-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
 
-                                <v-list-tile href="{:url('Config/protocolSetting')}" :class="{'sub-item-select': global.currentView == 'protocolsetting'}">
-                                    <v-list-tile-title>
-                                        协议设置
-                                    </v-list-tile-title>
-                                </v-list-tile>
+                                <!--<v-list-tile href="{:url('Config/protocolSetting')}" :class="{'sub-item-select': global.currentView == 'protocolsetting'}">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--协议设置-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
 
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        医生脱离设置
-                                    </v-list-tile-title>
-                                </v-list-tile>
+                                <!--<v-list-tile @click="">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--医生脱离设置-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
 
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        审批流程设置
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </div>
+                                <!--<v-list-tile @click="">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--审批流程设置-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                            <!--</v-list>-->
+                        <!--</v-menu>-->
+                    <!--</div>-->
 
-                    <div>
-                        <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.audit}">
-                                <v-list-tile-action>
-                                    <v-icon>chevron_left</v-icon>
-                                </v-list-tile-action>
+                    <!--<div>-->
+                        <!--<v-menu offset-x left open-on-hover>-->
+                            <!--<v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.audit}">-->
+                                <!--<v-list-tile-action>-->
+                                    <!--<v-icon>chevron_left</v-icon>-->
+                                <!--</v-list-tile-action>-->
 
-                                <v-list-tile-title>
-                                    审核管理
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list dense class="toolbar-subdropdown">
-                                <v-list-tile href="{:url('Audit/regAudit')}" :class="{'sub-item-select': global.currentView == 'regaudit'}">
-                                    <v-list-tile-title>
-                                        注册审核
-                                    </v-list-tile-title>
-                                </v-list-tile>
+                                <!--<v-list-tile-title>-->
+                                    <!--审核管理-->
+                                <!--</v-list-tile-title>-->
+                            <!--</v-list-tile>-->
+                            <!--<v-list dense class="toolbar-subdropdown">-->
+                                <!--<v-list-tile href="{:url('Audit/regAudit')}" :class="{'sub-item-select': global.currentView == 'regaudit'}">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--注册审核-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
 
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        医生脱离审核
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </div>
+                                <!--<v-list-tile @click="">-->
+                                    <!--<v-list-tile-title>-->
+                                        <!--医生脱离审核-->
+                                    <!--</v-list-tile-title>-->
+                                <!--</v-list-tile>-->
+                            <!--</v-list>-->
+                        <!--</v-menu>-->
+                    <!--</div>-->
                 </v-list>
             </v-menu>
 

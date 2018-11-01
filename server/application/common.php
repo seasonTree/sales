@@ -61,6 +61,9 @@ function checkPassword($password){
   return true;
 }
 
+/***
+ * @return array|false|string 获取IP地址
+ */
 function getClientIp()
 {
     if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
@@ -100,11 +103,36 @@ function delDir($path){
   }
 }
 
-function createDir($file_name){
-      //创建文件夹目录
-      $path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image/'.$file_name.'/'.date('Ymd',time());
-      if (!is_dir($path)) {
-            mkdir($path,0777,true);
-        }
-        return $path;
+
+function createDir($file_name)
+{
+    //创建文件夹目录
+    $path = dirname(Env::get('ROOT_PATH')) . config('template.tpl_replace_string.__basePath__').'/dist/upload/image/' . $file_name . '/' . date('Ymd', time());
+    if (!is_dir($path)) {
+        mkdir($path, 0777, true);
+    }
+    return $path;
+}
+/***
+ * @param $data 要加密的数据
+ * @return string 加密后的数据
+ */
+function encrypt($data)
+{
+    $iv='0123456789012345';
+    $key='0123456789';
+    $method=openssl_get_cipher_methods()[0];
+    return openssl_encrypt($data,$method,$key,$options=0,$iv);
+}
+
+/***
+ * @param $data 要解密的数据
+ * @return string  解密后的数据
+ */
+function decrypt($data)
+{
+    $iv='0123456789012345';
+    $key='0123456789';
+    $method=openssl_get_cipher_methods()[0];
+    return openssl_decrypt($data,$method,$key,$options=0,$iv);
 }

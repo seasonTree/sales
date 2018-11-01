@@ -12,61 +12,7 @@ require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 class User
 {
 
-	public function index(){
-		//用户主页
-		return view('/user_manage');
-	}
-	//添加账号
-	public function add(){
-	    $data = input('post.data');
-	    $user =model('User')->findUser($data['username']);
-	    if($user){
-            return json(['msg'=>'账号名已存在','code'=>1]);
-        }
-        $validate =validate('User');
-        if (!$validate->check($data)){
-            $error =$validate->getError();
-            return json(['msg'=>$error,'code'=>1]);
-        }
-        $data['password']= password_hash($data['password'],PASSWORD_DEFAULT);
-        $data['status']= 1;
-        $id=model('User')->add($data);
-        if($id){
-            return json(['msg'=>'新增成功','code'=>0]);
-        }
-    }
-    //修改账号
-    public function edit(){
-        $data = input('post.data');
-        foreach ($data['role_id'] as $k =>$v){
-            $arr[]=[
-                'user_id'=>$data['id'],
-                'role_id'=>$v,
-            ];
-        }
-        $id=model('User')->edit($arr);
 
-        if($id){
-            return json(['msg'=>'修改成功','code'=>'0']);
-        }else{
-            return json(['msg'=>'修改失败','code'=>'1']);
-        }
-    }
-    //用户列表展示
-    public function lst($where = ['type'=>'0']){
-        $data =model('Role')->lst();
-         $res=  model('User')->lst($where);
-         return json(['Userdata'=>$res,'data'=>$data,'code'=>0,'msg'=>'用户列表展示数据']);
-    }
-    //删除账号
-    public function del(){
-        $id =input('post.data');
-        if (model('user')->del($id)){
-            return json(['msg'=>'删除成功','code'=>'0']);
-        }else{
-            return json(['msg'=>'删除失败','code'=>'1']);
-        }
-    }
 
 	public function personInfo(){
 		//个人信息
@@ -96,7 +42,7 @@ class User
 		}
 		else{
 
-			$data['uid'] = Session::get('user.userid');
+			$data['uid'] = Session::get('user_info')['id'];
 		}
 
 		if (strlen($data['password']) < 6 || strlen($data['password']) > 30 ) {
@@ -196,8 +142,8 @@ class User
     	//个人资料
     	// input('post.');
     	// return json(['msg' => '成功','code' => 0,'data' => ]);
-    	$user_id = Session::get('user.userid');
-    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/temp'.$user_id;
+    	$user_id = Session::get('user_info')['id'];
+    	$file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/upload/temp'.$user_id;
     	$has_temp = Session::has('temp'.$user_id);
     	//检测是否存在临时session图片路径记录
     	if (!$has_temp) {
@@ -223,7 +169,7 @@ class User
 
     public function getOneUser(){
     	//获取当前的个人信息
-    	$uid = Session::get('user.userid');
+    	$uid = Session::get('user_info')['id'];
     	$user_model = new UserModel();
     	$data = $user_model->getOneUser(array('a.id' => $uid));
     	$field = array(
@@ -245,7 +191,7 @@ class User
     				$data[$k] = $path.$data[$k];
     			}
     			// else{
-    			// 	$data[$k] = '/client/image/default.jpg';
+    			// 	$data[$k] = config('template.tpl_replace_string.__basePath__').'/image/default.jpg';
     			// }
     			
     		}
@@ -257,7 +203,7 @@ class User
     public function insUserInfo(){
     	//插入个人详细资料
     	$data = input('post.data');
-    	$data['user_id'] = Session::get('user.userid');
+    	$data['user_id'] = Session::get('user_info')['id'];
     	if (Session::has('user_info_id'.$data['user_id'])) {
     		//检测是否设置了user_info_id
     		$data['id'] = Session::get('user_info_id'.$data['user_id']);
@@ -280,7 +226,22 @@ class User
     	}
 
     	else{
-
+    		$field = array(
+			    		'thumb_business_licence',
+			    		'business_licence',
+			    		'thumb_photo_self',
+			    		'photo_self',
+			    		'thumb_id_card_front',
+			    		'id_card_front',
+			    		'thumb_id_card_back',
+			    		'id_card_back'
+    				);
+			foreach ($data as $k => $v) {
+	    		if (in_array($k, $field)) {
+	    			//去除写入图片url
+	    			unset($data[$k]);
+	    		}
+	    	}
     		$res = $user_info_model->updateUserInfo($data);
     		$id = $data['id'];
 
@@ -299,9 +260,9 @@ class User
 
     public function upload(){
     	//上传
-    	$userid = Session::get('user.userid');
+    	$userid = Session::get('user_info')['id'];
 
-    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/temp'.$userid;
+    	$file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/upload/temp'.$userid;
     	$save_path = 'upload/temp'.$userid.'/';
     	
     	// 创建临时文件夹
@@ -376,10 +337,10 @@ class User
     	$photo_self_path = createDir('photo_self');
     	//创建并获取路径
         // dump($data);exit;
-        $userid = Session::get('user.userid');
+        $userid = Session::get('user_info')['id'];
         $save_path = '/upload/image/';
         //存储路径
-        $del_path = dirname(Env::get('ROOT_PATH')).'/client/dist/';
+        $del_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/';
         //删除路径
 
         if (Session::has('user_data'.$userid)) {
@@ -424,6 +385,12 @@ class User
 	        	//更新这个用户的图片存储地址的路径
         	}
         }
+
+        $file_path = $del_path.'/upload/temp'.$userid;
+        delDir($file_path.'/');
+    	//删除临时目录
+    	@rmdir($file_path);
+		//删除空目录
         Session::set('user_data'.$userid,serialize($data));
         //把数据存回session,保证下次调用的时候是最新数据
 
@@ -434,8 +401,8 @@ class User
     	//参数1,image_rul,图片的url地址。
     	//参数2,pic_name,图片的名称。
     	//参数3,save_path,保存地址。
-    	// $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/upload/image_thumb';
-    	$file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/'.$option['save_path'];
+    	// $file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/upload/image_thumb';
+    	$file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/'.$option['save_path'];
     	if (!is_dir($file_path)) {
             //创建目录
             mkdir($file_path,0777,true);
@@ -447,8 +414,8 @@ class User
 
 		//返回data两种路径，1，按域名计算的路径,2，按文件系统进行计算的路径
 		$data = array(
-						'/client/'.$option['save_path'].'thumb_'.$option['pic_name'],
-						'/client/dist/'.$option['save_path'].'thumb_'.$option['pic_name']
+						config('template.tpl_replace_string.__basePath__').'/'.$option['save_path'].'thumb_'.$option['pic_name'],
+						config('template.tpl_replace_string.__basePath__').'/dist/'.$option['save_path'].'thumb_'.$option['pic_name']
 					);
 
 		return $data;

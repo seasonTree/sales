@@ -35,8 +35,12 @@ class User extends Model
     }
     //修改账号
     public function edit($data){
-        model("UserRole")->where(['user_id'=>$data[0]['user_id']])->delete();
-        return model("UserRole")->allowField(true)->insertAll($data);
+        if(!empty($data['role_id'])){
+            model("UserRole")->where(['user_id'=>$data['id']])->delete();
+            model("UserRole")->allowField(true)->insertAll($data['role_id']);
+        }
+       return $this->allowField(true)->save($data,['id'=>$data['id']]);
+//        return model("UserRole")->allowField(true)->insertAll($data);
     }
     //获取非代理商的数据
     public function lst($where){
@@ -51,10 +55,56 @@ class User extends Model
         return $this->destroy($id);
     }
 
+
     public function insertSales($data){
         //添加一个销售员
         $res = User::insertGetId($data);
         return $res;
+    }
+
+
+    //判断登入者是否有权限
+    public function chkPri($id){
+        $where=[
+            'module_name'=>request()->module(),
+            'controller_name'=>request()->controller(),
+            'action_name'=>request()->action(),
+        ];
+        $data=$this->alias('A')->field('count(A.id) has')
+            ->join('user_role AR','A.id=AR.user_id','left')
+            ->join('role_pri RP','AR.role_id=RP.role_id','left')
+            ->join('privilege P','P.id=RP.pri_id','left')
+            ->where('A.id='.$id)
+            ->where($where)
+            ->find()->toArray();
+        return $data;
+    }
+    //获取_menu权限列表
+    public function getBtns(){
+        $user = session('user_info');
+        $id = $user['id'];
+        if ($id ==1){
+            $priData =\Db::name('privilege')->select();
+        }else{
+            $priData=$this->alias('U')->field('P.*')
+                ->join('user_role UR','U.id=UR.user_id','left')
+                ->join('role_pri RP','UR.role_id=RP.role_id','left')
+                ->join('privilege P','P.id=RP.pri_id','left')
+                ->where('U.id='.$id)
+                ->select()->toArray();
+        }
+        $ret =array();
+        foreach($priData as $v){
+            if ($v['parent_id'] ==0){
+                foreach($priData as $v1){
+                    if ($v1['parent_id']==$v['id']){
+                        $v['children'][]=$v1;
+                    }
+                }
+                $ret[]=$v;
+            }
+        }
+        return $ret;
     }
 
     public function findUser($user){
@@ -101,16 +151,15 @@ class User extends Model
 
 
     //登陆验证
-    public function loginVerify($name,$pwd)
+    public function loginVerify($username,$pwd,$remember)
     {
-        if (!$name) return false;
+        if (!$username) return false;
         if (!$pwd) return false;
         //定义存session时候需要排除的个人信息
-        $unField = ['password', 'create_time', 'update_time', 'ip', 'login_time'];
-        $userInfo = self::where('username|phone', '=', $name)->find();
+        $unField = ['password', 'create_time', 'update_time', 'ip', 'phone','login_time'];
+        $userInfo = self::where('username|phone', '=', $username)->find();
         if (!$userInfo) return -1; //账号不存在
         if (!password_verify($pwd, $userInfo['password'])) return -2;//密码不正确
-        if (0 == $userInfo['status']) return -3;//未通过审核
         if (2 == $userInfo['status']) return -4;//账号被禁用
         if (3 == $userInfo['status']) return -5;//账号被拉入黑名单
         $data['login_time'] = time();
@@ -121,9 +170,14 @@ class User extends Model
         }
         $roleName = $this->getUserRoleName($userInfo['id']);
         $userInfo['role_name'] = $roleName;
-        $auth = $this->_getAuth($userInfo['id']);
+        //$auth = $this->_getAuth($userInfo['id']);
         Session::set('user_info', $userInfo->toArray());
-        Session::set('auth', $auth);
+       // Session::set('auth', $auth);
+        if($remember != ''){
+            $cookieInfo['username']=$username;
+            $cookieInfo['password']=encrypt($pwd);
+            Cookie::set('user_info',$cookieInfo,30*24*60*60);
+        }
         return true;
     }
 

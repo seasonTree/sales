@@ -7,15 +7,35 @@ class Check
     {
         if (!$this->isLogin()) {
 
-            return redirect('login/index');
+            return redirect('/');
+        }
+        if(!$this->isHasCheckPri()){
+            $request->error = '非法访问';
         }
         return $next($request);
+
     }
     public function isLogin(){
-        $user =session('adminuser','','easy_love');
+        $user =session('user_info');
         if ($user && $user['id']){
             return true;
         }
         return false;
+    }
+    public function isHasCheckPri(){
+        $user =session('user_info');
+
+        if ($user && $user['id']){
+            if($user['id'] === 1){
+                return true;
+            }
+          $res = model('User')->chkPri( $user['id']);
+            if($res['has']){
+                return true;
+            }else{
+//                session('user',null);
+                return false;
+            }
+        }
     }
 }

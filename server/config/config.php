@@ -27,19 +27,6 @@ return [
         'smtpsecure'=>'ssl',
         'smtpdebug'=>4,
     ],
-    'mail1' => [
-        'host' => 'smtp.qq.com',
-        'smtpauth' => TRUE,
-        'username' => '804310470',
-        'from' => '13538048392@163.com',
-        'fromname' => 'salesms.com',
-        'password' => 'zgmcoflylpoobfca',//邮箱授权码
-        'charset' => 'utf-8',
-        'port'=>587,
-        'smtpsecure'=>'tls',
-        'ishtml' => TRUE,
-        'smtpdebug'=>0
-    ],
     'sendMessage'=>[
         'accessKeyId'=>'LTAI3NfY6JVzdFI7',
         'accessKeySecret'=>'uyAiiBCMMBAyDmkjo59TZOXhrhHNHP',

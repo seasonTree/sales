@@ -718,3 +718,15 @@ if (!function_exists('yaconf')) {
         return Config::yaconf($name, $default);
     }
 }
+
+if (!function_exists('redis')) {
+    /**
+     * 获取容器对象实例
+     * @return Container
+     */
+    function redis()
+    {
+        return \redis\Redis::redis();
+    }
+}
+

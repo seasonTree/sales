@@ -16,7 +16,7 @@ class Team
 	public function lst(){
 		//团队列表
 		$team = new UserModel();
-		$userid = Session::get('user.userid');
+		$userid = Session::get('user_info')['id'];
 		$team_user = $team->getTeamUser(array('parent_id' => $userid));
 		// $channel_model = new ChannelModel();
 
@@ -32,9 +32,9 @@ class Team
 	public function showInvitation(){
 		//获取邀请人的信息
 		$user_info_model = new UserInfoModel();
-		$res = $user_info_model->getUrlCode(array('user_id' => Session::get('user.userid')));
+		$res = $user_info_model->getUrlCode(array('user_id' => Session::get('user_info')['id']));
 		if ($res['url_code'] == '') {
-			$url = getShortUrl('http://'.$_SERVER['SERVER_NAME']."/register/index?referralCode=".Session::get('user.userid'));
+			$url = getShortUrl('http://'.$_SERVER['SERVER_NAME']."/register/index?referralCode=".Session::get('user_info')['id']);
 			$res['url_code'] = $url;
 			$user_info_model->updateUserInfo($res);
 
