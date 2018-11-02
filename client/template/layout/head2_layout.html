@@ -73,6 +73,7 @@
 
                             </v-list-tile>
                             <v-list dense class="toolbar-subdropdown">
+                                <?php if(isset($v['children'])):?>
                                 <?php foreach($v['children'] as $k1=>$v1):?>
                                 <?php $url =$v1['controller_name'].'/'.$v1['action_name']; $url=url($url);?>
                                 <v-list-tile href="{$url}" :class="{'sub-item-select': global.currentView == 'privilege'}">
@@ -81,6 +82,7 @@
                                     </v-list-tile-title>
                                 </v-list-tile>
                                 <?php endforeach;?>
+                                <?php endif;?>
                                 <!--<v-list-tile href="{:url('Role/index')}" :class="{'sub-item-select': global.currentView == 'role'}">-->
                                     <!--<v-list-tile-title>-->
                                         <!--角色-->
