@@ -169,7 +169,13 @@ class User
 
     public function getOneUser(){
     	//获取当前的个人信息
-    	$uid = Session::get('user_info')['id'];
+    	if (input('post.data')) {
+    		$uid = input('post.data');
+    	}
+    	else{
+    		$uid = Session::get('user_info')['id'];
+    	}
+    	
     	$user_model = new UserModel();
     	$data = $user_model->getOneUser(array('a.id' => $uid));
     	$field = array(

@@ -20,12 +20,13 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
-            <td class="text-xs-left">{{ props.item.a }}</td>
-            <td class="text-xs-left">{{ props.item.b }}</td>
-            <td class="text-xs-left">{{ props.item.c }}</td>
-            <td class="text-xs-left">{{ props.item.d }}</td>
+            <td class="text-xs-left">{{ props.item.username }}</td>
+            <td class="text-xs-left">{{ props.item.first_name }}</td>
+            <td class="text-xs-left">{{ props.item.last_name }}</td>
+            <td class="text-xs-left">{{ props.item.role_name }}</td>
+            <td class="text-xs-left">{{ props.item.phone }}</td>
             <td class="text-xs-center">
-                <v-btn color="s-primary" class="mr-0" @click="viewAudit(props.item)">查看明细</v-btn>
+                <v-btn color="s-primary" class="mr-0" @click="viewAudit(props.item.id)">查看明细</v-btn>
             </td>
         </template>
     </v-data-table>
@@ -38,7 +39,7 @@
         </v-card-title>
 
         <v-card-text>
-            <template v-if="viewAuditInfo && viewAuditInfo.e == 'p'">
+            <template v-if="type == 'p'">
                 <v-text-field label="用户名"></v-text-field>
                 <v-text-field label="姓"></v-text-field>
                 <v-text-field label="名字"></v-text-field>
@@ -52,20 +53,20 @@
                 <v-layout row>
                     <v-flex xs6 class="mr-1">
                         <div class="upload-container" @click="viewImage = true">
-                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                            <v-img src="" class="qrcode-image" contain>
                         </div>
                     </v-flex>
 
                     <v-flex xs6 class="ml-1">
                         <div class="upload-container" @click="viewImage = true">
-                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                            <v-img src="" class="qrcode-image" contain>
                         </div>
                     </v-flex>
                 </v-layout>
 
             </template>
 
-            <template v-if="viewAuditInfo && viewAuditInfo.e == 'c'">
+            <template v-if="type == 'c'">
                 <v-text-field label="用户名"></v-text-field>
                 <v-text-field label="密码" type="password"></v-text-field>
                 <v-text-field label="姓"></v-text-field>
@@ -83,19 +84,19 @@
                 <v-layout row>
                     <v-flex xs4 class="mr-1">
                         <div class="upload-container" @click="viewImage = true">
-                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                            <v-img src="" class="qrcode-image" contain>
                         </div>
                     </v-flex>
 
                     <v-flex xs4 class="mr-1">
                         <div class="upload-container" @click="viewImage = true">
-                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                            <v-img src="" class="qrcode-image" contain>
                         </div>
                     </v-flex>
 
                     <v-flex xs4 class="ml-1">
                         <div class="upload-container" @click="viewImage = true">
-                            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+                            <v-img src="" class="qrcode-image" contain>
                         </div>
                     </v-flex>
                 </v-layout>
@@ -116,7 +117,7 @@
 <v-dialog width="300" height="300" v-model="viewImage">
     <v-card>
         <v-card-text>
-            <v-img src="./images/webwxgetmsgimg.jpeg" class="qrcode-image" contain>
+            <v-img src="" class="qrcode-image" contain>
         </v-card-text>
     </v-card>
 </v-dialog>

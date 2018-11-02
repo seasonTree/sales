@@ -156,6 +156,21 @@ class User extends Model
     	return $res;
     }
 
+    public function getRegUser(){
+        //获取注册审核人员
+        $res = User::alias('a')
+                   ->join('sales_user_info b','a.id = b.user_id')
+                   ->join('sales_user_role c','a.id = c.user_id')
+                   ->join('sales_role d','c.role_id = d.id')
+                   ->field('a.id,a.username,a.phone,b.first_name,b.last_name,d.role_name')
+                   ->where('status',0)
+                   ->where('type','<>',0)
+                   ->order('create_time','desc')
+                   ->select()
+                   ->toArray();
+        return $res;
+    }
+
 
     //登陆验证
     public function loginVerify($username,$pwd,$remember)
