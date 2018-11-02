@@ -87,9 +87,9 @@ class User extends Model
             $priData =\Db::name('privilege')->select();
         }else{
             $priData=$this->alias('U')->field('P.*')
-                ->join('user_role UR','U.id=UR.user_id','left')
-                ->join('role_pri RP','UR.role_id=RP.role_id','left')
-                ->join('privilege P','P.id=RP.pri_id','left')
+                ->join('user_role UR','U.id=UR.user_id')
+                ->join('role_pri RP','UR.role_id=RP.role_id')
+                ->join('privilege P','P.id=RP.pri_id')
                 ->where('U.id='.$id)
                 ->select()->toArray();
         }
@@ -104,6 +104,7 @@ class User extends Model
                 $ret[]=$v;
             }
         }
+
         return $ret;
     }
 
