@@ -18,6 +18,17 @@ new Vue({
             that.$api.register.userRegister({
                 data:that.data
             }).then((res) => {
+                if (res.code == 0) {
+                    this.$comp.toast({
+                        text: res.msg,
+                    });
+                    window.location.href = res.data.url;
+                }else{
+                    this.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    });
+                }
                 // that.tdata = res.data;
             }).catch((res) => {
                 console.log('eeeeeeeeeeeee');

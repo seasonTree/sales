@@ -59,7 +59,7 @@ class Register
     	}
     	$find_phone = $user_model->findPhone($data['phone_num']);
     	if ($find_phone) {
-    		return json(['msg' => '电话已经存在','code' => 13]);
+    		return json(['msg' => '电话已经存在','code' => 14]);
     	}
 
     	$redis = new \Redis();
@@ -89,9 +89,15 @@ class Register
         $insert['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
         $insert['username'] = $data['username'];
         $insert['phone'] = $data['phone_num'];
+        $insert['parent_id'] = $data['referralCode'];
 
-
-        dump($data);
+        $res = $user_model->insertSales($insert);
+        if ($res) {
+        	return json(['code' => 0,'msg' => '注册成功','data' => ['url' => '/']]);
+        }
+        else{
+        	return json(['code' => 15,'msg' => '注册失败']);
+        }
 
     }
 
