@@ -142,7 +142,7 @@ class User extends Model
     	//获取一个用户的信息
     	$res = User::alias('a')
     			   ->join('sales_user_info b','a.id = b.user_id','left')
-    			   ->field('a.phone,b.*')
+    			   ->field('a.phone,a.parent_id,b.*')
     			   ->where($where)
     			   ->find()
                    ->toArray();

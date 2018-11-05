@@ -50,7 +50,7 @@ new Vue({
                 })
             });
             that.auditInfo = true;
-
+            
             // that.viewAuditInfo = item;
         }
     },
