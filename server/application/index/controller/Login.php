@@ -52,5 +52,5 @@ class Login
         if($info) Log::record('login:登陆成功','operate');
         return json(['code'=>0,'msg'=>'登陆成功','data'=>['url'=>'/user/userInfo']]);
     }
-    
+
 }
