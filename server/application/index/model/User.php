@@ -86,7 +86,7 @@ class User extends Model
         if ($id ==1){
             $priData =\Db::name('privilege')->select();
         }else{
-            $priData=$this->alias('U')->field('P.*')
+            $priData=$this->alias('U')->distinct('pri_name')->field('P.*')
                 ->join('user_role UR','U.id=UR.user_id')
                 ->join('role_pri RP','UR.role_id=RP.role_id')
                 ->join('privilege P','P.id=RP.pri_id')
