@@ -4,6 +4,7 @@ namespace app\index\controller;
 use \think\Request;
 use think\facade\Env;
 use app\index\model\User as UserModel;
+use app\index\model\UserRole as UserRoleModel;
 
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/ShortMessage.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
@@ -90,9 +91,12 @@ class Register
         $insert['username'] = $data['username'];
         $insert['phone'] = $data['phone_num'];
         $insert['parent_id'] = $data['referralCode'];
+        $insert['type'] = 2;
 
         $res = $user_model->insertSales($insert);
         if ($res) {
+        	$user_role_model = new UserRoleModel();
+        	$user_role_model->insertUserRole(array('user_id' => $res,'role_id' => 15));
         	return json(['code' => 0,'msg' => '注册成功','data' => ['url' => '/']]);
         }
         else{

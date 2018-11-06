@@ -9,7 +9,6 @@
 // +----------------------------------------------------------------------
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
 // 应用公共文件
 
 function getShortUrl($url){
@@ -22,15 +21,6 @@ function getShortUrl($url){
 
 }
 
-// function checkPassword($password){
-// 	//检查密码
-// 	$rule = "/^[a-zA-Z0-9_\.]+$/";
-
-// 	if (!preg_match($rule, $password)) {
-// 		return false;
-// 	}
-// 	return true;
-// }
 
 function checkPhone($phone){
 	//检查电话号码
@@ -135,4 +125,37 @@ function decrypt($data)
     $key='0123456789';
     $method=openssl_get_cipher_methods()[0];
     return openssl_decrypt($data,$method,$key,$options=0,$iv);
+}
+
+/***
+ * @return bool
+ * 判断当前登陆状态
+ */
+function checkLogin()
+{
+    if(\think\facade\Session::has('user_info')){
+        return true;
+    }
+    if(\think\facade\Cookie::has('user_info')){
+        $username=\think\facade\Cookie::get('user_info')['username'];
+        $password=decrypt(\think\facade\Cookie::get('user_info')['password']);
+        $userModel=new \app\index\model\User();
+        $userInfo=$userModel->loginVerify($username,$password,'');
+        if($userInfo===true){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+/**
+ * 获取当前访问路由
+ */
+function   getActionUrl()
+{
+    $controller=\think\facade\Request::controller();
+    $action=\think\facade\Request::action();
+    $url=$controller.'/'.$action;
+    return strtolower($url);
 }

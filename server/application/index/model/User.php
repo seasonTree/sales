@@ -2,6 +2,7 @@
 
 namespace app\index\model;
 
+use think\facade\Cookie;
 use think\facade\Session;
 use think\Model;
 
@@ -86,7 +87,7 @@ class User extends Model
         if ($id ==1){
             $priData =\Db::name('privilege')->select();
         }else{
-            $priData=$this->alias('U')->field('P.*')
+            $priData=$this->alias('U')->distinct('pri_name')->field('P.*')
                 ->join('user_role UR','U.id=UR.user_id')
                 ->join('role_pri RP','UR.role_id=RP.role_id')
                 ->join('privilege P','P.id=RP.pri_id')
@@ -142,7 +143,7 @@ class User extends Model
     	//获取一个用户的信息
     	$res = User::alias('a')
     			   ->join('sales_user_info b','a.id = b.user_id','left')
-    			   ->field('a.phone,b.*')
+    			   ->field('a.phone,a.parent_id,b.*')
     			   ->where($where)
     			   ->find()
                    ->toArray();
@@ -154,6 +155,21 @@ class User extends Model
     	//更新用户信息
     	$res = User::update($data);
     	return $res;
+    }
+
+    public function getRegUser(){
+        //获取注册审核人员
+        $res = User::alias('a')
+                   ->join('sales_user_info b','a.id = b.user_id')
+                   ->join('sales_user_role c','a.id = c.user_id')
+                   ->join('sales_role d','c.role_id = d.id')
+                   ->field('a.id,a.username,a.phone,b.first_name,b.last_name,d.role_name')
+                   ->where('status',0)
+                   ->where('type','<>',0)
+                   ->order('create_time','desc')
+                   ->select()
+                   ->toArray();
+        return $res;
     }
 
 

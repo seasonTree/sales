@@ -47,7 +47,8 @@ export function add(data){
 export function getOneUser(data){
     return request({
         url: '/user/getOneUser',
-        method: 'get',
+        method: 'post',
+        data:data
     })
 }
 //删除账号

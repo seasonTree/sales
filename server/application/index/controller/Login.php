@@ -6,7 +6,6 @@ use think\facade\Cookie;
 use think\facade\Log;
 use think\facade\Request;
 use think\facade\Session;
-use think\Model;
 
 class Login
 {
@@ -25,6 +24,7 @@ class Login
     public function loginOut(){
         //退出登录
         Session::clear();
+        Cookie::clear();
         return redirect('/');
     }
 
@@ -32,10 +32,10 @@ class Login
     {
         if(!Request::param('data.username')) return json(['code'=>1,'msg'=>'用户名不能为空']);
         if(!Request::param('data.password')) return json(['code'=>2,'msg'=>'密码不能为空']);
-//        if(redis()->get('user:'.Request::param('data.username'))>=5){
-//            redis()->expire('user:'.Request::param('data.username'),'600');
-//            return json(['resp_code' => 9, 'msg' =>'登陆次数过多，请十分钟后再试']);
-//        }
+        if(redis()->get('user:'.Request::param('data.username'))>=5){
+            redis()->expire('user:'.Request::param('data.username'),'600');
+            return json(['resp_code' => 9, 'msg' =>'登陆次数过多，请十分钟后再试']);
+        }
         $info=$this->userModel->loginVerify(Request::param('data.username'),Request::param('data.password'),Request::param('data.remember'));
         if(false===$info) return json(['code'=>3,'msg'=>'登陆错误']);
         if(-1===$info) return json(['code'=>4,'msg'=>'账号不存在']);
@@ -52,5 +52,5 @@ class Login
         if($info) Log::record('login:登陆成功','operate');
         return json(['code'=>0,'msg'=>'登陆成功','data'=>['url'=>'/user/userInfo']]);
     }
-    
+
 }

@@ -1,7 +1,10 @@
 <?php
+
 namespace app\behavior;
+
 use \think\Controller;
 use think\Exception;
+use think\facade\Cookie;
 use think\facade\Log;
 use think\facade\Request;
 use think\facade\Session;
@@ -17,64 +20,49 @@ class OperateBehavior extends Controller
     /**
      * 定义需要排除权限的路由
      */
-    protected $exclude =[
-        'index/index/index',
+    protected $exclude = [
+        '/',
+        'index/index',
+        'login/loginOut',
     ];
 
     /**
      *定义未登录需要排除权限的路由
      */
-    protected $login=[
-        'admin/login/index',
-        'admin/login/loginverify',
-        'admin/login/iebrowsernocompat',
-        'admin/index/welcome',
-        'mobile/login/ajaxpswlogin',
-        'mobile/login/ajaxsmslogin',
-        'mobile/login/sendsms',
-        'mobile/login/ajaxupdatepsw',
-        'mobile/login/ajaxisregister',
-        'mobile/login/ajaxregister',
-    ];
-
-    /**
-     *定义不需要检测权限的模块
-     */
-    protected $module=[
-        'union',
-        'mobile',
+    protected $login = [
+        '/',
+        'index/index',
+        'login/searchPass',
+        'login/login',
     ];
 
     /**
      * 权限验证
      */
-    public  function run()
+    public function run()
     {
-            //获取当前访问路由
-            $url=$this->getActionUrl();
-            if(empty(Session::get())&&!in_array($url,$this->login)&&!in_array(strtolower(Request::module()),$this->module)){
-                $this->error('please login first','/login/index');
+        //获取当前访问路由
+        $url = getActionUrl();
+        if (in_array($url, $this->login)) {
+            if (checkLogin()) {
+                $this->redirect('user/userInfo');
             }
-            //用户所拥有的权限路由
-            $auth=Session::get('auth.url')?Session::get('auth.url'):[];
-            if(!$auth&&!in_array($url,$this->login)&&!in_array($url,$this->exclude)&&!in_array(strtolower(Request::module()),$this->module)){
-                $this->error('please login first','/login/index');
+        }
+        if (empty(Session::get()) && !in_array($url, $this->login)) {
+            if (checkLogin()) {
+                $this->redirect($url);
             }
-            if(!in_array($url, $auth) && !in_array($url, $this->exclude) && !in_array(strtolower(Request::module()), $this->moudel)){
-                $this->error('无权限访问1');
-            }
+            $this->error('请先登陆', '/', '', '1');
+        }
 
+        //用户所拥有的权限路由
+//            $auth=Session::get('auth.url')?Session::get('auth.url'):[];
+//            if(!$auth&&!in_array($url,$this->login)&&!in_array($url,$this->exclude)){
+//                $this->error('请先登陆','/index/index');
+//            }
+//            if(!in_array($url, $auth) && !in_array($url, $this->exclude)){
+//                $this->error('无权限访问');
+//            }
     }
 
-    /**
-     * 获取当前访问路由
-     */
-    private function getActionUrl()
-    {
-        $module=Request::module();
-        $controller=Request::controller();
-        $action=Request::action();
-        $url=$module.'/'.$controller.'/'.$action;
-        return strtolower($url);
-    }
 }

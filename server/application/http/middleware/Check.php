@@ -11,6 +11,7 @@ class Check
         }
         if(!$this->isHasCheckPri()){
             $request->error = '非法访问';
+            return redirect('/user/userInfo');
         }
         return $next($request);
 
