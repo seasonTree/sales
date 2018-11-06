@@ -8,11 +8,11 @@
 
 namespace app\behavior;
 
+use think\Controller;
 
-class AccessBehavior
+class AccessBehavior extends Controller
 {
     public function run()
     {
-
     }
 }

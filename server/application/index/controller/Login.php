@@ -6,7 +6,6 @@ use think\facade\Cookie;
 use think\facade\Log;
 use think\facade\Request;
 use think\facade\Session;
-use think\Model;
 
 class Login
 {
@@ -25,6 +24,7 @@ class Login
     public function loginOut(){
         //退出登录
         Session::clear();
+        Cookie::clear();
         return redirect('/');
     }
 

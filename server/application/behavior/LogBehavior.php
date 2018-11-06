@@ -8,7 +8,6 @@
 
 namespace app\behavior;
 
-
 class LogBehavior
 {
     public function run()

@@ -2,6 +2,7 @@
 
 namespace app\index\model;
 
+use think\facade\Cookie;
 use think\facade\Session;
 use think\Model;
 
