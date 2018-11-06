@@ -5,14 +5,13 @@ use think\facade\Request;
 use think\facade\Session;
 use app\index\model\UserInfo as UserInfoModel;
 use app\index\model\User as UserModel;
+use app\index\model\Message as MessageModel;
 
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/ShortMessage.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 
 class User
 {
-
-
 
 	public function personInfo(){
 		//个人信息
@@ -188,17 +187,15 @@ class User
 			    		'thumb_id_card_back',
 			    		'id_card_back'
     				);
-    	// $path = json_decode(config('template.tpl_replace_string.__basePath__'), true);
     	$path = config('template.tpl_replace_string.__basePath__');
     	foreach ($data as $k => $v) {
     		if (in_array($k, $field)) {
-    			// $data[$k] = $path['publicPath'].$data[$k];
     			if ($data[$k] != '') {
     				$data[$k] = $path.$data[$k];
     			}
-    			// else{
-    			// 	$data[$k] = config('template.tpl_replace_string.__basePath__').'/image/default.jpg';
-    			// }
+    			else{
+    				$data[$k] = '';
+    			}
     			
     		}
     	}
@@ -214,9 +211,15 @@ class User
     		//检测是否设置了user_info_id
     		$data['id'] = Session::get('user_info_id'.$data['user_id']);
     	}
+    	$status = 0;
+    	if ($data['type'] == 0) {
+    		$status = 1;
+    	}
     	$phone = array(
     						'id' => $data['user_id'],
-    						'phone' => $data['phone']
+    						'phone' => $data['phone'],
+    						'status' => $status,
+    						'update_time' => time()
     					);
     	unset($data['phone']);
     	//删除电话
@@ -256,9 +259,29 @@ class User
     	if ($res) {
 
     		$this->moveImage($user_info_model,$id,$data);
+
+    		if ($status == 0 ) {
+    			$admin = $user_model->getAdmin(array('type' => 0));
+	    		$key_list = array_column($admin,'id');
+
+	    		$message_model = new MessageModel();
+	    		foreach ($key_list as $k => $v) {
+	    			$insert_message[$k]['title'] = '审核通知';
+	    			$insert_message[$k]['sender'] = $data['user_id'];
+	    			$insert_message[$k]['receiver'] = $v;
+	    			$insert_message[$k]['type'] = 3;
+	    			$insert_message[$k]['content'] = '您有一条'.$data['username'].'的注册信息需要审核！';
+	    			
+	    		}
+	    		$message_model->addMessageAll($insert_message);
+    		}
+
+    		return json(['msg' => '修改成功','code' => 0]);
+    	}
+    	else{
+    		return json(['msg' => '修改失败','code' => 1]);
     	}
 
-    	return json(['msg' => '修改成功','code' => 0]);
 
     	
 
