@@ -13,6 +13,20 @@ require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 class User
 {
 
+<<<<<<< Updated upstream
+=======
+    public function memberlst(){
+        return view('/member_list');
+    }
+    //获取会员列表数据
+    public function  getmemberlst(){
+        $post = input('post.data');
+        $data = model('User')->memberlst(['type'=>$post['type']]);
+        return json(['code'=>0,'data'=>$data]);
+
+    }
+
+>>>>>>> Stashed changes
 	public function personInfo(){
 		//个人信息
 		return view('/user_info');

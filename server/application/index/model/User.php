@@ -51,6 +51,23 @@ class User extends Model
             ->group('U.id')
             ->select();
     }
+    public function memberlst($where,$per_page=10, $pageIndex=1){
+        if($pageIndex < 1){
+            $pageIndex = 1;
+        }
+        $offset = ($pageIndex - 1) * $per_page;
+        $sql =$this->alias('U')->where($where)->field('U.id,U.username,U.status,U.type,U.phone,U.create_time,UI.first_name,UI.last_name')
+           ->join('user_info UI','U.id = UI.user_id')
+           ->order('create_time','desc');
+        $limitData = $sql->limit($offset, $per_page)->select();
+        $count = $sql->count();
+        $pageCount = ceil($count / $per_page);
+        $data = [
+            'data' => $limitData,
+            'pageCount' => $pageCount
+        ];
+        return $data;
+    }
     //真删除账号
     public function del($id){
         return $this->destroy($id);
