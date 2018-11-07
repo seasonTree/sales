@@ -35,7 +35,7 @@ new Vue({
     methods: {
         addCommit() {
             let that = this;
-
+            that.addItem.content = this.$refs['addEditor'].getContent();
             that.$api.protocol.add(that.addItem).then((res) => {
                 if (res.code == 0) {
                     that.$comp.toast({
@@ -63,8 +63,8 @@ new Vue({
 
         editCommit() {
             let that = this;
-
-            that.$api.protocol.edt(that.addItem).then((res) => {
+            that.editItem.content = this.$refs['editEditor'].getContent();
+            that.$api.protocol.edit(that.editItem).then((res) => {
                 if (res.code == 0) {
                     that.$comp.toast({
                         text: res.msg,
@@ -134,11 +134,11 @@ new Vue({
         },
 
         //修改和查看都是用这个
-        showDialog(item, isView) { //isview用于检查用户是否打开查看
+        showDialog(id, isView) { //isview用于检查用户是否打开查看
             let that = this;
-
+            that.data.id = id;
             that.$api.protocol.getContent({
-                    data: item.id
+                    data: that.data
                 }).then((res) => {
                 if (res.code == 0) {
                     that.editItem.id = res.data.id;
@@ -178,6 +178,10 @@ new Vue({
                 id: null,
                 title: '',
                 content: ''
+            },
+
+            data:{
+                id:''
             },
 
             showAdd: false,

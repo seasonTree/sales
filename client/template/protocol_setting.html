@@ -25,18 +25,18 @@
             ref="dTable">
 
             <template slot="items" slot-scope="props">
-                <tr @click.stop="showDialog(item, true)">
+                <tr @click.stop="showDialog(props.item.id, true)">
                     <td class="text-xs-left">
-                        {{ props.item.a }}
+                        {{ props.item.id }}
                     </td>
                     <td class="text-xs-left">
-                        {{ props.item.b }}
+                        {{ props.item.title }}
                     </td>
                     <td class="text-xs-left">
-                        {{ props.item.c }}
+                        {{ props.item.create_time }}
                     </td>
                     <td class="text-xs-left">
-                        {{ props.item.d }}
+                        {{ props.item.update_time }}
                     </td>
                     <td class="text-xs-center">
                         <v-icon small class="mr-2" @click.stop="showDialog(props.item, false)">
@@ -66,7 +66,7 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="addCommit" :disabled="addValid">
+                <v-btn color="s-primary" @click="addCommit" >
                     确认
                 </v-btn>
                 <v-btn color="primary" flat @click="hideDialog('add')">
@@ -91,7 +91,7 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="editCommit" :disabled="editValid">
+                <v-btn color="s-primary" @click="editCommit" >
                     确认
                 </v-btn>
                 <v-btn color="primary" flat @click="hideDialog('edit')">

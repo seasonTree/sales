@@ -66,7 +66,7 @@
             <span>
                 同意
             </span>
-            <a href="javascript:void(0)" @click="dialog = true">＜xxx协议＞</a>
+            <a href="/Config/showProtocol?p_id=1" target="_blank">＜注册协议＞</a>
             </v-layout>
         </div>
         <v-btn color="s-primary reg-btn" :disabled="!valid && !submitLoading" :loading="submitLoading" @click="submit">注册</v-btn>
@@ -77,11 +77,11 @@
 <v-dialog scrollable v-model="dialog" width="500">
     <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
-            法律条文
+            {{ register_title }}
         </v-card-title>
 
         <v-card-text>
-            法律条文
+            {{ register_content }}
         </v-card-text>
 
         <v-divider></v-divider>
@@ -89,7 +89,7 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary" flat @click="dialog = false">
-                我同意
+                关闭
             </v-btn>
         </v-card-actions>
     </v-card>

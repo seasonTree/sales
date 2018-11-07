@@ -83,6 +83,28 @@ new Vue({
                 });
             })
         },
+
+        register_protocol(){
+            //注册协议
+            let that = this;
+            that.protocol.id = 1;
+            that.$api.protocol.getContent({
+                data:that.protocol
+            }).then((res) => {
+                that.register_title = res.data.title;
+                that.register_content = res.data.content;
+                // that.tdata = res.data;
+            }).catch((res) => {
+                this.$comp.toast({
+                    text: '获取数据失败，请重试.',
+                    color: 'error'
+                });
+            });
+
+            // that.dialog = true;
+
+
+        }
     },
 
     data() {
@@ -93,6 +115,12 @@ new Vue({
             show_pass1: false,
             dialog: false,
             submitLoading: false,
+            register_title: '',
+            register_content: '',
+
+            protocol:{
+                id : ''
+            },
 
             data: {
                 username:'',
