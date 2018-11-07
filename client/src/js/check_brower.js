@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // 获取当前浏览器名 及 版本号
 function appInfo() {
     var browser = {
@@ -19,6 +20,8 @@ function appInfo() {
 let browser = appInfo(),
     name = browser.appname,
     isIE = browser.indexOf('msie');
+// Internet Explorer 6-11
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
 
 if(isIE){
     window.location.replace('index/browserChoose');
