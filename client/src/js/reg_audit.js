@@ -37,6 +37,12 @@ new Vue({
                 }).then((res) => {
                 if (res.code == 0) {
                     that.viewAuditInfo = res.data;
+                    if (res.data.parent_id == 0) {
+                        that.type = 'c';
+                    }
+                    else{
+                        that.type = 'p';
+                    }
                 } else {
                     that.$comp.toast({
                         text: res.msg,
@@ -50,8 +56,82 @@ new Vue({
                 })
             });
             that.auditInfo = true;
-            
+            // that.viewImage = true;
             // that.viewAuditInfo = item;
+        },
+
+        bigImage(url){
+            // alert(image_url);
+            // that.image_url = '/client/image/default.jpg';
+            let that = this;
+            that.image_url = url;
+            that.viewImage = true;
+        },
+
+        auditCommit(uid){
+            let that = this;
+            that.data.uid = uid;
+            that.data.type = 1;
+            that.submitLoading = true;
+            that.$api.audit.auditCommit({
+                    data:that.data
+                }).then((res) => {
+                if (res.code == 0) {
+                    that.$comp.toast({
+                    text: res.msg,
+                    
+                })
+                  window.location.href = res.data.url;
+                } else {
+                    that.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    })
+                    that.submitLoading = false;
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: '提交失败，请重试.',
+                    color: 'error'
+                })
+                that.submitLoading = false;
+            });
+
+        },
+
+        auditNotPs(uid){
+            let that = this;
+            that.data.uid = uid;
+            that.auditNotPass = true;
+        },
+
+        auditCommitNotPass(){
+            let that = this;
+            that.data.type = -1;
+            that.submitLoading = true;
+            that.$api.audit.auditCommit({
+                    data:that.data
+                }).then((res) => {
+                if (res.code == 0) {
+                    that.$comp.toast({
+                    text: res.msg,
+                    
+                })
+                  window.location.href = res.data.url;
+                } else {
+                    that.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    })
+                    that.submitLoading = false;
+                }
+                }).catch((res) => {
+                that.$comp.toast({
+                    text: '提交失败，请重试.',
+                    color: 'error'
+                })
+                that.submitLoading = false;
+            });
         }
     },
 
@@ -64,6 +144,16 @@ new Vue({
             auditNotPass: false,
 
             type:'',
+
+            image_url:'',
+
+            data : {
+                note : '',
+                uid : '',
+                type : ''
+            },
+
+            submitLoading: false,
 
             viewAuditInfo: {
 

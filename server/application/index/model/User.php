@@ -143,7 +143,7 @@ class User extends Model
     	//获取一个用户的信息
     	$res = User::alias('a')
     			   ->join('sales_user_info b','a.id = b.user_id','left')
-    			   ->field('a.phone,a.parent_id,b.*')
+    			   ->field('a.type,a.username,a.phone,a.parent_id,a.username,b.*')
     			   ->where($where)
     			   ->find()
                    ->toArray();
@@ -254,6 +254,12 @@ class User extends Model
     	//使用电话号码查找id
     	$res = User::where('phone',$phone)->value('id');
     	return $res;
+    }
+
+    public function getAdmin($where='1=1'){
+        //获取管理员
+        $res = User::where($where)->select()->toArray();
+        return $res;
     }
 
 }

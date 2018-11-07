@@ -31,9 +31,16 @@ new Vue({
                 data:that.data
             }).then((res) => {
                 // that.data = res.data;
+                that.$comp.toast({
+                    text: res.msg,
+                });
             }).catch((res) => {
                 console.log('eeeeeeeeeeeee');
                 console.log(res);
+                that.$comp.toast({
+                    text: res.msg,
+                    color: 'error'
+                });
             });
 
         },

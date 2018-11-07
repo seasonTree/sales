@@ -9,6 +9,12 @@
         border: 1px solid #efefef;
         cursor: pointer;
     }
+
+    .image_size{
+       
+        width:100%;
+        height: 100%;
+    }
 </style>
 {/block}
 
@@ -40,26 +46,32 @@
 
         <v-card-text>
             <template v-if="type == 'p'">
-                <v-text-field label="用户名"></v-text-field>
-                <v-text-field label="姓"></v-text-field>
-                <v-text-field label="名字"></v-text-field>
-                <v-text-field label="银行账号"></v-text-field>
-                <v-text-field label="银行名称"></v-text-field>
-                <v-text-field label="银行地址"></v-text-field>
-                <v-text-field label="开户名"></v-text-field>
-                <v-text-field label="固定电话"></v-text-field>
-                <v-text-field label="移动电话"></v-text-field>
+                <v-text-field label="用户名" v-model="viewAuditInfo.username" ></v-text-field>
+                <v-text-field label="姓" v-model="viewAuditInfo.first_name"></v-text-field>
+                <v-text-field label="名字" v-model="viewAuditInfo.last_name"></v-text-field>
+                <v-text-field label="银行账号" v-model="viewAuditInfo.bank_account"></v-text-field>
+                <v-text-field label="银行名称" v-model="viewAuditInfo.bank_name"></v-text-field>
+                <v-text-field label="银行地址" v-model="viewAuditInfo.bank_address"></v-text-field>
+                <v-text-field label="开户名" v-model="viewAuditInfo.account_name"></v-text-field>
+                <v-text-field label="固定电话" v-model="viewAuditInfo.fixed_tel"></v-text-field>
+                <v-text-field label="移动电话" v-model="viewAuditInfo.phone"></v-text-field>
 
                 <v-layout row>
-                    <v-flex xs6 class="mr-1">
-                        <div class="upload-container" @click="viewImage = true">
-                            <v-img src="" class="qrcode-image" contain>
+                    <v-flex xs4 class="mr-1">
+                        <div class="upload-container" @click="bigImage(viewAuditInfo.photo_self)" >
+                            <v-img :src="viewAuditInfo.photo_self" class="qrcode-image image_size" contain>
                         </div>
                     </v-flex>
 
-                    <v-flex xs6 class="ml-1">
-                        <div class="upload-container" @click="viewImage = true">
-                            <v-img src="" class="qrcode-image" contain>
+                    <v-flex xs4 class="ml-1">
+                        <div class="upload-container" @click="bigImage(viewAuditInfo.id_card_front)">
+                            <v-img :src="viewAuditInfo.id_card_front" class="qrcode-image image_size" contain>
+                        </div>
+                    </v-flex>
+
+                    <v-flex xs4 class="ml-1">
+                        <div class="upload-container" @click="bigImage(viewAuditInfo.id_card_back)">
+                            <v-img :src="viewAuditInfo.id_card_back" class="qrcode-image image_size" contain>
                         </div>
                     </v-flex>
                 </v-layout>
@@ -67,36 +79,42 @@
             </template>
 
             <template v-if="type == 'c'">
-                <v-text-field label="用户名"></v-text-field>
-                <v-text-field label="密码" type="password"></v-text-field>
-                <v-text-field label="姓"></v-text-field>
-                <v-text-field label="名字"></v-text-field>
-                <v-text-field label="公司名称"></v-text-field>
-                <v-text-field label="银行账号"></v-text-field>
-                <v-text-field label="开户银行名称"></v-text-field>
-                <v-text-field label="开户银行地址"></v-text-field>
-                <v-text-field label="公司地址"></v-text-field>
-                <v-text-field label="联系人"></v-text-field>
-                <v-text-field label="联系人手机"></v-text-field>
-                <v-text-field label="联系人邮箱"></v-text-field>
+                {:token('__token__','sha1')}
+                <v-text-field label="用户名" v-model="viewAuditInfo.username"></v-text-field>
+                <v-text-field label="姓" v-model="viewAuditInfo.first_name"></v-text-field>
+                <v-text-field label="名字" v-model="viewAuditInfo.username"></v-text-field>
+                <v-text-field label="公司名称" v-model="viewAuditInfo.company_name"></v-text-field>
+                <v-text-field label="银行账号" v-model="viewAuditInfo.bank_account"></v-text-field>
+                <v-text-field label="开户银行名称" v-model="viewAuditInfo.account_name"></v-text-field>
+                <v-text-field label="开户银行地址" v-model="viewAuditInfo.bank_address"></v-text-field>
+                <v-text-field label="公司地址" v-model="viewAuditInfo.address"></v-text-field>
+                <v-text-field label="联系人" v-model="viewAuditInfo.contacts"></v-text-field>
+                <v-text-field label="联系人手机" v-model="viewAuditInfo.phone"></v-text-field>
+                <v-text-field label="联系人邮箱" v-model="viewAuditInfo.email"></v-text-field>
 
 
                 <v-layout row>
-                    <v-flex xs4 class="mr-1">
-                        <div class="upload-container" @click="viewImage = true">
-                            <v-img src="" class="qrcode-image" contain>
+                    <v-flex xs3 class="mr-1">
+                        <div class="upload-container" @click="bigImage(viewAuditInfo.business_licence)">
+                            <v-img :src="viewAuditInfo.business_licence" class="qrcode-image image_size" contain>
                         </div>
                     </v-flex>
 
-                    <v-flex xs4 class="mr-1">
-                        <div class="upload-container" @click="viewImage = true">
-                            <v-img src="" class="qrcode-image" contain>
+                    <v-flex xs3 class="mr-1">
+                        <div class="upload-container" @click="bigImage(viewAuditInfo.photo_self)">
+                            <v-img :src="viewAuditInfo.photo_self" class="qrcode-image image_size" contain>
                         </div>
                     </v-flex>
 
-                    <v-flex xs4 class="ml-1">
-                        <div class="upload-container" @click="viewImage = true">
-                            <v-img src="" class="qrcode-image" contain>
+                    <v-flex xs3 class="ml-1">
+                        <div class="upload-container" @click="bigImage(viewAuditInfo.id_card_front)">
+                            <v-img :src="viewAuditInfo.id_card_front" class="qrcode-image image_size" contain>
+                        </div>
+                    </v-flex>
+
+                    <v-flex xs3 class="ml-1">
+                        <div class="upload-container" @click="bigImage(viewAuditInfo.id_card_back)">
+                            <v-img :src="viewAuditInfo.id_card_back" class="qrcode-image image_size" contain>
                         </div>
                     </v-flex>
                 </v-layout>
@@ -105,8 +123,8 @@
 
         <v-card-actions class="text-xs-right">
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="auditInfo = false">审核通过</v-btn>
-            <v-btn color="primary" flat @click="auditNotPass = true">
+            <v-btn color="s-primary" @click="auditCommit(viewAuditInfo.user_id)" :loading="submitLoading">审核通过</v-btn>
+            <v-btn color="primary" flat @click="auditNotPs(viewAuditInfo.user_id)" :loading="submitLoading">
                 审核不通过
             </v-btn>
         </v-card-actions>
@@ -117,7 +135,7 @@
 <v-dialog width="300" height="300" v-model="viewImage">
     <v-card>
         <v-card-text>
-            <v-img src="" class="qrcode-image" contain>
+            <v-img :src="image_url" class="qrcode-image" contain>
         </v-card-text>
     </v-card>
 </v-dialog>
@@ -125,11 +143,11 @@
 <v-dialog width="300" scrollable height="300" v-model="auditNotPass">
     <v-card>
         <v-card-text>
-            <v-textarea label="拒决理由" value="拒绝理由."></v-textarea>
+            <v-textarea label="拒决理由" value="拒绝理由." v-model="data.note"></v-textarea>
         </v-card-text>
         <v-card-actions class="text-xs-right">
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="auditNotPass = false">提交</v-btn>
+            <v-btn color="s-primary" @click="auditCommitNotPass" :loading="submitLoading">提交</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>

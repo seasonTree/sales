@@ -39,7 +39,7 @@ export function getContent(data){
 //获取列表
 export function get(data){
     return request({
-        url: '/protocol/list',
+        url: '/Config/protocolLst',
         method: 'get',
         data: data
     });

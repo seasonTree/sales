@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\model\SelConfig as SelConfigModel;
+use app\index\model\Protocol as ProtocolModel;
 
 class Config
 {	
@@ -48,5 +49,17 @@ class Config
     public function protocolSetting(){
     	//协议设置
     	return view('/protocol_setting');
+    }
+
+    public function protocolLst(){
+        //协议列表
+        $protocol_model = new ProtocolModel();
+        
+        try{
+            $protocol = $protocol_model->getProtocol();
+        }catch(\Exception $e){
+            return json(['msg' => '获取协议失败','code' => 1]);
+        }
+        return json(['msg' => '获取协议成功','code' => 0,'data' => $protocol]);
     }
 }

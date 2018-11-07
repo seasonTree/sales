@@ -50,4 +50,16 @@ class Message extends Model
         return $res;
     }
 
+    public function addMessageAll($data){
+        //添加多条消息
+        $res = Message::insertAll($data);
+        return $res;
+    }
+
+    public function addMessage($data){
+        //添加一条消息
+        $res = Message::insertGetId($data);
+        return $res;
+    }
+
 }

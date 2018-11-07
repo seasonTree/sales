@@ -1,6 +1,10 @@
 <?php
 namespace app\index\controller;
 use app\index\model\User as UserModel;
+use app\index\model\RegisterAudit as RegisterAuditModel;
+use app\index\model\Message as MessageModel;
+use think\facade\Session;
+
 
 class Audit
 {
@@ -39,7 +43,51 @@ class Audit
     	else{
     		return json(['msg' => '没有数据','code' => 0,'data' => '']);
     	}
-    	
+    }
+
+    public function auditCommit(){
+    	//提交审核
+    	// dump(input('post.'));exit;
+    	$commit = input('post.data');
+    	$data['user_id'] = $commit['uid'];
+    	$data['audit_id'] = Session::get('user_info')['id'];
+    	$data['status'] = $commit['type'];
+    	$data['note'] = $commit['note'];
+
+    	$user_model = new UserModel();
+    	$res = $user_model->updateUser(array('id' => $data['user_id'],'status' => $data['status']));
+    	//写入审核状态
+    	if ($res) {
+    		$register_audit_model = new RegisterAuditModel();
+    		$res = $register_audit_model->auditCommit($data);
+    		//写入审核记录
+
+    		$message_model = new MessageModel();
+			$insert_message = array(
+									'title' => '审核消息',
+									'sender' => $data['audit_id'],
+									'receiver' => $data['user_id'],
+									'type' => 3
+								);
+			if ($commit['type'] == -1) {
+				$insert_message['content'] = '您的个人信息未能通过审核,原因为：'.$data['note'];
+			}
+			else{
+				$insert_message['content'] = '您的个人信息已经通过审核！';
+			}
+    		if ($res) {
+	    		$message_model->addMessage($insert_message);
+	    		//发送信息提示，写入信息
+    			return json(['msg' => '审核成功','code' => 0,'data' => ['url' => '/Audit/regAudit']]);
+    		}
+    		else{
+    			return json(['msg' => '审核失败','code' => 1]);
+    		}
+    	}
+    	else{
+    		return json(['msg' => '审核失败','code' => 1]);
+    	}
     	
     }
+
 }

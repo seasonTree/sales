@@ -235,7 +235,7 @@ module.exports = {
 
             //ckeditor
             {
-                from: `/${srcPath}/common/editor`,
+                from: `${srcPath}/common/editor`,
                 to: `${outputPath}/js/editor`,
                 force: true,
             }
