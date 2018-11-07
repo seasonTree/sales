@@ -19,7 +19,9 @@ function appInfo() {
 let browser = appInfo(),
     name = browser.appname,
     isIE = browser.indexOf('msie');
+// Internet Explorer 6-11
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
 
 if(isIE){
-    window.location.replace('/browser_choose');
+    window.location.replace('index/browserChoose');
 }

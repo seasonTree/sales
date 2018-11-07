@@ -23,7 +23,7 @@ class OperateBehavior extends Controller
     protected $exclude = [
         '/',
         'index/index',
-        'login/loginOut',
+        'login/loginout',
     ];
 
     /**
@@ -32,8 +32,9 @@ class OperateBehavior extends Controller
     protected $login = [
         '/',
         'index/index',
-        'login/searchPass',
+        'login/searchpass',
         'login/login',
+        'index/browserchoose',
     ];
 
     /**
