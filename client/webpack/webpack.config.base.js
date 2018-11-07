@@ -1,26 +1,26 @@
-const path = require('path');
+const path = require("path");
 const extractTextPlugin = require("extract-text-webpack-plugin");
-const vueLoaderPlugin = require('vue-loader/lib/plugin');
+const vueLoaderPlugin = require("vue-loader/lib/plugin");
 // const htmlPlugin = require('html-webpack-plugin');
-const fs = require('fs');
+const fs = require("fs");
 // 自动查找后缀文件
 // const glob = require('glob');
 
 //多线程打包, 使用 happypack@next
-const happyPack = require('happypack');
-const os = require('os');
+const happyPack = require("happypack");
+const os = require("os");
 const happyThreadPool = happyPack.ThreadPool({
     size: os.cpus().length
 });
 
-const outputPath = path.resolve(__dirname, '../dist');
-const entryPath = path.resolve(__dirname, '../src/js');
+const outputPath = path.resolve(__dirname, "../dist");
+const entryPath = path.resolve(__dirname, "../src/js");
 
-const srcPath = path.resolve(__dirname, '../src');
+const srcPath = path.resolve(__dirname, "../src");
 
 // const nodeModulesPath = path.resolve(__dirname, '../../node_modules/');
 
-const copyFile = require('copy-webpack-plugin');
+const copyFile = require("copy-webpack-plugin");
 
 //如果dist文件不存在就创建
 try {
@@ -31,14 +31,14 @@ try {
 
 //读取php配置
 function loadGlobalConfig() {
-
-    let filenamePath = path.resolve(__dirname, '../../config.json'),
-        globalConfig = JSON.parse(fs.readFileSync(filenamePath, {
-            encoding: 'utf-8'
-        }));
+    let filenamePath = path.resolve(__dirname, "../../config.json"),
+        globalConfig = JSON.parse(
+            fs.readFileSync(filenamePath, {
+                encoding: "utf-8"
+            })
+        );
 
     return globalConfig;
-
 }
 
 const globalCfg = loadGlobalConfig();
@@ -49,15 +49,20 @@ const publicPath = globalCfg.publicPath;
 function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
 
-    files.forEach((item) => {
-        if (item !== 'upload' && item != 'js' && item != 'image' && item != 'fonts') {
-            var fpath = path.resolve(outputPath, item),
-                fstat = fs.statSync(fpath);
+    files.forEach(item => {
+        var fpath = path.resolve(outputPath, item),
+            fstat = fs.statSync(fpath);
 
-            if (fstat.isDirectory()) {
-                rmGenFile(fpath);
-                fs.rmdirSync(fpath)
-            } else {
+        if (fstat.isDirectory()) { // item !== "upload" && 可以选择不删除upload下面的文件
+            rmGenFile(fpath);
+            fs.rmdirSync(fpath);
+        } else {
+            if (
+                item !== "upload" &&
+                item != "js" &&
+                item != "image" &&
+                item != "fonts"
+            ) {
                 fs.unlinkSync(fpath);
             }
         }
@@ -72,24 +77,32 @@ let entry = {};
 function genEntey(entryPath, parent) {
     let files = fs.readdirSync(entryPath);
 
-    files.forEach((item) => {
+    files.forEach(item => {
         var fpath = path.resolve(entryPath, item),
             fstat = fs.statSync(fpath);
 
+        // console.log(item);
+
         if (fstat.isDirectory()) {
-            genEntey(fpath, parent + '/' + item)
-        } else if (/\.js/.test(item)) {
-            var key = parent ? parent + '/' + item.replace(/\.js$/, '') : item.replace(/\.js$/, '');
+            genEntey(fpath, parent + "/" + item);
+        } else if (
+            /\.js/.test(item) &&
+            item != "base.js" &&
+            item != "mixin.js"
+        ) {
+            var key = parent
+                ? parent + "/" + item.replace(/\.js$/, "")
+                : item.replace(/\.js$/, "");
 
             entry[key] = path.resolve(entryPath, item);
         }
     });
 }
 
-genEntey(entryPath, '');
+genEntey(entryPath, "");
 
 module.exports = {
-    mode: 'production', //默认是生产环境
+    mode: "production", //默认是生产环境
 
     performance: {
         hints: false
@@ -105,29 +118,29 @@ module.exports = {
     entry: entry,
     output: {
         path: `${outputPath}`,
-        filename: 'js/[name].js',
+        filename: "js/[name].js",
         // chunkFilename: 'js/chunks/[name][hash:4].js',
-        chunkFilename: 'js/chunks/[name].js',
-        publicPath: `${publicPath}/`,
+        chunkFilename: "js/chunks/[name].js",
+        publicPath: `${publicPath}/`
 
         // publicPath: `${publicPath}`
     },
 
     externals: {
-        'CKEDITOR': 'window.CKEDITOR'
+        CKEDITOR: "window.CKEDITOR"
     },
 
     resolve: {
         //一定要添加，不然无法找到文件
-        extensions: ['.vue', '.js', '.less', '.css', '.json'],
+        extensions: [".vue", ".js", ".less", ".css", ".json"],
         alias: {
-            'vue': 'vue/dist/vue.js',
-            '@css': path.resolve(srcPath, 'css'),
+            vue: "vue/dist/vue.js",
+            "@css": path.resolve(srcPath, "css"),
             // '@image': path.resolve(srcPath, 'image'),
             // '@fonts': path.resolve(srcPath, 'fonts'),
-            '@common': path.resolve(srcPath, 'common'),
-            '@compontent': path.resolve(srcPath, 'compontent'),
-            '@pageCompontent': path.resolve(srcPath, 'page_compontent'),
+            "@common": path.resolve(srcPath, "common"),
+            "@compontent": path.resolve(srcPath, "compontent"),
+            "@pageCompontent": path.resolve(srcPath, "page_compontent")
         }
     },
 
@@ -138,7 +151,7 @@ module.exports = {
             // name: 'vendor'
 
             cacheGroups: {
-                // frame: {                    
+                // frame: {
                 //     test: /[\\/]node_modules[\\/](vue|vuetify)[\\/]/,
                 //     name: 'frame',
                 //     chunks: 'all',
@@ -149,8 +162,8 @@ module.exports = {
 
                 vendor: {
                     test: /[\\/]node_modules[\\/]/,
-                    name: 'vendor',
-                    chunks: 'all',
+                    name: "vendor",
+                    chunks: "all",
                     minChunks: 1,
                     priority: -20,
                     minSize: 0
@@ -158,23 +171,22 @@ module.exports = {
 
                 common: {
                     test: /[\\/]src[\\/]/,
-                    name: 'common',
-                    chunks: 'all',
+                    name: "common",
+                    chunks: "all",
                     minChunks: 2,
                     priority: -30,
                     minSize: 0,
                     reuseExistingChunk: true
                 }
-            },
+            }
         },
 
         runtimeChunk: {
-            name: 'runtime'
+            name: "runtime"
         }
         // runtimeChunk: true
     },
     plugins: [
-
         new vueLoaderPlugin(),
 
         // new htmlPlugin({
@@ -198,46 +210,52 @@ module.exports = {
             allChunks: true
         }),
 
-        new happyPack({ //多线程打包js
-            id: 'happybabel',
-            loaders: ['babel-loader?cacheDirectory=true?presets=es2015'],
+        new happyPack({
+            //多线程打包js
+            id: "happybabel",
+            loaders: ["babel-loader?cacheDirectory=true?presets=es2015"],
             threadPool: happyThreadPool,
             // cache: true,
             verbose: true
         }),
-        new happyPack({ //多线程打包css
-            id: 'postcss',
+        new happyPack({
+            //多线程打包css
+            id: "postcss",
             loaders: ["css-loader?-autoprefixer!postcss-loader"],
             threadPool: happyThreadPool,
             // cache: true,
             verbose: true
         }),
-        new happyPack({ //多线程打包less
-            id: 'postless',
+        new happyPack({
+            //多线程打包less
+            id: "postless",
             //https://segmentfault.com/q/1010000009157879，注意编译顺序
-            loaders: ['css-loader?-autoprefixer!postcss-loader!less-loader'],
+            loaders: ["css-loader?-autoprefixer!postcss-loader!less-loader"],
             threadPool: happyThreadPool,
             // cache: true,
             verbose: true
         }),
 
         //复制文件
-        new copyFile([{ //image
+        new copyFile([
+            {
+                //image
                 from: `${srcPath}/image`,
                 to: `${outputPath}/image`,
-                force: true,
+                force: true
             },
-            { //font
+            {
+                //font
                 from: `${srcPath}/fonts`,
                 to: `${outputPath}/fonts`,
-                force: true,
+                force: true
             },
 
             //ckeditor
             {
                 from: `${srcPath}/common/editor`,
                 to: `${outputPath}/js/editor`,
-                force: true,
+                force: true
             }
 
             // //tinymce
@@ -249,45 +267,48 @@ module.exports = {
         ])
     ],
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.vue$/,
-                loader: 'vue-loader',
+                loader: "vue-loader",
                 options: {
                     extractCSS: true,
                     loaders: {
                         css: extractTextPlugin.extract({
                             use: ["happypack/loader?id=postcss"],
-                            fallback: 'vue-style-loader',
+                            fallback: "vue-style-loader"
                         }),
                         less: extractTextPlugin.extract({
                             use: ["happypack/loader?id=postless"],
-                            fallback: 'vue-style-loader'
-                        }),
+                            fallback: "vue-style-loader"
+                        })
                     }
                 }
             },
             {
                 test: /\.js$/,
-                loader: 'happypack/loader?id=happybabel', //已经在.babelrc配置，这里配置的话多线程任务会出错
+                loader: "happypack/loader?id=happybabel", //已经在.babelrc配置，这里配置的话多线程任务会出错
                 exclude: /node_modules/
             },
             {
                 test: /\.css$/,
-                use: extractTextPlugin.extract({ //单独打包
+                use: extractTextPlugin.extract({
+                    //单独打包
                     fallback: "style-loader", //一定要加fallback
                     use: ["happypack/loader?id=postcss"]
-                }),
+                })
             },
             {
                 test: /\.less$/,
-                use: extractTextPlugin.extract({ //单独打包
-                    fallback: 'style-loader', //一定要加fallback
+                use: extractTextPlugin.extract({
+                    //单独打包
+                    fallback: "style-loader", //一定要加fallback
                     use: ["happypack/loader?id=postless"]
-                }),
+                })
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url-loader',
+                loader: "url-loader",
                 options: {
                     limit: 10000,
                     name: `image/[name].[hash:7].[ext]`,
@@ -297,7 +318,7 @@ module.exports = {
             {
                 test: /\.(woff2?|woff|eot|ttf|otf)(\?.*)?$/,
 
-                loader: 'url-loader',
+                loader: "url-loader",
                 options: {
                     limit: 10000,
                     name: `fonts/[name].[hash:7].[ext]`,
@@ -311,6 +332,6 @@ module.exports = {
                 //     publicPath: '/fonts/'
                 // }
             }
-        ],
+        ]
     }
-}
+};
