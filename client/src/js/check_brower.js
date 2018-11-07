@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // 获取当前浏览器名 及 版本号
 function appInfo() {
     var browser = {
