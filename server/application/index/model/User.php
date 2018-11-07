@@ -190,7 +190,18 @@ class User extends Model
     }
 
 
-    //登陆验证
+
+
+    /***
+     * 登陆验证
+     * @param $username  用户名
+     * @param $pwd       密码
+     * @param $remember  是否记住密码
+     * @return bool|int  返回状态
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function loginVerify($username,$pwd,$remember)
     {
         if (!$username) return false;
@@ -210,9 +221,9 @@ class User extends Model
         }
         $roleName = $this->getUserRoleName($userInfo['id']);
         $userInfo['role_name'] = $roleName;
-        //$auth = $this->_getAuth($userInfo['id']);
         Session::set('user_info', $userInfo->toArray());
-       // Session::set('auth', $auth);
+        //$auth = $this->_getAuth($userInfo['id']);
+        // Session::set('auth', $auth);
         if($remember != ''){
             $cookieInfo['username']=$username;
             $cookieInfo['password']=encrypt($pwd);
@@ -247,7 +258,14 @@ class User extends Model
     	return $res;
     }
 
-    //根据用户id获取角色名称
+    /***
+     * 根据用户id获取角色名称
+     * @param $id  用户ID
+     * @return mixed|string  角色名称
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getUserRoleName($id)
     {
         if(!is_numeric($id)) return '';
