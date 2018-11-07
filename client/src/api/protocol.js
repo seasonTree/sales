@@ -3,7 +3,7 @@ import request from '../common/request';
 //新增
 export function add(data) {
     return request({
-        url: '/protocol/add',
+        url: '/Config/addProtocol',
         method: 'post',
         data: data
     });
@@ -12,7 +12,7 @@ export function add(data) {
 //修改
 export function edit(data){
     return request({
-        url: '/protocol/edit',
+        url: '/Config/editProtocol',
         method: 'post',
         data: data
     });
@@ -21,7 +21,7 @@ export function edit(data){
 //删除
 export function del(data){
     return request({
-        url: '/protocol/del',
+        url: '/Config/delProtocol',
         method: 'post',
         data: data
     });
@@ -30,8 +30,8 @@ export function del(data){
 //获取内容
 export function getContent(data){
     return request({
-        url: '/protocol/getContent',
-        method: 'get',
+        url: '/Config/getProtocol',
+        method: 'post',
         data: data
     });
 }
