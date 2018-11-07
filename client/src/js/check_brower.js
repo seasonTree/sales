@@ -16,8 +16,6 @@ function appInfo() {
     return browser;
 }
 
-console.log('aaa');
-
 let browser = appInfo(),
     name = browser.appname,
     isIE = browser.indexOf('msie');

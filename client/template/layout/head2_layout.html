@@ -15,11 +15,12 @@
 
         <v-toolbar-items class="hidden-sm-and-down">
             <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
-
+            {if $_SESSION['think']['user_info']['type'] != '0'}
             <v-btn href="{:url('Team/index')}" flat :class="{'toolbar-active': global.currentView == 'team'}">团队</v-btn>
             <v-btn href="{:url('Channel/index')}" flat :class="{'toolbar-active': global.currentView == 'channel'}">渠道</v-btn>
             <v-btn href="{:url('Achievement/index')}" flat :class="{'toolbar-active': global.currentView == 'achievement'}">业绩</v-btn>
             <v-btn href="{:url('Transaction/index')}" flat :class="{'toolbar-active': global.currentView == 'transaction'}">交易报告</v-btn>
+            {/if}
             <!-- <v-btn href="{:url('Achievement/distributionNetwork')}" flat :class="{'toolbar-active': global.currentView == 'distributionnetwork'}">销售网络</v-btn> -->
 
             <v-btn href="{:url('Message/index')}" flat :class="{'toolbar-active': global.currentView == 'message'}">
@@ -54,6 +55,7 @@
         </v-toolbar-items>
 
         <v-toolbar-items class="hidden-sm-and-down">
+            {if $_SESSION['think']['user_info']['type'] == 0 }
             <v-menu offset-y>
                 <v-btn flat primary slot="activator" :class="{'toolbar-active': global.viewSelect.system }">系统信息</v-btn>
                 <v-list dense class="toolbar-dropdown">
@@ -239,7 +241,7 @@
                     <!--</div>-->
                 </v-list>
             </v-menu>
-
+            {/if}
             <v-menu offset-y>
                 <v-btn flat primary slot="activator" :class="{'toolbar-active': global.currentView == 'userinfo'}">用户中心</v-btn>
                 <v-list dense class="language-dropdown">
