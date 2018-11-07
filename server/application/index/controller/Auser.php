@@ -67,6 +67,7 @@ class Auser extends Controller
         $res=  model('User')->lst($where);
         return json(['Userdata'=>$res,'data'=>$data,'code'=>0,'msg'=>'用户列表展示数据']);
     }
+
     //删除账号
     public function del(){
         $id =input('post.data');

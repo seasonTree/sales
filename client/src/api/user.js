@@ -34,6 +34,14 @@ export function get(data) {
         data: data
     })
 }
+//获取所有角色
+export function getmemberlst(data) {
+    return request({
+        url: '/user/getmemberlst',
+        method: 'post',
+        data: data
+    })
+}
 //管理员添加账号
 export function add(data){
     return request({
