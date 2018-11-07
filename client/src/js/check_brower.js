@@ -16,10 +16,12 @@ function appInfo() {
     return browser;
 }
 
+console.log('aaa');
+
 let browser = appInfo(),
     name = browser.appname,
     isIE = browser.indexOf('msie');
 
 if(isIE){
-    window.location.replace('/browser_choose');
+    window.location.replace('index/browserChoose');
 }

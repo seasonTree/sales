@@ -34,6 +34,7 @@ class OperateBehavior extends Controller
         'index/index',
         'login/searchPass',
         'login/login',
+        'index/browserChoose',
     ];
 
     /**
