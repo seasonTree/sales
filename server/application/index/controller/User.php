@@ -22,7 +22,7 @@ class User
         return json(['code'=>0,'data'=>$data]);
 
     }
-    
+
 	public function personInfo(){
 		//个人信息
 		return view('/user_info');

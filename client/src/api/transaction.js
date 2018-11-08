@@ -9,6 +9,14 @@ export function get(data) {
         data: data
     })
 }
+//获取所有角色
+export function exportExcel(data) {
+    return request({
+        url: '/transaction/exportExcel',
+        method: 'post',
+        data: data
+    })
+}
 //管理员添加账号
 export function add(data){
     return request({

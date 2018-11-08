@@ -41,4 +41,19 @@ class DocUserInfo extends Model
 
         return $data;
     }
+    public function getTranReportExcel($referalCode,$start,$end){
+        if($referalCode ==1){
+            $where=[];
+        }else{
+            $where =['referralCode'=>$referalCode];
+        }
+
+        $sql =$this->field('referralCode,firstName,create_time as created_at,contactPhone as phone')
+            ->order('create_time','desc')
+            ->where($where)->where('create_time','between',[$start,$end]);
+        $data = $sql->select()->toArray();
+
+
+        return $data;
+    }
 }
