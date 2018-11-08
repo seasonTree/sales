@@ -43,7 +43,7 @@ class User
 			return json(['code' => 2,'msg' => '两次输入密码不一致']);
 		}
 
-		$check_has = Session::has('user.userid');
+		$check_has = Session::has('user_info');
 		if (!$check_has) {
 			if (!isset($data['uid'])) {
 				return json(['code' => 3,'msg' => '非法操作']);
@@ -72,10 +72,7 @@ class User
 
 	public function doCheckCode(){
 		//验证码验证
-		$redis = new \Redis();
-        $redis->connect(config('config.redis.host'), config('config.redis.port'));
-        $redis->select(config('config.redis.db_index'));
-        $phone = $redis->get('user:'.input('post.data.phone_num'));
+        $phone = redis()->get('user:'.input('post.data.phone_num'));
         if (!$phone) {
         	return json(['code' => 1,'msg' => '非法操作，未能获取验证码']);
         }
@@ -91,13 +88,7 @@ class User
     {
     	//发短信
         if (\request()->isPost()) {
-
-        	$redis = new \Redis();
-	        $redis->connect(config('config.redis.host'), config('config.redis.port'));
-	        $redis->select(config('config.redis.db_index'));
-
             $phone = input('post.data.phone_num');
-            // dump(input('post.data.phone_num'));exit;
             if ($phone == '') {
             	return json(['resp_code' => '2', 'msg' => '电话号码不能为空']);
             }
@@ -105,23 +96,14 @@ class User
             if (!checkPhone($phone)) {
             	return json(['resp_code' => '3', 'msg' => '请填写正确的电话号码']);
             }
-
-            // $user_model = new UserModel();
-            // $res = $user_model->findUserId($phone);
-            // if (!$res) {
-            // 	return json(['resp_code' => '4', 'msg' => '电话号码不存在']);
-            // }
-            //电话号码
-            // $section = input('section');
             $section = '86';
             //区号
             $code = $this->random();
             //随机验证码
-            $redis->set('user:' . $phone, $code);
-            $redis->setex('user:' . $phone, 300, $code);
+            redis()->set('user:' . $phone, $code);
+            redis()->setex('user:' . $phone, 300, $code);
             $message = new \ShortMessage();
             $result = $message->sendSms('00' . $section . $phone, $code);
-            // dump($result);
             if ($result->Message == 'OK' && $result->Code == 'OK') {
                 return json(['resp_code' => '0', 'msg' => '发送成功']);
             }
@@ -149,8 +131,6 @@ class User
 
     public function userInfo(){
     	//个人资料
-    	// input('post.');
-    	// return json(['msg' => '成功','code' => 0,'data' => ]);
     	$user_id = Session::get('user_info')['id'];
     	$file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/upload/temp'.$user_id;
     	$has_temp = Session::has('temp'.$user_id);
@@ -323,7 +303,6 @@ class User
 	    		);
 
 	    	$thumb = $this->createThumb($option);
-	    	// dump($thumb);exit;
 			Session::set('temp'.$userid,1);
 
 			$type = request()->get('type');
@@ -355,17 +334,11 @@ class User
 	    			Session::set('thumb_id_card_back'.$userid,dirname(Env::get('ROOT_PATH')).$thumb[1]);
 	    			break;		
 	    	}
-			
-	    	// dump(Session::get('business_licence'.$userid));
-
 	        return json(['msg' => '上传成功','code' => 0,'data' => [ 'image_url' => $thumb[0] ] ]);
 	    }else{
 	        // 上传失败获取错误信息
-	        // echo $file->getError();
 	        return json(['msg' => $file->getError(),'code' => 1]);
 	    }
-
-
     }
 
     public function moveImage($obj,$id,$data){
@@ -375,7 +348,6 @@ class User
     	$business_licence_path = createDir('business_licence');
     	$photo_self_path = createDir('photo_self');
     	//创建并获取路径
-        // dump($data);exit;
         $userid = Session::get('user_info')['id'];
         $save_path = '/upload/image/';
         //存储路径
@@ -440,7 +412,6 @@ class User
     	//参数1,image_rul,图片的url地址。
     	//参数2,pic_name,图片的名称。
     	//参数3,save_path,保存地址。
-    	// $file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/upload/image_thumb';
     	$file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/'.$option['save_path'];
     	if (!is_dir($file_path)) {
             //创建目录
