@@ -51,6 +51,15 @@ function checkPassword($password){
   return true;
 }
 
+function checkNum($num){
+  //检查数字目标
+  $rule = "/^\d+(\.\d{1,2})?$/";
+  if (strlen($num) > 11 || !preg_match($rule,$num)) {
+     return false;
+  }
+  return true;
+}
+
 /***
  * @return array|false|string 获取IP地址
  */

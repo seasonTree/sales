@@ -74,7 +74,6 @@ new Vue({
             let that = this;
 
             that.submitLoading = true;
-
             that.$api.channel.add({
                 data: that.addItem
             }).then((res) => {
@@ -229,12 +228,25 @@ new Vue({
 
     data() {
         return {
-            select: [
 
+            select:[
             ],
 
             channel_id: '',
             channel_name: '',
+            achievement_type: [
+
+                {
+                    type: 1,
+                    value:'叠加目标' 
+                },
+                {
+                    type:2,
+                    value:'分解目标'
+                }
+
+
+            ],
 
             subWidth: {
                 table: {
@@ -325,7 +337,10 @@ new Vue({
             addItem: {
                 channel_name: '',
                 channel_info: '',
-                qr_code_info: ''
+                qr_code_info: '',
+                type: '',
+                chan_pfm_obj :'',
+                chan_doc_num :''
             },
 
             // items: ['页面1', '页面2'],

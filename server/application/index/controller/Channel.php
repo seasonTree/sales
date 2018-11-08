@@ -24,7 +24,7 @@ class Channel
     	$channel = new ChannelModel();
     	// $userid = Session::has('user.userid');
     	$userid = Session::get('user_info')['id'];
-    	$data = $channel->getChannel($userid);
+    	$data = $channel->getChannel(array('user_id' => $userid));
     	// dump($userid);
     	return json(['data'=>$data,'code'=>200,'msg'=>'']);
     }
@@ -48,6 +48,25 @@ class Channel
 
     	if ($find) {
     		return json(['msg'=>'渠道已存在','code'=>2]);
+    	}
+
+    	if ($data['type'] == 0) {
+    		return json(['msg' => '请选择一种目标类型','code' => 9]);
+    	}
+
+    	if ($data['type'] == 2) {
+    		if ($data['chan_pfm_obj'] == '') {
+    			return json(['msg' => '业绩目标不能为空','code' => 5]);
+    		}
+    		if ($data['chan_doc_num'] == '') {
+    			return json(['msg' => '医生目标不能为空','code' => 6]);
+    		}
+    		if (!checkNum($data['chan_pfm_obj'])) {
+    			return json(['msg' => '业绩目标只能是数字，长度不能大于11位','code' => 7]);
+    		}
+    		if (!checkNum($data['chan_doc_num'])) {
+    			return json(['msg' => '医生目标只能是数字，长度不能大于11位','code' => 8]);
+    		}
     	}
 
     	$channelId = $channel->addChannel($data);
@@ -151,6 +170,14 @@ class Channel
 	            // echo $e->getMessage();
 	        	return json(['code' => 1,'msg' => '操作失败' , 'data' => '']);
 	        }
+
+    	}
+    	$data = $channel_model->getChannel(array('a.id' => $channel_id));
+    	$count = count($data[0]['children']);
+    	$chan_pfm_obj = $data[0]['chan_pfm_obj'] / $count;
+    	$chan_doc_num = $data[0]['chan_doc_num'] / $count;
+    	foreach ($data[0]['children'] as $a => $b) {
+    		$channel_model->updateChannel(array('id' => $b['id'],'chan_pfm_obj' => $chan_pfm_obj,'chan_doc_num' => $chan_doc_num));
 
     	}
 
