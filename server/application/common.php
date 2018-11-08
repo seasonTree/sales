@@ -128,8 +128,11 @@ function decrypt($data)
 }
 
 /***
+ * 登陆验证
  * @return bool
- * 判断当前登陆状态
+ * @throws \think\db\exception\DataNotFoundException
+ * @throws \think\db\exception\ModelNotFoundException
+ * @throws \think\exception\DbException
  */
 function checkLogin()
 {
