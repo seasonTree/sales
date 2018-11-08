@@ -1,5 +1,7 @@
 import Vue from './base';
-import { mixinExt }  from './mixin';
+import {
+    mixinExt
+} from './mixin';
 
 new Vue({
     el: '#app',
@@ -98,34 +100,36 @@ new Vue({
             });
 
         },
-        showSales(channel_id,channel_name){
+        showSales(channel_id, channel_name) {
 
-        	let that = this;
-        	that.$api.channel.getSales({
-        		data:{'channel_id':channel_id}
-        	}).then((res) => {
-	            that.saliesLists = res.data.sales;
-	            //绑定数据
-	            that.select = res.data.child;
-	            //选中的数据
+            let that = this;
+            that.$api.channel.getSales({
+                data: {
+                    'channel_id': channel_id
+                }
+            }).then((res) => {
+                that.saliesLists = res.data.sales;
+                //绑定数据
+                that.select = res.data.child;
+                //选中的数据
 
-	        }).catch((res) => {
-	            console.log('eeeeeeeeeeeee');
-	            console.log(res);
-	        });
-	        that.channel_id = channel_id;
-	        that.channel_name = channel_name;
-        	that.showAddSales = true;
+            }).catch((res) => {
+                console.log('eeeeeeeeeeeee');
+                console.log(res);
+            });
+            that.channel_id = channel_id;
+            that.channel_name = channel_name;
+            that.showAddSales = true;
 
 
         },
 
-        addSales(){
+        addSales() {
 
-        	let that = this;
-        	that.select.push(that.channel_name);
-        	that.select.push(that.channel_id);
-        	that.$api.channel.addSales({
+            let that = this;
+            that.select.push(that.channel_name);
+            that.select.push(that.channel_id);
+            that.$api.channel.addSales({
                 data: that.select
             }).then((res) => {
                 if (res.code == 0) {
@@ -149,91 +153,88 @@ new Vue({
                 console.log('***********')
             });
 
-        	// console.log(that.select);
+            // console.log(that.select);
 
         },
 
         CopyUrl(url) {
-        	let that = this;
-	        //复制链接
-	        var textToClipboard = url;
+            let that = this;
+            //复制链接
+            var textToClipboard = url;
 
-	        var success = true;
-	        if (window.clipboardData) { // Internet Explorer
-	            window.clipboardData.setData ("Text", textToClipboard);
-	        }
-	        else {
-	            // create a temporary element for the execCommand method
-	            var forExecElement = that.CreateElementForExecCommand (textToClipboard);
+            var success = true;
+            if (window.clipboardData) { // Internet Explorer
+                window.clipboardData.setData("Text", textToClipboard);
+            } else {
+                // create a temporary element for the execCommand method
+                var forExecElement = that.CreateElementForExecCommand(textToClipboard);
 
-	            /* Select the contents of the element
-	                (the execCommand for 'copy' method works on the selection) */
-	            that.SelectContent (forExecElement);
+                /* Select the contents of the element
+                    (the execCommand for 'copy' method works on the selection) */
+                that.SelectContent(forExecElement);
 
-	            var supported = true;
+                var supported = true;
 
-	            // UniversalXPConnect privilege is required for clipboard access in Firefox
-	            try {
-	                if (window.netscape && netscape.security) {
-	                    netscape.security.PrivilegeManager.enablePrivilege ("UniversalXPConnect");
-	                }
+                // UniversalXPConnect privilege is required for clipboard access in Firefox
+                try {
+                    if (window.netscape && netscape.security) {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    }
 
-	                // Copy the selected content to the clipboard
-	                // Works in Firefox and in Safari be:fore version 5
-	                success = document.execCommand ("copy", false, null);
-	            }
-	            catch (e) {
-	                success = false;
-	            }
+                    // Copy the selected content to the clipboard
+                    // Works in Firefox and in Safari be:fore version 5
+                    success = document.execCommand("copy", false, null);
+                } catch (e) {
+                    success = false;
+                }
 
-	            // remove the temporary element
-	            document.body.removeChild (forExecElement);
-	        }
+                // remove the temporary element
+                document.body.removeChild(forExecElement);
+            }
 
-	        if (success) {
-	            alert ('复制成功');
-	        }
-	        else {
-	            alert ('复制失败');
-	        }
-	    },
+            if (success) {
+                alert('复制成功');
+            } else {
+                alert('复制失败');
+            }
+        },
 
-	    CreateElementForExecCommand (textToClipboard) {
-	        var forExecElement = document.createElement ("div");
-	        // place outside the visible area
-	        forExecElement.style.position = "absolute";
-	        forExecElement.style.left = "-10000px";
-	        forExecElement.style.top = "-10000px";
-	        // write the necessary text into the element and append to the document
-	        forExecElement.textContent = textToClipboard;
-	        document.body.appendChild (forExecElement);
-	        // the contentEditable mode is necessary for the  execCommand method in Firefox
-	        forExecElement.contentEditable = true;
+        CreateElementForExecCommand(textToClipboard) {
+            var forExecElement = document.createElement("div");
+            // place outside the visible area
+            forExecElement.style.position = "absolute";
+            forExecElement.style.left = "-10000px";
+            forExecElement.style.top = "-10000px";
+            // write the necessary text into the element and append to the document
+            forExecElement.textContent = textToClipboard;
+            document.body.appendChild(forExecElement);
+            // the contentEditable mode is necessary for the  execCommand method in Firefox
+            forExecElement.contentEditable = true;
 
-	        return forExecElement;
-	    },
+            return forExecElement;
+        },
 
-	    SelectContent (element) {
-	        // first create a range
-	        var rangeToSelect = document.createRange ();
-	        rangeToSelect.selectNodeContents (element);
+        SelectContent(element) {
+            // first create a range
+            var rangeToSelect = document.createRange();
+            rangeToSelect.selectNodeContents(element);
 
-	        // select the contents
-	        var selection = window.getSelection ();
-	        selection.removeAllRanges ();
-	        selection.addRange (rangeToSelect);
-	    }
+            // select the contents
+            var selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(rangeToSelect);
+        }
     },
 
 
     data() {
         return {
-        	select:[
+            select: [
 
-        	],
+            ],
 
-        	channel_id:'',
-        	channel_name:'',
+            channel_id: '',
+            channel_name: '',
 
             subWidth: {
                 table: {
@@ -309,12 +310,12 @@ new Vue({
 
             show_pass: false,
 
-            saliesLists:[
+            saliesLists: [
 
-            	{
-            		username: '',
-            		uid:''
-            	},
+                {
+                    username: '',
+                    uid: ''
+                },
 
 
             ],

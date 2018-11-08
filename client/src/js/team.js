@@ -11,7 +11,21 @@ new Vue({
         let that = this;
 
         that.$api.team.lst().then((res) => {
-            that.tdata = res.data;
+            let data = res.data,
+                preItem = null;
+
+            for(var i = 0; i < data.length; i++){   
+                var item = data[i];
+
+                if(preItem && preItem.phone == item.phone){
+                    preItem.hideBorder = true;
+                    item.hidePre = true;
+                }
+
+                preItem = item;
+            }
+
+            that.tdata = data;
         }).catch((res) => {
             this.$comp.toast({
                 text: '获取数据失败，请重试.',
@@ -119,6 +133,8 @@ new Vue({
             showAdd: false,
 
             qr_code: {}, //邀请人信息
+
+            checkRepeat: '',
 
             theader: [{
                     text: '姓名',

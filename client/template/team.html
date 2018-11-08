@@ -36,6 +36,14 @@
     .copy-url:hover {
         color: #2196f3;
     }
+
+    .hide-border {
+        border-bottom: none !important;
+    }
+
+    .hide-pre {
+        visibility: hidden;
+    }
 </style>
 {/block}
 
@@ -63,15 +71,20 @@
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
-            <td class="text-xs-left">{{ props.item.first_name }}{{ props.item.last_name }}</td>
-            <td class="text-xs-left">{{ props.item.phone }}</td>
-            <td class="text-xs-right">{{ props.item.channel_name }}</td>
-            <td class="text-xs-left">{{ props.item.chan_pfm_obj }}</td>
-            <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
-            <td class="text-xs-left">
-                <v-checkbox color="info" hide-details></v-checkbox>
-            </td>
-
+            <tr :class="{'hide-border': props.item.hideBorder }">
+                <td class="text-xs-left" :class="{'hide-pre': props.item.hidePre }">
+                    {{ props.item.first_name }}{{ props.item.last_name }}
+                </td>
+                <td class="text-xs-left" :class="{'hide-pre': props.item.hidePre }">
+                    {{ props.item.phone }}
+                </td>
+                <td class="text-xs-right">{{ props.item.channel_name }}</td>
+                <td class="text-xs-left">{{ props.item.chan_pfm_obj }}</td>
+                <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
+                <td class="text-xs-left">
+                    <v-checkbox color="info" hide-details></v-checkbox>
+                </td>
+            </tr>
         </template>
     </v-data-table>
 </v-container>

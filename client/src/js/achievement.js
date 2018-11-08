@@ -1,5 +1,7 @@
 import Vue from './base';
-import { mixinExt }  from './mixin';
+import {
+    mixinExt
+} from './mixin';
 
 new Vue({
     el: '#app',
