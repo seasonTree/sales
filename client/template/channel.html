@@ -152,7 +152,7 @@
                     </td>
                     <td class="text-xs-center" ref="td8">
 
-                        <v-icon @click="changeStatus(props.item)" title="修改" class="mr-2">
+                        <v-icon v-if="props.item.type == 2" @click="showEditDig(props.item)" title="修改" class="mr-2">
                             edit
                         </v-icon>
                         <v-icon v-if="props.item.status == -1" @click.stop="changeStatus(props.item)" color="red" title="停止">
@@ -208,7 +208,7 @@
                                 </div>
                             </td>
                             <td class="text-xs-center" :style="subWidth.td8">
-                                <v-icon @click="changeStatus(props.item)" title="修改" class="mr-2">
+                                <v-icon v-if="props.item.type == 1" @click="showEditDig(props.item)" title="修改" class="mr-2">
                                     edit
                                 </v-icon>
 
@@ -356,6 +356,44 @@
                     确认
                 </v-btn>
                 <v-btn color="primary" flat @click="showAddSales = false">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog scrollable v-model="showEdit" width="500">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                修改
+            </v-card-title>
+
+            <v-card-text>
+                <v-form>
+                    <v-text-field label="渠道名称" v-model="editItem.channel_name"></v-text-field>
+                    <v-text-field label="描述信息" v-model="editItem.channel_info"></v-text-field>
+                    <v-text-field label="二维码附加信息" v-model="editItem.qr_code_info"></v-text-field>
+                    <div v-if="<?php echo $_SESSION['think']['user_info']['parent_id'];?> == 0">
+                        <v-select v-model="editItem.type" :items="achievement_type" item-text="value" item-value="type"
+                            attach chips label="业绩目标类型" full-width>
+                        </v-select>
+
+                        <v-text-field label="业绩总目标" v-if="editItem.type == 2" v-model="editItem.chan_pfm_obj">
+                        </v-text-field>
+
+                        <v-text-field label="医生总目标" v-if="editItem.type == 2" v-model="editItem.chan_doc_num">
+                        </v-text-field>
+                    </div>
+
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="editChannel" :loading="submitLoading">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="showEdit = false">
                     取消
                 </v-btn>
             </v-card-actions>

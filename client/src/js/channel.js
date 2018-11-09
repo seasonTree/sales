@@ -261,6 +261,62 @@ new Vue({
                     color: 'error'
                 });
             });
+        },
+
+        //弹窗渠道修改界面
+        showEditDig(item){
+            let that = this;
+
+            that.$api.channel.getChannel({
+                data: {
+                    id: item.id,
+                }
+            }).then((res) => {
+                if(res.code == 0){
+
+                    that.editItem = res.data;
+
+                }else{
+                    that.$comp.toast({
+                        text: res.msg || '设置失败，请重试.',
+                        color: 'error'
+                    });
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '设置失败，请重试.',
+                    color: 'error'
+                });
+            });
+
+            that.showEdit = true;
+
+        },
+
+        editChannel(){
+            let that = this;
+
+            that.$api.channel.getChannel({
+                data: that.editItem
+            }).then((res) => {
+                if(res.code == 0){
+                    that.$comp.toast({
+                        text: res.msg,
+                    });
+
+                }else{
+                    that.$comp.toast({
+                        text: res.msg || '设置失败，请重试.',
+                        color: 'error'
+                    });
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '设置失败，请重试.',
+                    color: 'error'
+                });
+            });
+
         }
     },
 
@@ -355,6 +411,7 @@ new Vue({
             submitLoading: false,
 
             showAdd: false,
+            showEdit: false,
             showAddSales: false,
             showAddUser: false,
 
@@ -373,6 +430,15 @@ new Vue({
             chips: [],
 
             addItem: {
+                channel_name: '',
+                channel_info: '',
+                qr_code_info: '',
+                type: '',
+                chan_pfm_obj: '',
+                chan_doc_num: ''
+            },
+
+            editItem: {
                 channel_name: '',
                 channel_info: '',
                 qr_code_info: '',
