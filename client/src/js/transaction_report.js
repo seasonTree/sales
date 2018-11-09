@@ -16,6 +16,8 @@ new Vue({
         that.dateFm = dyMonth.monthDayStart;
         that.dateTo = dyMonth.monthDayCur;
 
+        that.setExportUrl();
+
         that.getReomteData();
     },
 
@@ -112,7 +114,9 @@ new Vue({
 
             tdata: [],
 
-            dataTimer: null
+            dataTimer: null,
+
+            exportUrl: ""
         };
     },
 
@@ -133,6 +137,8 @@ new Vue({
                     return;
                 }
 
+                that.setExportUrl();
+
                 this.pager.index = 1;
 
                 that.getReomteData();
@@ -145,6 +151,8 @@ new Vue({
                 return;
             }
 
+            this.setExportUrl();
+
             this.getReomteData();            
         },
 
@@ -152,6 +160,8 @@ new Vue({
             if(this.firstLoading){
                 return;
             }
+
+            this.setExportUrl();
 
             this.getReomteData();
         },
@@ -162,9 +172,25 @@ new Vue({
     },
 
     methods: {
-        exportExcel() {
 
+        setExportUrl(){
+            this.exportUrl = `/transaction/exportExcel?type=${this.currentDataType}&dateFm=${this.dateFm}&dateTo=${this.dateTo}`;
         },
+
+        // exportExcel() {
+        //     let that = this;
+        //     that.$api.transaction.exportExcel({
+        //         data: {
+        //             type: that.currentDataType,
+        //             dateFm: that.dateFm,
+        //             dateTo: that.dateTo,
+        //             // pageSize: that.pager.size,
+        //             // pageIndex: that.pager.index
+        //         }
+        //     }).then((res)=>{
+        //         console.log(res);
+        //     })
+        // },
 
         changePage(){
             this.getReomteData();
@@ -209,7 +235,7 @@ new Vue({
                 if (res.code == 0) {
                     that.tdata = res.data.data;
                     // that.pager.index = res.data.current_page;
-                    that.pager.count = res.data.pageCount;
+                    that.pager.count = res.data.pageCount || 1;
                 } else {
                     that.$comp.toast({
                         text: '获取失败，请重试.',

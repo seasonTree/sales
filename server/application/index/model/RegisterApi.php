@@ -36,5 +36,18 @@ class RegisterApi extends Model{
             
         return $data;
     }
-    
+    //获取交易报告excel数据
+    public function getTranReportExcel($referalCode,$startDate=0,$endDate=0){
+        if($referalCode ==1){
+            $where=[];
+        }else{
+            $where =['R.referralCode'=>$referalCode];
+        }
+
+        $sql =$this->alias('R')->field('R.referralCode,firstName,description,unitprice,quantity,created_at,contactPhone as phone')
+            ->join('ecommerce_api EA','R.userId=EA.userid','RIGHT')->order('created_at','desc')
+            ->join('doc_user_info DUI','DUI.user_id =EA.userid','LEFT')->where($where)->where('created_at','between',[$startDate,$endDate]);
+        $data = $sql->select()->toArray();
+        return $data;
+    }
 }

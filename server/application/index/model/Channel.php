@@ -12,20 +12,24 @@ class Channel extends Model
     protected $pk = 'id';
 
 
-    public function getChannel($uid = 0){
+    public function getChannel($where){
         //获取渠道
         $channel = Channel::alias('a')
                             ->join('sales_url b','a.id = b.channel_id','left')
                             ->field('a.*,b.channel_id,b.url_code')
-                            ->where('user_id',$uid)
+                            ->where($where)
                             ->select();
                             // dump(Channel::getlastsql());exit;
-        if ($channel[0]['p_id'] == 0) {
-            //顶级渠道
+
+        foreach ($channel as $a => $b) {
+
+            if ($b['p_id'] == 0) {
+            //顶级渠道,叠加目标
             $chan_pfm_obj = '';
             //业绩总量
             $chan_doc_num = '';
             //医生总量
+
             foreach ($channel as $k => $v) {
 
                 $channel[$k]['children'] = Channel::alias('a')
@@ -35,26 +39,35 @@ class Channel extends Model
                                                    ->where('p_id',$v['id'])
                                                    ->select()
                                                    ->toArray();
-
-                    
-                        if (isset($channel[$k]['children'])){
+                if ($v['type'] == 1) {
+                    //判断为叠加目标
+                    if (isset($channel[$k]['children'])){
 
                             $channel[$k]['chan_pfm_obj'] = array_sum(array_column($channel[$k]['children'], 'chan_pfm_obj'));
                             //计算业绩总量
 
                             $channel[$k]['chan_doc_num'] = array_sum(array_column($channel[$k]['children'], 'chan_doc_num'));
                             //计算医生总量
-
                         }
-
+                }
+                    
+                        
+                }
             }
         }
+
         return $channel;
     }
 
     public function addChannel($data){
         //添加渠道
         $res = Channel::insertGetId($data);
+        return $res;
+    }
+
+    public function updateChannel($data){
+        //更新渠道
+        $res = Channel::update($data);
         return $res;
     }
 

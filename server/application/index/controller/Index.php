@@ -1,6 +1,9 @@
 <?php
 namespace app\index\controller;
 use think\Controller;
+//require 'vendor/autoload.php';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Index extends Controller
 {
@@ -9,8 +12,8 @@ class Index extends Controller
         return view('/index');
     }
 
-    public function browserChoose(){
 
+    public function browserChoose(){
         return view('/browser_choose');
     }
 }

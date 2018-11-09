@@ -17,6 +17,41 @@ class Transaction extends Controller
 //        $this->assign('list', $list);
         return view('/transaction_report');
     }
+    //导出Excel
+    public function exportExcel(){
+        $referralCode = session('userid');
+        $dd = input('get.');
+        $referralCode = 1;
+        if($dd['type'] == 0){
+            $list = model('RegisterApi')->getTranReportExcel($referralCode,$dd['dateFm'],$dd['dateTo']);
+            $data = [
+                'cols'=>array('REFERRALCODE','firstName','description','unitprice','quantity','created_at','phone'),
+                'rows'=>$list
+            ];
+            $Excel= new \Excel();
+            $Excel->exportExcel($data,'TranReport');
+        }elseif ($dd['type']==1){
+            $list = model('DocUserInfo')->getTranReportExcel($referralCode,$dd['dateFm'],$dd['dateTo']);
+            $data =[
+              'cols'=>array('referralCode','firstName','created_at','phone'),
+              'rows'=>$list
+            ];
+            $Excel= new \Excel();
+            $Excel->exportExcel($data,'DocUserInfoReport');
+        }
+
+//        $data = array(
+//            'cols'=>array('姓名','班级','年龄'),
+//            'rows'=>array(
+//                array('小明','三年一班','10'),
+//                array('小泼','三年一班','11'),
+//                array('小韩','三年一班','12'),
+//            ),
+//        );
+//
+//        $Excel= new \Excel();
+//        $Excel->exportExcel($data,'banji');
+    }
     //提供交易记录据
     public function lst(){
         $referralCode = session('userid');

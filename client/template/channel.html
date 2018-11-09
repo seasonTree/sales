@@ -274,8 +274,6 @@
 
                 </div> -->
 
-
-
                 <div class="text-xs-center">
                     <v-btn color="s-primary" class="my-2" @click="showSales(props.item.id,props.item.channel_name)">
                         <v-icon dark>add</v-icon>新增销售员
@@ -297,6 +295,16 @@
                     <v-text-field label="渠道名称" v-model="addItem.channel_name"></v-text-field>
                     <v-text-field label="描述信息" v-model="addItem.channel_info"></v-text-field>
                     <v-text-field label="二维码附加信息" v-model="addItem.qr_code_info"></v-text-field>
+
+                    <v-select v-model="addItem.type" :items="achievement_type" item-text="value" item-value="type" attach chips label="业绩目标类型" full-width>
+                    </v-select>
+                    
+                    <v-text-field label="业绩总目标" v-if="addItem.type == 2" v-model="addItem.chan_pfm_obj">
+                    </v-text-field>
+
+                    <v-text-field label="医生总目标" v-if="addItem.type == 2" v-model="addItem.chan_doc_num">
+                    </v-text-field>
+
                 </v-form>
             </v-card-text>
 
