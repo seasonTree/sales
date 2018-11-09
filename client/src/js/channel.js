@@ -237,6 +237,15 @@ new Vue({
                     let data = res.data;
                     item.status = data.status;
 
+                    if(item.children.length){
+                        let children = item.children;
+
+                        for (var i = 0; i < children.length; i++) {
+                            var citem = children[i];
+                            citem.status = data.status;
+                        }
+                    }
+
                     this.$comp.toast({
                         text: '设置成功',
                     });

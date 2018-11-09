@@ -71,6 +71,12 @@ class Channel extends Model
         return $res;
     }
 
+    public function updateStatus($where,$data){
+        //更新状态
+        $res = Channel::where($where)->update($data);
+        return $res;
+    }
+
     public function findChannel($where){
         //检查渠道
         $res = Channel::where(['user_id'=>$where['user_id'],'channel_name'=>$where['channel_name']])->find();

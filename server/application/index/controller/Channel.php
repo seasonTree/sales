@@ -173,16 +173,39 @@ class Channel
 
     	}
     	$data = $channel_model->getChannel(array('a.id' => $channel_id));
-    	$count = count($data[0]['children']);
-    	$chan_pfm_obj = $data[0]['chan_pfm_obj'] / $count;
-    	$chan_doc_num = $data[0]['chan_doc_num'] / $count;
-    	foreach ($data[0]['children'] as $a => $b) {
-    		$channel_model->updateChannel(array('id' => $b['id'],'chan_pfm_obj' => $chan_pfm_obj,'chan_doc_num' => $chan_doc_num));
+    	//更新渠道表里面每个相关成员的目标信息(分解目标)
+    	if ($data[0]['type'] == 2) {
+    		$count = count($data[0]['children']);
+	    	$chan_pfm_obj = $data[0]['chan_pfm_obj'] / $count;
+	    	$chan_doc_num = $data[0]['chan_doc_num'] / $count;
+	    	foreach ($data[0]['children'] as $a => $b) {
+	    		$channel_model->updateChannel(array('id' => $b['id'],'chan_pfm_obj' => $chan_pfm_obj,'chan_doc_num' => $chan_doc_num));
 
+	    	}
     	}
-
     	return json(['code' => 0,'msg' => '操作成功' , 'data' => '']);
 
+    }
+
+    public function changeStatus(){
+    	//改变渠道的状态
+    	$input = input('post.data');
+    	$p_id = Session::get('user_info')['parent_id'];
+    	$channel_model = new ChannelModel();
+    	if ($p_id == 0) {
+    		//顶级渠道
+    		$res = $channel_model->updateStatus('p_id = '.$input['id'].' or id = '.$input['id'],array('status' => -$input['status']));
+    	}
+    	else{
+    		$res = $channel_model->updateStatus(array('id' => $input['id']),array('status' => -$input['status']));
+    	}
+
+    	if ($res) {
+    		return json(['code' => 0,'msg' => '操作成功' , 'data' => ['id' => $input['id'],'status' => -$input['status']]]);
+    	}
+    	else{
+    		return json(['code' => 1,'msg' => '没有任何改变' , 'data' => '']);
+    	}
     }
     
 
