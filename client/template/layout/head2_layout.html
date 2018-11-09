@@ -61,6 +61,7 @@
         </v-toolbar-items>
 
         <v-toolbar-items class="hidden-sm-and-down">
+            {if $_SESSION['think']['user_info']['type'] == '0'}
             <v-menu offset-y>
                 <v-btn flat primary slot="activator" :class="{'toolbar-active': global.viewSelect.system }">系统信息</v-btn>
                 <v-list dense class="toolbar-dropdown">
@@ -246,6 +247,7 @@
                     <!--</div>-->
                 </v-list>
             </v-menu>
+            {/if}
             <v-menu offset-y>
                 <v-btn flat primary slot="activator" :class="{'toolbar-active': global.currentView == 'userinfo'}">用户中心</v-btn>
                 <v-list dense class="language-dropdown">
