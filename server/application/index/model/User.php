@@ -45,7 +45,7 @@ class User extends Model
     }
     //获取非代理商的数据
     public function lst($where){
-        return $this->alias('U')->where($where)->field('U.id,U.username,U.status,group_concat(R.role_name) role_name,group_concat(R.id) role_id')
+        return $this->alias('U')->where($where)->field('U.id,U.username,U.status,U.type,group_concat(R.role_name) role_name,group_concat(R.id) role_id')
             ->join('user_role UR','U.id=UR.user_id','left')
             ->join('role R','R.id=UR.role_id','left')
             ->group('U.id')
@@ -102,7 +102,7 @@ class User extends Model
         $user = session('user_info');
         $id = $user['id'];
         if ($id ==1){
-            $priData =\Db::name('privilege')->select();
+            $priData =\Db::name('privilege')->where('path<>1')->select();
         }else{
             $priData=$this->alias('U')->distinct('pri_name')->field('P.*')
                 ->join('user_role UR','U.id=UR.user_id')

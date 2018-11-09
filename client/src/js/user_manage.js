@@ -133,9 +133,9 @@ new Vue({
                 that.$comp.toast({
                     text: data.msg,
                 });
-                // setTimeout(function () {
-                //     window.location.reload();
-                // },2000)
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
             }).catch((data) =>{ //function(data){}
                 that.$comp.toast({
                     text: data.msg,
