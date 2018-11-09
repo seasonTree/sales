@@ -144,7 +144,7 @@ class User
 
     	$user_model = new UserModel();
     	$user = $user_model->checkUserType(array('id' => $user_id));
-    	if ($user['parent_id'] == 0) {
+    	if ($user['type'] == 1) {
     		//这是公司账户
     		return view('/company_detail');
     	}
