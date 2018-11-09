@@ -52,11 +52,7 @@ new Vue({
             menu: false,
             menu1: false,
 
-            theader: [],
-
-            tableLoading: false,
-
-            transactionHead: [{
+            theader: [{
                     text: 'ID',
                     align: 'left',
                     value: 'id',
@@ -70,7 +66,7 @@ new Vue({
                 },
                 {
                     text: 'First Name',
-                    align: 'right',
+                    align: 'left',
                     value: 'first_name',
                     sortable: false,
                 },
@@ -88,11 +84,52 @@ new Vue({
                 },
                 {
                     text: 'Create Time',
-                    align: 'right',
+                    align: 'left',
                     value: 'create_time',
                     sortable: false,
                 }
             ],
+
+            tableLoading: false,
+
+            // memberHead: [
+            //     {
+            //         text: 'ID',
+            //         align: 'left',
+            //         value: 'id',
+            //         sortable: false,
+            //     },
+            //     {
+            //         text: 'UserName',
+            //         align: 'left',
+            //         value: 'username',
+            //         sortable: false,
+            //     },
+            //     {
+            //         text: 'First Name',
+            //         align: 'left',
+            //         value: 'first_name',
+            //         sortable: false,
+            //     },
+            //     {
+            //         text: 'Last Name',
+            //         align: 'left',
+            //         value: 'last_name',
+            //         sortable: false,
+            //     },
+            //     {
+            //         text: 'Phone',
+            //         align: 'left',
+            //         value: 'phone',
+            //         sortable: false,
+            //     },
+            //     {
+            //         text: 'Create Time',
+            //         align: 'left',
+            //         value: 'create_time',
+            //         sortable: false,
+            //     }
+            // ],
 
             // registrationHead: [{
             //         text: 'Firt Name',
@@ -132,7 +169,7 @@ new Vue({
             handler(newValue, oldValue) {
 
                 let that = this;
-                that.theader = that.transactionHead;
+                // that.theader = that.memberHead;
                 // if (newValue == 2) {
                 //     that.theader = that.transactionHead;
                 // } else if (newValue == 1) {
@@ -141,7 +178,7 @@ new Vue({
                 //     that.theader = that.registrationHead;
                 // }
 
-                if(this.firstLoading){
+                if (this.firstLoading) {
                     return;
                 }
 
@@ -178,7 +215,7 @@ new Vue({
 
         },
 
-        changePage(){
+        changePage() {
             this.getReomteData();
         },
 
@@ -222,7 +259,7 @@ new Vue({
                     console.log(res);
                     that.tdata = res.data.data;
                     // that.pager.index = res.data.current_page;
-                    that.pager.count = res.data.pageCount;
+                    that.pager.count = res.data.pageCount || 1;
                 } else {
                     that.$comp.toast({
                         text: '获取失败，请重试.',
