@@ -151,11 +151,16 @@
                         </div>
                     </td>
                     <td class="text-xs-center" ref="td8">
+
+                        <v-icon @click="changeStatus(props.item)" title="修改" class="mr-2">
+                            edit
+                        </v-icon>
                         <v-icon v-if="props.item.status == -1" @click="changeStatus(props.item)" color="red" title="停止">
                             block
                         </v-icon>
 
-                        <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green" title="开始">
+                        <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green"
+                            title="开始">
                             lens
                         </v-icon>
                     </td>
@@ -203,11 +208,17 @@
                                 </div>
                             </td>
                             <td class="text-xs-center" :style="subWidth.td8">
-                                <v-icon v-if="props.item.status == -1" @click="changeStatus(props.item)" color="red" title="停止">
+                                <v-icon @click="changeStatus(props.item)" title="修改" class="mr-2">
+                                    edit
+                                </v-icon>
+
+                                <v-icon v-if="props.item.status == -1" @click="changeStatus(props.item)" color="red"
+                                    title="停止">
                                     block
                                 </v-icon>
 
-                                <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green" title="开始">
+                                <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green"
+                                    title="开始">
                                     lens
                                 </v-icon>
                             </td>
@@ -296,9 +307,10 @@
                     <v-text-field label="描述信息" v-model="addItem.channel_info"></v-text-field>
                     <v-text-field label="二维码附加信息" v-model="addItem.qr_code_info"></v-text-field>
 
-                    <v-select v-model="addItem.type" :items="achievement_type" item-text="value" item-value="type" attach chips label="业绩目标类型" full-width>
+                    <v-select v-model="addItem.type" :items="achievement_type" item-text="value" item-value="type"
+                        attach chips label="业绩目标类型" full-width>
                     </v-select>
-                    
+
                     <v-text-field label="业绩总目标" v-if="addItem.type == 2" v-model="addItem.chan_pfm_obj">
                     </v-text-field>
 
