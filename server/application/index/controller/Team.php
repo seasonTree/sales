@@ -17,16 +17,20 @@ class Team
 		//团队列表
 		$team = new UserModel();
 		$userid = Session::get('user_info')['id'];
-		$team_user = $team->getTeamUser(array('parent_id' => $userid));
-		// $channel_model = new ChannelModel();
-
-		// foreach ($team_user as $k => $v) {
-
-		// 	$team_user[$k]['channel'] = $channel_model->getTeamChannel(array('user_id' => $v['id']));
-
-		// }
-		return json(['msg' => '获取成功','code' => 1,'data' => $team_user]);
-		// dump($team_user);
+		$p_id = Session::get('user_info')['parent_id'];
+		if ($p_id == 0) {
+			$team_user = $team->getTeamUser(array('parent_id' => $userid));
+		}
+		else{
+			$team_user = $team->getTeamUser(array('a.id' => $userid));
+		}
+		if ($team_user) {
+			return json(['msg' => '获取成功','code' => 1,'data' => $team_user]);
+		}
+		else{
+			return json(['msg' => '没能获取到数据','code' => 0,'data' => $team_user]);
+		}
+		
 	}
 
 	public function showInvitation(){

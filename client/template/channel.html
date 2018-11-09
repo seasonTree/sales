@@ -155,11 +155,11 @@
                         <v-icon @click="changeStatus(props.item)" title="修改" class="mr-2">
                             edit
                         </v-icon>
-                        <v-icon v-if="props.item.status == -1" @click="changeStatus(props.item)" color="red" title="停止">
+                        <v-icon v-if="props.item.status == -1" @click.stop="changeStatus(props.item)" color="red" title="停止">
                             block
                         </v-icon>
 
-                        <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green"
+                        <v-icon v-if="props.item.status == 1" @click.stop="changeStatus(props.item)" color="light-green"
                             title="开始">
                             lens
                         </v-icon>
@@ -212,12 +212,12 @@
                                     edit
                                 </v-icon>
 
-                                <v-icon v-if="props.item.status == -1" @click="changeStatus(props.item)" color="red"
+                                <v-icon v-if="props.item.status == -1" @click.stop="changeStatus(props.item)" color="red"
                                     title="停止">
                                     block
                                 </v-icon>
 
-                                <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green"
+                                <v-icon v-if="props.item.status == 1" @click.stop="changeStatus(props.item)" color="light-green"
                                     title="开始">
                                     lens
                                 </v-icon>
