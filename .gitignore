@@ -11,5 +11,5 @@ composer.lock
 /server/thinkphp/phpunit.xml
 /server/runtime
 /server/config/database.php
-/client/src
-# /client/dist
+# /client/src
+/client/dist
