@@ -237,7 +237,7 @@ new Vue({
                     let data = res.data;
                     item.status = data.status;
 
-                    if(item.children.length){
+                    if(item.children && item.children.length){
                         let children = item.children;
 
                         for (var i = 0; i < children.length; i++) {
@@ -261,6 +261,64 @@ new Vue({
                     color: 'error'
                 });
             });
+        },
+
+        //弹窗渠道修改界面
+        showEditDig(item){
+            let that = this;
+
+            that.$api.channel.getChannel({
+                data: {
+                    id: item.id,
+                }
+            }).then((res) => {
+                if(res.code == 0){
+
+                    that.editItem = res.data;
+
+                }else{
+                    that.$comp.toast({
+                        text: res.msg || '设置失败，请重试.',
+                        color: 'error'
+                    });
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '设置失败，请重试.',
+                    color: 'error'
+                });
+            });
+
+            that.showEdit = true;
+
+        },
+
+        editChannel(){
+            let that = this;
+
+            that.$api.channel.updateChannel({
+                data: that.editItem
+            }).then((res) => {
+                if(res.code == 0){
+                    that.$comp.toast({
+                        text: res.msg,
+                    });
+
+                    window.location.href = res.data.url;
+
+                }else{
+                    that.$comp.toast({
+                        text: res.msg || '设置失败，请重试.',
+                        color: 'error'
+                    });
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '设置失败，请重试.',
+                    color: 'error'
+                });
+            });
+
         }
     },
 
@@ -355,6 +413,7 @@ new Vue({
             submitLoading: false,
 
             showAdd: false,
+            showEdit: false,
             showAddSales: false,
             showAddUser: false,
 
@@ -373,6 +432,15 @@ new Vue({
             chips: [],
 
             addItem: {
+                channel_name: '',
+                channel_info: '',
+                qr_code_info: '',
+                type: '',
+                chan_pfm_obj: '',
+                chan_doc_num: ''
+            },
+
+            editItem: {
                 channel_name: '',
                 channel_info: '',
                 qr_code_info: '',

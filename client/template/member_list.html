@@ -21,10 +21,18 @@
     </div>
     <div class="action-bar">
         <v-layout row wrap>
+
+
+            <v-flex xs2>
+                <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
+                    <v-icon dark>add</v-icon>新增
+                </v-btn>
+            </v-flex>
+            <v-spacer></v-spacer>
             <v-flex xs2>
                 <v-select :disabled="tableLoading" :items="tableType" v-model="currentDataType" item-text="text" item-value="value"></v-select>
             </v-flex>
-            <v-spacer></v-spacer>
+
             <!--<v-flex class="text-xs-right">-->
                 <!--<v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40" :return-value.sync="dateFm"-->
                     <!--lazy transition="scale-transition" offset-y>-->
@@ -51,6 +59,20 @@
                 <td class="text-xs-left">{{ props.item.last_name }}</td>
                 <td class="text-xs-left">{{ props.item.phone }}</td>
                 <td class="text-xs-left">{{ props.item.create_time }}</td>
+                <td class="text-xs-center" ref="td8">
+
+                    <v-icon @click="changeStatus(props.item)" title="修改" class="mr-2">
+                        edit
+                    </v-icon>
+                    <v-icon @click.stop="changeStatus(props.item)" color="red" title="停止">
+                        block
+                    </v-icon>
+
+                    <v-icon @click.stop="changeStatus(props.item)" color="light-green"
+                            title="开始">
+                        lens
+                    </v-icon>
+                </td>
             </tr>
 
             <!--<tr v-if="currentDataType == 0">-->

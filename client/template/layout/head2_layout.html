@@ -16,16 +16,13 @@
         <v-toolbar-items class="hidden-sm-and-down">
             <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
 
-            {if $_SESSION['think']['user_info']['type'] == '1' || $_SESSION['think']['user_info']['type'] == '3'}
+            {if $_SESSION['think']['user_info']['type'] != '0'}
             <v-btn href="{:url('Team/index')}" flat :class="{'toolbar-active': global.currentView == 'team'}">团队</v-btn>
             <v-btn href="{:url('Channel/index')}" flat :class="{'toolbar-active': global.currentView == 'channel'}">渠道</v-btn>
             <v-btn href="{:url('Achievement/index')}" flat :class="{'toolbar-active': global.currentView == 'achievement'}">业绩</v-btn>
             <v-btn href="{:url('Transaction/index')}" flat :class="{'toolbar-active': global.currentView == 'transaction'}">交易报告</v-btn>
             {/if}
-            {if $_SESSION['think']['user_info']['type'] == '2'}
-            <v-btn href="{:url('Achievement/index')}" flat :class="{'toolbar-active': global.currentView == 'achievement'}">业绩</v-btn>
-            <v-btn href="{:url('Transaction/index')}" flat :class="{'toolbar-active': global.currentView == 'transaction'}">交易报告</v-btn>
-            {/if}
+
 
             <!-- <v-btn href="{:url('Achievement/distributionNetwork')}" flat :class="{'toolbar-active': global.currentView == 'distributionnetwork'}">销售网络</v-btn> -->
 

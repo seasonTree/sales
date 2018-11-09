@@ -42,3 +42,19 @@ export function changeStatus(data){
         data: data
     })
 }
+
+export function getChannel(data){
+    return request({
+        url: '/channel/getChannel',
+        method: 'post',
+        data: data
+    })
+}
+
+export function updateChannel(data){
+    return request({
+        url: '/channel/updateChannel',
+        method: 'post',
+        data: data
+    })
+}

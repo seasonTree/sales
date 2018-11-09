@@ -87,7 +87,12 @@ new Vue({
                     align: 'left',
                     value: 'create_time',
                     sortable: false,
-                }
+                },
+                {
+                    align: 'center',
+                    value: '',
+                    sortable: false,
+                },
             ],
 
             tableLoading: false,

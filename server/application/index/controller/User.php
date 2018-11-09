@@ -141,9 +141,9 @@ class User
     		//删除空目录
     		@rmdir($file_path);
     	}
-
     	$user_model = new UserModel();
     	$user = $user_model->checkUserType(array('id' => $user_id));
+
     	if ($user['type'] == 1) {
     		//这是公司账户
     		return view('/company_detail');
@@ -213,10 +213,16 @@ class User
     					);
     	unset($data['phone']);
     	//删除电话
+    	unset($data['type']);
+    	//删除类型
+    	$username = $data['username'];
+    	unset($data['username']);
+    	//删除用户名
     	$user_model = new UserModel();
     	$res = $user_model->updateUser($phone);
     	$user_info_model = new UserInfoModel();
-    	// dump($data);
+    	unset($data['parent_id']);
+    	//删除pid
     	if ($data['id'] == '') {
     		unset($data['id']);
     		$id = $user_info_model->insertUserInfo($data);
@@ -260,7 +266,7 @@ class User
 	    			$insert_message[$k]['sender'] = $data['user_id'];
 	    			$insert_message[$k]['receiver'] = $v;
 	    			$insert_message[$k]['type'] = 3;
-	    			$insert_message[$k]['content'] = '您有一条'.$data['username'].'的注册信息需要审核！';
+	    			$insert_message[$k]['content'] = '您有一条'.$username.'的注册信息需要审核！';
 	    			
 	    		}
 	    		$message_model->addMessageAll($insert_message);
