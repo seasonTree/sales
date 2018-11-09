@@ -59,6 +59,23 @@ class Channel extends Model
         return $channel;
     }
 
+    public function getChannelOne($where){
+        //获取单个渠道信息
+        $res = Channel::where($where)
+                      ->field('id,channel_name,channel_info,qr_code_info,chan_pfm_obj,chan_doc_num,type')
+                      ->find();
+        return $res;
+    }
+
+    public function getChildren($where){
+        //获取下线销售员
+        $res = Channel::where($where)
+                      ->field('id,chan_pfm_obj,chan_doc_num')
+                      ->select()
+                      ->toArray();
+        return $res;
+    }
+
     public function addChannel($data){
         //添加渠道
         $res = Channel::insertGetId($data);

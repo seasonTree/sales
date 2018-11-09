@@ -212,9 +212,9 @@ class Channel
     	//获取单个渠道
     	$id = input('post.data.id');
     	$channel_model = new ChannelModel();
-    	$data = $channel_model->getChannel(array('a.id' => $id));
+    	$data = $channel_model->getChannelOne(array('id' => $id));
     	if ($data) {
-    		return json(['code' => 0,'msg' => '获取成功' , 'data' => $data[0]]);
+    		return json(['code' => 0,'msg' => '获取成功' , 'data' => $data]);
     	}
     	else{
     		return json(['code' => 1,'msg' => '获取失败' , 'data' => '']);
@@ -226,8 +226,18 @@ class Channel
     	$data = input('post.data');
     	$channel_model = new ChannelModel();
     	$res = $channel_model->updateChannel($data);
+    	if ($data['type'] == 2) {
+    		$temp = $channel_model->getChildren(array('p_id' => $data['id']));
+    		$count = count($temp);
+	    	$chan_pfm_obj = $data['chan_pfm_obj'] / $count;
+	    	$chan_doc_num = $data['chan_doc_num'] / $count;
+	    	foreach ($temp as $a => $b) {
+	    		$channel_model->updateChannel(array('id' => $b['id'],'chan_pfm_obj' => $chan_pfm_obj,'chan_doc_num' => $chan_doc_num));
+
+	    	}
+    	}
     	if ($res) {
-    		return json(['code' => 0,'msg' => '操作成功' , 'data' => '']);
+    		return json(['code' => 0,'msg' => '操作成功' , 'data' => ['url' => '/channel/index']]);
     	}
     	else{
     		return json(['code' => 1,'msg' => '操作失败' , 'data' => '']);

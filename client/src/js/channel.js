@@ -237,7 +237,7 @@ new Vue({
                     let data = res.data;
                     item.status = data.status;
 
-                    if(item.children.length){
+                    if(item.children && item.children.length){
                         let children = item.children;
 
                         for (var i = 0; i < children.length; i++) {
@@ -296,13 +296,15 @@ new Vue({
         editChannel(){
             let that = this;
 
-            that.$api.channel.getChannel({
+            that.$api.channel.updateChannel({
                 data: that.editItem
             }).then((res) => {
                 if(res.code == 0){
                     that.$comp.toast({
                         text: res.msg,
                     });
+
+                    window.location.href = res.data.url;
 
                 }else{
                     that.$comp.toast({
