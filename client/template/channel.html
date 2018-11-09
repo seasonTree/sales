@@ -320,25 +320,15 @@
 
             <v-card-text>
                 <v-flex>
+                    <v-form>
+                        <v-select v-model="select" return-object :items="saliesLists" item-text="username" item-value="uid"
+                            attach chips label="请选择销售员" multiple full-width>
 
-                    <v-select v-model="select" return-object :items="saliesLists" item-text="username" item-value="uid"
-                        attach chips label="请选择销售员" multiple full-width>
-
-                    </v-select>
-
-
-                    <!-- <v-select v-model="" :items="saliesLists" label="请选择销售员" chips clearable prepend-icon="filter_list"
-                        solo multiple>
-                        <template slot="selection" slot-scope="data" >
-                            <v-chip :selected="data.selected" close @input="remove(data)" >
-                                <strong>{{ data.item }}</strong>&nbsp;
-                            </v-chip>
-                        </template>
-                    </v-select> -->
+                        </v-select>
                     </v-form>
             </v-card-text>
 
-            <v-btn color="s-primary" @click="showAddUser = true">开通账号</v-btn>
+            <!-- <v-btn color="s-primary" @click="showAddUser = true">开通账号</v-btn> -->
 
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -352,7 +342,7 @@
         </v-card>
     </v-dialog>
 
-    <v-dialog scrollable v-model="showAddUser" width="600">
+    <!-- <v-dialog scrollable v-model="showAddUser" width="600">
         <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>
                 新增
@@ -398,7 +388,7 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
 </v-container>
 
