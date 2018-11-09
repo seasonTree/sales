@@ -34,3 +34,11 @@ export function addSales(data) {
         data: data
     })
 }
+
+export function changeStatus(data){
+    return request({
+        url: '/channel/changeStatus',
+        method: 'post',
+        data: data
+    })
+}

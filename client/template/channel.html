@@ -151,11 +151,11 @@
                         </div>
                     </td>
                     <td class="text-xs-center" ref="td8">
-                        <v-icon v-if="!props.item.status" color="red" title="停止">
+                        <v-icon v-if="props.item.status == -1" @click="changeStatus(props.item)" color="red" title="停止">
                             block
                         </v-icon>
 
-                        <v-icon v-if="props.item.status" color="light-green" title="开始">
+                        <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green" title="开始">
                             lens
                         </v-icon>
                     </td>
@@ -203,11 +203,11 @@
                                 </div>
                             </td>
                             <td class="text-xs-center" :style="subWidth.td8">
-                                <v-icon v-if="!props.item.status" color="red" title="停止">
+                                <v-icon v-if="props.item.status == -1" @click="changeStatus(props.item)" color="red" title="停止">
                                     block
                                 </v-icon>
 
-                                <v-icon v-if="props.item.status" color="light-green" title="开始">
+                                <v-icon v-if="props.item.status == 1" @click="changeStatus(props.item)" color="light-green" title="开始">
                                     lens
                                 </v-icon>
                             </td>

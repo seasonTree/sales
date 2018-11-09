@@ -41,27 +41,27 @@ new Vue({
 
         calcWidth() {
 
-            let td1Width = this.$refs.td1.offsetWidth,
-                td2Width = this.$refs.td2.offsetWidth,
-                td3Width = this.$refs.td3.offsetWidth,
-                td4Width = this.$refs.td4.offsetWidth,
-                td5Width = this.$refs.td5.offsetWidth,
-                td6Width = this.$refs.td6.offsetWidth,
-                td7Width = this.$refs.td7.offsetWidth,
-                td8Width = this.$refs.td8.offsetWidth;
+            try {
+                let td1Width = this.$refs.td1.offsetWidth,
+                    td2Width = this.$refs.td2.offsetWidth,
+                    td3Width = this.$refs.td3.offsetWidth,
+                    td4Width = this.$refs.td4.offsetWidth,
+                    td5Width = this.$refs.td5.offsetWidth,
+                    td6Width = this.$refs.td6.offsetWidth,
+                    td7Width = this.$refs.td7.offsetWidth,
+                    td8Width = this.$refs.td8.offsetWidth;
 
-            // this.subWidth.table['paddingLeft'] = this.subWidth.line['marginLeft'] = td1Width + 'px';
-            this.subWidth.table['paddingLeft'] = td1Width + 'px';
-            this.subWidth.td2.width = td2Width + 'px';
-            this.subWidth.td3.width = td3Width + 'px';
-            this.subWidth.td4.width = td4Width + 'px';
-            this.subWidth.td5.width = td5Width + 'px';
-            this.subWidth.td6.width = td6Width + 'px';
-            this.subWidth.td7.width = td7Width + 'px';
-            this.subWidth.td8.width = td8Width + 'px';
+                this.subWidth.table['paddingLeft'] = td1Width + 'px';
+                this.subWidth.td2.width = td2Width + 'px';
+                this.subWidth.td3.width = td3Width + 'px';
+                this.subWidth.td4.width = td4Width + 'px';
+                this.subWidth.td5.width = td5Width + 'px';
+                this.subWidth.td6.width = td6Width + 'px';
+                this.subWidth.td7.width = td7Width + 'px';
+                this.subWidth.td8.width = td8Width + 'px';
+            } catch (error) {
 
-            // this.subWidth.line['width'] = (this.$refs.tr - td1Width) + 'px';
-
+            }
         },
 
         remove(item) {
@@ -93,7 +93,6 @@ new Vue({
                     that.submitLoading = false;
                 }
 
-
             }).catch((res) => {
                 console.log('***********')
             });
@@ -116,11 +115,10 @@ new Vue({
                 console.log('eeeeeeeeeeeee');
                 console.log(res);
             });
+
             that.channel_id = channel_id;
             that.channel_name = channel_name;
             that.showAddSales = true;
-
-
         },
 
         addSales() {
@@ -222,6 +220,38 @@ new Vue({
             var selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(rangeToSelect);
+        },
+
+        //修改当前渠道的状态
+        changeStatus(item) {
+            let that = this;
+
+            that.$api.channel.changeStatus({
+                data: {
+                    id: item.id,
+                    status: item.status
+                }
+            }).then((res) => {
+                if(res.code == 0){
+
+                    let data = res.data;
+                    item.status = data.status;
+
+                    this.$comp.toast({
+                        text: '设置成功',
+                    });
+                }else{
+                    that.$comp.toast({
+                        text: res.msg || '设置失败，请重试.',
+                        color: 'error'
+                    });
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '设置失败，请重试.',
+                    color: 'error'
+                });
+            });
         }
     },
 
@@ -229,8 +259,7 @@ new Vue({
     data() {
         return {
 
-            select:[
-            ],
+            select: [],
 
             channel_id: '',
             channel_name: '',
@@ -238,11 +267,11 @@ new Vue({
 
                 {
                     type: 1,
-                    value:'叠加目标' 
+                    value: '叠加目标'
                 },
                 {
-                    type:2,
-                    value:'分解目标'
+                    type: 2,
+                    value: '分解目标'
                 }
 
 
@@ -339,8 +368,8 @@ new Vue({
                 channel_info: '',
                 qr_code_info: '',
                 type: '',
-                chan_pfm_obj :'',
-                chan_doc_num :''
+                chan_pfm_obj: '',
+                chan_doc_num: ''
             },
 
             // items: ['页面1', '页面2'],
