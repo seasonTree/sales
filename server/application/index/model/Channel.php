@@ -62,7 +62,7 @@ class Channel extends Model
     public function getChannelOne($where){
         //获取单个渠道信息
         $res = Channel::where($where)
-                      ->field('id,channel_name,channel_info,qr_code_info,chan_pfm_obj,chan_doc_num,type')
+                      ->field('id,p_id,channel_name,channel_info,qr_code_info,chan_pfm_obj,chan_doc_num,type')
                       ->find();
         return $res;
     }
