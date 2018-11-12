@@ -1,6 +1,8 @@
 <?php
 
 namespace app\http\middleware;
+
+
 class Check
 {
     public function handle($request, \Closure $next)
@@ -10,7 +12,6 @@ class Check
             return redirect('/');
         }
         if(!$this->isHasCheckPri()){
-            $request->error = '非法访问';
             return redirect('/user/userInfo');
         }
         return $next($request);

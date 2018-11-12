@@ -24,15 +24,25 @@
             <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.username }}</td>
             <td class="text-xs-right">{{ props.item.role_name }}</td>
-            <td class="text-xs-left">{{ props.item.status }}</td>
+            <td class="text-xs-left" v-if="props.item.status==1">正常</td>
+            <td class="text-xs-left" v-if="props.item.status==2">禁用</td>
+            <td class="text-xs-left" v-if="props.item.status==3">黑名单</td>
+            <td class="text-xs-left" v-if="props.item.status==0">待审核</td>
+            <td class="text-xs-left" v-if="props.item.status==-1">未通过审核</td>
             <td class="text-xs-center">
                 <v-icon small class="mr-2" @click="edit(props.item)">
                     edit
                 </v-icon>
-                <v-icon small @click="del(props.item.id)">
-                    delete
+                <!--<v-icon small @click="del(props.item.id)">-->
+                    <!--delete-->
+                <!--</v-icon>-->
+                <v-icon @click.stop="changeStatus(props.item.id,2)" color="red" title="禁用">
+                    block
                 </v-icon>
-
+                <v-icon @click.stop="changeStatus(props.item.id,1)" color="light-green"
+                        title="激活">
+                    lens
+                </v-icon>
             </td>
         </template>
     </v-data-table>

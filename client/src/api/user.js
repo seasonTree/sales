@@ -42,7 +42,7 @@ export function getmemberlst(data) {
         data: data
     })
 }
-//管理员添加账号
+//超级管理员添加账号
 export function add(data){
     return request({
         url: '/Auser/add',
@@ -50,6 +50,23 @@ export function add(data){
         data: data
     })
 }
+//管理员添加代理商账号
+export function addDls(data){
+    return request({
+        url: '/Auser/addDls',
+        method: 'post',
+        data: data
+    })
+}
+//更改user状态
+export function userStatus(data){
+    return request({
+        url: '/user/userStatus',
+        method: 'post',
+        data: data
+    })
+}
+
 
 //获取当前用户的信息
 export function getOneUser(data){

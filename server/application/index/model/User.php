@@ -97,6 +97,20 @@ class User extends Model
             ->find()->toArray();
         return $data;
     }
+    public function getPri(){
+        $user = session('user_info');
+        $id = $user['id'];
+        if ($id ==1){
+            $priData =\Db::name('privilege')->where('path<>1')->select();
+        }else{
+            $priData=$this->alias('U')->distinct('pri_name')->field('P.*')
+                ->join('user_role UR','U.id=UR.user_id')
+                ->join('role_pri RP','UR.role_id=RP.role_id')
+                ->join('privilege P','P.id=RP.pri_id')
+                ->where('U.id='.$id)
+                ->select()->toArray();
+        }
+    }
     //获取_menu权限列表
     public function getBtns(){
         $user = session('user_info');

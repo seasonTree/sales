@@ -5,7 +5,7 @@ use think\Request;
 
 class Auser extends Controller
 {
-    protected $middleware =['Check'];
+//    protected $middleware =['Check'];
     public function index(Request $request){
         if($request->error){
             return $request->error;
@@ -77,4 +77,29 @@ class Auser extends Controller
             return json(['msg'=>'删除失败','code'=>'1']);
         }
     }
+    //管理员添加代理商
+    public function addDls(){
+        $data = input('post.data');
+        $user =model('User')->findUser($data['username']);
+        if($user){
+            return json(['msg'=>'账号名已存在','code'=>1]);
+        }
+        $validate =validate('User');
+        if (!$validate->check($data)){
+            $error =$validate->getError();
+            return json(['msg'=>$error,'code'=>1]);
+        }
+        $data['password']= password_hash($data['password'],PASSWORD_DEFAULT);
+        $data['status']= 0;
+        if($data['role_id'][0] ==2){
+            $data['type']= 3;
+        }elseif ($data['role_id'][0] ==1){
+            $data['type']= 1;
+        }
+        $id=model('User')->add($data);
+        if($id){
+            return json(['msg'=>'新增成功','code'=>0]);
+        }
+    }
+
 }

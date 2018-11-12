@@ -15,12 +15,24 @@ class User
     public function memberlst(){
         return view('/member_list');
     }
+    //更改user状态
+    public function userStatus(){
+        $data = input('post.data');
+        $status = $data['status'];
+        $id = $data['id'];
+        $res =model('user')->save(['status'=>$status],['id'=>$id]);
+        if($res){
+            return json(['msg'=>'状态修改成功','code'=>0]);
+        }else{
+            return json(['msg'=>'状态修改失败','code'=>1]);
+        }
+    }
+
     //获取会员列表数据
     public function  getmemberlst(){
         $post = input('post.data');
         $data = model('User')->memberlst(['type'=>$post['type']]);
         return json(['code'=>0,'data'=>$data]);
-
     }
 
 	public function personInfo(){

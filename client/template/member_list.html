@@ -25,7 +25,7 @@
 
             <v-flex xs2>
                 <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
-                    <v-icon dark>add</v-icon>新增
+                    <v-icon dark>add</v-icon>新增经销商
                 </v-btn>
             </v-flex>
             <v-spacer></v-spacer>
@@ -33,20 +33,7 @@
                 <v-select :disabled="tableLoading" :items="tableType" v-model="currentDataType" item-text="text" item-value="value"></v-select>
             </v-flex>
 
-            <!--<v-flex class="text-xs-right">-->
-                <!--<v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40" :return-value.sync="dateFm"-->
-                    <!--lazy transition="scale-transition" offset-y>-->
-                    <!--<v-text-field :disabled="tableLoading" slot="activator" v-model="dateFm" prepend-icon="event" readonly></v-text-field>-->
-                    <!--<v-date-picker  no-title scrollable v-model="dateFm" @input="$refs.menu.save(dateFm)"></v-date-picker>-->
-                <!--</v-menu>-->
-                <!--</v-date-picker>-->
-                <!--<span class="px-2 date-txt">至</span>-->
-                <!--<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40"-->
-                    <!--:return-value.sync="dateTo" lazy transition="scale-transition" offset-y>-->
-                    <!--<v-text-field :disabled="tableLoading" slot="activator" v-model="dateTo" prepend-icon="event" readonly></v-text-field>-->
-                    <!--<v-date-picker no-title scrollable v-model="dateTo" @input="$refs.menu1.save(dateTo)"></v-date-picker>-->
-                <!--</v-menu>-->
-            <!--</v-flex>-->
+
         </v-layout>
     </div>
 
@@ -59,17 +46,21 @@
                 <td class="text-xs-left">{{ props.item.last_name }}</td>
                 <td class="text-xs-left">{{ props.item.phone }}</td>
                 <td class="text-xs-left">{{ props.item.create_time }}</td>
+                <td class="text-xs-left" v-if="props.item.status==1">正常</td>
+                <td class="text-xs-left" v-if="props.item.status==2">禁用</td>
+                <td class="text-xs-left" v-if="props.item.status==3">黑名单</td>
+                <td class="text-xs-left" v-if="props.item.status==0">待审核</td>
+                <td class="text-xs-left" v-if="props.item.status==-1">未通过审核</td>
                 <td class="text-xs-center" ref="td8">
-
-                    <v-icon @click="changeStatus(props.item)" title="修改" class="mr-2">
-                        edit
+                    <v-icon @click="changeStatus(props.item.id,3)" title="拉黑" class="mr-2">
+                        power_settings_new
                     </v-icon>
-                    <v-icon @click.stop="changeStatus(props.item)" color="red" title="停止">
+                    <v-icon @click.stop="changeStatus(props.item.id,2)" color="red" title="禁用">
                         block
                     </v-icon>
 
-                    <v-icon @click.stop="changeStatus(props.item)" color="light-green"
-                            title="开始">
+                    <v-icon @click.stop="changeStatus(props.item.id,1)" color="light-green"
+                            title="激活">
                         lens
                     </v-icon>
                 </td>
@@ -92,7 +83,52 @@
         </template>
 
     </v-data-table>
+    <!--新增模块-->
+    <v-dialog scrollable v-model="showAdd" width="500">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                新增经销商
+            </v-card-title>
 
+            <v-card-text>
+                <v-form>
+                    <v-text-field label="用户名" v-model = "addData.username"></v-text-field>
+                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
+                                  :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass" v-model = "addData.password"></v-text-field>
+                    <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
+                                  :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1" v-model = "addData.password_confirm"></v-text-field>
+                    <template>
+                        <v-card flat>
+                            <v-card-text>
+                                <v-container fluid>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 sm4 md4 v-for="(item, index) in rolesAll" :key="index">
+                                            <v-checkbox xs12 sm4 md4
+                                                        v-model = "addData.role_id"
+                                                        :label="item.role_name"
+                                                        :value="item.id"
+                                                        hide-details
+                                            ></v-checkbox>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-card-text>
+                        </v-card>
+                    </template>
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="s-primary" @click="addCommit()">
+                    确认
+                </v-btn>
+                <v-btn color="primary" flat @click="showAdd = false">
+                    取消
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
     <div class="text-md-center">
         <v-pagination @input="changePage" :total-visible="pager.totalVisible" :length="pager.count" v-model="pager.index"></v-pagination>
     </div>

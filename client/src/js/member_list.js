@@ -17,6 +17,12 @@ new Vue({
         that.dateTo = dyMonth.monthDayCur;
 
         that.getReomteData();
+        that.$api.user.get().then((data) =>{
+            that.rolesAll = data.data;
+        }).catch((data) =>{
+            console.log('eeeeeeeeeeeee');
+            console.log(data);
+        });
     },
 
     data() {
@@ -44,7 +50,13 @@ new Vue({
                     value: 2
                 },
             ],
-
+            showAdd: false,
+            addData:{
+                role_id:[],
+            },
+            show_pass: false,
+            show_pass1: false,
+            rolesAll:{},
             currentDataType: 2,
 
             dateFm: null,
@@ -86,6 +98,12 @@ new Vue({
                     text: 'Create Time',
                     align: 'left',
                     value: 'create_time',
+                    sortable: false,
+                },
+                {
+                    text: 'Status',
+                    align: 'left',
+                    value: 'status',
                     sortable: false,
                 },
                 {
@@ -219,7 +237,54 @@ new Vue({
         exportExcel() {
 
         },
+        addCommit(){
+            let that = this,
+                data={};
+            // console.log(that.addData);
 
+            that.$api.user.addDls({
+                data: that.addData
+            }).then((res) => {
+
+                that.showAdd = false;
+                that.$comp.toast({
+                    text: res.msg,
+                });
+
+            }).catch((data) =>{ //function(data){}
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
+
+            });
+        },
+        changeStatus(id,status){
+            let that = this,
+                data={
+                    'status':status,
+                    'id':id,
+                };
+            that.$api.user.userStatus({
+                data: data
+            }).then((res) => {
+                that.$comp.toast({
+                    text: res.msg,
+                });
+                if(res.code ==0){
+                    setTimeout(function () {
+                        window.location.reload();
+                    },2000)
+                }
+            }).catch((data) =>{ //function(data){}
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
+
+            });
+
+        },
         changePage() {
             this.getReomteData();
         },

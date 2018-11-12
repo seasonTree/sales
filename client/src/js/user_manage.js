@@ -95,6 +95,32 @@ new Vue({
 
             });
         },
+        changeStatus(id,status){
+            let that = this,
+                data={
+                    'status':status,
+                    'id':id,
+                };
+            that.$api.user.userStatus({
+                data: data
+            }).then((res) => {
+                that.$comp.toast({
+                    text: res.msg,
+                });
+                if(res.code ==0){
+                    setTimeout(function () {
+                        window.location.reload();
+                    },2000)
+                }
+            }).catch((data) =>{ //function(data){}
+                that.$comp.toast({
+                    text: data.msg,
+                    color:'error',
+                });
+
+            });
+
+        },
         del(id){
             let that = this;
             that.$api.user.del({
