@@ -4,6 +4,7 @@ use think\Controller;
 //require 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use think\facade\Session;
 
 class Index extends Controller
 {
@@ -12,8 +13,13 @@ class Index extends Controller
         return view('/index');
     }
 
-
-    public function browserChoose(){
+    public function browserChoose()
+    {
         return view('/browser_choose');
     }
+    public function getSession()
+    {
+        dump(Session::get('auth'));
+    }
+
 }
