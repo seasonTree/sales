@@ -152,13 +152,13 @@
                     </td>
                     <td class="text-xs-center" ref="td8">
 
-                        <v-icon v-if="props.item.type == 2 && props.item.p_id == 0" @click="showEditDig(props.item)" title="修改" class="mr-2">
+                        <v-icon @click.stop="showEditDig(props.item)" title="修改" class="mr-2">
                             edit
                         </v-icon>
 
-                        <v-icon v-if="props.item.type == 1 && props.item.p_id != 0" @click="showEditDig(props.item)" title="修改" class="mr-2">
+                        <!-- <v-icon v-if="props.item.type == 1 && props.item.p_id != 0" @click="showEditDig(props.item)" title="修改" class="mr-2">
                             edit
-                        </v-icon>
+                        </v-icon> -->
 
                         <v-icon v-if="props.item.status == -1" @click.stop="changeStatus(props.item)" color="red" title="停止">
                             block
@@ -213,7 +213,7 @@
                                 </div>
                             </td>
                             <td class="text-xs-center" :style="subWidth.td8">
-                                <v-icon v-if="props.item.type == 1" @click="showEditDig(props.item)" title="修改" class="mr-2">
+                                <v-icon @click.stop="showEditDig(props.item)" title="修改" class="mr-2">
                                     edit
                                 </v-icon>
 
@@ -375,15 +375,21 @@
 
             <v-card-text>
                 <v-form>
-                    <v-text-field label="渠道名称" v-model="editItem.channel_name"></v-text-field>
+                    <!-- <v-text-field v-if="editItem.p_id == 0" label="渠道名称" v-model="editItem.channel_name"></v-text-field> -->
                     <v-text-field label="描述信息" v-model="editItem.channel_info"></v-text-field>
                     <v-text-field label="二维码附加信息" v-model="editItem.qr_code_info"></v-text-field>
                     <input type="hidden" v-model="editItem.type">
 
-                    <v-text-field label="业绩总目标" v-model="editItem.chan_pfm_obj">
+                    <v-text-field v-if="editItem.p_id != 0 && editItem.type == 1" label="业绩总目标" v-model="editItem.chan_pfm_obj">
                     </v-text-field>
 
-                    <v-text-field label="医生总目标" v-model="editItem.chan_doc_num">
+                    <v-text-field v-if="editItem.p_id != 0 && editItem.type == 1" label="医生总目标" v-model="editItem.chan_doc_num">
+                    </v-text-field>
+
+                    <v-text-field v-if="editItem.p_id == 0 && editItem.type == 2" label="业绩总目标" v-model="editItem.chan_pfm_obj">
+                    </v-text-field>
+
+                    <v-text-field v-if="editItem.p_id == 0 && editItem.type == 2" label="医生总目标" v-model="editItem.chan_doc_num">
                     </v-text-field>
 
                 </v-form>
@@ -400,6 +406,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+
 
     <!-- <v-dialog scrollable v-model="showAddUser" width="600">
         <v-card>
