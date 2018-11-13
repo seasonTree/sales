@@ -34,6 +34,8 @@ class OperateBehavior extends Controller
         'channel/list',//获取渠道信息
         'team/lst',//获取团队列表
         'channel/qrcode',//获取二维码信息
+        'channel/getchannel',//获取单条渠道
+        'channel/addsales',//调整销售员
     ];
 
     /**
@@ -68,7 +70,6 @@ class OperateBehavior extends Controller
 
         //用户所拥有的权限路由
         $auth = Session::get('auth') ? Session::get('auth') : [];
-        // dump($url);exit;
         $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
         if ($userid != 1) {
             //超级管理员跳权限
