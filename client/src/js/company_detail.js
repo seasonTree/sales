@@ -17,8 +17,10 @@ new Vue({
         that.$api.user.getOneUser().then((res) => {
             that.data = res.data;
         }).catch((res) => {
-            console.log('eeeeeeeeeeeee');
-            console.log(res);
+            that.$comp.toast({
+                text: '提交失败，请刷新后重试.',
+                color: 'error'
+            });
         });
     },
 
@@ -29,15 +31,19 @@ new Vue({
             that.$api.user.insUserInfo({
                 data:that.data
             }).then((res) => {
-                that.$comp.toast({
-                    text: res.msg,
-                });
-                // that.data = res.data;
+                if(res.code == 0){
+                    that.$comp.toast({
+                        text: res.msg,
+                    });
+                }else{
+                    that.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    });
+                }
             }).catch((res) => {
-                console.log('eeeeeeeeeeeee');
-                console.log(res);
                 that.$comp.toast({
-                    text: res.msg,
+                    text: '提交失败，请刷新后重试.',
                     color: 'error'
                 });
             });
@@ -48,12 +54,7 @@ new Vue({
 
     data() {
         return {
-
-            data:[
-                
-
-            ],
-
+            data:[],
         }
     }
 });

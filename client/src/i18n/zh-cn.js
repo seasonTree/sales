@@ -1,4 +1,4 @@
 export default {
-        hello: '6666666666',
+	getDataError: '获取数据失败，请刷新后重试.',
 
 }
