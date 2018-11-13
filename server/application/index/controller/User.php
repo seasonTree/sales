@@ -12,7 +12,7 @@ require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 
 class User
 {
-    public function memberlst(){
+    public function index(){
         return view('/member_list');
     }
     //更改user状态
@@ -102,11 +102,11 @@ class User
         if (\request()->isPost()) {
             $phone = input('post.data.phone_num');
             if ($phone == '') {
-            	return json(['resp_code' => '2', 'msg' => '电话号码不能为空']);
+            	return json(['code' => '2', 'msg' => '电话号码不能为空']);
             }
 
             if (!checkPhone($phone)) {
-            	return json(['resp_code' => '3', 'msg' => '请填写正确的电话号码']);
+            	return json(['code' => '3', 'msg' => '请填写正确的电话号码']);
             }
             $section = '86';
             //区号
@@ -117,10 +117,10 @@ class User
             $message = new \ShortMessage();
             $result = $message->sendSms('00' . $section . $phone, $code);
             if ($result->Message == 'OK' && $result->Code == 'OK') {
-                return json(['resp_code' => '0', 'msg' => '发送成功']);
+                return json(['code' => '0', 'msg' => '发送成功']);
             }
             else{
-            	return json(['resp_code' => '1', 'msg' => '发送失败']);
+            	return json(['code' => '1', 'msg' => '发送失败']);
             }
         }
     }

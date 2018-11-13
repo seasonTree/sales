@@ -24,6 +24,13 @@ class OperateBehavior extends Controller
         '/',
         'index/index',
         'login/loginout',
+        'transaction/lst',//获取交易报告的数据
+        'transaction/exportExcel',//打印交易报告的数据
+        'Auser/lst',//获取后台账号数据
+        'user/getmemberlst',//获取销售账号数据
+        'role/lst',//获取角色列表
+        'user/userinfo',//当前用户页面跳转
+        'user/getoneuser',//获取当前用户信息
     ];
 
     /**
@@ -55,15 +62,15 @@ class OperateBehavior extends Controller
             }
             $this->error('请先登陆', '/', '', '1');
         }
-        // dump($_SESSION['think']['auth']);exit;
+
         //用户所拥有的权限路由
-        // $auth = Session::get('auth') ? Session::get('auth') : [];
-        // if (!$auth && !in_array($url, $this->login) && !in_array($url, $this->exclude)) {
-        //     $this->error('请先登陆', '/index/index');
-        // }
-        // if (!in_array($url, $auth) && !in_array($url, $this->exclude)) {
-        //     $this->error('无权限访问');
-        // }
+        $auth = Session::get('auth') ? Session::get('auth') : [];
+        if (!$auth && !in_array($url, $this->login) && !in_array($url, $this->exclude)) {
+            $this->error('请先登陆', '/index/index');
+        }
+        if (!in_array($url, $auth) && !in_array($url, $this->exclude)) {
+            $this->error('无权限访问');
+        }
     }
 
 }

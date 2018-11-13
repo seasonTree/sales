@@ -10,28 +10,40 @@ new Vue({
     created() {
         let that = this;
 
-        that.$api.channel.get().then((res) => {
-            that.tdata = res.data;
-        }).catch((res) => {
-            console.log('eeeeeeeeeeeee');
-            console.log(res);
-        });
+        that.getData();
     },
 
     mounted() {
         let that = this;
 
-        for (let i = 0; i < that.tdata.length; i += 1) {
+        for (let i = 0; i < that.tdata.length; i++) {
             const item = that.tdata[i];
             that.$set(that.$refs.dTable.expanded, item.id, true)
         }
 
-        setTimeout(() => {
-            that.calcWidth();
-        }, 500);
+        // setTimeout(() => {
+        //     that.calcWidth();
+        // }, 500);
     },
 
     methods: {
+        getData() {
+            let that = this;
+
+            that.$api.channel.get().then((res) => {
+                that.tdata = res.data;
+
+                setTimeout(() => {
+                    that.calcWidth();
+                }, 600);
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: '获取失败，请重试.',
+                    color: 'error'
+                })
+            });
+        },
+
         onTabelResize() {
             //这里执行速度快,第一次会报错
             try {
@@ -70,37 +82,51 @@ new Vue({
         },
 
         addChannel() {
-            // alert('aaa');
             let that = this;
 
-            that.submitLoading = true;
+            that.disabled.addChannel = true;
+
             that.$api.channel.add({
                 data: that.addItem
             }).then((res) => {
                 if (res.code == 0) {
-                    that.message.text = res.msg;
-                    that.message.color = 'success';
-                    that.message.show = true;
-                    // that.showAdd = false;
-                    //重刷页面,后台负责跳转
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
+                    that.$comp.toast({
+                        text: '新增成功.',
+                    });
+
+                    that.getData();
+
+                    that.showAdd = false;
+
+                    that.$refs['addChannelForm'].reset();                    
+
+                    // //重刷页面,后台负责跳转
+                    // setTimeout(() => {
+                    //     window.location.reload();
+                    // }, 2000);
                 } else {
-                    that.message.text = res.msg;
-                    that.message.color = 'error';
-                    that.message.show = true;
-                    that.submitLoading = false;
+                    that.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    })
                 }
 
+                that.disabled.addChannel = false;
             }).catch((res) => {
-                console.log('***********')
+                that.$comp.toast({
+                    text: '新增失败，请重试.',
+                    color: 'error'
+                })
             });
-
         },
+
         showSales(channel_id, channel_name) {
 
             let that = this;
+
+            that.channel_id = channel_id;
+            that.channel_name = channel_name;
+
             that.$api.channel.getSales({
                 data: {
                     'channel_id': channel_id
@@ -111,47 +137,59 @@ new Vue({
                 that.select = res.data.child;
                 //选中的数据
 
-            }).catch((res) => {
-                console.log('eeeeeeeeeeeee');
-                console.log(res);
-            });
+                that.showAddSales = true;
 
-            that.channel_id = channel_id;
-            that.channel_name = channel_name;
-            that.showAddSales = true;
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: '获取销售列表失败，请重试.',
+                    color: 'error'
+                })
+            });
         },
 
         addSales() {
 
             let that = this;
+
             that.select.push(that.channel_name);
             that.select.push(that.channel_id);
+
+            that.disabled.sales = true;
+
             that.$api.channel.addSales({
                 data: that.select
             }).then((res) => {
                 if (res.code == 0) {
-                    that.message.text = res.msg;
-                    that.message.color = 'success';
-                    that.message.show = true;
+                    that.$comp.toast({
+                        text: '处理成功.',
+                    });
+
+                    that.getData();
+
+                    that.showAddSales = false;
+
+                    that.$refs['salesForm'].reset();     
+
                     // that.showAdd = false;
                     //重刷页面,后台负责跳转
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
+                    // setTimeout(() => {
+                    //     window.location.reload();
+                    // }, 1000);
                 } else {
-                    that.message.text = res.msg;
-                    that.message.color = 'error';
-                    that.message.show = true;
-                    // that.submitLoading = false;
+                    that.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    })
                 }
 
+                that.disabled.sales = false;
 
             }).catch((res) => {
-                console.log('***********')
+                that.$comp.toast({
+                    text: '新增失败，请重试.',
+                    color: 'error'
+                })
             });
-
-            // console.log(that.select);
-
         },
 
         CopyUrl(url) {
@@ -232,12 +270,12 @@ new Vue({
                     status: item.status
                 }
             }).then((res) => {
-                if(res.code == 0){
+                if (res.code == 0) {
 
                     let data = res.data;
                     item.status = data.status;
 
-                    if(item.children && item.children.length){
+                    if (item.children && item.children.length) {
                         let children = item.children;
 
                         for (var i = 0; i < children.length; i++) {
@@ -249,7 +287,7 @@ new Vue({
                     this.$comp.toast({
                         text: '设置成功',
                     });
-                }else{
+                } else {
                     that.$comp.toast({
                         text: res.msg || '设置失败，请重试.',
                         color: 'error'
@@ -264,7 +302,7 @@ new Vue({
         },
 
         //弹窗渠道修改界面
-        showEditDig(item){
+        showEditDig(item) {
             let that = this;
 
             that.$api.channel.getChannel({
@@ -272,16 +310,15 @@ new Vue({
                     id: item.id,
                 }
             }).then((res) => {
-                if(res.code == 0){
-
+                if (res.code == 0) {
                     that.editItem = res.data;
-
-                }else{
+                } else {
                     that.$comp.toast({
                         text: res.msg || '设置失败，请重试.',
                         color: 'error'
                     });
                 }
+
             }).catch((res) => {
                 that.$comp.toast({
                     text: res.msg || '设置失败，请重试.',
@@ -290,49 +327,61 @@ new Vue({
             });
 
             that.showEdit = true;
-
         },
 
-        editChannel(){
+        editChannel() {
             let that = this;
+
+            that.disabled.editChannel = true;
 
             that.$api.channel.updateChannel({
                 data: that.editItem
             }).then((res) => {
-                if(res.code == 0){
+                if (res.code == 0) {
                     that.$comp.toast({
-                        text: res.msg,
+                        text: '修改成功.',
                     });
 
-                    window.location.href = res.data.url;
+                    that.getData();
+                    that.showEdit = false;
+                    that.$refs['channelEditForm'].reset();    
 
-                }else{
+                    // window.location.href = res.data.url;                    
+
+                } else {
                     that.$comp.toast({
                         text: res.msg || '设置失败，请重试.',
                         color: 'error'
                     });
                 }
+
+                that.disabled.editChannel = false;
             }).catch((res) => {
                 that.$comp.toast({
                     text: res.msg || '设置失败，请重试.',
                     color: 'error'
                 });
+
+                that.disabled.sales = false;
             });
 
         }
     },
-
 
     data() {
         return {
 
             select: [],
 
+            disabled: {
+                addChannel: false,
+                editChannel: false,
+                sales: false
+            },
+
             channel_id: '',
             channel_name: '',
-            achievement_type: [
-
-                {
+            achievement_type: [{
                     type: 1,
                     value: '叠加目标'
                 },
@@ -340,8 +389,6 @@ new Vue({
                     type: 2,
                     value: '分解目标'
                 }
-
-
             ],
 
             subWidth: {
@@ -369,55 +416,11 @@ new Vue({
                 td8: {
                     width: '0px'
                 },
-                // line: {
-                //     marginLeft: '0px',
-                //     width: '0px'
-                // }
             },
-
-            // infoWidth: {
-            //     width: '0px'
-            // },
-
-            // qrcodeWidth: {
-            //     width: '0px'
-            // },
-
-            // subRight: {
-            //     width: '0px'
-            // },
-
-            // docWidth: {
-            //     width: '0px'
-            // },
-
-            // achWidth: {
-            //     width: '0px'
-            // },
-
-            // subUrlWidth: {
-            //     width: '0px'
-            // },
-
-            // actWidth: {
-            //     width: '0px'
-            // },
-
-            message: {
-                show: false,
-                text: '',
-                time: 3000,
-                color: 'success'
-            },
-
-            submitLoading: false,
 
             showAdd: false,
             showEdit: false,
             showAddSales: false,
-            showAddUser: false,
-
-            show_pass: false,
 
             saliesLists: [
 
@@ -425,8 +428,6 @@ new Vue({
                     username: '',
                     uid: ''
                 },
-
-
             ],
 
             chips: [],
@@ -449,11 +450,9 @@ new Vue({
                 chan_doc_num: ''
             },
 
-            // items: ['页面1', '页面2'],
-
             theader: [{
                     align: 'left',
-                    // value: '',
+                    value: '',
                     sortable: false,
                 },
                 {
@@ -463,7 +462,7 @@ new Vue({
                 },
                 {
                     align: 'left',
-                    // value: '',
+                    value: '',
                     sortable: false,
                 },
                 {

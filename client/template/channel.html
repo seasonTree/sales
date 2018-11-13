@@ -61,25 +61,12 @@
         border-bottom: 1px solid rgba(0, 0, 0, .12);
     }
 
-    .line {
-        height: 1px;
-        background-color: #e3e3e3;
-        width: 100%;
+    .ach-select .v-input__control{
+        padding: 0 !important;
     }
 
-    .upload-container {
-        height: 100%;
-        line-height: 140px;
-        text-align: center;
-        border: 4px dotted #efefef;
-        cursor: pointer;
-        margin-left: 6px;
-        /* margin-right: 0; */
-    }
-
-    .upload-container:first-of-type {
-        margin-right: 6px;
-        margin-left: 0;
+    .ach-select .v-input__control .v-input__slot{
+        padding: 0;
     }
 </style>
 {/block}
@@ -162,6 +149,7 @@
                             edit
                         </v-icon> -->
                         {if (in_array('channel/changeStatus',$_SESSION['think']['auth']))}
+
                         <v-icon v-if="props.item.status == -1" @click.stop="changeStatus(props.item)" color="red" title="停止">
                             block
                         </v-icon>
@@ -249,170 +237,113 @@
         </v-data-table>
     </v-layout>
 
-    <v-dialog scrollable v-model="showAdd" width="500">
+    <v-dialog scrollable persistent v-model="showAdd" width="600">
         <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-                新增
+            <v-card-title class="dialog-head blue-grey lighten-5">
+                新增渠道
             </v-card-title>
 
             <v-card-text>
-                <v-form>
+                <v-form ref="addChannelForm">
                     <v-text-field label="渠道名称" v-model="addItem.channel_name"></v-text-field>
                     <v-text-field label="描述信息" v-model="addItem.channel_info"></v-text-field>
                     <v-text-field label="二维码附加信息" v-model="addItem.qr_code_info"></v-text-field>
 
-                    <v-select v-model="addItem.type" :items="achievement_type" item-text="value" item-value="type"
-                        attach chips label="业绩目标类型" full-width>
+                    <v-select class="ach-select" v-model="addItem.type" :items="achievement_type" item-text="value"
+                        item-value="type" chips label="业绩目标类型" full-width>
                     </v-select>
 
-                    <v-text-field label="业绩总目标" v-if="addItem.type == 2" v-model="addItem.chan_pfm_obj">
-                    </v-text-field>
+                    <template v-if="addItem.type == 2">
+                        <v-text-field label="业绩总目标" v-model="addItem.chan_pfm_obj">
+                        </v-text-field>
 
-                    <v-text-field label="医生总目标" v-if="addItem.type == 2" v-model="addItem.chan_doc_num">
-                    </v-text-field>
+                        <v-text-field label="医生总目标" v-model="addItem.chan_doc_num">
+                        </v-text-field>
+                    </template>
 
                 </v-form>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="dialog-foot blue-grey lighten-5">
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="addChannel" :loading="submitLoading">
+                <v-btn color="s-primary" @click="addChannel" :loading="disabled.addChannel" :disabled="disabled.addChannel">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showAdd = false">
+                <v-btn color="primary" flat @click="showAdd = false" :disabled="disabled.addChannel">
                     取消
                 </v-btn>
-            </v-card-actions>
+                </v-card-action>
         </v-card>
     </v-dialog>
 
-    <v-dialog scrollable v-model="showAddSales" width="500">
+    <v-dialog scrollable persistent v-model="showEdit" width="600">
         <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-                新增销售员
+            <v-card-title class="dialog-head blue-grey lighten-5">
+                修改渠道
             </v-card-title>
 
             <v-card-text>
-                <v-flex>
-                    <v-form>
-                        <v-select v-model="select" return-object :items="saliesLists" item-text="username" item-value="uid"
-                            attach chips label="请选择销售员" multiple full-width>
-
-                        </v-select>
-                    </v-form>
-            </v-card-text>
-
-            <!-- <v-btn color="s-primary" @click="showAddUser = true">开通账号</v-btn> -->
-
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="addSales()">
-                    确认
-                </v-btn>
-                <v-btn color="primary" flat @click="showAddSales = false">
-                    取消
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-
-    <v-dialog scrollable v-model="showEdit" width="500">
-        <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-                修改
-            </v-card-title>
-
-            <v-card-text>
-                <v-form>
-                    <!-- <v-text-field v-if="editItem.p_id == 0" label="渠道名称" v-model="editItem.channel_name"></v-text-field> -->
+                <v-form ref="channelEditForm">
                     <v-text-field label="描述信息" v-model="editItem.channel_info"></v-text-field>
                     <v-text-field label="二维码附加信息" v-model="editItem.qr_code_info"></v-text-field>
                     <input type="hidden" v-model="editItem.type">
 
-                    <v-text-field v-if="editItem.p_id != 0 && editItem.type == 1" label="业绩总目标" v-model="editItem.chan_pfm_obj">
-                    </v-text-field>
+                    <template v-if="editItem.p_id != 0 && editItem.type == 1">
+                        <v-text-field label="业绩总目标" v-model="editItem.chan_pfm_obj">
+                        </v-text-field>
 
-                    <v-text-field v-if="editItem.p_id != 0 && editItem.type == 1" label="医生总目标" v-model="editItem.chan_doc_num">
-                    </v-text-field>
+                        <v-text-field label="医生总目标" v-model="editItem.chan_doc_num">
+                        </v-text-field>
+                    </template>
 
-                    <v-text-field v-if="editItem.p_id == 0 && editItem.type == 2" label="业绩总目标" v-model="editItem.chan_pfm_obj">
-                    </v-text-field>
+                    <template v-if="editItem.p_id == 0 && editItem.type == 2">
+                        <v-text-field label="业绩总目标" v-model="editItem.chan_pfm_obj">
+                        </v-text-field>
 
-                    <v-text-field v-if="editItem.p_id == 0 && editItem.type == 2" label="医生总目标" v-model="editItem.chan_doc_num">
-                    </v-text-field>
-
+                        <v-text-field label="医生总目标" v-model="editItem.chan_doc_num">
+                        </v-text-field>
+                    </template>
                 </v-form>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="dialog-foot blue-grey lighten-5">
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="editChannel" :loading="submitLoading">
+                <v-btn color="s-primary" @click="editChannel" :loading="disabled.editChannel" :disabled="disabled.editChannel">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showEdit = false">
+                <v-btn color="primary" flat @click="showEdit = false" :disabled="disabled.editChannel">
                     取消
                 </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 
-
-    <!-- <v-dialog scrollable v-model="showAddUser" width="600">
+    <v-dialog scrollable v-model="showAddSales" width="600">
         <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-                新增
+            <v-card-title class="dialog-head blue-grey lighten-5">
+                新增销售员
             </v-card-title>
 
             <v-card-text>
-                <v-form>
-                    <v-text-field label="用户名"></v-text-field>
-                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
-                        @click:append="show_pass = !show_pass"></v-text-field>
-                    <v-text-field label="姓"></v-text-field>
-                    <v-text-field label="名字"></v-text-field>
-                    <v-text-field label="银行账号"></v-text-field>
-                    <v-text-field label="银行名称"></v-text-field>
-                    <v-text-field label="银行地址"></v-text-field>
-                    <v-text-field label="开户名"></v-text-field>
-                    <v-text-field label="固定电话"></v-text-field>
-                    <v-text-field label="移动电话"></v-text-field>
-
-                    <v-layout row wrap>
-                        <v-flex xs6>
-                            <div class="upload-container">
-                                个人照片
-                            </div>
-                        </v-flex>
-
-                        <v-flex xs6>
-                            <div class="upload-container">
-                                身份证照片
-                            </div>
-                        </v-flex>
-                    </v-layout>
+                <v-form ref="salesForm">
+                    <v-select v-model="select" return-object :items="saliesLists" item-text="username" item-value="uid"
+                        attach chips label="请选择销售员" multiple full-width>
+                    </v-select>
                 </v-form>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="dialog-foot blue-grey lighten-5">
                 <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="showAddUser = false">
+                <v-btn color="s-primary" @click="addSales()" :loading="disabled.sales" :disabled="disabled.sales">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showAddUser = false">
+                <v-btn color="primary" flat @click="showAddSales = false" :disabled="disabled.sales">
                     取消
                 </v-btn>
             </v-card-actions>
         </v-card>
-    </v-dialog> -->
-
+    </v-dialog>
 </v-container>
-
-<v-snackbar v-model="message.show" :timeout="message.time" top>
-    {{ message.text }}
-    <v-btn color="pink" flat @click="message.show = false">
-        关闭
-    </v-btn>
-</v-snackbar>
 {/block}
 
 

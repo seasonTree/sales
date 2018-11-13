@@ -12,13 +12,12 @@
         width: 100%;
     }
 
-    .protocol {
-        text-align: center;
-        margin-top: 10px;
+    .image-upload {
+        min-height: 140px;
     }
 
-    .image-upload{
-        min-height: 140px;
+    .send-btn{
+        margin-top: 16px;
     }
 </style>
 {/block}
@@ -39,24 +38,35 @@
         <v-text-field label="开户银行地址" v-model.trim="data.bank_address"></v-text-field>
         <v-text-field label="公司地址" v-model.trim="data.address"></v-text-field>
         <v-text-field label="联系人" v-model.trim="data.contacts"></v-text-field>
-        <v-text-field label="联系人手机" v-model.trim="data.phone"></v-text-field>
         <v-text-field label="联系人邮箱" v-model.trim="data.email"></v-text-field>
+
+        <v-layout>
+            <v-flex>
+                <v-text-field label="联系人手机" v-model.trim="data.phone"></v-text-field>
+            </v-flex>
+            <v-btn class="s-primary send-btn" @click="sendSMS" :disabled="smsDisabled">{{identifyBtnText}}</v-btn>
+        </v-layout>
+
+        <v-text-field label="手机验证码" v-model.trim="data.phone_num"></v-text-field>
 
         <v-layout row wrap>
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url"  url="/user/upload?type=1"  content="公司营业执照" :image-url="data.business_licence"></upload-image>
+                <upload-image data-field="data.image_url" url="/user/upload?type=1" content="公司营业执照" :image-url="data.business_licence"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2"  content="个人照片"></upload-image>
+                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2"
+                    content="个人照片"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3"  content="身份证正面"></upload-image>
+                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3"
+                    content="身份证正面"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4"  content="身份证反面"></upload-image>
+                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4"
+                    content="身份证反面"></upload-image>
             </v-flex>
         </v-layout>
 

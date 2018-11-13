@@ -50,13 +50,6 @@ new Vue({
     },
 
     methods: {
-
-        // showMessage(show, text, color) {
-        //     this.message.text = text || '';
-        //     this.message.color = color;
-        //     this.message.show = show;
-        // },
-
         sendSMS() {
             let that = this;
 
@@ -86,23 +79,17 @@ new Vue({
                     this.$comp.toast({
                         text: res.msg,
                     });
-
-                    // that.globalShowMessage(true, res.msg, 'success');
                 } else {
                     this.$comp.toast({
                         text: res.msg,
                         color: 'error'
                     });
-
-                    // that.globalShowMessage(true, res.msg, 'error');
                 }
             }).catch((res) => {
                 this.$comp.toast({
                     text: '发送失败,请重试.',
                     color: 'error'
                 });
-
-                // that.globalShowMessage(true, '发送失败,请重试.', 'error');
             })
         },
 
@@ -118,8 +105,6 @@ new Vue({
                             text: res.msg
                         });
 
-                        // this.globalShowMessage(true, res.msg, 'success');
-
                         setTimeout(() => {
                             window.location.href = res.data.url + '?uid=' + res.data.uid;
                         }, 3000);
@@ -128,8 +113,6 @@ new Vue({
                             text: res.msg,
                             color: 'error'
                         });
-
-                        // this.globalShowMessage(true, res.msg, 'error');
                     }
 
                 }).catch((res) => {
@@ -137,8 +120,6 @@ new Vue({
                         text: '验证失败,请重试.',
                         color: 'error'
                     });
-
-                    // this.globalShowMessage(true, '验证失败,请重试.', 'error');
                 });
             }
         }

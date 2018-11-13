@@ -6,7 +6,7 @@ const base = {
     data() {
         return {
             global: {
-                language: 'zh-cn',
+                language: 'zh_cn',
                 currentView: ''
             }
         }

@@ -40,7 +40,7 @@
 
 <v-dialog scrollable v-model="auditInfo" width="600">
     <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>
+        <v-card-title class="dialog-head blue-grey lighten-5">
             资料
         </v-card-title>
 
@@ -121,7 +121,7 @@
             </template>
         </v-card-text>
 
-        <v-card-actions class="text-xs-right">
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
             <v-spacer></v-spacer>
             <v-btn color="s-primary" @click="auditCommit(viewAuditInfo.user_id)" :loading="submitLoading">审核通过</v-btn>
             <v-btn color="primary" flat @click="auditNotPs(viewAuditInfo.user_id)" :loading="submitLoading">
@@ -145,7 +145,7 @@
         <v-card-text>
             <v-textarea label="拒决理由" value="拒绝理由." v-model="data.note"></v-textarea>
         </v-card-text>
-        <v-card-actions class="text-xs-right">
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
             <v-spacer></v-spacer>
             <v-btn color="s-primary" @click="auditCommitNotPass" :loading="submitLoading">提交</v-btn>
         </v-card-actions>
