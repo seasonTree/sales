@@ -24,6 +24,11 @@ class OperateBehavior extends Controller
         '/',
         'index/index',
         'login/loginout',
+        'transaction/lst',//获取交易报告的数据
+        'transaction/exportExcel',//打印交易报告的数据
+        'Auser/lst',//获取后台账号数据
+        'user/getmemberlst',//获取销售账号数据
+        'role/lst',//获取角色列表
     ];
 
     /**

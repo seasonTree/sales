@@ -12,7 +12,7 @@ require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
 
 class User
 {
-    public function memberlst(){
+    public function index(){
         return view('/member_list');
     }
     //更改user状态
