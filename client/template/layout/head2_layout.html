@@ -160,8 +160,8 @@
                 <v-btn flat primary slot="activator">个人中心</v-btn>
                 <v-list dense class="language-dropdown">
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" @click="">
-                        <v-list-tile-title href="{:url('user/userInfo')}">个人资料</v-list-tile-title>
+                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" href="{:url('user/userInfo')}">
+                        <v-list-tile-title >个人资料</v-list-tile-title>
                     </v-list-tile>
 
                     <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="global.changePassword.show = true">
@@ -170,8 +170,8 @@
                         </v-list-tile-title>
                     </v-list-tile>
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" @click="">
-                        <v-list-tile-title>登出</v-list-tile-title>
+                    <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" href="{:url('login/loginOut')}">
+                        <v-list-tile-title >登出</v-list-tile-title>
                     </v-list-tile>
                 </v-list>
             </v-menu>

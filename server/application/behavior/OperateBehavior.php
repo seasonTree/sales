@@ -31,6 +31,9 @@ class OperateBehavior extends Controller
         'role/lst',//获取角色列表
         'user/userinfo',//当前用户页面跳转
         'user/getoneuser',//获取当前用户信息
+        'channel/list',//获取渠道信息
+        'team/lst',//获取团队列表
+        'channel/qrcode',//获取二维码信息
     ];
 
     /**
@@ -65,12 +68,20 @@ class OperateBehavior extends Controller
 
         //用户所拥有的权限路由
         $auth = Session::get('auth') ? Session::get('auth') : [];
-        if (!$auth && !in_array($url, $this->login) && !in_array($url, $this->exclude)) {
-            $this->error('请先登陆', '/index/index');
-        }
-        if (!in_array($url, $auth) && !in_array($url, $this->exclude)) {
+        // dump($url);exit;
+        $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
+        if ($userid != 1) {
+            //超级管理员跳权限
+            if (!$auth && !in_array($url, $this->login) && !in_array($url, $this->exclude)) {
+                $this->error('请先登陆', '/index/index');
+            }
+        
+            if (!in_array($url, $auth) && !in_array($url, $this->exclude) && !in_array($url, $this->login)) {
             $this->error('无权限访问');
+            }
         }
+        
+
     }
 
 }
