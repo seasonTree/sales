@@ -55,14 +55,15 @@ class OperateBehavior extends Controller
             }
             $this->error('请先登陆', '/', '', '1');
         }
+        // dump($_SESSION['think']['auth']);exit;
         //用户所拥有的权限路由
-        $auth = Session::get('auth') ? Session::get('auth') : [];
-        if (!$auth && !in_array($url, $this->login) && !in_array($url, $this->exclude)) {
-            $this->error('请先登陆', '/index/index');
-        }
-        if (!in_array($url, $auth) && !in_array($url, $this->exclude)) {
-            $this->error('无权限访问');
-        }
+        // $auth = Session::get('auth') ? Session::get('auth') : [];
+        // if (!$auth && !in_array($url, $this->login) && !in_array($url, $this->exclude)) {
+        //     $this->error('请先登陆', '/index/index');
+        // }
+        // if (!in_array($url, $auth) && !in_array($url, $this->exclude)) {
+        //     $this->error('无权限访问');
+        // }
     }
 
 }

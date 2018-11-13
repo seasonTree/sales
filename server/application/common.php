@@ -21,6 +21,15 @@ function getShortUrl($url){
 
 }
 
+function checkAccount($account){
+  //检查银行账号的
+  $rule = "/^[1-9]\d*$/";
+  if (!preg_match($rule,$account)) {
+    return false;
+  }
+  return true;
+
+}
 
 function checkPhone($phone){
 	//检查电话号码

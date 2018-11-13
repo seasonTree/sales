@@ -103,9 +103,11 @@
     </v-layout>
 
     <div class="action-bar">
+        {if (in_array('channel/add',$_SESSION['think']['auth']))}
         <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
             <v-icon dark>add</v-icon>新增渠道
         </v-btn>
+        {/if}
     </div>
 
     <v-layout v-resize="onTabelResize">
@@ -151,23 +153,26 @@
                         </div>
                     </td>
                     <td class="text-xs-center" ref="td8">
-
+                        {if (in_array('channel/updateChannel',$_SESSION['think']['auth']))}
                         <v-icon @click.stop="showEditDig(props.item)" title="修改" class="mr-2">
                             edit
                         </v-icon>
-
+                        {/if}
                         <!-- <v-icon v-if="props.item.type == 1 && props.item.p_id != 0" @click="showEditDig(props.item)" title="修改" class="mr-2">
                             edit
                         </v-icon> -->
-
+                        {if (in_array('channel/changeStatus',$_SESSION['think']['auth']))}
                         <v-icon v-if="props.item.status == -1" @click.stop="changeStatus(props.item)" color="red" title="停止">
                             block
                         </v-icon>
+                        {/if}
 
+                        {if (in_array('channel/changeStatus',$_SESSION['think']['auth']))}
                         <v-icon v-if="props.item.status == 1" @click.stop="changeStatus(props.item)" color="light-green"
                             title="开始">
                             lens
                         </v-icon>
+                        {/if}
                     </td>
                 </tr>
             </template>

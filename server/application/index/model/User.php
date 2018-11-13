@@ -134,7 +134,7 @@ class User extends Model
         $user = session('user_info');
         $id = $user['id'];
         if ($id == 1) {
-            $priData = \Db::name('privilege')->where('path<>1')->select();
+            $priData = \Db::name('privilege')->select();
         } else {
             $priData = $this->alias('U')->distinct('pri_name')->field('P.*')
                 ->join('user_role UR', 'U.id=UR.user_id')
@@ -146,15 +146,17 @@ class User extends Model
         $ret = array();
         foreach ($priData as $v) {
             if ($v['parent_id'] == 0) {
+
                 foreach ($priData as $v1) {
                     if ($v1['parent_id'] == $v['id']) {
                         $v['children'][] = $v1;
                     }
                 }
+                
                 $ret[] = $v;
+
             }
         }
-
         return $ret;
     }
 

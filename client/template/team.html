@@ -64,9 +64,11 @@
     </v-layout>
 
     <div class="action-bar">
+        {if (in_array('team/showinvitation',$_SESSION['think']['auth']))}
         <v-btn color="s-primary" class="ml-0" @click="showInvitation">
             <v-icon dark>add</v-icon>新增成员
         </v-btn>
+        {/if}
     </div>
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">

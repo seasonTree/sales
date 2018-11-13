@@ -209,6 +209,40 @@ class User
     	//插入个人详细资料
     	$data = input('post.data');
     	$data['user_id'] = Session::get('user_info')['id'];
+    	if ($data['first_name'] == '') {
+    		return json(['msg' => '姓不能为空','code' => 2]);
+    	}
+    	if ($data['last_name'] == '') {
+    		return json(['msg' => '名字不能为空','code' => 3]);
+    	}
+    	if ($data['bank_account'] == '') {
+    		return json(['msg' => '银行账号不能为空','code' => 4]);
+    	}
+    	if ($data['bank_name'] == '') {
+    		return json(['msg' => '银行名称不能为空','code' => 5]);
+    	}
+    	if ($data['account_name'] == '') {
+    		return json(['msg' => '开户名不能为空','code' => 6]);
+    	}
+    	if (strlen($data['first_name']) > 4) {
+    		return json(['msg' => '姓的长度不能大于4位','code' => 7]);
+    	}
+    	if (strlen($data['last_name']) > 4) {
+    		return json(['msg' => '名字的长度不能大于4位','code' => 8]);
+    	}
+    	if (!checkAccount($data['bank_account'])) {
+    		return json(['msg' => '银行账号格式不对','code' => 9]);
+    	}
+    	if (strlen($data['bank_name']) > 30) {
+    		return json(['msg' => '银行名称长度不能大于30','code' => 10]);
+    	}
+    	if (strlen($data['bank_address']) > 30) {
+    		return json(['msg' => '银行地址长度不能大于30','code' => 11]);
+    	}
+    	if (strlen($data['account_name']) > 30) {
+    		return json(['msg' => '开户名长度不能大于30','code' => 12]);
+    	}
+
     	if (Session::has('user_info_id'.$data['user_id'])) {
     		//检测是否设置了user_info_id
     		$data['id'] = Session::get('user_info_id'.$data['user_id']);
