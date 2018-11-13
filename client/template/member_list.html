@@ -86,7 +86,7 @@
     <!--新增模块-->
     <v-dialog scrollable v-model="showAdd" width="500">
         <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
+            <v-card-title class="dialog-head blue-grey lighten-5">
                 新增经销商
             </v-card-title>
 
@@ -118,7 +118,7 @@
                 </v-form>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="dialog-foot blue-grey lighten-5">
                 <v-spacer></v-spacer>
                 <v-btn color="s-primary" @click="addCommit()">
                     确认

@@ -15,6 +15,10 @@
     .image-upload {
         min-height: 140px;
     }
+
+    .send-btn{
+        margin-top: 16px;
+    }
 </style>
 {/block}
 
@@ -36,9 +40,14 @@
         <v-text-field label="联系人" v-model.trim="data.contacts"></v-text-field>
         <v-text-field label="联系人邮箱" v-model.trim="data.email"></v-text-field>
 
-        
+        <v-layout>
+            <v-flex>
+                <v-text-field label="联系人手机" v-model.trim="data.phone"></v-text-field>
+            </v-flex>
+            <v-btn class="s-primary send-btn" @click="sendSMS" :disabled="smsDisabled">{{identifyBtnText}}</v-btn>
+        </v-layout>
 
-        <v-text-field label="联系人手机" v-model.trim="data.phone"></v-text-field>
+        <v-text-field label="手机验证码" v-model.trim="data.phone_num"></v-text-field>
 
         <v-layout row wrap>
             <v-flex xs6 class="image-upload">

@@ -34,7 +34,7 @@ class Login
         if(!Request::param('data.password')) return json(['code'=>2,'msg'=>'密码不能为空']);
         if(redis()->get('user:'.Request::param('data.username'))>=5){
             redis()->expire('user:'.Request::param('data.username'),'600');
-            return json(['resp_code' => 9, 'msg' =>'登陆次数过多，请十分钟后再试']);
+            return json(['code' => 9, 'msg' =>'登陆次数过多，请十分钟后再试']);
         }
         $info=$this->userModel->loginVerify(Request::param('data.username'),Request::param('data.password'),Request::param('data.remember'));
         if(false===$info) return json(['code'=>3,'msg'=>'登陆错误']);
