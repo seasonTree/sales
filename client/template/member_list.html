@@ -32,8 +32,6 @@
             <v-flex xs2>
                 <v-select :disabled="tableLoading" :items="tableType" v-model="currentDataType" item-text="text" item-value="value"></v-select>
             </v-flex>
-
-
         </v-layout>
     </div>
 
@@ -51,7 +49,7 @@
                 <td class="text-xs-left" v-if="props.item.status==3">黑名单</td>
                 <td class="text-xs-left" v-if="props.item.status==0">待审核</td>
                 <td class="text-xs-left" v-if="props.item.status==-1">未通过审核</td>
-                <td class="text-xs-center" ref="td8">
+                <td class="text-xs-center">
                     <v-icon @click="changeStatus(props.item.id,3)" title="拉黑" class="mr-2">
                         power_settings_new
                     </v-icon>
@@ -66,20 +64,6 @@
                 </td>
             </tr>
 
-            <!--<tr v-if="currentDataType == 0">-->
-                <!--<td class="text-xs-left">{{ props.item.firstName }}</td>-->
-                <!--<td class="text-xs-left">{{ props.item.phone }}</td>-->
-                <!--<td class="text-xs-right">{{ props.item.unitprice * props.item.quantity }}</td>-->
-                <!--<td class="text-xs-left">{{ props.item.description }}</td>-->
-                <!--<td class="text-xs-left">{{ props.item.created_at }}</td>-->
-            <!--</tr>-->
-
-            <!--<tr v-if="currentDataType == 1">-->
-                <!--<td class="text-xs-left">{{ props.item.firstName }}</td>-->
-                <!--<td class="text-xs-left">{{ props.item.phone }}</td>-->
-                <!--<td class="text-xs-right">{{ props.item.referralCode }}</td>-->
-                <!--<td class="text-xs-left">{{ props.item.created_at }}</td>-->
-            <!--</tr>-->
         </template>
 
     </v-data-table>
