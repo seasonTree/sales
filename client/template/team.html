@@ -84,6 +84,9 @@
                 <td class="text-xs-left">{{ props.item.chan_pfm_obj }}</td>
                 <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
                 <td class="text-xs-left">
+                    <v-icon v-if="props.item.hideBorder" @click.stop="showEditSales(props.item)" title="修改" class="mr-2">
+                        edit
+                    </v-icon>
                     <v-checkbox color="info" hide-details></v-checkbox>
                 </td>
             </tr>
@@ -107,6 +110,54 @@
         </v-flex>
     </v-layout>
 
+</v-dialog>
+
+<v-dialog scrollable v-model="showEditSales" width="600">
+    <v-card>
+        <v-card-title class="dialog-head blue-grey lighten-5">
+            修改销售员信息
+        </v-card-title>
+
+        <v-card-text>
+            <v-form ref="editSalesForm">
+                <v-text-field label="姓" v-model.trim="editSales.first_name"></v-text-field>
+                <v-text-field label="名字" v-model.trim="editSales.last_name"></v-text-field>
+                <v-text-field label="银行账号" v-model.trim="editSales.bank_account"></v-text-field>
+                <v-text-field label="银行名称" v-model.trim="editSales.bank_name"></v-text-field>
+                <v-text-field label="银行地址" v-model.trim="editSales.bank_address"></v-text-field>
+                <v-text-field label="开户名" v-model.trim="editSales.account_name"></v-text-field>
+                <v-text-field label="固定电话" v-model.trim="editSales.fixed_tel"></v-text-field>
+
+                <v-layout row wrap>
+                    <v-flex md4 xs12 class="image-upload">
+                        <upload-image data-field="data.image_url" :image-url="editSales.photo_self" url="/user/upload?type=2"
+                            content="个人照片"></upload-image>
+                    </v-flex>
+
+                    <v-flex md4 xs12 class="image-upload">
+                        <upload-image data-field="data.image_url" :image-url="editSales.id_card_front" url="/user/upload?type=3"
+                            content="身份证正面"></upload-image>
+                    </v-flex>
+
+                    <v-flex md4 xs12 class="image-upload">
+                        <upload-image data-field="data.image_url" :image-url="editSales.id_card_back" url="/user/upload?type=4"
+                            content="身份证反面"></upload-image>
+                    </v-flex>
+                </v-layout>
+
+            </v-form>
+        </v-card-text>
+
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="editSalesHandler" :loading="disabled.editSales" :disabled="disabled.editSales">
+                确认
+            </v-btn>
+            <v-btn color="primary" flat @click="showEditSales = false" :disabled="disabled.editSales">
+                取消
+            </v-btn>
+            </v-card-action>
+    </v-card>
 </v-dialog>
 
 

@@ -14,10 +14,10 @@ new Vue({
             let data = res.data,
                 preItem = null;
 
-            for(var i = 0; i < data.length; i++){   
+            for (var i = 0; i < data.length; i++) {
                 var item = data[i];
 
-                if(preItem && preItem.phone == item.phone){
+                if (preItem && preItem.phone == item.phone) {
                     preItem.hideBorder = true;
                     item.hidePre = true;
                 }
@@ -123,18 +123,93 @@ new Vue({
             var selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(rangeToSelect);
+        },
+
+        showEditSales() {
+            let that = this;
+
+            //TODO
+            that.$api.team.getSales({
+                data: {
+                    id: item.id,
+                }
+            }).then((res) => {
+                if (res.code == 0) {
+                    that.editSales = res.data;
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '获取数据失败，请重试.',
+                        color: 'error'
+                    });
+                }
+
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '获取数据失败，请重试.',
+                    color: 'error'
+                });
+            });
+
+            that.showEditSales = true;
+        },
+
+        //提交修改销售的消息
+        editSalesHandler() {
+            let that = this;
+
+            that.disabled.editSales = true;
+
+            //TODO
+            that.$api.team.editSales({
+                data: that.editItem
+            }).then((res) => {
+                if (res.code == 0) {
+
+                    //TODO
+
+                    that.$comp.toast({
+                        text: '修改成功, 请等待审核通过.',
+                    });
+
+                    that.showEditSales = false;
+                    that.$refs['editSalesForm'].reset();                 
+
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '修改失败，请重试.',
+                        color: 'error'
+                    });
+                }
+
+                that.disabled.editSales = false;
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '修改失败，请重试.',
+                    color: 'error'
+                });
+
+                that.disabled.editSales = false;
+            });
         }
     },
+
 
 
     data() {
         return {
 
             showAdd: false,
+            showEditSales: false,
 
             qr_code: {}, //邀请人信息
 
             checkRepeat: '',
+
+            editSales: {},
+
+            disabled: {
+                editSales: false
+            },
 
             theader: [{
                     text: '姓名',
