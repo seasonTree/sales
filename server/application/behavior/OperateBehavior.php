@@ -36,6 +36,7 @@ class OperateBehavior extends Controller
         'channel/qrcode',//获取二维码信息
         'channel/getchannel',//获取单条渠道
         'channel/addsales',//调整销售员
+        'Audit/regLst',//获取审核列表
     ];
 
     /**
