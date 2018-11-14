@@ -47,6 +47,7 @@ class OperateBehavior extends Controller
         'config/getprotocol',//获取协议内容
         'auser/lst',//获取管理员列表
         'message/lst',//获取信息列表
+
     ];
 
     /**
@@ -60,6 +61,8 @@ class OperateBehavior extends Controller
         'index/browserchoose',
         'user/sendmessage',
         'config/showprotocol',
+        'register/index',//注册页面
+        'register/userregister',//注册提交
     ];
 
     /**
