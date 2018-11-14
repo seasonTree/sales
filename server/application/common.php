@@ -180,3 +180,25 @@ function   getActionUrl()
     $url=$controller.'/'.$action;
     return strtolower($url);
 }
+
+/**
+  *获取树结构
+  */
+function getTree($list,$pk='id',$pid='parent_id',$child='children',$root=0){
+    $tree=array();
+    foreach($list as $key=> $val){
+
+        if($val[$pid]==$root){
+            //获取当前$pid所有子类 
+                unset($list[$key]);
+                if(! empty($list)){
+                    $child=getTree($list,$pk,$pid,$child,$val[$pk]);
+                    if(!empty($child)){
+                        $val['children']=$child;
+                    }                   
+                }              
+                $tree[]=$val; 
+        }
+    }   
+    return $tree;
+}

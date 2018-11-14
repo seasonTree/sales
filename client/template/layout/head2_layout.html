@@ -92,7 +92,6 @@
                 </v-list>
             </v-menu> -->
             <?php $data = model('User')->getBtns();?>
-
             {volist name = "data" id = "v" }
 
                 {if ($v['path'] == 2)}
@@ -109,12 +108,16 @@
                         <v-btn flat primary slot="activator">{$v['pri_name']}</v-btn>
                         {if (isset($v['children']))}
                         {volist name = "v['children']" id = "list"}
-                        {if ($list['path']) == 2}
+                        {if (isset($list['children']))}
+                        {volist name = "list['children']" id = "b"}
+                        {if ($b['action_name'] == $list['action_name']) }
                         <v-list dense class="language-dropdown">
 
                                 <v-list-tile href="{:url($list['controller_name'].'/'.$list['action_name'])}">{$list['pri_name']}</v-list-tile>
 
                         </v-list>
+                        {/if}
+                        {/volist}
                         {/if}
                         {/volist}
                         {/if}

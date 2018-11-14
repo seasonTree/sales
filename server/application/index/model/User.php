@@ -134,29 +134,17 @@ class User extends Model
         $user = session('user_info');
         $id = $user['id'];
         if ($id == 1) {
-            $priData = \Db::name('privilege')->select();
+            $priData = \Db::name('privilege')->where('path','<',3)->select();
         } else {
             $priData = $this->alias('U')->distinct('pri_name')->field('P.*')
                 ->join('user_role UR', 'U.id=UR.user_id')
                 ->join('role_pri RP', 'UR.role_id=RP.role_id')
                 ->join('privilege P', 'P.id=RP.pri_id')
                 ->where('U.id=' . $id)
+                ->where('P.path','<',3)
                 ->select()->toArray();
         }
-        $ret = array();
-        foreach ($priData as $v) {
-            if ($v['parent_id'] == 0) {
-
-                foreach ($priData as $v1) {
-                    if ($v1['parent_id'] == $v['id']) {
-                        $v['children'][] = $v1;
-                    }
-                }
-                
-                $ret[] = $v;
-
-            }
-        }
+        $ret = getTree($priData);
         if ($id == 1) {
             //过滤超级管理员的数据
             foreach ($ret as $a => $b) {
@@ -168,7 +156,6 @@ class User extends Model
             }
         }
         
-
         return $ret;
     }
 
