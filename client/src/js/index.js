@@ -19,7 +19,6 @@ new Vue({
 
                     window.location.href = res.data.url;
                 } else {
-                    // this.globalShowMessage(true, res.msg, 'error');
 
                     this.$comp.toast({
                         text: res.msg,
@@ -33,8 +32,6 @@ new Vue({
                     text: '登录失败,请重试.',
                     color: 'error'
                 })
-
-                // this.globalShowMessage(true, '登录失败,请重试.', 'error');
 
                 that.submitLoading = false;
             });
