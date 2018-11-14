@@ -43,11 +43,17 @@
             <v-flex>
                 <v-text-field label="移动电话" v-model.trim="data.phone"></v-text-field>
             </v-flex>
-            <v-btn class="s-primary send-btn" @click="sendSMS" :disabled="smsDisabled">{{identifyBtnText}}</v-btn>
+
+            <template v-if="phoneChange">
+                <v-btn class="s-primary send-btn" @click="sendSMS" :disabled="smsDisabled">{{identifyBtnText}}</v-btn>    
+            </template>
+            
         </v-layout>
 
-        <v-text-field label="手机验证码" v-model.trim="data.phone_num"></v-text-field>
-        
+        <template v-if="phoneChange">
+            <v-text-field label="手机验证码" v-model.trim="data.phone_num"></v-text-field>    
+        </template>
+
         <v-layout row wrap>
             <v-flex md4 xs12 class="image-upload">
                 <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2"

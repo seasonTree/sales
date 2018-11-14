@@ -17,12 +17,21 @@ new Vue({
 
         that.$api.user.getOneUser().then((res) => {
             that.data = res.data;
+
+            that.originPhone = JSON.parse(JSON.stringify(res.data.phone));
+
         }).catch((res) => {
             that.$comp.toast({
                 text: '获取数据失败，请刷新后重试.',
                 color: 'error'
             });
         });
+    },
+
+    computed: {
+        phoneChange(){
+            return this.data.phone != this.originPhone;
+        }
     },
 
     methods: {
@@ -103,6 +112,7 @@ new Vue({
     data() {
         return {
             data: {},
+            originPhone: '',
             phoneRex: /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(19[0-9])|16[6])\d{8}$/,
             smsDisabled: false,
             identifyBtnText: '发送验证码',

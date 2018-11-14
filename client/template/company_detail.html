@@ -44,11 +44,15 @@
             <v-flex>
                 <v-text-field label="联系人手机" v-model.trim="data.phone"></v-text-field>
             </v-flex>
-            <v-btn class="s-primary send-btn" @click="sendSMS" :disabled="smsDisabled">{{identifyBtnText}}</v-btn>
+            <template v-if="phoneChange">
+                <v-btn class="s-primary send-btn" @click="sendSMS" :disabled="smsDisabled">{{identifyBtnText}}</v-btn>
+            </template>
         </v-layout>
 
-        <v-text-field label="手机验证码" v-model.trim="data.phone_num"></v-text-field>
-
+        <template v-if="phoneChange">
+            <v-text-field label="手机验证码" v-model.trim="data.phone_num"></v-text-field>
+        </template>
+        
         <v-layout row wrap>
             <v-flex xs6 class="image-upload">
                 <upload-image data-field="data.image_url" url="/user/upload?type=1" content="公司营业执照" :image-url="data.business_licence"></upload-image>
