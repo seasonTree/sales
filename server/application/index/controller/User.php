@@ -18,8 +18,21 @@ class User
     //更改user状态
     public function userStatus(){
         $data = input('post.data');
-        $status = $data['status'];
         $id = $data['id'];
+        $status = $data['status'];
+
+        $user = session('user_info');
+        $Uid = $user['id'];
+        if($Uid !=1){
+            if($status ==1){
+               $oldStatus = model('user')->field('status')->find($id);
+              if($oldStatus['status'] ==3){
+                  return json(['msg'=>'黑名单禁止激活','code'=>1]);
+              }
+            }
+        }
+
+
         $res =model('user')->save(['status'=>$status],['id'=>$id]);
         if($res){
             return json(['msg'=>'状态修改成功','code'=>0]);
@@ -31,7 +44,7 @@ class User
     //获取会员列表数据
     public function  getmemberlst(){
         $post = input('post.data');
-        $where= "type=".$post['type']." and status in (1,2)";
+        $where= "type=".$post['type']." and status in (1,2,3)";
         $data = model('User')->memberlst($where);
         return json(['code'=>0,'data'=>$data]);
     }
