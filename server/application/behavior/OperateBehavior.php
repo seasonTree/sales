@@ -37,6 +37,9 @@ class OperateBehavior extends Controller
         'channel/getchannel',//获取单条渠道
         'channel/addsales',//调整销售员
         'Audit/regLst',//获取审核列表
+        'channel/getsales',//获取销售员
+        'message/getmessagecount',//获取未读条数
+        'config/getprotocol',//获取协议内容
     ];
 
     /**
@@ -48,6 +51,7 @@ class OperateBehavior extends Controller
         'login/searchpass',
         'login/login',
         'index/browserchoose',
+        'config/getprotocol',
     ];
 
     /**
