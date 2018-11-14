@@ -44,6 +44,10 @@
     .hide-pre {
         visibility: hidden;
     }
+
+    .table-checkbox {
+        display: inline-block;
+    }
 </style>
 {/block}
 
@@ -84,10 +88,10 @@
                 <td class="text-xs-left">{{ props.item.chan_pfm_obj }}</td>
                 <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
                 <td class="text-xs-left">
-                    <v-icon v-if="props.item.hideBorder" @click.stop="showEditSales(props.item)" title="修改" class="mr-2">
+                    <v-checkbox class="table-checkbox" color="info" hide-details></v-checkbox>
+                    <v-icon v-if="!props.item.hidePre" @click.stop="showEditSales(props.item, true)" title="修改" class="mr-2">
                         edit
                     </v-icon>
-                    <v-checkbox color="info" hide-details></v-checkbox>
                 </td>
             </tr>
         </template>
@@ -112,7 +116,7 @@
 
 </v-dialog>
 
-<v-dialog scrollable v-model="showEditSales" width="600">
+<v-dialog scrollable v-model="showEditDialog" width="600">
     <v-card>
         <v-card-title class="dialog-head blue-grey lighten-5">
             修改销售员信息
@@ -153,7 +157,7 @@
             <v-btn color="s-primary" @click="editSalesHandler" :loading="disabled.editSales" :disabled="disabled.editSales">
                 确认
             </v-btn>
-            <v-btn color="primary" flat @click="showEditSales = false" :disabled="disabled.editSales">
+            <v-btn color="primary" flat @click="showEditSales(null, false)" :disabled="disabled.editSales">
                 取消
             </v-btn>
             </v-card-action>

@@ -2,10 +2,14 @@ import Vue from './base';
 import {
     mixinExt
 } from './mixin';
+import uploadImage from '@compontent/uploadimage/UploadImage';
 
 new Vue({
     el: '#app',
     mixins: [mixinExt],
+    components: {
+        uploadImage
+    },
 
     created() {
         let that = this;
@@ -125,32 +129,37 @@ new Vue({
             selection.addRange(rangeToSelect);
         },
 
-        showEditSales() {
+        showEditSales(item, show) {
             let that = this;
 
-            //TODO
-            that.$api.team.getSales({
-                data: {
-                    id: item.id,
-                }
-            }).then((res) => {
-                if (res.code == 0) {
-                    that.editSales = res.data;
-                } else {
+            if (show) {
+                //TODO
+                that.$api.team.getSales({
+                    data: {
+                        id: item.id,
+                    }
+                }).then((res) => {
+                    if (res.code == 0) {
+                        that.editSales = res.data;
+                    } else {
+                        that.$comp.toast({
+                            text: res.msg || '获取数据失败，请重试.',
+                            color: 'error'
+                        });
+                    }
+
+                }).catch((res) => {
                     that.$comp.toast({
                         text: res.msg || '获取数据失败，请重试.',
                         color: 'error'
                     });
-                }
-
-            }).catch((res) => {
-                that.$comp.toast({
-                    text: res.msg || '获取数据失败，请重试.',
-                    color: 'error'
                 });
-            });
 
-            that.showEditSales = true;
+                that.showEditDialog = true;
+            }else{
+                that.$refs['editSalesForm'].reset();
+                that.showEditDialog = false;
+            }
         },
 
         //提交修改销售的消息
@@ -172,7 +181,7 @@ new Vue({
                     });
 
                     that.showEditSales = false;
-                    that.$refs['editSalesForm'].reset();                 
+                    that.$refs['editSalesForm'].reset();
 
                 } else {
                     that.$comp.toast({
@@ -199,7 +208,7 @@ new Vue({
         return {
 
             showAdd: false,
-            showEditSales: false,
+            showEditDialog: false,
 
             qr_code: {}, //邀请人信息
 
