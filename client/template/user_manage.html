@@ -13,9 +13,11 @@
     </div>
 
     <div class="action-bar">
+        {if (in_array('auser/add',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
         <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
             <v-icon dark>add</v-icon>新增
         </v-btn>
+        {/if}
     </div>
 
 
@@ -30,12 +32,15 @@
             <td class="text-xs-left" v-if="props.item.status==0">待审核</td>
             <td class="text-xs-left" v-if="props.item.status==-1">未通过审核</td>
             <td class="text-xs-center">
+                {if (in_array('auser/edit',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
                 <v-icon small class="mr-2" @click="edit(props.item)">
                     edit
                 </v-icon>
+                {/if}
                 <!--<v-icon small @click="del(props.item.id)">-->
                     <!--delete-->
                 <!--</v-icon>-->
+                {if (in_array('user/userstatus',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
                 <v-icon @click.stop="changeStatus(props.item.id,2)" color="red" title="禁用">
                     block
                 </v-icon>
@@ -43,6 +48,7 @@
                         title="激活">
                     lens
                 </v-icon>
+                {/if}
             </td>
         </template>
     </v-data-table>

@@ -15,9 +15,11 @@
     </div>
 
     <div class="action-bar">
+        {if (in_array('config/addprotocol',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
         <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
             <v-icon dark>add</v-icon>新增
         </v-btn>
+        {/if}
     </div>
 
     <v-layout>
@@ -39,12 +41,16 @@
                         {{ props.item.update_time }}
                     </td>
                     <td class="text-xs-center">
+                        {if (in_array('config/editprotocol',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
                         <v-icon small class="mr-2" @click.stop="showDialog(props.item, false)">
                             edit
                         </v-icon>
+                        {/if}
+                        {if (in_array('config/delprotocol',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
                         <v-icon small @click.stop="del(props.item.id, props.index)">
                             delete
                         </v-icon>
+                        {/if}
                     </td>
                 </tr>
             </template>

@@ -42,7 +42,9 @@ class OperateBehavior extends Controller
         'config/getprotocol',//获取协议内容
         'user/insuserinfo',//写入用户信息
         'user/upload',//上传
-        'user/sendmessage',//发短信
+        'user/sendmessage',//发短信,
+        'config/protocollst',//协议列表
+        'config/getprotocol',//获取协议内容
     ];
 
     /**
@@ -54,8 +56,8 @@ class OperateBehavior extends Controller
         'login/searchpass',
         'login/login',
         'index/browserchoose',
-        'config/getprotocol',
         'user/sendmessage',
+        'config/showprotocol',
     ];
 
     /**
@@ -66,7 +68,7 @@ class OperateBehavior extends Controller
         //获取当前访问路由
         $url = getActionUrl();
         if (in_array($url, $this->login)) {
-            if (checkLogin()) {
+            if (checkLogin() && $url != 'user/sendmessage') {
                 $this->redirect('user/userInfo');
             }
         }
