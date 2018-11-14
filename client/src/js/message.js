@@ -83,12 +83,6 @@ new Vue({
             },
 
             theader: [
-                // {
-                //     text: 'id',
-                //     align: 'left',
-                //     value: 'id',
-                //     sortable: false,
-                // },
                 {
                     text: '标题',
                     align: 'left',
@@ -113,7 +107,7 @@ new Vue({
                     sortable: false,
                 },
             ],
-            tdata: [{}]
+            tdata: []
         };
     }
 })
