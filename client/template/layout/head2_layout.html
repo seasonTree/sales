@@ -98,7 +98,8 @@
                 {if (isset($v['children']))}
                 {volist name = "v['children']" id = "a"}
                 {if ($a['action_name'] == $v['action_name']) }
-                <v-btn href="{:url($v['controller_name'].'/'.$v['action_name'])}" flat :class="{'toolbar-active': global.currentView == '$v[controller_name]'}">{$v['pri_name']}</v-btn>
+                <?php $controller_name = strtolower($v['controller_name']);?>
+                <v-btn href="{:url($v['controller_name'].'/'.$v['action_name'])}" flat :class="{'toolbar-active': global.currentView == '<?php echo $controller_name;?>'}">{$v['pri_name']}</v-btn>
                 {/if}
                 {/volist}
                 {/if}
