@@ -31,7 +31,8 @@ class User
     //获取会员列表数据
     public function  getmemberlst(){
         $post = input('post.data');
-        $data = model('User')->memberlst(['type'=>$post['type']]);
+        $where= "type=".$post['type']." and status in (1,2)";
+        $data = model('User')->memberlst($where);
         return json(['code'=>0,'data'=>$data]);
     }
 
