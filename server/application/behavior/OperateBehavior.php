@@ -40,6 +40,9 @@ class OperateBehavior extends Controller
         'channel/getsales',//获取销售员
         'message/getmessagecount',//获取未读条数
         'config/getprotocol',//获取协议内容
+        'user/insuserinfo',//写入用户信息
+        'user/upload',//上传
+        'user/sendmessage',//发短信
     ];
 
     /**
@@ -52,6 +55,7 @@ class OperateBehavior extends Controller
         'login/login',
         'index/browserchoose',
         'config/getprotocol',
+        'user/sendmessage',
     ];
 
     /**
