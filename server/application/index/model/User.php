@@ -149,7 +149,7 @@ class User extends Model
             //过滤超级管理员的数据
             foreach ($ret as $a => $b) {
 
-                if ($b['path'] == 2) {
+                if ($b['path'] == 2 && $b['controller_name'] != 'Message') {
                     unset($ret[$a]);
                 }
 

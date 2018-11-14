@@ -101,10 +101,11 @@
                 <?php $controller_name = strtolower($v['controller_name']);?>
                 <v-btn href="{:url($v['controller_name'].'/'.$v['action_name'])}" flat :class="{'toolbar-active': global.currentView == '<?php echo $controller_name;?>'}">
                     {$v['pri_name']}
-
+                    {if ($controller_name == 'message')}
                     <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
                         <span slot="badge">{{global.messageCount}}</span>
                     </v-badge>
+                    {/if}
                 </v-btn>
                 {/if}
                 {/volist}

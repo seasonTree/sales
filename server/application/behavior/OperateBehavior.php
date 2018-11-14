@@ -46,6 +46,7 @@ class OperateBehavior extends Controller
         'config/protocollst',//协议列表
         'config/getprotocol',//获取协议内容
         'auser/lst',//获取管理员列表
+        'message/lst',//获取信息列表
     ];
 
     /**
