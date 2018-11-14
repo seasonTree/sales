@@ -157,6 +157,18 @@ class User extends Model
 
             }
         }
+        if ($id == 1) {
+            //过滤超级管理员的数据
+            foreach ($ret as $a => $b) {
+
+                if ($b['path'] == 2) {
+                    unset($ret[$a]);
+                }
+
+            }
+        }
+        
+
         return $ret;
     }
 
