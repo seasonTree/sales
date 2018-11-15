@@ -45,7 +45,7 @@
             <td class="text-xs-left">{{ props.item.role_name }}</td>
             <td class="text-xs-left">{{ props.item.username }}</td>
             <td class="text-xs-left">{{ props.item.pri_name }}</td>
-            <td class="text-xs-center">
+            <td class="text-xs-center table-action">
                 {if (in_array('role/edit',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
                 <v-icon small class="mr-2" @click="edit(props.item)">
                     edit
@@ -69,11 +69,11 @@
         </v-card-title>
 
         <v-card-text>
-            <v-form>
+            <v-form ref="addForm">
                 <v-text-field label="角色名称" v-model="addItem.role_name"></v-text-field>
 
                 <div class="role-container">
-                    <s-tree :init-select="selected" ref="treeAdd" :expend="true" :tree-data="checkBoxData" id-field="id"
+                    <s-tree :init-select="selected" ref="treeAdd" :expend="true" :tree-data="treeData" id-field="id"
                         value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>
                 </div>
             </v-form>
@@ -90,6 +90,7 @@
         </v-card-actions>
     </v-card>
 </v-dialog>
+
 <!--修改模块-->
 <v-dialog scrollable v-model="showEdit" width="500">
     <v-card>
@@ -98,11 +99,11 @@
         </v-card-title>
 
         <v-card-text>
-            <v-form>
+            <v-form ref="editForm">
                 <v-text-field label="角色名称" v-model="editItem.role_name"></v-text-field>
                 <input type="hidden" v-model="editItem.id" name="id">
                 <div class="role-container">
-                    <s-tree :init-select="selected" ref="treeEdit" :expend="true" :tree-data="checkBoxData" id-field="id"
+                    <s-tree :init-select="selected" ref="treeEdit" :expend="true" :tree-data="treeData" id-field="id"
                         value-filed="pri_name" root-value="0" parent-field="parent_id"></s-tree>
                 </div>
             </v-form>

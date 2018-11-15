@@ -177,21 +177,6 @@ new Vue({
             this.exportUrl = `/transaction/exportExcel?type=${this.currentDataType}&dateFm=${this.dateFm}&dateTo=${this.dateTo}`;
         },
 
-        // exportExcel() {
-        //     let that = this;
-        //     that.$api.transaction.exportExcel({
-        //         data: {
-        //             type: that.currentDataType,
-        //             dateFm: that.dateFm,
-        //             dateTo: that.dateTo,
-        //             // pageSize: that.pager.size,
-        //             // pageIndex: that.pager.index
-        //         }
-        //     }).then((res)=>{
-        //         console.log(res);
-        //     })
-        // },
-
         changePage(){
             this.getReomteData();
         },

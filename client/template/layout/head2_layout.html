@@ -17,7 +17,7 @@
             <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
 
 
-   <!--          <v-btn href="{:url('Team/index')}" flat :class="{'toolbar-active': global.currentView == 'team'}">团队</v-btn>
+            <!--          <v-btn href="{:url('Team/index')}" flat :class="{'toolbar-active': global.currentView == 'team'}">团队</v-btn>
             <v-btn href="{:url('Channel/index')}" flat :class="{'toolbar-active': global.currentView == 'channel'}">渠道</v-btn>
             <v-btn href="{:url('Achievement/index')}" flat :class="{'toolbar-active': global.currentView == 'achievement'}">业绩</v-btn>
             <v-btn href="{:url('Transaction/index')}" flat :class="{'toolbar-active': global.currentView == 'transaction'}">交易报告</v-btn> -->
@@ -26,15 +26,15 @@
 
             <!-- <v-btn href="{:url('Achievement/distrib\utionNetwork')}" flat :class="{'toolbar-active': global.currentView == 'distributionnetwork'}">销售网络</v-btn> -->
 
-           <!--  <v-btn href="{:url('Message/index')}" flat :class="{'toolbar-active': global.currentView == 'message'}">
+            <!--  <v-btn href="{:url('Message/index')}" flat :class="{'toolbar-active': global.currentView == 'message'}">
                 消息
                 <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
                     <span slot="badge">{{global.messageCount}}</span>
                 </v-badge>
             </v-btn> -->
 
-        <!-- </v-toolbar-items> -->
-        <!-- <v-toolbar-items class="hidden-sm-and-down">
+            <!-- </v-toolbar-items> -->
+            <!-- <v-toolbar-items class="hidden-sm-and-down">
 
             <v-menu offset-y>
                 <v-btn flat primary slot="activator" :class="{'toolbar-active': global.viewSelect.system }">系统信息</v-btn>
@@ -94,97 +94,97 @@
             <?php $data = model('User')->getBtns();?>
             {volist name = "data" id = "v" }
 
-                {if ($v['path'] == 2)}
-                {if (isset($v['children']))}
-                {volist name = "v['children']" id = "a"}
-                {if ($a['action_name'] == $v['action_name']) }
-                <?php $controller_name = strtolower($v['controller_name']);?>
-                <v-btn href="{:url($v['controller_name'].'/'.$v['action_name'])}" flat :class="{'toolbar-active': global.currentView == '<?php echo $controller_name;?>'}">
-                    {$v['pri_name']}
-                    {if ($controller_name == 'message')}
-                    <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
-                        <span slot="badge">{{global.messageCount}}</span>
-                    </v-badge>
+            {if ($v['path'] == 2)}
+            {if (isset($v['children']))}
+            {volist name = "v['children']" id = "a"}
+            {if ($a['action_name'] == $v['action_name']) }
+            <?php $controller_name = strtolower($v['controller_name']);?>
+            <v-btn href="{:url($v['controller_name'].'/'.$v['action_name'])}" flat :class="{'toolbar-active': global.currentView == '<?php echo $controller_name;?>'}">
+                {$v['pri_name']}
+                {if ($controller_name == 'message')}
+                <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
+                    <span slot="badge">{{global.messageCount}}</span>
+                </v-badge>
+                {/if}
+            </v-btn>
+            {/if}
+            {/volist}
+            {/if}
+            {else/}
+            <v-toolbar-items>
+                <v-menu offset-y>
+                    <v-btn flat primary slot="activator">{$v['pri_name']}</v-btn>
+                    {if (isset($v['children']))}
+                    {volist name = "v['children']" id = "list"}
+                    {if (isset($list['children']))}
+                    {volist name = "list['children']" id = "b"}
+                    {if ($b['action_name'] == $list['action_name']) }
+                    <v-list dense class="language-dropdown">
+
+                        <v-list-tile href="{:url($list['controller_name'].'/'.$list['action_name'])}">{$list['pri_name']}</v-list-tile>
+
+                    </v-list>
                     {/if}
-                </v-btn>
-                {/if}
-                {/volist}
-                {/if}
-                {else/}
-                <v-toolbar-items>
-                    <v-menu offset-y>
-                        <v-btn flat primary slot="activator">{$v['pri_name']}</v-btn>
-                        {if (isset($v['children']))}
-                        {volist name = "v['children']" id = "list"}
-                        {if (isset($list['children']))}
-                        {volist name = "list['children']" id = "b"}
-                        {if ($b['action_name'] == $list['action_name']) }
-                        <v-list dense class="language-dropdown">
+                    {/volist}
+                    {/if}
+                    {/volist}
+                    {/if}
+                </v-menu>
+            </v-toolbar-items>
 
-                                <v-list-tile href="{:url($list['controller_name'].'/'.$list['action_name'])}">{$list['pri_name']}</v-list-tile>
+            {/if}
 
-                        </v-list>
-                        {/if}
-                        {/volist}
-                        {/if}
-                        {/volist}
-                        {/if}
-                    </v-menu>
-                </v-toolbar-items>
-
-                {/if}
-                
 
             {/volist}
 
-            
+
 
 
             <v-toolbar-items>
                 <!-- <?php dump($data);?> -->
-            <v-menu offset-y>
-                <v-btn flat primary slot="activator">语言</v-btn>
-                <v-list dense class="language-dropdown">
+                <v-menu offset-y>
+                    <v-btn flat primary slot="activator">语言</v-btn>
+                    <v-list dense class="language-dropdown">
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" @click="">
-                        <v-list-tile-title>简体中文</v-list-tile-title>
-                    </v-list-tile>
+                        <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" @click="">
+                            <v-list-tile-title>简体中文</v-list-tile-title>
+                        </v-list-tile>
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="">
-                        <v-list-tile-title>
-                            繁体中文
-                        </v-list-tile-title>
-                    </v-list-tile>
+                        <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="">
+                            <v-list-tile-title>
+                                繁体中文
+                            </v-list-tile-title>
+                        </v-list-tile>
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" @click="">
-                        <v-list-tile-title>English</v-list-tile-title>
-                    </v-list-tile>
-                </v-list>
-            </v-menu>
-        </v-toolbar-items>
+                        <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" @click="">
+                            <v-list-tile-title>English</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
+            </v-toolbar-items>
 
-        <v-toolbar-items>
+            <v-toolbar-items>
                 <!-- <?php dump($data);?> -->
-            <v-menu offset-y>
-                <v-btn flat primary slot="activator">个人中心</v-btn>
-                <v-list dense class="language-dropdown">
+                <v-menu offset-y>
+                    <v-btn flat primary slot="activator">个人中心</v-btn>
+                    <v-list dense class="language-dropdown">
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" href="{:url('user/userInfo')}">
-                        <v-list-tile-title >个人资料</v-list-tile-title>
-                    </v-list-tile>
+                        <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" href="{:url('user/userInfo')}">
+                            <v-list-tile-title>个人资料</v-list-tile-title>
+                        </v-list-tile>
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="global.changePassword.show = true">
-                        <v-list-tile-title>
-                            修改密码
-                        </v-list-tile-title>
-                    </v-list-tile>
+                        <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="global.changePassword.show = true">
+                            <v-list-tile-title>
+                                修改密码
+                            </v-list-tile-title>
+                        </v-list-tile>
 
-                    <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" href="{:url('login/loginOut')}">
-                        <v-list-tile-title >登出</v-list-tile-title>
-                    </v-list-tile>
-                </v-list>
-            </v-menu>
-        </v-toolbar-items>
+                        <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" href="{:url('login/loginOut')}">
+                            <v-list-tile-title>登出</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
+            </v-toolbar-items>
             <!-- <v-btn href="{:url('Login/loginOut')}" flat>登出</v-btn> -->
         </v-toolbar-items>
     </v-toolbar>
@@ -198,14 +198,18 @@
 
         <v-card-text>
             <v-form ref="globalPassRef" vaild="global.changePassword.valid">
-                <v-text-field label="密码" :append-icon="global.changePassword.passVis ? 'visibility_off' : 'visibility'"
-                    v-model.trim="global.changePassword.password" :type="global.changePassword.passVis ? 'text' : 'password'"
-                    :rules="[v => !!v || '密码是必填']" @click:append="global.changePassword.passVis = !global.changePassword.passVis"></v-text-field>
+                <v-text-field label="旧密码" :append-icon="global.changePassword.passOldVis ? 'visibility_off' : 'visibility'" v-model="global.changePassword.oldPassword"
+                    :type="global.changePassword.passOldVis ? 'text' : 'password'" :rules="[v => !!v || '旧密码是必填']" 
+                    @click:append="global.changePassword.passOldVis = !global.changePassword.passOldVis"></v-text-field>
 
-                <v-text-field label="再次输入密码" :append-icon="global.changePassword.passVis1 ? 'visibility_off' : 'visibility'"
-                    v-model.trim="global.changePassword.rePassword" :type="global.changePassword.passVis1 ? 'text' : 'password'"
+                <v-text-field label="密码" :append-icon="global.changePassword.passVis ? 'visibility_off' : 'visibility'"
+                    v-model="global.changePassword.password" :type="global.changePassword.passVis ? 'text' : 'password'"
+                    :rules="[v => !!v || '新密码是必填']" @click:append="global.changePassword.passVis = !global.changePassword.passVis"></v-text-field>
+
+                <v-text-field label="再次输入新密码" :append-icon="global.changePassword.passVis1 ? 'visibility_off' : 'visibility'"
+                    v-model="global.changePassword.rePassword" :type="global.changePassword.passVis1 ? 'text' : 'password'"
                     :rules="[
-                             v => !!v || '确认密码是必填',
+                             v => !!v || '再次输入新密码是必填',
                              v => global.changePassword.password == v || '两次输入的密码不一致'
                             ]"
                     @click:append="global.changePassword.passVis1 = !global.changePassword.passVis1"></v-text-field>
@@ -214,7 +218,7 @@
 
         <v-card-actions class="dialog-foot blue-grey lighten-5">
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="globalCommitPassword" >
+            <v-btn color="s-primary" @click="globalCommitPassword">
                 确认
             </v-btn>
             <v-btn color="primary" flat @click="global.changePassword.show = false">

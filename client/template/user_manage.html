@@ -152,7 +152,7 @@
 <script src="__basePath__/js/chunks/user_manage.js?date=__date__"></script>
 {/block}
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -170,7 +170,7 @@
 
 <body>
     <div id="app">
-        <v-app id="app">
+        <v-app>
             <div class="header">
                 <v-toolbar>
                     <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
@@ -412,120 +412,7 @@
 
     </script>
 
-    <!-- <div id="app">
-            <div class="header">
-                <mu-appbar color="#42a5f5" class="header-content">
-                    <div slot="left">
-                        用户管理
-                    </div>
-
-                    <div slot="right" class="nav-right">
-                        <span style="margin-right: 10px;">注册</span>
-                        <span style="margin-right: 10px;">联系方式</span>
-                    </div>
-                </mu-appbar>
-            </div>
-
-            <mu-container class="body">
-                <div class="body-header">
-                    用户管理
-                </div>
-
-                <div class="btn-frame">
-                    <mu-button color="primary" @click="openSimpleDialog">新增用户</mu-button>
-                </div>
-
-                <mu-data-table border :columns="columns" :data="list" class="table-content">
-                    <template slot-scope="scope">
-                        <td>{{scope.row.id}}</td>
-                        <td class="is-right">{{scope.row.name}}</td>
-                        <td class="is-right">{{scope.row.role}}</td>
-                        <td class="is-right">{{scope.row.active}}</td>
-                        <td class="is-center">
-                            <mu-button small fab>
-                                <mu-icon value="edit"></mu-icon>
-                            </mu-button>
-                            <mu-button small fab>
-                                <mu-icon value="delete_forever"></mu-icon>
-                            </mu-button>
-                        </td>
-                    </template>
-                </mu-data-table>
-
-                <mu-dialog title="用户修改" width="420" :open.sync="openSimple">
-                    <mu-form ref="form" class="mu-demo-form" label-position="right" label-width="80">
-                        <mu-form-item label="用户名">
-                            <mu-text-field prop="username"></mu-text-field>
-                        </mu-form-item>
-                        <mu-form-item label="密码">
-                            <mu-text-field type="password"></mu-text-field>
-                        </mu-form-item>
-                        <mu-form-item label="确认密码">
-                            <mu-text-field type="password"></mu-text-field>
-                        </mu-form-item>
-                    </mu-form>
-
-                    <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">确定</mu-button>
-                    <mu-button slot="actions" flat @click="closeSimpleDialog">关闭</mu-button>
-                </mu-dialog>
-
-            </mu-container>
-        </div>
-
-
-        <script src="./js/vue.js"></script>
-        <script src="/js/muse-ui.js"></script>
-        <script>
-            new Vue({
-                data() {
-                    return {
-                        openSimple: false,
-
-                        columns: [{
-                                title: 'ID',
-                                name: 'id'
-                            },
-                            {
-                                title: '登录名',
-                                name: 'name',
-                                align: 'center',
-                            },
-                            {
-                                title: '角色',
-                                name: 'role',
-                                align: 'center',
-                            },
-                            {
-                                title: '是否启用',
-                                name: 'active',
-                                align: 'center',
-                            },
-                            {
-                                title: '操作',
-                                name: 'active',
-                                align: 'center',
-                            }
-                        ],
-                        list: [{
-                            id: '1',
-                            name: 'admin',
-                            role: '管理员',
-                            active: '是',
-                        }, ]
-                    };
-                },
-
-                methods: {
-                    openSimpleDialog() {
-                        this.openSimple = true;
-                    },
-                    closeSimpleDialog() {
-                        this.openSimple = false;
-                    }
-                }
-            }).$mount('#app')
-        </script> -->
 
 </body>
 
-</html>
+</html> -->

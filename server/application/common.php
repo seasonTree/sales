@@ -43,7 +43,7 @@ function checkPhone($phone){
 
 function checkUser($username){
   //检查用户名
-  $rule = "/^[a-zA-Z]([_a-zA-Z0-9]{6,12})+$/";
+  $rule = "/^[a-zA-Z]([_a-zA-Z0-9]{5,12})+$/";
 
   if (!preg_match($rule, $username)) {
     return false;

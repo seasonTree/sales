@@ -33,14 +33,13 @@ new Vue({
             that.type = 'p';
 
             that.$api.user.getOneUser({
-                    data:id
-                }).then((res) => {
+                data: id
+            }).then((res) => {
                 if (res.code == 0) {
                     that.viewAuditInfo = res.data;
                     if (res.data.parent_id == 0) {
                         that.type = 'c';
-                    }
-                    else{
+                    } else {
                         that.type = 'p';
                     }
                 } else {
@@ -60,7 +59,7 @@ new Vue({
             // that.viewAuditInfo = item;
         },
 
-        bigImage(url){
+        bigImage(url) {
             // alert(image_url);
             // that.image_url = '/client/image/default.jpg';
             let that = this;
@@ -68,20 +67,20 @@ new Vue({
             that.viewImage = true;
         },
 
-        auditCommit(uid){
+        auditCommit(uid) {
             let that = this;
             that.data.uid = uid;
             that.data.type = 1;
             that.submitLoading = true;
             that.$api.audit.auditCommit({
-                    data:that.data
-                }).then((res) => {
+                data: that.data
+            }).then((res) => {
                 if (res.code == 0) {
                     that.$comp.toast({
-                    text: res.msg,
-                    
-                })
-                  window.location.href = res.data.url;
+                        text: res.msg,
+
+                    })
+                    window.location.href = res.data.url;
                 } else {
                     that.$comp.toast({
                         text: res.msg,
@@ -99,25 +98,25 @@ new Vue({
 
         },
 
-        auditNotPs(uid){
+        auditNotPs(uid) {
             let that = this;
             that.data.uid = uid;
             that.auditNotPass = true;
         },
 
-        auditCommitNotPass(){
+        auditCommitNotPass() {
             let that = this;
             that.data.type = -1;
             that.submitLoading = true;
             that.$api.audit.auditCommit({
-                    data:that.data
-                }).then((res) => {
+                data: that.data
+            }).then((res) => {
                 if (res.code == 0) {
                     that.$comp.toast({
-                    text: res.msg,
-                    
-                })
-                  window.location.href = res.data.url;
+                        text: res.msg,
+
+                    })
+                    window.location.href = res.data.url;
                 } else {
                     that.$comp.toast({
                         text: res.msg,
@@ -125,7 +124,7 @@ new Vue({
                     })
                     that.submitLoading = false;
                 }
-                }).catch((res) => {
+            }).catch((res) => {
                 that.$comp.toast({
                     text: '提交失败，请重试.',
                     color: 'error'
@@ -143,28 +142,26 @@ new Vue({
 
             auditNotPass: false,
 
-            type:'',
+            type: '',
 
-            image_url:'',
+            image_url: '',
 
-            data : {
-                note : '',
-                uid : '',
-                type : ''
+            data: {
+                note: '',
+                uid: '',
+                type: ''
             },
 
             submitLoading: false,
 
-            viewAuditInfo: {
-
-            },
+            viewAuditInfo: {},
 
             theader: [{
                     text: '用户名',
                     align: 'left',
                     value: 'a',
                     sortable: false,
-                },{
+                }, {
                     text: '姓',
                     align: 'left',
                     value: 'b',

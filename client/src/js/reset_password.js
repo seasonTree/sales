@@ -7,12 +7,6 @@ new Vue({
 
     methods: {
 
-        // showMessage(show, text, color) {
-        //     this.message.text = text || '';
-        //     this.message.color = color;
-        //     this.message.show = show;
-        // },
-
         commit() {
             let that = this;
 

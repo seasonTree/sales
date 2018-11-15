@@ -56,14 +56,14 @@ export default {
             language = this.language;
 
         switch (language) {
-            case "zh-hk":
+            case "zh_hk":
                 language = "zh";
                 break;
-            case "en-us":
+            case "en_us":
                 language = "en";
                 break;
             default:
-                language = "zh-cn";
+                language = "zh_cn";
                 break;
         }
 

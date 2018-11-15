@@ -53,7 +53,7 @@ function rmGenFile(outputPath) {
         var fpath = path.resolve(outputPath, item),
             fstat = fs.statSync(fpath);
 
-        if (fstat.isDirectory()) { // item !== "upload" && 可以选择不删除upload下面的文件
+        if (fstat.isDirectory() && item !== "upload") { // item !== "upload" && 可以选择不删除upload下面的文件
             rmGenFile(fpath);
             fs.rmdirSync(fpath);
         } else {

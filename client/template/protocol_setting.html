@@ -66,7 +66,7 @@
             <v-card-text>
                 <v-form ref="addForm" v-model="addValid">
                     <v-text-field :rules="rules" label="协议名称" v-model.trim="addItem.title"></v-text-field>
-                    <ck-editor language="zh-cn" ref="addEditor" :content="addItem.content"></ck-editor>
+                    <ck-editor language="zh_cn" ref="addEditor" :content="addItem.content"></ck-editor>
                 </v-form>
             </v-card-text>
 
@@ -91,7 +91,7 @@
             <v-card-text>
                 <v-form ref="editForm" v-model="editValid">
                     <v-text-field :rules="rules" label="协议名称" v-model.trim="editItem.title"></v-text-field>
-                    <ck-editor language="zh-cn" ref="editEditor" :content="editItem.content"></ck-editor>
+                    <ck-editor language="zh_cn" ref="editEditor" :content="editItem.content"></ck-editor>
                 </v-form>
             </v-card-text>
 
@@ -116,7 +116,7 @@
             <v-card-text>
                 <v-form >
                     <v-text-field :readonly="true" label="协议名称" v-model.trim="editItem.title"></v-text-field>
-                    <ck-editor language="zh-cn" :disabled="true" :content="editItem.content"></ck-editor>
+                    <ck-editor language="zh_cn" :disabled="true" :content="editItem.content"></ck-editor>
                 </v-form>
             </v-card-text>
 

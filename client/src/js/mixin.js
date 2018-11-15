@@ -42,9 +42,11 @@ const mixin = {
                 changePassword: {
                     valid: false,
                     show: false,
+                    passOldVis: false,
                     passVis: false,
                     passVis1: false,
                     password: '',
+                    oldPassword: '',
                     rePassword: '',
                     submitLoading: false
                 },

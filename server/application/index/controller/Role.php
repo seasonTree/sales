@@ -10,15 +10,22 @@ class Role
 		return view('/user_role');
 	}
 	public function lst(){
-        $data =model('Role')->lst();
+        $list =model('Role')->lst();
 
-        foreach ($data as $k=>$v){
-            $v['username'] =array_unique(explode(',',$v['username']));$data[$k]['username'] =implode(',',$v['username']);
-            $v['pri_name'] =array_unique(explode(',',$v['pri_name']));$data[$k]['pri_name'] =implode(',',$v['pri_name']);
-            $v['pri_id'] =array_unique(explode(',',$v['pri_id']));$data[$k]['pri_id'] =implode(',',$v['pri_id']);
+        foreach ($list as $k=>$v){
+            $v['username'] =array_unique(explode(',',$v['username']));$list[$k]['username'] =implode(',',$v['username']);
+            $v['pri_name'] =array_unique(explode(',',$v['pri_name']));$list[$k]['pri_name'] =implode(',',$v['pri_name']);
+            $v['pri_id'] =array_unique(explode(',',$v['pri_id']));$list[$k]['pri_id'] =implode(',',$v['pri_id']);
         }
+
         $priData =model('privilege')->getTree();
-        return json(['data'=>$data,'priData'=>$priData,'code'=>0,'msg'=>'获取数据成功']);
+
+        $data = [
+            'list' => $list,
+            'role' => $priData
+        ];
+
+        return json(['data'=>$data,'code'=>0,'msg'=>'获取数据成功']);
     }
     public function add(){
 	    $data = input('post.data');

@@ -66,34 +66,13 @@
             <span>
                 同意
             </span>
-            <a href="/Config/showProtocol?p_id=1" target="_blank">＜注册协议＞</a>
+            <a href="/Config/showProtocol?p_id=1" target="_blank">《注册协议》</a>
             </v-layout>
         </div>
         <v-btn color="s-primary reg-btn" :disabled="!valid && !submitLoading" :loading="submitLoading" @click="submit">注册</v-btn>
     </v-form>
 
 </v-container>
-
-<v-dialog scrollable v-model="dialog" width="500">
-    <v-card>
-        <v-card-title class="dialog-head blue-grey lighten-5">
-            {{ register_title }}
-        </v-card-title>
-
-        <v-card-text>
-            {{ register_content }}
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions class="dialog-foot blue-grey lighten-5">
-            <v-spacer></v-spacer>
-            <v-btn color="primary" flat @click="dialog = false">
-                关闭
-            </v-btn>
-        </v-card-actions>
-    </v-card>
-</v-dialog>
 
 {/block}
 

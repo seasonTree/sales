@@ -12,7 +12,7 @@ class Protocol extends Model{
 
     public function getProtocol($where = '1=1'){
     	//获取协议
-    	$res = Protocol::where($where)->where('status',0)->order('update_time','desc')->select();
+    	$res = Protocol::where($where)->where('status',0)->order('id','asc')->select();
     	return $res;
     }
 
