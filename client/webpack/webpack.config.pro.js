@@ -2,15 +2,19 @@ const baseWebpackConfig = require('./webpack.config.base');
 //压缩css
 const optimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const uglifyjs = require('uglifyjs-webpack-plugin');
+// const terserPlugin = require('terser-webpack-plugin');
 const merge = require('webpack-merge');
 const cssnano = require('cssnano');
 const postSafeParse = require('postcss-safe-parser');
 
 module.exports = merge(baseWebpackConfig, {
     mode: 'production',
+
     plugins: [
         new uglifyjs(),
 
+        // new terserPlugin(),
+        
         // https://zhuanlan.zhihu.com/p/37251575
         new optimizeCssAssetsPlugin({ //压缩css 
             assetNameRegExp: /\.css\.*(?!.*map)/g,

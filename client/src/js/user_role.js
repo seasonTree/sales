@@ -3,9 +3,6 @@ import STree from '../compontent/stree/STree';
 import {
     mixinExt
 } from './mixin';
-import {
-    RSA_NO_PADDING
-} from 'constants';
 
 new Vue({
     el: '#app',

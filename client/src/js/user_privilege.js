@@ -84,7 +84,7 @@ new Vue({
                     item.pri_name = Array(item.level + 1).join('------') + item.pri_name;
                     return item;
                 });
-    
+
             }).catch((data) => {
                 that.$comp.toast({
                     text: '获取数据失败，请刷新重试.',
@@ -94,7 +94,10 @@ new Vue({
         },
 
         edit(item) {
-            this.editItem = item;
+            this.editItem = JSON.parse(JSON.stringify(item));
+
+            this.editItem.pri_name = this.editItem.pri_name.replace(/------/g, '');
+
             this.showEdit = true;
         },
 
@@ -102,16 +105,30 @@ new Vue({
             let that = this;
             that.$api.privilege.del({
                 data: id
-            }).then((data) => {
-                that.message.text = data.msg;
-                that.message.color = 'success';
-                that.message.show = true;
-                setTimeout(function () {
-                    window.location.reload();
-                }, 2000)
+            }).then((res) => {
+                if (res.code == 0) {
 
-            }).catch((data) => { //function(data){}
-                  that.$comp.toast({
+                    that.$comp.toast({
+                        text: res.msg || '删除成功.',
+                    });
+
+                    for (var i = 0; i < that.tdata.length; i++) {
+                        var item = that.tdata[i];
+
+                        if (item.id == id) {
+                            that.tdata.splice(i, 1);
+                            break;
+                        }
+                    }
+
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '删除失败，请刷新后重试.',
+                        color: 'error',
+                    });
+                }
+            }).catch((res) => { //function(data){}
+                that.$comp.toast({
                     text: '删除失败，请刷新后重试.',
                     color: 'error',
                 });
@@ -122,21 +139,27 @@ new Vue({
             let that = this;
             that.$api.privilege.add({
                 data: that.addItem
-            }).then((data) => {
-                that.showAdd = false;
-                that.$comp.toast({
-                    text: data.msg,
-                });
+            }).then((res) => {
+                if (res.code == 0) {
+                    that.$comp.toast({
+                        text: res.msg || '新增成功.',
+                    });
 
-                setTimeout(function () {
-                    window.location.reload();
-                }, 2000)
-                // that.tdata.unshift(that.addItem);
+                    that.getRemoteData();
 
-            }).catch((data) => { //function(data){}
-                // console.log('失败了')
+                    that.showAdd = false;
+
+                    that.$refs['addForm'].reset();
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '新增失败，请刷新后重试.',
+                        color: 'error',
+                    });
+                }
+
+            }).catch((res) => {
                 that.$comp.toast({
-                    text: data.msg,
+                    text: '新增失败，请刷新后重试.',
                     color: 'error',
                 });
             });
@@ -145,21 +168,31 @@ new Vue({
         editCommit() {
             let that = this;
             that.$api.privilege.edit({
-                data: this.editItem
-            }).then((data) => {
-                // that.editItem.id = data.id;
-                that.showEdit = false;
+                data: that.editItem
+            }).then((res) => {
+                if (res.code == 0) {
+
+                    that.$comp.toast({
+                        text: res.msg || '修改成功.',
+                    });
+
+                    that.getRemoteData();
+
+                    that.showEdit = false;
+
+                    that.$refs['editForm'].reset();
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '修改失败，请刷新后重试.',
+                        color: 'error',
+                    });
+                }
+            }).catch((res) => { //function(data){}
                 that.$comp.toast({
-                    text: data.msg,
-                });
-            }).catch((data) => { //function(data){}
-                that.$comp.toast({
-                    text: data.msg,
+                    text: '修改失败，请刷新后重试.',
                     color: 'error',
                 });
             });
-
-            this.editItem;
         }
     }
 })

@@ -24,7 +24,5 @@ export default (option) => {
     instance.bottom = option.bottom || false;
     instance.closeText = option.closeText || '关闭';
 
-
-
     instance.visible = true;
 }

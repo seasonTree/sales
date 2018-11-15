@@ -62,7 +62,7 @@
 </v-container>
 
 <!--新增模块-->
-<v-dialog scrollable v-model="showAdd" width="500">
+<v-dialog scrollable persistent v-model="showAdd" width="500">
     <v-card>
         <v-card-title class="dialog-head blue-grey lighten-5">
             新增
@@ -92,7 +92,7 @@
 </v-dialog>
 
 <!--修改模块-->
-<v-dialog scrollable v-model="showEdit" width="500">
+<v-dialog scrollable persistent v-model="showEdit" width="500">
     <v-card>
         <v-card-title class="dialog-head blue-grey lighten-5">
             修改

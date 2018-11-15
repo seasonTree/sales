@@ -36,16 +36,17 @@
             </td>
         </template>
     </v-data-table>
+
     <!--新增模态框-->
-    <v-dialog scrollable v-model="showAdd" width="500">
+    <v-dialog scrollable persistent v-model="showAdd" width="500">
         <v-card>
             <v-card-title class="dialog-head blue-grey lighten-5">
                 新增
             </v-card-title>
 
             <v-card-text>
-                <v-form>
-                    <v-select :items="items"  item-text="pri_name" item-value="id" v-model="addItem.parent_id" label="上级权限"></v-select>
+                <v-form ref="addForm">
+                    <v-select :items="items" item-text="pri_name" item-value="id" v-model="addItem.parent_id" label="上级权限"></v-select>
                     <v-text-field label="权限名称" v-model="addItem.pri_name"></v-text-field>
                     <v-text-field label="模块" v-model="addItem.module_name"></v-text-field>
                     <v-text-field label="控制器" v-model="addItem.controller_name"></v-text-field>
@@ -65,14 +66,14 @@
         </v-card>
     </v-dialog>
     <!--修改模态框-->
-    <v-dialog scrollable v-model="showEdit" width="500">
+    <v-dialog scrollable persistent v-model="showEdit" width="500">
         <v-card>
             <v-card-title class="dialog-head blue-grey lighten-5">
                 修改
             </v-card-title>
 
             <v-card-text>
-                <v-form>
+                <v-form ref="editForm">
                     <v-select :items="items" item-text="pri_name" item-value="id" label="上级权限" v-model="editItem.parent_id"></v-select>
                     <v-text-field label="权限名称" v-model="editItem.pri_name"></v-text-field>
                     <v-text-field label="模块" v-model="editItem.module_name"></v-text-field>
@@ -92,16 +93,8 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-
-
 </v-container>
 
-<v-snackbar v-model="message.show" :timeout="message.time" top>
-    {{ message.text }}
-    <v-btn color="pink" flat @click="message.show = false">
-        关闭
-    </v-btn>
-</v-snackbar>
 {/block}
 
 {block name="script"}

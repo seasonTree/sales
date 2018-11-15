@@ -87,7 +87,8 @@ function genEntey(entryPath, parent) {
             genEntey(fpath, parent + "/" + item);
         } else if (
             /\.js/.test(item) &&
-            // item != "base.js" &&
+            //忽略下面文件
+            item != "base.js" && 
             item != "mixin.js"
         ) {
             var key = parent

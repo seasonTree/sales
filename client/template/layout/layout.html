@@ -18,19 +18,16 @@
 <body>
     <div id="app" v-cloak>
         <v-app>
-
             {block name="_head"}{/block}
             {block name="body"}{/block}
-
         </v-app>
     </div>
 
     <script src="__basePath__/js/chunks/check_brower.js?date=__date__"></script>
-    <script src="__basePath__/js/runtime.js?date=__date__"></script>
-    <script src="__basePath__/js/chunks/vendor.js?date=__date__"></script>
+    <script src="__basePath__/js/runtime.js"></script>
+    <script src="__basePath__/js/chunks/vendor.js"></script>    
     <script src="__basePath__/js/chunks/common.js?date=__date__"></script>
-
-    {block name="_script"}{/block}
+    {block name="_script"}{/block}    
     {block name="script"}{/block}
 
 </body>
