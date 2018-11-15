@@ -17,6 +17,7 @@ new Vue({
 
         that.$api.user.getOneUser().then((res) => {
             that.data = res.data;
+            that.data.verify_code = '';
 
             that.originPhone = JSON.parse(JSON.stringify(res.data.phone));
 

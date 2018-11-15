@@ -131,13 +131,10 @@ new Vue({
 
         showEditSales(item, show) {
             let that = this;
-
             if (show) {
                 //TODO
-                that.$api.team.getSales({
-                    data: {
-                        id: item.id,
-                    }
+                that.$api.user.getOneUser({
+                    data: item.id
                 }).then((res) => {
                     if (res.code == 0) {
                         that.editSales = res.data;

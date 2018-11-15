@@ -69,6 +69,15 @@ function checkNum($num){
   return true;
 }
 
+function checkName($field){
+  //检查是否汉字
+  $rule = "/^[\x7f-\xff]+$/";
+  if (!preg_match($rule,$field)) {
+     return false;
+  }
+  return true;
+}
+
 /***
  * @return array|false|string 获取IP地址
  */
