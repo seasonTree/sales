@@ -137,7 +137,12 @@ new Vue({
                     data: item.id
                 }).then((res) => {
                     if (res.code == 0) {
-                        that.editSales = res.data;
+                        let edata = JSON.parse(JSON.stringify(res.data));
+
+                        edata.url = `/url/upload?sales=${edata.uid}`;
+                        edata.url = `ddddd`;
+
+                        that.editSales = edata;
                     } else {
                         that.$comp.toast({
                             text: res.msg || '获取数据失败，请重试.',
