@@ -89,9 +89,26 @@
                 <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
                 <td class="text-xs-left">
                     <v-checkbox class="table-checkbox" color="info" hide-details></v-checkbox>
+
+                    <v-icon v-if="!props.item.hidePre" @click="showPasswordDialog(props.item)" title="修改密码">
+                        vpn_key
+                    </v-icon>
+
                     <v-icon v-if="!props.item.hidePre" @click.stop="showEditSales(props.item, true)" title="修改" class="mr-2">
                         edit
                     </v-icon>
+
+                    <v-icon v-if="!props.item.hidePre && props.item.status == 2" @click.stop="changeStatus(props.item)" color="red" title="禁用">
+                            block
+                    </v-icon>
+
+                    <v-icon v-if="!props.item.hidePre && props.item.status == 1" @click.stop="changeStatus(props.item)" color="light-green"
+                        title="启用">
+                        lens
+                    </v-icon>
+
+                    
+
                 </td>
             </tr>
         </template>
@@ -165,6 +182,39 @@
     </v-card>
 </v-dialog>
 
+<v-dialog scrollable persistent v-model="showEditPassword" width="500">
+    <v-card>
+        <v-card-title class="dialog-head blue-grey lighten-5">
+            修改密码
+        </v-card-title>
+
+        <v-card-text>
+            <v-form ref="globalPassRef" >
+                <v-text-field label="旧密码" :append-icon="global.changePassword.passOldVis ? 'visibility_off' : 'visibility'" 
+                    :type="global.changePassword.passOldVis ? 'text' : 'password'" v-model="oldPassword" :rules="[v => !!v || '旧密码是必填']"  @click:append="global.changePassword.passOldVis = !global.changePassword.passOldVis"></v-text-field>
+
+                <v-text-field label="密码" :append-icon="global.changePassword.passVis ? 'visibility_off' : 'visibility'" :type="global.changePassword.passVis ? 'text' : 'password'" v-model="newPassword" :rules="[v => !!v || '新密码是必填']" @click:append="global.changePassword.passVis = !global.changePassword.passVis"></v-text-field>
+
+                <v-text-field label="再次输入新密码"  :append-icon="global.changePassword.passVis1 ? 'visibility_off' : 'visibility'" :type="global.changePassword.passVis1 ? 'text' : 'password'" v-model="newPassword2"
+                    :rules="[
+                             v => !!v || '再次输入新密码是必填',
+                             v => newPassword == v || '两次输入的密码不一致'
+                            ]"
+                    @click:append="global.changePassword.passVis1 = !global.changePassword.passVis1"></v-text-field>
+            </v-form>
+        </v-card-text>
+
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="commitPassword">
+                确认
+            </v-btn>
+            <v-btn color="primary" flat @click="showEditPassword = false">
+                取消
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
 
 {/block}
 

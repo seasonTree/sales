@@ -278,7 +278,7 @@ class User extends Model
         $res = User::alias('a')
             ->join('sales_channel b', 'a.id = b.user_id', 'left')
             ->join('sales_user_info c', 'a.id = c.user_id', 'left')
-            ->field('a.id,b.channel_name,b.chan_pfm_obj,b.chan_doc_num,a.phone,c.first_name,c.last_name')
+            ->field('a.status,a.id,b.channel_name,b.chan_pfm_obj,b.chan_doc_num,a.phone,c.first_name,c.last_name')
             ->where($where)
             ->select();
 

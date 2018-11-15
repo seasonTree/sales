@@ -47,6 +47,7 @@ class OperateBehavior extends Controller
         'config/getprotocol',//获取协议内容
         'auser/lst',//获取管理员列表
         'message/lst',//获取信息列表
+        'user/doresetpassword',//修改密码
 
     ];
 

@@ -62,6 +62,13 @@ class User
 	public function doResetPassword(){
 		//重置密码
 		$data = input('post.data');
+		$user_model = new UserModel();
+		if ($data['old_password'] == '') {
+			return json(['code' => 7,'msg' => '旧密码不能为空']);
+		}
+
+		// $check_res = $user_model->checkPassword(array(''));
+
 		if ($data['password'] == '') {
 			return json(['code' => 1,'msg' => '密码不能为空']);
 		}
@@ -87,7 +94,7 @@ class User
 			return json(['code' => 5,'msg' => '密码由数字字母下划线和.组成']);
 		}
 		$data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-		$user_model = new UserModel();
+		
 		$res = $user_model->updatePassword($data);
 		if (!$res) {
 			return json(['code' => 6,'msg' => '修改失败']);
