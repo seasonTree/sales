@@ -57,17 +57,17 @@
 
         <v-layout row wrap>
             <v-flex md4 xs12 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2"
+                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2&user_id=<?php echo $_SESSION['think']['user_info']['id'];?>"
                     content="个人照片"></upload-image>
             </v-flex>
 
             <v-flex md4 xs12 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3"
+                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3&user_id=<?php echo $_SESSION['think']['user_info']['id'];?>"
                     content="身份证正面"></upload-image>
             </v-flex>
 
             <v-flex md4 xs12 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4"
+                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4&user_id=<?php echo $_SESSION['think']['user_info']['id'];?>"
                     content="身份证反面"></upload-image>
             </v-flex>
         </v-layout>

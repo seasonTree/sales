@@ -137,12 +137,12 @@ new Vue({
                     data: item.id
                 }).then((res) => {
                     if (res.code == 0) {
-                        let edata = JSON.parse(JSON.stringify(res.data));
+                        // let edata = JSON.parse(JSON.stringify(res.data));
 
-                        edata.url = `/url/upload?sales=${edata.uid}`;
-                        edata.url = `ddddd`;
+                        // edata.url = `/url/upload?sales=${edata.uid}`;
+                        // edata.url = `ddddd`;
 
-                        that.editSales = edata;
+                        that.editSales = res.data;
                     } else {
                         that.$comp.toast({
                             text: res.msg || '获取数据失败，请重试.',
@@ -171,8 +171,8 @@ new Vue({
             that.disabled.editSales = true;
 
             //TODO
-            that.$api.team.editSales({
-                data: that.editItem
+            that.$api.user.insUserInfo({
+                data: that.editSales
             }).then((res) => {
                 if (res.code == 0) {
 
@@ -182,8 +182,9 @@ new Vue({
                         text: '修改成功, 请等待审核通过.',
                     });
 
-                    that.showEditSales = false;
+                    // that.showEditSales = false;
                     that.$refs['editSalesForm'].reset();
+                    that.showEditDialog = false;
 
                 } else {
                     that.$comp.toast({

@@ -57,21 +57,21 @@
         
         <v-layout row wrap>
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" url="/user/upload?type=1" content="公司营业执照" :image-url="data.business_licence"></upload-image>
+                <upload-image data-field="data.image_url" url="/user/upload?type=1&user_id=<?php echo $_SESSION['think']['user_info']['id'];?>" content="公司营业执照" :image-url="data.business_licence"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2"
+                <upload-image data-field="data.image_url" :image-url="data.photo_self" url="/user/upload?type=2&user_id=<?php echo $_SESSION['think']['user_info']['id'];?>"
                     content="个人照片"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3"
+                <upload-image data-field="data.image_url" :image-url="data.id_card_front" url="/user/upload?type=3&user_id=<?php echo $_SESSION['think']['user_info']['id'];?>"
                     content="身份证正面"></upload-image>
             </v-flex>
 
             <v-flex xs6 class="image-upload">
-                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4"
+                <upload-image data-field="data.image_url" :image-url="data.id_card_back" url="/user/upload?type=4&user_id=<?php echo $_SESSION['think']['user_info']['id'];?>"
                     content="身份证反面"></upload-image>
             </v-flex>
         </v-layout>
