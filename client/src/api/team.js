@@ -17,3 +17,13 @@ export function showQrCode(data) {
         data: data
     })
 }
+
+//修改状态
+export function changeStatus(data) {
+    return request({
+        url: '/team/changeStatus',
+        method: 'post',
+        data: data
+    })
+}
+

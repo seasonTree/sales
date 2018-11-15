@@ -140,6 +140,7 @@ export default {
 
                     img.src = newValue;
                 } else {
+                    that.style.backgroundImage = "";
                     that.style.opacity = 1;
                 }
             },

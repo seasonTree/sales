@@ -62,6 +62,13 @@ class User
 	public function doResetPassword(){
 		//重置密码
 		$data = input('post.data');
+		$user_model = new UserModel();
+		if ($data['old_password'] == '') {
+			return json(['code' => 7,'msg' => '旧密码不能为空']);
+		}
+
+		// $check_res = $user_model->checkPassword(array(''));
+
 		if ($data['password'] == '') {
 			return json(['code' => 1,'msg' => '密码不能为空']);
 		}
@@ -87,7 +94,7 @@ class User
 			return json(['code' => 5,'msg' => '密码由数字字母下划线和.组成']);
 		}
 		$data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
-		$user_model = new UserModel();
+		
 		$res = $user_model->updatePassword($data);
 		if (!$res) {
 			return json(['code' => 6,'msg' => '修改失败']);
@@ -223,7 +230,6 @@ class User
     public function insUserInfo(){
     	//插入个人详细资料
     	$data = input('post.data');
-    	// $data['user_id'] = Session::get('user_info')['id'];
     	$username = $data['username'];
     	$userid = $data['user_id'];
     	$update_phone = false;
@@ -292,6 +298,10 @@ class User
     		redis()->delete('user:'.$data['phone']);
 
     	}
+    	else{
+    		//进入审核状态
+    		$user_model->updateUser(array('id' => $data['user_id'],'status' => 0,'update_time' => time()));
+    	}
 		unset($data['verify_code']);
 		//删除验证码
     	$old_data = Session::get('user_data'.$data['user_id']);
@@ -355,7 +365,7 @@ class User
     	
     	if ($update_phone || $id) {
 
-    		$is_move = $this->moveImage($user_info_model,$id,$data);
+    		$is_move = $this->moveImage($user_info_model,$id,$data,$userid);
 
     		if ($status == 0) {
     			if (count($data) > 1 || $is_move) {
@@ -387,9 +397,7 @@ class User
 
     public function upload(){
     	//上传
-    	$userid = Session::get('user_info')['id'];
-
-    	dump(request()->get('user_id'));exit;
+    	$userid = request()->get('user_id');
 
     	$file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/upload/temp'.$userid;
     	$save_path = 'upload/temp'.$userid.'/';
@@ -451,7 +459,7 @@ class User
 	    }
     }
 
-    public function moveImage($obj,$id,$data){
+    public function moveImage($obj,$id,$data,$userid){
     	//移动图片
     	$id_card_path = createDir('id_card_front');
         $id_card_back_path = createDir('id_card_back');
@@ -460,7 +468,6 @@ class User
     	//创建并获取路径
     	$res = false;
     	//区分是否有图片更新
-        $userid = Session::get('user_info')['id'];
         $save_path = '/upload/image/';
         //存储路径
         $del_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/';
@@ -468,7 +475,7 @@ class User
 
         if (Session::has('user_data'.$userid)) {
         	//获取session中的user_data
-        	$data = unserialize(Session::pull('user_data'.$userid));
+        	$data = Session::pull('user_data'.$userid);
         }
 
         $user_info_model = new UserInfoModel();

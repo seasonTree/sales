@@ -137,12 +137,12 @@ new Vue({
                     data: item.id
                 }).then((res) => {
                     if (res.code == 0) {
-                        let edata = JSON.parse(JSON.stringify(res.data));
+                        // let edata = JSON.parse(JSON.stringify(res.data));
 
-                        edata.url = `/url/upload?sales=${edata.uid}`;
-                        edata.url = `ddddd`;
+                        // edata.url = `/url/upload?sales=${edata.uid}`;
+                        // edata.url = `ddddd`;
 
-                        that.editSales = edata;
+                        that.editSales = res.data;
                     } else {
                         that.$comp.toast({
                             text: res.msg || '获取数据失败，请重试.',
@@ -171,8 +171,8 @@ new Vue({
             that.disabled.editSales = true;
 
             //TODO
-            that.$api.team.editSales({
-                data: that.editItem
+            that.$api.user.insUserInfo({
+                data: that.editSales
             }).then((res) => {
                 if (res.code == 0) {
 
@@ -182,8 +182,9 @@ new Vue({
                         text: '修改成功, 请等待审核通过.',
                     });
 
-                    that.showEditSales = false;
+                    // that.showEditSales = false;
                     that.$refs['editSalesForm'].reset();
+                    that.showEditDialog = false;
 
                 } else {
                     that.$comp.toast({
@@ -201,6 +202,49 @@ new Vue({
 
                 that.disabled.editSales = false;
             });
+        },
+        changeStatus(item){
+            //启用和禁用
+            let that = this;
+            that.$api.team.changeStatus({
+                data:{
+                    id :item.id,
+                    status : item.status
+                }
+            }).then((res) => {
+                item.status = res.data.status
+            }).catch((res) => {
+                this.$comp.toast({
+                    text: '操作失败，请重试.',
+                    color: 'error'
+                });
+            });
+        },
+        showPasswordDialog(item){
+            //显示修改密码界面
+            let that = this;
+            that.user_id = item.id;
+            that.showEditPassword = true;
+        },
+        commitPassword(){
+            //提交修改密码
+            let that = this;
+            that.$api.user.resetPassword({
+                data:{
+                    id :that.user_id,
+                    old_password : that.oldPassword,
+                    password : that.newPassword,
+                    rePassword : that.newPassword2
+                }
+            }).then((res) => {
+                // item.status = res.data.status
+            }).catch((res) => {
+                this.$comp.toast({
+                    text: '操作失败，请重试.',
+                    color: 'error'
+                });
+            });
+
         }
     },
 
@@ -211,6 +255,12 @@ new Vue({
 
             showAdd: false,
             showEditDialog: false,
+            showEditPassword: false,
+
+            oldPassword: '',
+            newPassword: '',
+            newPassword2: '',
+            user_id: '',
 
             qr_code: {}, //邀请人信息
 

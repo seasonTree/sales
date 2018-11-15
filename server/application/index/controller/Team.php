@@ -49,4 +49,25 @@ class Team
 		return json(['msg' => '获取邀请人的信息失败','code' => 1]);
 	}
 
+	public function changeStatus(){
+		//启用,禁用
+		$data = input('post.data');
+		$user_model = new UserModel();
+		if ($data['status'] == 1) {
+		   $res	= $user_model->updateUser(array('id' => $data['id'],'status' => 2));
+		   $status = 2;
+		}
+		if ($data['status'] == 2) {
+		   $res	= $user_model->updateUser(array('id' => $data['id'],'status' => 1));
+		   $status = 1;
+		}
+		if ($res) {
+			return json(['msg' => '操作成功','code' => 0,'data' => ['status' => $status]]);
+		}
+		else{
+			return json(['msg' => '操作失败','code' => 1]);
+		}
+
+	}
+
 }
