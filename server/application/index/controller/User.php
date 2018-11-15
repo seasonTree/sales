@@ -215,6 +215,7 @@ class User
     			
     		}
     	}
+    	Session::set('user_data'.$uid,$data);
     	return json(['msg' => '获取成功','code' => 0,'data' => $data]);
     	// dump($user);
     }
@@ -222,7 +223,11 @@ class User
     public function insUserInfo(){
     	//插入个人详细资料
     	$data = input('post.data');
-    	$data['user_id'] = Session::get('user_info')['id'];
+    	// $data['user_id'] = Session::get('user_info')['id'];
+    	$username = $data['username'];
+    	$userid = $data['user_id'];
+    	$update_phone = false;
+    	//记录用户名
     	if ($data['first_name'] == '') {
     		return json(['msg' => '姓不能为空','code' => 2]);
     	}
@@ -238,51 +243,87 @@ class User
     	if ($data['account_name'] == '') {
     		return json(['msg' => '开户名不能为空','code' => 6]);
     	}
-    	if (strlen($data['first_name']) > 4) {
-    		return json(['msg' => '姓的长度不能大于4位','code' => 7]);
+    	if (strlen($data['first_name']) > 12) {
+    		return json(['msg' => '姓的长度不能大于4位汉字或者12位英文','code' => 7]);
     	}
-    	if (strlen($data['last_name']) > 4) {
-    		return json(['msg' => '名字的长度不能大于4位','code' => 8]);
+    	if (strlen($data['last_name']) > 12) {
+    		return json(['msg' => '名字的长度不能大于4位汉字或者12位英文','code' => 8]);
     	}
     	if (!checkAccount($data['bank_account'])) {
     		return json(['msg' => '银行账号格式不对','code' => 9]);
     	}
-    	if (strlen($data['bank_name']) > 30) {
-    		return json(['msg' => '银行名称长度不能大于30','code' => 10]);
+    	if (strlen($data['bank_name']) > 45) {
+    		return json(['msg' => '银行名称长度不能大于15个汉字','code' => 10]);
     	}
-    	if (strlen($data['bank_address']) > 30) {
-    		return json(['msg' => '银行地址长度不能大于30','code' => 11]);
+    	if (strlen($data['bank_address']) > 60) {
+    		return json(['msg' => '银行地址长度不能大于20个汉字','code' => 11]);
     	}
     	if (strlen($data['account_name']) > 30) {
-    		return json(['msg' => '开户名长度不能大于30','code' => 12]);
+    		return json(['msg' => '开户名长度不能大于10个汉字','code' => 12]);
     	}
+
+		$status = 0;
+    	if ($data['type'] == 0) {
+    		$status = 1;
+    	}
+    	$verify_code = redis()->get('user:'.$data['phone']);
+    	$user_model = new UserModel();
 
     	if (Session::has('user_info_id'.$data['user_id'])) {
     		//检测是否设置了user_info_id
     		$data['id'] = Session::get('user_info_id'.$data['user_id']);
     	}
-    	$status = 0;
-    	if ($data['type'] == 0) {
-    		$status = 1;
+    	
+    	if ($verify_code) {
+    		if ($data['verify_code'] == '') {
+    			return json(['msg' => '验证码不能为空','code' => 16]);
+    		}
+    		if ($verify_code != $data['verify_code']) {
+    			return json(['msg' => '验证码错误','code' => 17]);
+    		}
+			$phone = array(
+				'id' => $data['user_id'],
+				'phone' => $data['phone'],
+				'status' => $status,
+				'update_time' => time()
+			);
+			
+    		$update_phone = $user_model->updateUser($phone);
+    		redis()->delete('user:'.$data['phone']);
+
     	}
-    	$phone = array(
-    						'id' => $data['user_id'],
-    						'phone' => $data['phone'],
-    						'status' => $status,
-    						'update_time' => time()
-    					);
+		unset($data['verify_code']);
+		//删除验证码
+    	$old_data = Session::get('user_data'.$data['user_id']);
+    	//获取旧数据
+    	foreach ($data as $k => $v) {
+    		//比较旧数据和新数据，剔除相同的数据不进行更新
+    		if ($old_data[$k] == $data[$k] && $k != 'id') {
+    			unset($data[$k]);
+    		}
+    	}
+    	if (isset($data['phone']) && !$verify_code) {
+    		//判断修改电话号码
+    		return json(['msg' => '要修改电话号码请发送短信并且输入验证码','code' => 19]);
+    	}
     	unset($data['phone']);
     	//删除电话
-    	unset($data['type']);
-    	//删除类型
-    	$username = $data['username'];
-    	unset($data['username']);
-    	//删除用户名
-    	$user_model = new UserModel();
-    	$res = $user_model->updateUser($phone);
+    	if (count($data) == 1) {
+    		//判断不相同数据的字段数
+    		if(!Session::has('business_licence'.$userid) && !Session::has('photo_self'.$userid) && !Session::has('id_card_front'.$userid) && !Session::has('id_card_back'.$userid)){
+    			//判断是否存在图片上传更新行为
+    			if (!$update_phone) {
+    				//判断没有更新电话号码
+    				//不存在不同数据表示没有任何修改
+    				return json(['msg' => '没有任何修改','code' => 18]);
+    			}
+    			
+    		}
+
+    	}
+    	
     	$user_info_model = new UserInfoModel();
-    	unset($data['parent_id']);
-    	//删除pid
+
     	if ($data['id'] == '') {
     		unset($data['id']);
     		$id = $user_info_model->insertUserInfo($data);
@@ -312,24 +353,28 @@ class User
 
     	}
     	
-    	if ($res) {
+    	if ($update_phone || $id) {
 
-    		$this->moveImage($user_info_model,$id,$data);
+    		$is_move = $this->moveImage($user_info_model,$id,$data);
 
-    		if ($status == 0 ) {
-    			$admin = $user_model->getAdmin(array('type' => 0));
-	    		$key_list = array_column($admin,'id');
+    		if ($status == 0) {
+    			if (count($data) > 1 || $is_move) {
+    				$admin = $user_model->getAdmin(array('type' => 0));
+		    		$key_list = array_column($admin,'id');
 
-	    		$message_model = new MessageModel();
-	    		foreach ($key_list as $k => $v) {
-	    			$insert_message[$k]['title'] = '审核通知';
-	    			$insert_message[$k]['sender'] = $data['user_id'];
-	    			$insert_message[$k]['receiver'] = $v;
-	    			$insert_message[$k]['type'] = 3;
-	    			$insert_message[$k]['content'] = '您有一条'.$username.'的注册信息需要审核！';
-	    			
-	    		}
-	    		$message_model->addMessageAll($insert_message);
+		    		$message_model = new MessageModel();
+		    		foreach ($key_list as $k => $v) {
+		    			$insert_message[$k]['title'] = '审核通知';
+		    			$insert_message[$k]['sender'] = $userid;
+		    			$insert_message[$k]['receiver'] = $v;
+		    			$insert_message[$k]['type'] = 3;
+		    			$insert_message[$k]['content'] = '您有一条'.$username.'的注册信息需要审核！';
+		    			
+		    		}
+		    		$message_model->addMessageAll($insert_message);
+
+    			}
+    			
     		}
 
     		return json(['msg' => '修改成功','code' => 0]);
@@ -338,14 +383,13 @@ class User
     		return json(['msg' => '修改失败','code' => 1]);
     	}
 
-
-    	
-
     }
 
     public function upload(){
     	//上传
     	$userid = Session::get('user_info')['id'];
+
+    	dump(request()->get('user_id'));exit;
 
     	$file_path = dirname(Env::get('ROOT_PATH')).config('template.tpl_replace_string.__basePath__').'/dist/upload/temp'.$userid;
     	$save_path = 'upload/temp'.$userid.'/';
@@ -414,6 +458,8 @@ class User
     	$business_licence_path = createDir('business_licence');
     	$photo_self_path = createDir('photo_self');
     	//创建并获取路径
+    	$res = false;
+    	//区分是否有图片更新
         $userid = Session::get('user_info')['id'];
         $save_path = '/upload/image/';
         //存储路径
@@ -449,7 +495,7 @@ class User
 	        	@rename($pic, $pic_path);
 	        	@rename($thumb_pic, $thumb_pic_path);
 	        	//移动新文件
-	        	$obj->insertPic(
+	        	$res = $obj->insertPic(
         				array(
         					$k => $save_path.$k.'/'.date('Ymd',time()).'/'.$userid.$ext,
         					'thumb_'.$k => $save_path.$k.'/'.date('Ymd',time()).'/'.$userid.'thumb'.$ext,
@@ -470,6 +516,10 @@ class User
 		//删除空目录
         Session::set('user_data'.$userid,serialize($data));
         //把数据存回session,保证下次调用的时候是最新数据
+        if ($res) {
+        	return true;
+        }
+        return false;
 
     }
 

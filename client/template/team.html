@@ -124,6 +124,7 @@
 
         <v-card-text>
             <v-form ref="editSalesForm">
+                <input type="hidden" v-model.trim="editSales.user_id">
                 <v-text-field label="姓" v-model.trim="editSales.first_name"></v-text-field>
                 <v-text-field label="名字" v-model.trim="editSales.last_name"></v-text-field>
                 <v-text-field label="银行账号" v-model.trim="editSales.bank_account"></v-text-field>
@@ -134,17 +135,17 @@
 
                 <v-layout row wrap>
                     <v-flex md4 xs12 class="image-upload">
-                        <upload-image data-field="data.image_url" :image-url="editSales.photo_self" url="/user/upload?type=2"
+                        <upload-image data-field="data.image_url" :image-url="editSales.photo_self" url="/user/upload?type=2&user_id=editSales.user_id"
                             content="个人照片"></upload-image>
                     </v-flex>
 
                     <v-flex md4 xs12 class="image-upload">
-                        <upload-image data-field="data.image_url" :image-url="editSales.id_card_front" url="/user/upload?type=3"
+                        <upload-image data-field="data.image_url" :image-url="editSales.id_card_front" url="/user/upload?type=3&user_id=editSales.user_id"
                             content="身份证正面"></upload-image>
                     </v-flex>
 
                     <v-flex md4 xs12 class="image-upload">
-                        <upload-image data-field="data.image_url" :image-url="editSales.id_card_back" url="/user/upload?type=4"
+                        <upload-image data-field="data.image_url" :image-url="editSales.id_card_back" url="/user/upload?type=4&user_id=editSales.user_id"
                             content="身份证反面"></upload-image>
                     </v-flex>
                 </v-layout>

@@ -31,6 +31,7 @@
     </div>
 
     <v-form>
+        <input type="hidden" v-model.trim="data.user_id">
         <v-text-field label="姓" v-model.trim="data.first_name"></v-text-field>
         <v-text-field label="名字" v-model.trim="data.last_name"></v-text-field>
         <v-text-field label="银行账号" v-model.trim="data.bank_account"></v-text-field>
@@ -51,7 +52,7 @@
         </v-layout>
 
         <template v-if="phoneChange">
-            <v-text-field label="手机验证码" v-model.trim="data.phone_num"></v-text-field>    
+            <v-text-field label="手机验证码" v-model.trim="data.verify_code"></v-text-field>    
         </template>
 
         <v-layout row wrap>

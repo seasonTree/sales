@@ -30,10 +30,12 @@
     </div>
 
     <v-form>
+        <input type="hidden" v-model.trim="data.user_id">
         <v-text-field label="姓" v-model.trim="data.first_name"></v-text-field>
         <v-text-field label="名字" v-model.trim="data.last_name"></v-text-field>
         <v-text-field label="公司名称" v-model.trim="data.company_name"></v-text-field>
         <v-text-field label="银行账号" v-model.trim="data.bank_account"></v-text-field>
+        <v-text-field label="开户名" v-model.trim="data.account_name"></v-text-field>
         <v-text-field label="开户银行名称" v-model.trim="data.bank_name"></v-text-field>
         <v-text-field label="开户银行地址" v-model.trim="data.bank_address"></v-text-field>
         <v-text-field label="公司地址" v-model.trim="data.address"></v-text-field>
