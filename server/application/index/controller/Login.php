@@ -58,4 +58,5 @@ class Login
         }
         return json(['code' => 0, 'msg' => '登陆成功', 'data' => ['url' => '/user/userInfo']]);
     }
+
 }
