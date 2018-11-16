@@ -173,10 +173,16 @@ class User extends Model
         return $res;
     }
 
+    public function findPassword($uid){
+        //查询密码
+        $res = User::where('id',$uid)->value('password');
+        return $res;
+    }
+
     public function updatePassword($data)
     {
         //修改密码
-        $res = User::where('id', $data['uid'])->update(['password' => $data['password']]);
+        $res = User::where('id', $data['id'])->update(['password' => $data['password']]);
         return $res;
     }
 
