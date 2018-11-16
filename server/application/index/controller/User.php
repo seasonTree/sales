@@ -1,5 +1,6 @@
 <?php
 namespace app\index\controller;
+use think\Db;
 use think\facade\Env;
 use think\facade\Request;
 use think\facade\Session;
@@ -18,11 +19,17 @@ class User
     //更改user状态
     public function userStatus(){
         $data = input('post.data');
+
+
         $id = $data['id'];
         $status = $data['status'];
 
         $user = session('user_info');
         $Uid = $user['id'];
+        if(!empty($data['reason'])){
+            $reason = ['user_id'=>$id,'audit_id'=>$Uid,'status'=>$status,'note'=>$data['reason']];
+            Db::name('register_audit')->insert($reason);
+        }
         if($Uid !=1){
             if($status ==1){
                $oldStatus = model('user')->field('status')->find($id);
@@ -52,7 +59,7 @@ class User
 	//获取会员角色
 	public function getMemberRole(){
 		$data = model('Role')->lst();
-
+        unset($data[2]);
 		return json(['data'=>$data,'code'=>0,'msg'=>'获取成功.']);
 	}
 

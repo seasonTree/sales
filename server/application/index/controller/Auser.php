@@ -64,11 +64,14 @@ class Auser extends Controller
     //用户列表展示
     public function lst($where ='type=0'){
         $role =model('Role')->lst();
+        //过滤出运营管理员，只显示运营管理员
+        $roles[] = $role[2];
+
         $list =  model('User')->lst($where);
 
         $data = [
             'list' => $list,
-            'roles' => $role
+            'roles' => $roles
         ];
 
         return json(['data'=>$data,'code'=>0,'msg'=>'用户列表展示数据']);
