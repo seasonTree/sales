@@ -30,7 +30,7 @@ export function resetPassword(data) {
 export function get(data) {
     return request({
         url: '/Auser/lst',
-        method: 'post',
+        method: 'get',
         data: data
     })
 }
@@ -38,10 +38,21 @@ export function get(data) {
 export function getmemberlst(data) {
     return request({
         url: '/user/getmemberlst',
-        method: 'post',
+        method: 'get',
+        // data: data
+        params: data
+    })
+}
+
+//获取会员的角色
+export function getMemberRole(data){
+    return request({
+        url: '/user/getMemberRole',
+        method: 'get',
         data: data
     })
 }
+
 //超级管理员添加账号
 export function add(data){
     return request({

@@ -43,11 +43,18 @@ class User
 
     //获取会员列表数据
     public function  getmemberlst(){
-        $post = input('post.data');
-        $where= "type=".$post['type']." and status in (1,2,3)";
+        $type = input('get.type');
+        $where= "type=".$type." and status in (1,2,3)";
         $data = model('User')->memberlst($where);
         return json(['code'=>0,'data'=>$data]);
-    }
+	}
+	
+	//获取会员角色
+	public function getMemberRole(){
+		$data = model('Role')->lst();
+
+		return json(['data'=>$data,'code'=>0,'msg'=>'获取成功.']);
+	}
 
 	public function personInfo(){
 		//个人信息

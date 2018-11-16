@@ -10,6 +10,10 @@
         display: inline-block;
         vertical-align: sub;
     }
+
+    .role-item {
+        justify-content: center;
+    }
 </style>
 {/block}
 
@@ -24,7 +28,8 @@
 
 
             <v-flex xs2>
-                {if (in_array('auser/adddls',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
+                {if (in_array('auser/adddls',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] ==
+                1)}
                 <v-btn color="s-primary" class="ml-0" @click="showAdd = true">
                     <v-icon dark>add</v-icon>新增经销商
                 </v-btn>
@@ -32,13 +37,14 @@
             </v-flex>
             <v-spacer></v-spacer>
             <v-flex xs2>
-                <v-select :disabled="tableLoading" :items="tableType" v-model="currentDataType" item-text="text" item-value="value"></v-select>
+                <v-select :disabled="tableLoading" :items="tableType" v-model="currentDataType" item-text="text"
+                    item-value="value"></v-select>
             </v-flex>
         </v-layout>
     </div>
 
     <v-data-table :loading="tableLoading" :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
-        <template slot="items" slot-scope="props" >
+        <template slot="items" slot-scope="props">
             <tr>
                 <td class="text-xs-left">{{ props.item.id }}</td>
                 <td class="text-xs-left">{{ props.item.username }}</td>
@@ -52,80 +58,91 @@
                 <td class="text-xs-left" v-if="props.item.status==0">待审核</td>
                 <td class="text-xs-left" v-if="props.item.status==-1">未通过审核</td>
                 <td class="text-xs-center">
-                    {if (in_array('user/userstatus',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
-                    <v-icon @click="changeStatus(props.item.id,3)" title="拉黑" class="mr-2">
+                    {if (in_array('user/userstatus',$_SESSION['think']['auth']) ||
+                    $_SESSION['think']['user_info']['id'] == 1)}
+                    <v-icon @click="showFreezeDialog(props.item)" title="拉黑" class="mr-2">
                         power_settings_new
                     </v-icon>
-                    <v-icon @click.stop="changeStatus(props.item.id,2)" color="red" title="禁用">
+                    <v-icon @click.stop="changeStatus(props.item, props.item.id, 2)" color="red" title="禁用" class="mr-2">
                         block
                     </v-icon>
 
-                    <v-icon @click.stop="changeStatus(props.item.id,1)" color="light-green"
-                            title="激活">
+                    <v-icon @click.stop="changeStatus(props.item, props.item.id,1)" color="light-green" title="激活">
                         lens
                     </v-icon>
                     {/if}
                 </td>
             </tr>
-
         </template>
-
     </v-data-table>
-    <!--新增模块-->
-    <v-dialog scrollable v-model="showAdd" width="500">
-        <v-card>
-            <v-card-title class="dialog-head blue-grey lighten-5">
-                新增经销商
-            </v-card-title>
 
-            <v-card-text>
-                <v-form>
-                    <v-text-field label="用户名" v-model = "addData.username"></v-text-field>
-                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
-                                  :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass" v-model = "addData.password"></v-text-field>
-                    <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
-                                  :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1" v-model = "addData.password_confirm"></v-text-field>
-                    <template>
-                        <v-card flat>
-                            <v-card-text>
-                                <v-container fluid>
-                                    <v-layout row wrap>
-                                        <v-flex xs12 sm4 md4 v-for="(item, index) in rolesAll" :key="index">
-                                            <v-checkbox xs12 sm4 md4
-                                                        v-model = "addData.role_id"
-                                                        :label="item.role_name"
-                                                        :value="item.id"
-                                                        hide-details
-                                            ></v-checkbox>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-card-text>
-                        </v-card>
-                    </template>
-                </v-form>
-            </v-card-text>
-
-            <v-card-actions class="dialog-foot blue-grey lighten-5">
-                <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="addCommit()">
-                    确认
-                </v-btn>
-                <v-btn color="primary" flat @click="showAdd = false">
-                    取消
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
     <div class="text-md-center">
         <v-pagination @input="changePage" :total-visible="pager.totalVisible" :length="pager.count" v-model="pager.index"></v-pagination>
     </div>
 
-    <!--<div class="text-md-right">-->
-        <!--<v-btn color="s-primary" class="mr-0" @click="exportExcel">Export Excel</v-btn>-->
-    <!--</div>-->
-
 </v-container>
+
+<!--新增模块-->
+<v-dialog scrollable v-model="showAdd" width="500">
+    <v-card>
+        <v-card-title class="dialog-head blue-grey lighten-5">
+            新增经销商
+        </v-card-title>
+
+        <v-card-text>
+            <v-form ref="addForm">
+                <v-text-field label="用户名" v-model="addData.username"></v-text-field>
+                <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
+                    @click:append="show_pass = !show_pass" v-model="addData.password"></v-text-field>
+                <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'" :type="show_pass1 ? 'text' : 'password'"
+                    @click:append="show_pass1 = !show_pass1" v-model="addData.password_confirm"></v-text-field>
+
+                <v-layout row wrap>
+                    <v-flex xs6 sm3 md3 v-for="(item, index) in rolesAll" :key="index">
+                        <v-checkbox class="role-item" v-model="addData.role_id" :label="item.role_name" :value="item.id"
+                            hide-details></v-checkbox>
+                    </v-flex>
+                </v-layout>
+            </v-form>
+        </v-card-text>
+
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="addCommit()">
+                确认
+            </v-btn>
+            <v-btn color="primary" flat @click="closeDialog('add')">
+                取消
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
+
+<!--新增模块-->
+<v-dialog scrollable v-model="showFreeze" width="500">
+    <v-card>
+        <v-card-title class="dialog-head blue-grey lighten-5">
+            拉黑理由
+        </v-card-title>
+
+        <v-card-text>
+            <v-form ref="freezeForm">
+                <v-textarea label="拉黑理由" v-model="freezeItem.reason"></v-textarea>
+            </v-form>
+        </v-card-text>
+
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click.stop="freeze">
+                确认
+            </v-btn>
+            <v-btn color="primary" flat @click.stop="closeDialog('freeze')">
+                取消
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
+
 
 {/block}
 

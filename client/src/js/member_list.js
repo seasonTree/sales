@@ -1,35 +1,29 @@
-import Vue from './base';
-import {
-    mixinExt
-} from './mixin';
-import {
-    getCurMonthDay
-} from '../common/util'
+import Vue from "./base";
+import { mixinExt } from "./mixin";
 
 new Vue({
-    el: '#app',
+    el: "#app",
     mixins: [mixinExt],
     created() {
-        let that = this,
-            dyMonth = getCurMonthDay();
+        let that = this;
 
-        that.dateFm = dyMonth.monthDayStart;
-        that.dateTo = dyMonth.monthDayCur;
+        that.$api.user
+            .getMemberRole()
+            .then(res => {
+                that.rolesAll = res.data;
+            })
+            .catch(res => {
+                that.$comp.toast({
+                    text: "获取数据失败，请刷新后重试.",
+                    color: "error"
+                });
+            });
 
         that.getReomteData();
-        that.$api.user.get().then((data) =>{
-            that.rolesAll = data.data;
-        }).catch((data) =>{
-            that.$comp.toast({
-                text: '获取数据失败，请刷新后重试.',
-                color: 'error'
-            });
-        });
     },
 
     data() {
         return {
-
             firstLoading: true,
 
             pager: {
@@ -39,89 +33,99 @@ new Vue({
                 size: 10
             },
 
-            tableType: [{
-                    text: '代理商',
+            tableType: [
+                {
+                    text: "经销商",
                     value: 1
                 },
                 {
-                    text: ' 个人代理商',
+                    text: "个人经销商",
                     value: 3
                 },
                 {
-                    text: ' 销售员',
+                    text: " 销售员",
                     value: 2
-                },
+                }
             ],
 
             showAdd: false,
-            addData:{
-                role_id:[],
+            showFreeze: false,
+
+            addData: {
+                role_id: []
             },
+
             show_pass: false,
             show_pass1: false,
-            rolesAll:{},
+
+            rolesAll: {},
             currentDataType: 2,
 
-            theader: [{
-                    text: 'ID',
-                    align: 'left',
-                    value: 'id',
-                    sortable: false,
+            freezeItem: {
+                id: null,
+                reason: '',
+                orginItem: null
+            },
+
+            theader: [
+                {
+                    text: "ID",
+                    align: "left",
+                    value: "id",
+                    sortable: false
                 },
                 {
-                    text: 'UserName',
-                    align: 'left',
-                    value: 'username',
-                    sortable: false,
+                    text: "UserName",
+                    align: "left",
+                    value: "username",
+                    sortable: false
                 },
                 {
-                    text: 'First Name',
-                    align: 'left',
-                    value: 'first_name',
-                    sortable: false,
+                    text: "First Name",
+                    align: "left",
+                    value: "first_name",
+                    sortable: false
                 },
                 {
-                    text: 'Last Name',
-                    align: 'left',
-                    value: 'last_name',
-                    sortable: false,
+                    text: "Last Name",
+                    align: "left",
+                    value: "last_name",
+                    sortable: false
                 },
                 {
-                    text: 'Phone',
-                    align: 'left',
-                    value: 'phone',
-                    sortable: false,
+                    text: "Phone",
+                    align: "left",
+                    value: "phone",
+                    sortable: false
                 },
                 {
-                    text: 'Create Time',
-                    align: 'left',
-                    value: 'create_time',
-                    sortable: false,
+                    text: "Create Time",
+                    align: "left",
+                    value: "create_time",
+                    sortable: false
                 },
                 {
-                    text: 'Status',
-                    align: 'left',
-                    value: 'status',
-                    sortable: false,
+                    text: "Status",
+                    align: "left",
+                    value: "status",
+                    sortable: false
                 },
                 {
-                    align: 'center',
-                    value: '',
-                    sortable: false,
-                },
+                    align: "center",
+                    value: "",
+                    sortable: false
+                }
             ],
 
             tableLoading: false,
 
-            tdata: [],
+            tdata: []
         };
     },
 
     watch: {
-
         currentDataType: {
             handler(newValue, oldValue) {
-
                 let that = this;
                 if (this.firstLoading) {
                     return;
@@ -132,98 +136,151 @@ new Vue({
                 that.getReomteData();
             },
             immediate: true
-        },
+        }
     },
 
     methods: {
-
-        addCommit(){
+        addCommit() {
             let that = this;
 
-            that.$api.user.addDls({
-                data: that.addData
-            }).then((res) => {
+            that.$api.user
+                .addDls({
+                    data: that.addData
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.$comp.toast({
+                            text: res.msg || "新增成功."
+                        });
 
-                that.showAdd = false;
-                that.$comp.toast({
-                    text: res.msg,
+                        that.getRemoteData();
+                        that.closeDialog("add");
+                    } else {
+                        that.$comp.toast({
+                            text: res.msg || "新增失败，请刷新后重试.",
+                            color: "error"
+                        });
+                    }
+                })
+                .catch(res => {
+                    //function(data){}
+                    that.$comp.toast({
+                        text: "新增失败，请刷新后重试.",
+                        color: "error"
+                    });
                 });
-
-            }).catch((data) =>{ //function(data){}
-                that.$comp.toast({
-                    text: data.msg,
-                    color:'error',
-                });
-
-            });
         },
-        changeStatus(id,status){
+
+        showFreezeDialog(item) {
+            let that = this;
+
+            that.freezeItem.id = item.id;
+            that.freezeItem.orginItem = item;
+            that.showFreeze = true;
+        },
+
+        freeze() {
+            let that = this;
+            that.changeStatus(that.freezeItem.orginItem, that.freezeItem.id, 3, that.freezeItem.reason);
+        },
+
+        changeStatus(item, id, status, reason) {
             let that = this,
-                data={
-                    'status':status,
-                    'id':id,
+                data = {
+                    status: status,
+                    id: id,
+                    reason: status == 3 ? reason : ""
                 };
-            that.$api.user.userStatus({
-                data: data
-            }).then((res) => {
-                that.$comp.toast({
-                    text: res.msg,
-                });
-                if(res.code ==0){
-                    setTimeout(function () {
-                        window.location.reload();
-                    },2000)
-                }
-            }).catch((data) =>{ //function(data){}
-                that.$comp.toast({
-                    text: data.msg,
-                    color:'error',
-                });
 
-            });
+            that.$api.user
+                .userStatus({
+                    data: data
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.$comp.toast({
+                            text: res.msg || "设置成功."
+                        });
 
+                        item.status = status;
+
+                        if(status == 3){
+                            that.closeDialog('freeze');
+                        }
+                    } else {
+                        that.$comp.toast({
+                            text: "设置失败，请重试.",
+                            color: "error"
+                        });
+                    }
+                })
+                .catch(data => {
+                    //function(data){}
+                    that.$comp.toast({
+                        text: "设置失败，请重试.",
+                        color: "error"
+                    });
+                });
         },
-        // changePage() {
-        //     this.getReomteData();
-        // },
+
+        changePage() {
+            this.getReomteData();
+        },
 
         getReomteData() {
             let that = this;
 
             that.tableLoading = true;
 
-            that.$api.user.getmemberlst({
-                data: {
+            that.$api.user
+                .getmemberlst({
                     type: that.currentDataType,
                     pageSize: that.pager.size,
                     pageIndex: that.pager.index
-                }
-            }).then((res) => {
-                if (res.code == 0) {
-                    that.tdata = res.data.data;
-                    that.pager.count = res.data.pageCount || 1;
-                } else {
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.tdata = res.data.data;
+                        that.pager.count = res.data.pageCount || 1;
+                    } else {
+                        that.$comp.toast({
+                            text: "获取失败，请重试.",
+                            color: "error"
+                        });
+                    }
+
+                    //检测是不是第一次加载
+                    that.firstLoading && (that.firstLoading = false);
+
+                    that.tableLoading = false;
+                })
+                .catch(res => {
                     that.$comp.toast({
-                        text: '获取失败，请重试.',
-                        color: 'error'
-                    })
-                }
+                        text: "获取失败，请重试.",
+                        color: "error"
+                    });
 
-                //检测是不是第一次加载
-                that.firstLoading && (that.firstLoading = false);
+                    that.tableLoading = false;
 
-                that.tableLoading = false;
-            }).catch((res) => {
-                that.$comp.toast({
-                    text: '获取失败，请重试.',
-                    color: 'error'
+                    //检测是不是第一次加载
+                    that.firstLoading && (that.firstLoading = false);
                 });
+        },
 
-                that.tableLoading = false;
+        closeDialog(type) {
+            let that = this;
 
-                //检测是不是第一次加载
-                that.firstLoading && (that.firstLoading = false);
-            });
+            if (type == "add") {
+                that.showAdd = false;
+                that.$refs["addForm"].reset();
+            } else if (type == "freeze") {
+                that.showFreeze = false;
+                that.freezeItem = {
+                    id: null,
+                    reason: '',
+                    orginItem: null,
+                };
+            }
         }
     }
 });
