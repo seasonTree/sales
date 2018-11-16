@@ -42,7 +42,7 @@ new Vue({
                         text: res.msg,
                     });
 
-                    that.hideDialog('add');
+                    that.closeDialog('add');
 
                     //直接追加一行
                     that.tdata.unshift(res.data);
@@ -70,7 +70,7 @@ new Vue({
                         text: res.msg,
                     });
 
-                    that.hideDialog('edit');
+                    that.closeDialog('edit');
 
                 } else {
                     that.$comp.toast({
@@ -114,7 +114,7 @@ new Vue({
         },
 
         //关闭窗口并清除数据
-        hideDialog(type) {
+        closeDialog(type) {
             let that = this;
 
             if (type == 'add') {

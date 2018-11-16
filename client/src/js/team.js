@@ -132,16 +132,10 @@ new Vue({
         showEditSales(item, show) {
             let that = this;
             if (show) {
-                //TODO
                 that.$api.user.getOneUser({
                     data: item.id
                 }).then((res) => {
                     if (res.code == 0) {
-                        // let edata = JSON.parse(JSON.stringify(res.data));
-
-                        // edata.url = `/url/upload?sales=${edata.uid}`;
-                        // edata.url = `ddddd`;
-
                         that.editSales = res.data;
                     } else {
                         that.$comp.toast({
@@ -158,7 +152,7 @@ new Vue({
                 });
 
                 that.showEditDialog = true;
-            }else{
+            } else {
                 that.$refs['editSalesForm'].reset();
                 that.showEditDialog = false;
             }
@@ -170,19 +164,15 @@ new Vue({
 
             that.disabled.editSales = true;
 
-            //TODO
             that.$api.user.insUserInfo({
                 data: that.editSales
             }).then((res) => {
                 if (res.code == 0) {
 
-                    //TODO
-
                     that.$comp.toast({
                         text: '修改成功, 请等待审核通过.',
                     });
 
-                    // that.showEditSales = false;
                     that.$refs['editSalesForm'].reset();
                     that.showEditDialog = false;
 
@@ -203,13 +193,13 @@ new Vue({
                 that.disabled.editSales = false;
             });
         },
-        changeStatus(item){
+        changeStatus(item) {
             //启用和禁用
             let that = this;
             that.$api.team.changeStatus({
-                data:{
-                    id :item.id,
-                    status : item.status
+                data: {
+                    id: item.id,
+                    status: item.status
                 }
             }).then((res) => {
                 item.status = res.data.status
@@ -220,13 +210,13 @@ new Vue({
                 });
             });
         },
-        showPasswordDialog(item){
+        showPasswordDialog(item) {
             //显示修改密码界面
             let that = this;
             that.user_id = item.id;
             that.showEditPassword = true;
         },
-        commitPassword(){
+        commitPassword() {
             //提交修改密码
             let that = this;
 
@@ -269,42 +259,6 @@ new Vue({
                     this.changePassword.submitLoading = false;
                 });
             }
-
-
-
-            // that.$api.user.resetPassword({
-            //     data:{
-            //         id :that.user_id,
-            //         old_password : that.oldPassword,
-            //         password : that.newPassword,
-            //         rePassword : that.newPassword2
-            //     }
-
-            // }).then((res) => {
-            //     if (res.code == 0) {
-            //         this.$comp.toast({
-            //             text: res.msg
-            //         });
-            //         that.showEditPassword = false;
-            //     }else{
-            //         this.$comp.toast({
-            //             text: res.msg,
-            //             color: 'error'
-            //         });
-            //     }
-                
-            //     // item.status = res.data.status
-            // }).catch((res) => {
-            //     this.$comp.toast({
-            //         text: '操作失败，请重试.',
-            //         color: 'error'
-            //     });
-            // });
-
-
-
-
-
         }
     },
 
@@ -333,27 +287,27 @@ new Vue({
             },
 
             changePassword: {
-                    valid: false,
-                    show: false,
-                    passOldVis: false,
-                    passVis: false,
-                    passVis1: false,
-                    password: '',
-                    oldPassword: '',
-                    rePassword: '',
-                    submitLoading: false
+                valid: false,
+                show: false,
+                passOldVis: false,
+                passVis: false,
+                passVis1: false,
+                password: '',
+                oldPassword: '',
+                rePassword: '',
+                submitLoading: false
             },
 
             theader: [{
                     text: '姓名',
                     align: 'left',
-                    value: 'a',
+                    value: 'name',
                     sortable: false,
                 },
                 {
                     text: '电话',
                     align: 'left',
-                    value: 'b',
+                    value: 'phone',
                     sortable: false,
                 },
                 {
@@ -378,6 +332,12 @@ new Vue({
                     text: '设置',
                     align: 'left',
                     value: 'f',
+                    sortable: false,
+                },
+                {
+                    text: '操作',
+                    align: 'center',
+                    value: 'g',
                     sortable: false,
                 },
             ],

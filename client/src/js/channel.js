@@ -343,20 +343,21 @@ new Vue({
 
                 that.disabled.sales = false;
             });
-        }
-    },
+        },
 
-    closeDialog(type) {
-        if (type == 'add') {
-            that.showAdd = false;
-            that.$refs['addChannelForm'].reset();
-        } else if (type == 'edit') {
-            that.showEdit = false;
-            that.$refs['channelEditForm'].reset();
-        } else if (type == 'salesAdd') {
-            that.showAddSales = false;
-            that.$refs['salesForm'].reset();
-        }
+        closeDialog(type) {
+            let that = this;
+            if (type == 'add') {
+                that.showAdd = false;
+                that.$refs['addChannelForm'].reset();
+            } else if (type == 'edit') {
+                that.showEdit = false;
+                that.$refs['channelEditForm'].reset();
+            } else if (type == 'salesAdd') {
+                that.showAddSales = false;
+                that.$refs['salesForm'].reset();
+            }
+        },
     },
 
     data() {

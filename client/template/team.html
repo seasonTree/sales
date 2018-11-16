@@ -45,9 +45,9 @@
         visibility: hidden;
     }
 
-    .table-checkbox {
+    /* .table-checkbox {
         display: inline-block;
-    }
+    } */
 </style>
 {/block}
 
@@ -89,7 +89,8 @@
                 <td class="text-xs-left">{{ props.item.chan_doc_num }}</td>
                 <td class="text-xs-left">
                     <v-checkbox class="table-checkbox" color="info" hide-details></v-checkbox>
-
+                </td>
+                <td class="text-xs-center">
                     <v-icon v-if="!props.item.hidePre" @click="showPasswordDialog(props.item)" title="修改密码">
                         vpn_key
                     </v-icon>
@@ -98,17 +99,15 @@
                         edit
                     </v-icon>
 
-                    <v-icon v-if="!props.item.hidePre && props.item.status == 2" @click.stop="changeStatus(props.item)" color="red" title="禁用">
-                            block
+                    <v-icon v-if="!props.item.hidePre && props.item.status == 2" @click.stop="changeStatus(props.item)"
+                        color="red" title="禁用">
+                        block
                     </v-icon>
 
-                    <v-icon v-if="!props.item.hidePre && props.item.status == 1" @click.stop="changeStatus(props.item)" color="light-green"
-                        title="启用">
+                    <v-icon v-if="!props.item.hidePre && props.item.status == 1" @click.stop="changeStatus(props.item)"
+                        color="light-green" title="启用">
                         lens
                     </v-icon>
-
-                    
-
                 </td>
             </tr>
         </template>
@@ -178,7 +177,7 @@
             <v-btn color="primary" flat @click="showEditSales(null, false)" :disabled="disabled.editSales">
                 取消
             </v-btn>
-            </v-card-action>
+        </v-card-actions>
     </v-card>
 </v-dialog>
 
@@ -189,14 +188,16 @@
         </v-card-title>
 
         <v-card-text>
-            <v-form ref="PassRef" >
-                <v-text-field label="旧密码" :append-icon="changePassword.passOldVis ? 'visibility_off' : 'visibility'" 
-                    :type="changePassword.passOldVis ? 'text' : 'password'" v-model="changePassword.oldPassword" :rules="[v => !!v || '旧密码是必填']"  @click:append="changePassword.passOldVis = !changePassword.passOldVis"></v-text-field>
+            <v-form ref="PassRef">
+                <v-text-field label="旧密码" :append-icon="changePassword.passOldVis ? 'visibility_off' : 'visibility'"
+                    :type="changePassword.passOldVis ? 'text' : 'password'" v-model="changePassword.oldPassword" :rules="[v => !!v || '旧密码是必填']"
+                    @click:append="changePassword.passOldVis = !changePassword.passOldVis"></v-text-field>
 
-                <v-text-field label="密码" :append-icon="changePassword.passVis ? 'visibility_off' : 'visibility'" :type="changePassword.passVis ? 'text' : 'password'" v-model="changePassword.password" :rules="[v => !!v || '新密码是必填']" @click:append="changePassword.passVis = !changePassword.passVis"></v-text-field>
+                <v-text-field label="密码" :append-icon="changePassword.passVis ? 'visibility_off' : 'visibility'" :type="changePassword.passVis ? 'text' : 'password'"
+                    v-model="changePassword.password" :rules="[v => !!v || '新密码是必填']" @click:append="changePassword.passVis = !changePassword.passVis"></v-text-field>
 
-                <v-text-field label="再次输入新密码"  :append-icon="changePassword.passVis1 ? 'visibility_off' : 'visibility'" :type="changePassword.passVis1 ? 'text' : 'password'" v-model="changePassword.rePassword"
-                    :rules="[
+                <v-text-field label="再次输入新密码" :append-icon="changePassword.passVis1 ? 'visibility_off' : 'visibility'"
+                    :type="changePassword.passVis1 ? 'text' : 'password'" v-model="changePassword.rePassword" :rules="[
                              v => !!v || '再次输入新密码是必填',
                              v => changePassword.password == v || '两次输入的密码不一致'
                             ]"

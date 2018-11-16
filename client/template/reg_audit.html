@@ -21,21 +21,37 @@
 {block name="body"}
 <v-container class="content" grid-list-md text-xs-center>
     <div class="content-header">
-        注册审核
+        注册资料审核
+    </div>
+
+    <div class="action-bar">
+        <v-layout row wrap>
+            <v-flex xs2>
+                <v-select :disabled="tableLoading" :items="tableType" v-model="currentDataType" item-text="text"
+                    item-value="value"></v-select>
+            </v-flex>
+        </v-layout>
     </div>
 
     <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
-            <td class="text-xs-left">{{ props.item.username }}</td>
-            <td class="text-xs-left">{{ props.item.first_name }}</td>
-            <td class="text-xs-left">{{ props.item.last_name }}</td>
-            <td class="text-xs-left">{{ props.item.role_name }}</td>
-            <td class="text-xs-left">{{ props.item.phone }}</td>
-            <td class="text-xs-center">
-                <v-btn color="s-primary" class="mr-0" @click="viewAudit(props.item.id)">查看明细</v-btn>
-            </td>
+            <tr @click.stop="viewAudit(props.item.id)">
+                <td class="text-xs-left">{{ props.item.username }}</td>
+                <td class="text-xs-left">{{ props.item.first_name }}</td>
+                <td class="text-xs-left">{{ props.item.last_name }}</td>
+                <td class="text-xs-left">{{ props.item.role_name }}</td>
+                <td class="text-xs-left">{{ props.item.phone }}</td>
+                <td class="text-xs-center">
+                    <v-btn color="s-primary" class="mr-0" @click="viewAudit(props.item.id)">查看明细</v-btn>
+                </td>
+            </tr>
         </template>
     </v-data-table>
+
+    <div class="text-md-center">
+        <v-pagination @input="changePage" :total-visible="pager.totalVisible" :length="pager.count" v-model="pager.index"></v-pagination>
+    </div>
+
 </v-container>
 
 <v-dialog scrollable v-model="auditInfo" width="600">
@@ -133,7 +149,6 @@
                                 </div>
                             </v-flex>
                         </template>
-
                     </v-layout>
                 </template>
             </form>
@@ -141,20 +156,20 @@
 
         <v-card-actions class="dialog-foot blue-grey lighten-5">
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="auditCommit(viewAuditInfo.user_id)" :loading="submitLoading">审核通过</v-btn>
-            <v-btn color="primary" flat @click="auditNotPs(viewAuditInfo.user_id)" :loading="submitLoading">
+            <v-btn color="s-primary" @click="auditCommit(viewAuditInfo.user_id)" :loading="agreeDisabled" :disabled="agreeDisabled || disagressDisabled">审核通过</v-btn>
+            <v-btn color="error" @click="auditNotPs(viewAuditInfo.user_id)" :loading="disagressDisabled" :disabled="agreeDisabled || disagressDisabled">
                 审核不通过
             </v-btn>
-<!-- 
-            <v-btn color="primary" flat @click="auditNotPs(viewAuditInfo.user_id)" :loading="submitLoading">
-                审核不通过
-            </v-btn> -->
+
+            <v-btn color="primary" flat @click="closeDialog()" :disabled="agreeDisabled || disagressDisabled">
+                关闭
+            </v-btn>
         </v-card-actions>
     </v-card>
 
 </v-dialog>
 
-<v-dialog width="500" height="500" v-model="viewImage">
+<v-dialog width="800" height="800" v-model="viewImage">
     <v-card>
         <v-card-text>
             <v-img :src="image_url" class="qrcode-image" contain>
@@ -169,7 +184,7 @@
         </v-card-text>
         <v-card-actions class="dialog-foot blue-grey lighten-5">
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="auditCommitNotPass" :loading="submitLoading">提交</v-btn>
+            <v-btn color="s-primary" @click="auditCommitNotPass" :loading="disagressDisabled" :disabled="disagressDisabled">提交</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>

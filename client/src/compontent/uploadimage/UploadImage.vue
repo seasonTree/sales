@@ -229,6 +229,8 @@ export default {
                 let form = new FormData(), // FormData 对象
                     xhr = new XMLHttpRequest(); // XMLHttpRequest 对象
 
+                debugger
+
                 form.append("image", f); // 文件对象
                 xhr.open("post", that.url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
 

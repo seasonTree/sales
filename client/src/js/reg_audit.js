@@ -9,25 +9,42 @@ new Vue({
 
     created() {
         let that = this;
-
-        that.$api.audit.getRegLst().then((res) => {
-            if (res.code == 0) {
-                that.tdata = res.data;
-            } else {
-                that.$comp.toast({
-                    text: res.msg,
-                    color: 'error'
-                })
-            }
-        }).catch((res) => {
-            that.$comp.toast({
-                text: '获取失败，请重试.',
-                color: 'error'
-            })
-        });
+        that.getReomteData();
     },
 
     methods: {
+
+        getReomteData() {
+            let that = this;
+
+            that.$api.audit.getRegLst({
+                type: that.currentDataType,
+                pageSize: that.pager.size,
+                pageIndex: that.pager.index
+            }).then((res) => {
+                if (res.code == 0) {
+                    that.tdata = res.data;
+
+                    // that.tdata = res.data.data;
+                    // that.pager.count = res.data.pageCount || 1;
+                } else {
+                    that.$comp.toast({
+                        text: res.msg,
+                        color: 'error'
+                    })
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: '获取失败，请重试.',
+                    color: 'error'
+                })
+            });
+        },
+
+        changePage() {
+            this.getReomteData();
+        },
+
         viewAudit(id) {
             let that = this;
             that.type = 'p';
@@ -55,13 +72,9 @@ new Vue({
                 })
             });
             that.auditInfo = true;
-            // that.viewImage = true;
-            // that.viewAuditInfo = item;
         },
 
         bigImage(url) {
-            // alert(image_url);
-            // that.image_url = '/client/image/default.jpg';
             let that = this;
             that.image_url = url;
             that.viewImage = true;
@@ -71,22 +84,25 @@ new Vue({
             let that = this;
             that.data.uid = uid;
             that.data.type = 1;
-            that.submitLoading = true;
+            that.agreeDisabled = true;
+
             that.$api.audit.auditCommit({
                 data: that.data
             }).then((res) => {
                 if (res.code == 0) {
                     that.$comp.toast({
                         text: res.msg,
+                    });
+                    // window.location.href = res.data.url;
+                    that.getReomteData();
 
-                    })
-                    window.location.href = res.data.url;
+                    that.closeDialog();
                 } else {
                     that.$comp.toast({
                         text: res.msg,
                         color: 'error'
                     })
-                    that.submitLoading = false;
+                    that.agreeDisabled = false;
                 }
             }).catch((res) => {
                 that.$comp.toast({
@@ -107,22 +123,25 @@ new Vue({
         auditCommitNotPass() {
             let that = this;
             that.data.type = -1;
-            that.submitLoading = true;
+            that.disagressDisabled = true;
             that.$api.audit.auditCommit({
                 data: that.data
             }).then((res) => {
                 if (res.code == 0) {
                     that.$comp.toast({
                         text: res.msg,
+                    });
 
-                    })
-                    window.location.href = res.data.url;
+                    that.getReomteData();
+                    that.closeDialog();
+
+                    // window.location.href = res.data.url;
                 } else {
                     that.$comp.toast({
                         text: res.msg,
                         color: 'error'
                     })
-                    that.submitLoading = false;
+                    that.disagressDisabled = false;
                 }
             }).catch((res) => {
                 that.$comp.toast({
@@ -131,6 +150,18 @@ new Vue({
                 })
                 that.submitLoading = false;
             });
+        },
+
+        closeDialog() {
+            let that = this;
+            that.viewAuditInfo = {};
+            that.auditInfo = false;
+            that.auditNotPass = false;
+            that.date = {
+                note: '',
+                uid: '',
+                type: ''
+            };
         }
     },
 
@@ -142,6 +173,10 @@ new Vue({
 
             auditNotPass: false,
 
+            agreeDisabled: false,
+            disagressDisabled: false,
+            // rejectDisabled: false,
+
             type: '',
 
             image_url: '',
@@ -152,37 +187,61 @@ new Vue({
                 type: ''
             },
 
-            submitLoading: false,
+            // submitLoading: false,
 
             viewAuditInfo: {},
+
+            tableLoading: false,
+
+            currentDataType: 1,
+            tableType: [{
+                    text: '全部',
+                    value: 0
+                },
+                {
+                    text: '未审核',
+                    value: 1
+                },
+                {
+                    text: '待审核',
+                    value: 2
+                },
+            ],
+
+            pager: {
+                totalVisible: 7,
+                count: 1,
+                index: 1,
+                size: 10
+            },
 
             theader: [{
                     text: '用户名',
                     align: 'left',
-                    value: 'a',
+                    value: 'username',
                     sortable: false,
                 }, {
                     text: '姓',
                     align: 'left',
-                    value: 'b',
+                    value: 'first_name',
                     sortable: false,
                 },
                 {
                     text: '名',
                     align: 'left',
-                    value: 'c',
+                    value: 'last_name',
                     sortable: false,
                 },
                 {
                     text: '角色',
                     align: 'left',
-                    value: 'd',
+                    value: 'role_name',
                     sortable: false,
                 },
                 {
                     text: '电话',
                     align: 'left',
-                    value: 'e',
+                    value: 'phone',
                     sortable: false,
                 },
                 {

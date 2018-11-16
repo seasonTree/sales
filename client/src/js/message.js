@@ -71,6 +71,14 @@ new Vue({
                     color: 'error'
                 });
             });
+        },
+
+        closeDialog(){
+            let that = this;
+            that.message.show = false;
+            that.message.id = null;
+            that.message.title = '';
+            that.message.content = '';
         }
     },
 

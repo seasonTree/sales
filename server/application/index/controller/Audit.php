@@ -41,7 +41,7 @@ class Audit
 	    	return json(['msg' => '获取注册信息成功','code' => 0,'data' => $mark]);
     	}
     	else{
-    		return json(['msg' => '没有数据','code' => 0,'data' => '']);
+    		return json(['msg' => '没有数据','code' => 0,'data' => []]);
     	}
     }
 

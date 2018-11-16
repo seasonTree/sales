@@ -43,13 +43,6 @@ new Vue({
             show_pass: false,
             submitLoading: false,
 
-            message: {
-                show: false,
-                text: '',
-                time: 3000,
-                color: 'success'
-            },
-
             data: {
                 username: '',
                 password: '',
