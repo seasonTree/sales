@@ -17,9 +17,5 @@ class Index extends Controller
     {
         return view('/browser_choose');
     }
-    public function getSession()
-    {
-        dump(Session::get('auth'));
-    }
 
 }
