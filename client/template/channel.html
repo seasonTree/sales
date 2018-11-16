@@ -276,7 +276,7 @@
                 <v-btn color="s-primary" @click="addChannel" :loading="disabled.addChannel" :disabled="disabled.addChannel">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showAdd = false" :disabled="disabled.addChannel">
+                <v-btn color="primary" flat @click="closeDialog('add')" :disabled="disabled.addChannel">
                     取消
                 </v-btn>
             </v-card-action>
@@ -318,7 +318,7 @@
                 <v-btn color="s-primary" @click="editChannel" :loading="disabled.editChannel" :disabled="disabled.editChannel">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showEdit = false" :disabled="disabled.editChannel">
+                <v-btn color="primary" flat @click="closeDialog('edit')" :disabled="disabled.editChannel">
                     取消
                 </v-btn>
             </v-card-actions>
@@ -344,7 +344,7 @@
                 <v-btn color="s-primary" @click="addSales()" :loading="disabled.sales" :disabled="disabled.sales">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showAddSales = false" :disabled="disabled.sales">
+                <v-btn color="primary" flat @click="closeDialog('salesAdd')" :disabled="disabled.sales">
                     取消
                 </v-btn>
             </v-card-actions>

@@ -7,30 +7,27 @@ new Vue({
     el: '#app',
     mixins: [mixinExt],
 
-    created(){
+    created() {
         let that = this;
-        that.$api.user.get().then((data) =>{
-            that.rolesAll = data.data;
-            that.tdata = data.Userdata;
-        }).catch((data) =>{
-            console.log('eeeeeeeeeeeee');
-            console.log(data);
-        });
 
+        that.getRemoteData();
     },
     data() {
         return {
 
             show_pass: false,
             show_pass1: false,
-            rolesAll:{},
-            userAll:{},
-            addData:{
-                role_id:[],
+
+            rolesAll: {},
+            userAll: {},
+
+            addData: {
+                role_id: [],
             },
-            editData:{
-                role_id:[],
+            editData: {
+                role_id: [],
             },
+
             showAdd: false,
             showEdit: false,
 
@@ -48,7 +45,7 @@ new Vue({
                 },
                 {
                     text: '角色',
-                    align: 'right',
+                    align: 'left',
                     value: 'role_name',
                     sortable: false,
                 },
@@ -68,104 +65,153 @@ new Vue({
             tdata: []
         };
     },
-    methods :{
-        addCommit(){
-            let that = this,
-                data={};
-           // console.log(that.addData);
+    methods: {
+
+        getRemoteData() {
+            let that = this;
+
+            that.$api.user.get().then((res) => {
+                that.rolesAll = res.data.roles;
+                that.tdata = res.data.list;
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: '获取数据失败，请刷新重试.',
+                    color: 'error'
+                });
+            });
+        },
+
+        addCommit() {
+            let that = this;
 
             that.$api.user.add({
                 data: that.addData
             }).then((res) => {
 
-                that.showAdd = false;
-                that.$comp.toast({
-                    text: res.msg,
-                });
-                if(res.code ==0){
-                    setTimeout(function () {
-                        window.location.reload();
-                    },2000)
-                }
-            }).catch((data) =>{ //function(data){}
-                that.$comp.toast({
-                    text: data.msg,
-                    color:'error',
-                });
+                if (res.code == 0) {
+                    that.$comp.toast({
+                        text: res.msg || '新增成功.',
+                    });
 
+                    that.getRemoteData();
+
+                    that.showAdd = false;
+
+                    that.$refs['addForm'].reset();
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '新增失败，请刷新后重试.',
+                        color: 'error',
+                    });
+                }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: '新增失败，请刷新后重试.',
+                    color: 'error',
+                });
             });
         },
-        changeStatus(id,status){
+
+        changeStatus(item, id, status) {
             let that = this,
-                data={
-                    'status':status,
-                    'id':id,
+                data = {
+                    'status': status,
+                    'id': id,
                 };
             that.$api.user.userStatus({
                 data: data
             }).then((res) => {
-                that.$comp.toast({
-                    text: res.msg,
-                });
-                if(res.code ==0){
-                    setTimeout(function () {
-                        window.location.reload();
-                    },2000)
+                if (res.code == 0) {
+                    that.$comp.toast({
+                        text: res.msg || '设置成功.',
+                    });
+
+                    item.status = status;
+                }else{
+                    that.$comp.toast({
+                        text: '设置失败，请重试.',
+                        color: 'error',
+                    });
                 }
-            }).catch((data) =>{ //function(data){}
+            }).catch((res) => { //function(data){}
                 that.$comp.toast({
-                    text: data.msg,
-                    color:'error',
+                    text: '设置失败，请重试.',
+                    color: 'error',
                 });
-
             });
-
         },
-        del(id){
+        del(id) {
             let that = this;
             that.$api.user.del({
                 data: id
-            }).then((data) => {
+            }).then((res) => {
 
+                if (res.code == 0) {
+
+                    that.$comp.toast({
+                        text: res.msg || '删除成功.',
+                    });
+
+                    for (var i = 0; i < that.tdata.length; i++) {
+                        var item = that.tdata[i];
+
+                        if (item.id == id) {
+                            that.tdata.splice(i, 1);
+                            break;
+                        }
+                    }
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '删除失败，请刷新后重试.',
+                        color: 'error',
+                    });
+                }
+
+            }).catch((res) => { //function(data){}
                 that.$comp.toast({
-                    text: data.msg,
-                });
-
-                setTimeout(function () {
-                    window.location.reload();
-                },2000)
-
-            }).catch((data) =>{ //function(data){}
-                that.$comp.toast({
-                    text: data.msg,
-                    color:'error',
+                    text: '删除失败，请刷新后重试.',
+                    color: 'error',
                 });
             });
         },
-        edit (item) {
-            item.role_id =item.role_id ? item.role_id.split(',').map(item =>{
-                return parseInt(item, 10)
-            }):[];
-            this.editData = item;
+
+        edit(item) {
+            let citem = JSON.parse(JSON.stringify(item));
+
+            citem.role_id = citem.role_id ? citem.role_id.split(',').map(itm => {
+                return parseInt(itm, 10)
+            }) : [];
+
+            this.editData = citem;
             this.showEdit = true;
         },
-        editCommit(){
+
+        editCommit() {
             let that = this;
             that.$api.user.edit({
                 data: that.editData
-            }).then((data) => {
+            }).then((res) => {
+                if (res.code == 0) {
 
-                that.showEdit = false;
+                    that.$comp.toast({
+                        text: res.msg || '修改成功.',
+                    });
+
+                    that.getRemoteData();
+
+                    that.showEdit = false;
+
+                    that.$refs['editForm'].reset();
+                } else {
+                    that.$comp.toast({
+                        text: res.msg || '修改失败，请刷新后重试.',
+                        color: 'error',
+                    });
+                }
+            }).catch((res) => { //function(data){}
                 that.$comp.toast({
-                    text: data.msg,
-                });
-                setTimeout(function () {
-                    window.location.reload();
-                },2000)
-            }).catch((data) =>{ //function(data){}
-                that.$comp.toast({
-                    text: data.msg,
-                    color:'error',
+                    text: '修改失败，请刷新后重试.',
+                    color: 'error',
                 });
             });
 

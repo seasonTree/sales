@@ -161,11 +161,11 @@ new Vue({
             });
         },
 
-        del(id) {
+        del(item) {
             let that = this;
 
             that.$api.role.del({
-                data: id
+                data: item
             }).then((res) => {
                 if (res.code == 0) {
 
@@ -173,12 +173,10 @@ new Vue({
                         text: res.msg || '删除成功.',
                     });
 
-                    // that.getRemoteData();
-
                     for (var i = 0; i < that.tdata.length; i++) {
-                        var item = that.tdata[i];
+                        var citem = that.tdata[i];
 
-                        if (item.id == id) {
+                        if (citem.id == item.id) {
                             that.tdata.splice(i, 1);
                             break;
                         }
