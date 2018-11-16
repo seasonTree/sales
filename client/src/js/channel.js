@@ -20,10 +20,6 @@ new Vue({
             const item = that.tdata[i];
             that.$set(that.$refs.dTable.expanded, item.id, true)
         }
-
-        // setTimeout(() => {
-        //     that.calcWidth();
-        // }, 500);
     },
 
     methods: {
@@ -96,14 +92,8 @@ new Vue({
 
                     that.getData();
 
-                    that.showAdd = false;
+                    that.closeDialog('add');
 
-                    that.$refs['addChannelForm'].reset();                    
-
-                    // //重刷页面,后台负责跳转
-                    // setTimeout(() => {
-                    //     window.location.reload();
-                    // }, 2000);
                 } else {
                     that.$comp.toast({
                         text: res.msg,
@@ -166,15 +156,8 @@ new Vue({
 
                     that.getData();
 
-                    that.showAddSales = false;
+                    that.closeDialog('salesAdd');
 
-                    that.$refs['salesForm'].reset();     
-
-                    // that.showAdd = false;
-                    //重刷页面,后台负责跳转
-                    // setTimeout(() => {
-                    //     window.location.reload();
-                    // }, 1000);
                 } else {
                     that.$comp.toast({
                         text: res.msg,
@@ -318,7 +301,6 @@ new Vue({
                         color: 'error'
                     });
                 }
-
             }).catch((res) => {
                 that.$comp.toast({
                     text: res.msg || '设置失败，请重试.',
@@ -343,11 +325,8 @@ new Vue({
                     });
 
                     that.getData();
-                    that.showEdit = false;
-                    that.$refs['channelEditForm'].reset();    
 
-                    // window.location.href = res.data.url;                    
-
+                    that.closeDialog('edit');
                 } else {
                     that.$comp.toast({
                         text: res.msg || '设置失败，请重试.',
@@ -364,7 +343,19 @@ new Vue({
 
                 that.disabled.sales = false;
             });
+        }
+    },
 
+    closeDialog(type) {
+        if (type == 'add') {
+            that.showAdd = false;
+            that.$refs['addChannelForm'].reset();
+        } else if (type == 'edit') {
+            that.showEdit = false;
+            that.$refs['channelEditForm'].reset();
+        } else if (type == 'salesAdd') {
+            that.showAddSales = false;
+            that.$refs['salesForm'].reset();
         }
     },
 

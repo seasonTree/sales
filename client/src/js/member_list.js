@@ -138,8 +138,7 @@ new Vue({
     methods: {
 
         addCommit(){
-            let that = this,
-                data={};
+            let that = this;
 
             that.$api.user.addDls({
                 data: that.addData

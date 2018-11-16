@@ -2,7 +2,11 @@
 {extend name="layout:head2_layout"/}
 
 {block name="css"}
-
+<style>
+    .role-item {
+        justify-content: center;
+    }
+</style>
 {/block}
 
 {block name="body"}
@@ -25,7 +29,7 @@
         <template slot="items" slot-scope="props">
             <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.username }}</td>
-            <td class="text-xs-right">{{ props.item.role_name }}</td>
+            <td class="text-xs-left">{{ props.item.role_name }}</td>
             <td class="text-xs-left" v-if="props.item.status==1">正常</td>
             <td class="text-xs-left" v-if="props.item.status==2">禁用</td>
             <td class="text-xs-left" v-if="props.item.status==3">黑名单</td>
@@ -37,382 +41,97 @@
                     edit
                 </v-icon>
                 {/if}
-                <!--<v-icon small @click="del(props.item.id)">-->
-                    <!--delete-->
-                <!--</v-icon>-->
-                {if (in_array('user/userstatus',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] == 1)}
-                <v-icon @click.stop="changeStatus(props.item.id,2)" color="red" title="禁用">
+                {if (in_array('user/userstatus',$_SESSION['think']['auth']) || $_SESSION['think']['user_info']['id'] ==
+                1)}
+                <v-icon small class="mr-2" @click.stop="changeStatus(props.item, props.item.id, 2)" color="red" title="禁用">
                     block
                 </v-icon>
-                <v-icon @click.stop="changeStatus(props.item.id,1)" color="light-green"
-                        title="激活">
+                <v-icon small @click.stop="changeStatus(props.item, props.item.id, 1)" color="light-green" title="激活">
                     lens
                 </v-icon>
                 {/if}
             </td>
         </template>
     </v-data-table>
-    <!--新增模块-->
-    <v-dialog scrollable v-model="showAdd" width="500">
-        <v-card>
-            <v-card-title class="dialog-head blue-grey lighten-5">
-                新增
-            </v-card-title>
-
-            <v-card-text>
-                <v-form>
-                    <v-text-field label="用户名" v-model = "addData.username"></v-text-field>
-                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
-                        :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass" v-model = "addData.password"></v-text-field>
-                    <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
-                        :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1" v-model = "addData.password_confirm"></v-text-field>
-                    <template>
-                        <v-card flat>
-                          <v-card-text>
-                            <v-container fluid>
-                              <v-layout row wrap>
-                                <v-flex xs12 sm4 md4 v-for="(item, index) in rolesAll" :key="index">
-                                  <v-checkbox xs12 sm4 md4
-                                    v-model = "addData.role_id"
-                                    :label="item.role_name"
-                                    :value="item.id"
-                                    hide-details
-                                  ></v-checkbox>
-                                </v-flex>
-                              </v-layout>
-                            </v-container>
-                          </v-card-text>
-                        </v-card>
-                      </template>
-                </v-form>
-            </v-card-text>
-
-            <v-card-actions class="dialog-foot blue-grey lighten-5">
-                <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="addCommit()">
-                    确认
-                </v-btn>
-                <v-btn color="primary" flat @click="showAdd = false">
-                    取消
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-    <!--修改模块-->
-    <v-dialog scrollable v-model="showEdit" width="500">
-        <v-card>
-            <v-card-title class="dialog-head blue-grey lighten-5">
-                修改
-            </v-card-title>
-
-            <v-card-text>
-                <v-form>
-                    <v-text-field label="用户名" v-model = "editData.username" disabled></v-text-field>
-                    <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
-                                  :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass" v-model = "editData.password"></v-text-field>
-                    <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'"
-                                  :type="show_pass1 ? 'text' : 'password'" @click:append="show_pass1 = !show_pass1" v-model = "editData.password_confirm"></v-text-field>
-                    <template>
-                        <v-card flat>
-                            <v-card-text>
-                                <v-container fluid>
-                                    <v-layout row wrap>
-                                        <v-flex xs12 sm4 md4 v-for="(item, index) in rolesAll" :key="index">
-                                            <v-checkbox xs12 sm4 md4
-                                                        v-model = "editData.role_id"
-                                                        :label="item.role_name"
-                                                        :value="item.id"
-                                                        hide-details
-                                            ></v-checkbox>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-card-text>
-                        </v-card>
-                    </template>
-                </v-form>
-            </v-card-text>
-
-            <v-card-actions class="dialog-foot blue-grey lighten-5">
-                <v-spacer></v-spacer>
-                <v-btn color="s-primary" @click="editCommit()">
-                    确认
-                </v-btn>
-                <v-btn color="primary" flat @click="showEdit = false">
-                    取消
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-
 </v-container>
+
+<!--新增模块-->
+<v-dialog scrollable v-model="showAdd" width="600">
+    <v-card>
+        <v-card-title class="dialog-head blue-grey lighten-5">
+            新增
+        </v-card-title>
+
+        <v-card-text>
+            <v-form ref="addForm">
+                <v-text-field label="用户名" v-model="addData.username"></v-text-field>
+                <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
+                    @click:append="show_pass = !show_pass" v-model="addData.password"></v-text-field>
+                <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'" :type="show_pass1 ? 'text' : 'password'"
+                    @click:append="show_pass1 = !show_pass1" v-model="addData.password_confirm"></v-text-field>
+
+                <template v-if="rolesAll.length">
+                    <v-layout row wrap>
+                        <v-flex xs6 sm3 md3 v-for="(item, index) in rolesAll" :key="index">
+                            <v-checkbox class="role-item" v-model="editData.role_id" :label="item.role_name" :value="item.id"
+                                hide-details></v-checkbox>
+                        </v-flex>
+                    </v-layout>
+                </template>
+
+            </v-form>
+        </v-card-text>
+
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="addCommit()">
+                确认
+            </v-btn>
+            <v-btn color="primary" flat @click="showAdd = false">
+                取消
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
+<!--修改模块-->
+<v-dialog scrollable v-model="showEdit" width="600">
+    <v-card>
+        <v-card-title class="dialog-head blue-grey lighten-5">
+            修改
+        </v-card-title>
+
+        <v-card-text>
+            <v-form ref="editForm">
+                <v-text-field label="用户名" v-model="editData.username" disabled></v-text-field>
+                <v-text-field label="密码" :append-icon="show_pass ? 'visibility_off' : 'visibility'" :type="show_pass ? 'text' : 'password'"
+                    @click:append="show_pass = !show_pass" v-model="editData.password"></v-text-field>
+                <v-text-field label="确认密码" :append-icon="show_pass1 ? 'visibility_off' : 'visibility'" :type="show_pass1 ? 'text' : 'password'"
+                    @click:append="show_pass1 = !show_pass1" v-model="editData.password_confirm"></v-text-field>
+
+                <template v-if="rolesAll.length">
+                    <v-layout row wrap>
+                        <v-flex xs6 sm3 md3 v-for="(item, index) in rolesAll" :key="index">
+                            <v-checkbox class="role-item" v-model="editData.role_id" :label="item.role_name" :value="item.id"
+                                hide-details></v-checkbox>
+                        </v-flex>
+                    </v-layout>
+                </template>
+            </v-form>
+        </v-card-text>
+
+        <v-card-actions class="dialog-foot blue-grey lighten-5">
+            <v-spacer></v-spacer>
+            <v-btn color="s-primary" @click="editCommit()">
+                确认
+            </v-btn>
+            <v-btn color="primary" flat @click="showEdit = false">
+                取消
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
 {/block}
 
 {block name="script"}
 <script src="__basePath__/js/chunks/user_manage.js?date=__date__"></script>
 {/block}
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>用户管理</title>
-
-    <link href="./css/reset.css" rel="stylesheet" />
-    <link href="./css/vuetify.min.css" rel="stylesheet" />
-    <link href="./css/css.css" rel="stylesheet" />
-    <link href="./css/common.css" rel="stylesheet" />
-
-</head>
-
-<body>
-    <div id="app">
-        <v-app>
-            <div class="header">
-                <v-toolbar>
-                    <v-toolbar-side-icon class="toolbar-icon"></v-toolbar-side-icon>
-                    <v-toolbar-title>
-                        <v-img class="toolbar-img" src="./images/kooa_logo.png" contain></v-img>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-
-                    <v-toolbar-items class="hidden-sm-and-down">
-                        <v-btn href="./team.html" flat>团队</v-btn>
-                        <v-btn href="./channel.html" flat>渠道</v-btn>
-                        <v-btn href="./achievement.html" flat>业绩</v-btn>
-                        <v-btn href="./distribution_network.html" flat>销售网络</v-btn>
-                        <v-btn href="./message.html" flat>
-                            消息
-                            <v-badge right class="toolbar-message-tip">
-                                <span slot="badge">6</span>
-                            </v-badge>
-                        </v-btn>
-                    </v-toolbar-items>
-
-                    <v-toolbar-items>
-
-                        <v-menu offset-y>
-                            <v-btn flat primary slot="activator">语言</v-btn>
-                            <v-list dense class="toolbar-dropdown">
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>
-                                        English
-                                    </v-list-tile-title>
-                                </v-list-tile>
-
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>简体中文</v-list-tile-title>
-                                </v-list-tile>
-                                <v-list-tile @click="">
-                                    <v-list-tile-title>繁体中文</v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </v-toolbar-items>
-
-                    <v-toolbar-items class="hidden-sm-and-down">
-                        <v-menu offset-y>
-                            <v-btn flat primary slot="activator">系统信息</v-btn>
-                            <v-list dense class="toolbar-dropdown">
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                <!-- <v-icon>$vuetify.icons.product</v-icon> -->
-                                                用户管理
-                                            </v-list-tile-title>
-
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./user_permisson.html'">
-                                                <v-list-tile-title>
-                                                    权限
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="window.location.href='./user_role.html'">
-                                                <v-list-tile-title>
-                                                    角色
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="window.location.href='./user_manage.html'">
-                                                <v-list-tile-title>
-                                                    用户
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                佣金管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./commision_setting.html'">
-                                                <v-list-tile-title>
-                                                    佣金设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                财务管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    财务资料
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    财务报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                报表管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    经销商报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    内部销售员报表
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                参数设置
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./reg_setting.html'">
-                                                <v-list-tile-title>
-                                                    注册设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="window.location.href='./notify_setting.html'">
-                                                <v-list-tile-title>
-                                                    消息设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="window.location.href='./protocol_setting.html'">
-                                                <v-list-tile-title>
-                                                    协议设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    医生脱离设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    审批流程设置
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-
-                                <div>
-                                    <v-menu offset-x left open-on-hover>
-                                        <v-list-tile slot="activator" @click="">
-                                            <v-list-tile-action>
-                                                <v-icon>arrow_left</v-icon>
-                                            </v-list-tile-action>
-
-                                            <v-list-tile-title>
-                                                审核管理
-                                            </v-list-tile-title>
-                                        </v-list-tile>
-                                        <v-list dense class="toolbar-subdropdown">
-                                            <v-list-tile @click="window.location.href='./reg_audit.html'">
-                                                <v-list-tile-title>
-                                                    注册审核
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-
-                                            <v-list-tile @click="">
-                                                <v-list-tile-title>
-                                                    医生脱离审核
-                                                </v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
-                                </div>
-                            </v-list>
-                        </v-menu>
-
-                        <v-btn href="./login.html" flat>登出</v-btn>
-                    </v-toolbar-items>
-                </v-toolbar>
-            </div>
-
-        </v-app>
-    </div>
-
-    <script src="./js/vue.js"></script>
-    <script src="./js/vuetify.js"></script>
-    <script>
-
-    </script>
-
-
-</body>
-
-</html> -->
