@@ -322,7 +322,7 @@ class User
     	}
     	unset($data['phone']);
     	//删除电话
-    	if (count($data) == 1) {
+    	if (count($data) <= 5) {
     		//判断不相同数据的字段数
     		if(!Session::has('business_licence'.$userid) && !Session::has('photo_self'.$userid) && !Session::has('id_card_front'.$userid) && !Session::has('id_card_back'.$userid)){
     			//判断是否存在图片上传更新行为
@@ -525,7 +525,7 @@ class User
     	//删除临时目录
     	@rmdir($file_path);
 		//删除空目录
-        Session::set('user_data'.$userid,serialize($data));
+        Session::set('user_data'.$userid,$data);
         //把数据存回session,保证下次调用的时候是最新数据
         if ($res) {
         	return true;

@@ -74,6 +74,9 @@ class OperateBehavior extends Controller
         'user/getoneuser',//获取当前用户信息
         'user/insuserinfo',//写入用户信息
         'user/upload',//上传
+        'message/index',//信息主页
+        'message/lst',//获取信息列表
+        'message/getmessagecount'//获取未读条数
     ];
 
     /**
@@ -101,6 +104,7 @@ class OperateBehavior extends Controller
             //用户所拥有的权限路由(登录后)
             $auth = Session::get('auth') ? Session::get('auth') : $this->unaudit;
             $auth = array_merge($this->login,$this->exclude,$auth);
+            // dump($auth);exit;
         }
         else{
             $auth = $this->login;
