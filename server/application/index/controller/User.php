@@ -63,28 +63,25 @@ class User
 		//重置密码
 		$data = input('post.data');
 		$user_model = new UserModel();
-		if ($data['old_password'] == '') {
+		if ($data['oldPassword'] == '') {
 			return json(['code' => 7,'msg' => '旧密码不能为空']);
 		}
 
-		// $check_res = $user_model->checkPassword(array(''));
+		if (!isset($data['id'])) {
+			$data['id'] = Session::get('user_info')['id'];
+		}
+
+		$password = $user_model->findPassword($data['id']);
+
+		if (!password_verify( $data['oldPassword'],$password)) {
+			return json(['code' => 8,'msg' => '旧密码不正确']);
+		}
 
 		if ($data['password'] == '') {
 			return json(['code' => 1,'msg' => '密码不能为空']);
 		}
 		if ($data['rePassword'] != $data['password']) {
 			return json(['code' => 2,'msg' => '两次输入密码不一致']);
-		}
-
-		$check_has = Session::has('user_info');
-		if (!$check_has) {
-			if (!isset($data['uid'])) {
-				return json(['code' => 3,'msg' => '非法操作']);
-			}
-		}
-		else{
-
-			$data['uid'] = Session::get('user_info')['id'];
 		}
 
 		if (strlen($data['password']) < 6 || strlen($data['password']) > 30 ) {

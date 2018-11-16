@@ -62,7 +62,7 @@ class Auser extends Controller
         }
     }
     //用户列表展示
-    public function lst($where ='type<>2'){
+    public function lst($where ='type=0'){
         $role =model('Role')->lst();
         $list =  model('User')->lst($where);
 

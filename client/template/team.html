@@ -189,18 +189,18 @@
         </v-card-title>
 
         <v-card-text>
-            <v-form ref="globalPassRef" >
-                <v-text-field label="旧密码" :append-icon="global.changePassword.passOldVis ? 'visibility_off' : 'visibility'" 
-                    :type="global.changePassword.passOldVis ? 'text' : 'password'" v-model="oldPassword" :rules="[v => !!v || '旧密码是必填']"  @click:append="global.changePassword.passOldVis = !global.changePassword.passOldVis"></v-text-field>
+            <v-form ref="PassRef" >
+                <v-text-field label="旧密码" :append-icon="changePassword.passOldVis ? 'visibility_off' : 'visibility'" 
+                    :type="changePassword.passOldVis ? 'text' : 'password'" v-model="changePassword.oldPassword" :rules="[v => !!v || '旧密码是必填']"  @click:append="changePassword.passOldVis = !changePassword.passOldVis"></v-text-field>
 
-                <v-text-field label="密码" :append-icon="global.changePassword.passVis ? 'visibility_off' : 'visibility'" :type="global.changePassword.passVis ? 'text' : 'password'" v-model="newPassword" :rules="[v => !!v || '新密码是必填']" @click:append="global.changePassword.passVis = !global.changePassword.passVis"></v-text-field>
+                <v-text-field label="密码" :append-icon="changePassword.passVis ? 'visibility_off' : 'visibility'" :type="changePassword.passVis ? 'text' : 'password'" v-model="changePassword.password" :rules="[v => !!v || '新密码是必填']" @click:append="changePassword.passVis = !changePassword.passVis"></v-text-field>
 
-                <v-text-field label="再次输入新密码"  :append-icon="global.changePassword.passVis1 ? 'visibility_off' : 'visibility'" :type="global.changePassword.passVis1 ? 'text' : 'password'" v-model="newPassword2"
+                <v-text-field label="再次输入新密码"  :append-icon="changePassword.passVis1 ? 'visibility_off' : 'visibility'" :type="changePassword.passVis1 ? 'text' : 'password'" v-model="changePassword.rePassword"
                     :rules="[
                              v => !!v || '再次输入新密码是必填',
-                             v => newPassword == v || '两次输入的密码不一致'
+                             v => changePassword.password == v || '两次输入的密码不一致'
                             ]"
-                    @click:append="global.changePassword.passVis1 = !global.changePassword.passVis1"></v-text-field>
+                    @click:append="changePassword.passVis1 = !changePassword.passVis1"></v-text-field>
             </v-form>
         </v-card-text>
 
