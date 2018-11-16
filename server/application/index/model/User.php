@@ -115,16 +115,17 @@ class User extends Model
     {
         $url = [];
         $result = Db::name('user')
-            ->alias('u')
-            ->join('user_role ur', 'u.id=ur.user_id')
-            ->join('role_pri rp', 'ur.role_id=rp.role_id')
-            ->join('privilege p', 'p.id=rp.pri_id')
-            ->field('p.controller_name,p.action_name')
-            ->where('u.id', $id)
-            ->select();
+                    ->alias('u')
+                    ->join('user_role ur', 'u.id=ur.user_id')
+                    ->join('role_pri rp', 'ur.role_id=rp.role_id')
+                    ->join('privilege p', 'p.id=rp.pri_id')
+                    ->field('p.controller_name,p.action_name')
+                    ->where('u.id', $id)
+                    ->select();
         foreach ($result as $k) {
             $url[] = strtolower($k['controller_name'] . '/' . $k['action_name']);
         }
+        
         return $url;
     }
 
@@ -267,8 +268,11 @@ class User extends Model
         $roleName = $this->getUserRoleName($userInfo['id']);
         $userInfo['role_name'] = $roleName;
         Session::set('user_info', $userInfo->toArray());
-        $auth = $this->_getAuth($userInfo['id']);
-        Session::set('auth', $auth);
+        if ($userInfo['status'] == 1) {
+            //状态为1才拥有权限
+            $auth = $this->_getAuth($userInfo['id']);
+            Session::set('auth', $auth);
+        }
         if ($remember != '') {
             $cookieInfo['username'] = $username;
             $cookieInfo['password'] = encrypt($pwd);

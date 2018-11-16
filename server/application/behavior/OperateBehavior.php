@@ -67,6 +67,16 @@ class OperateBehavior extends Controller
     ];
 
     /**
+     *定义未审核的时候拥有的权限路由
+     */
+    protected $unaudit = [
+        'user/userinfo',//当前用户页面跳转
+        'user/getoneuser',//获取当前用户信息
+        'user/insuserinfo',//写入用户信息
+        'user/upload',//上传
+    ];
+
+    /**
      * 权限验证
      */
     public function run()
@@ -85,18 +95,25 @@ class OperateBehavior extends Controller
             $this->error('请先登陆', '/', '', '1');
         }
 
-        //用户所拥有的权限路由
-        $auth = Session::get('auth') ? Session::get('auth') : [];
+        
         $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
-        if ($userid != 1) {
-            //超级管理员跳权限
-            if (!$auth && !in_array($url, $this->login) && !in_array($url, $this->exclude)) {
+        if ($userid != 0) {
+            //用户所拥有的权限路由(登录后)
+            $auth = Session::get('auth') ? Session::get('auth') : $this->unaudit;
+            $auth = array_merge($this->login,$this->exclude,$auth);
+        }
+        else{
+            $auth = $this->login;
+            if (!in_array($url, $auth)) {
                 $this->error('请先登陆', '/index/index');
             }
-        
-            if (!in_array($url, $auth) && !in_array($url, $this->exclude) && !in_array($url, $this->login)) {
-            $this->error('无权限访问');
+        }
+        if ($userid != 1) {
+            //超级管理员跳权限
+            if (!in_array($url, $auth)) {
+                $this->error('无权限访问');
             }
+
         }
         
 
