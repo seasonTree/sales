@@ -35,16 +35,15 @@ class Channel
     	if (empty($data['channel_name'])) {
     		return json(['msg' => '渠道名字不能为空' ,'code' => 4 ]);
     	}
-    	if (strlen($data['channel_name']) > 10) {
-    		return json(['msg' => '渠道名长度不能超过10' ,'code' => 11 ]);
+    	if (strlen($data['channel_name']) > 30) {
+    		return json(['msg' => '渠道名汉字长度不能超过10' ,'code' => 11 ]);
     	}
 
-    	if (strlen($data['channel_info']) > 20) {
-    		return json(['msg' => '渠道描述信息长度不能超过20' ,'code' => 12 ]);
+    	if (strlen($data['channel_info']) > 60) {
+    		return json(['msg' => '渠道描述信息汉字长度不能超过20' ,'code' => 12 ]);
     	}
-
-    	if (strlen($data['qr_code_info']) > 20) {
-    		return json(['msg' => '二维码描述信息长度不能超过20' ,'code' => 12 ]);
+    	if (strlen($data['qr_code_info']) > 60) {
+    		return json(['msg' => '二维码描述信息汉字长度不能超过20' ,'code' => 12 ]);
     	}
     	// $data['user_id'] = Session::has('user.userid');
     	$data['user_id'] = Session::get('user_info')['id'];
@@ -235,19 +234,19 @@ class Channel
     public function updateChannel(){
     	//更新这个渠道的信息
     	$data = input('post.data');
-    	if (strlen($data['channel_info']) > 20) {
-    		return json(['msg' => '渠道描述信息长度不能超过20' ,'code' => 12 ]);
+    	if (strlen($data['channel_info']) > 60) {
+    		return json(['msg' => '渠道描述信息汉字长度不能超过20' ,'code' => 12 ]);
     	}
 
-    	if (strlen($data['qr_code_info']) > 20) {
-    		return json(['msg' => '二维码描述信息长度不能超过20' ,'code' => 12 ]);
+    	if (strlen($data['qr_code_info']) > 60) {
+    		return json(['msg' => '二维码描述信息汉字长度不能超过20' ,'code' => 12 ]);
     	}
-    	if ($data['chan_pfm_obj'] == '') {
-			return json(['msg' => '业绩目标不能为空','code' => 2]);
-		}
-		if ($data['chan_doc_num'] == '') {
-			return json(['msg' => '医生目标不能为空','code' => 3]);
-		}
+  //   	if ($data['chan_pfm_obj'] == '') {
+		// 	return json(['msg' => '业绩目标不能为空','code' => 2]);
+		// }
+		// if ($data['chan_doc_num'] == '') {
+		// 	return json(['msg' => '医生目标不能为空','code' => 3]);
+		// }
 		if (!checkNum($data['chan_pfm_obj'])) {
 			return json(['msg' => '业绩目标只能是数字，长度不能大于11位','code' => 4]);
 		}
