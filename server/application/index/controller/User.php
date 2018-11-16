@@ -309,30 +309,39 @@ class User
     		redis()->delete('user:'.$data['phone']);
 
     	}
-    	else{
-    		//进入审核状态
-    		$user_model->updateUser(array('id' => $data['user_id'],'status' => 0,'update_time' => time()));
-    	}
+
 		unset($data['verify_code']);
 		//删除验证码
     	$old_data = Session::get('user_data'.$data['user_id']);
     	//获取旧数据
+    	$del_field = array('business_licence','thumb_business_licence','photo_self_path','thumb_photo_self','id_card_front','thumb_id_card_front','id_card_back','thumb_id_card_back');
+    	//需要删除的字段
+
     	foreach ($data as $k => $v) {
     		//比较旧数据和新数据，剔除相同的数据不进行更新
-    		if ($old_data[$k] == $data[$k] && $k != 'id') {
-    			unset($data[$k]);
+    		if ($old_data[$k] == $data[$k] || in_array($k,$del_field)) {
+    			if ($k != 'id') {
+    				unset($data[$k]);
+    			}
+    		}
+    		else{
+    			$old_data[$k] = $data[$k];
     		}
     	}
+
+    	Session::set('user_data'.$userid,$old_data);
+    	//刷新旧数据
     	if (isset($data['phone']) && !$verify_code) {
     		//判断修改电话号码
     		return json(['msg' => '要修改电话号码请发送短信并且输入验证码','code' => 19]);
     	}
     	unset($data['phone']);
     	//删除电话
-    	if (count($data) <= 5) {
-    		//判断不相同数据的字段数
-    		if(!Session::has('business_licence'.$userid) && !Session::has('photo_self'.$userid) && !Session::has('id_card_front'.$userid) && !Session::has('id_card_back'.$userid)){
+    	if (count($data) == 1) {
+    			//判断不相同数据的字段数
+    			if(!Session::has('business_licence'.$userid) && !Session::has('photo_self'.$userid) && !Session::has('id_card_front'.$userid) && !Session::has('id_card_back'.$userid)){
     			//判断是否存在图片上传更新行为
+    		
     			if (!$update_phone) {
     				//判断没有更新电话号码
     				//不存在不同数据表示没有任何修改
@@ -380,7 +389,10 @@ class User
 
     		if ($status == 0) {
     			if (count($data) > 1 || $is_move) {
+    				//进入审核状态
+    				$user_model->updateUser(array('id' => $userid,'status' => 0,'update_time' => time()));
     				$admin = $user_model->getAdmin(array('type' => 0));
+
 		    		$key_list = array_column($admin,'id');
 
 		    		$message_model = new MessageModel();
@@ -397,7 +409,6 @@ class User
     			}
     			
     		}
-
     		return json(['msg' => '修改成功','code' => 0]);
     	}
     	else{

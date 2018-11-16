@@ -74,4 +74,9 @@ class Role extends Model
     public function del($id){
        return $this->destroy($id);
     }
+
+    public function getRoleId($where){
+        //获取角色id
+        return $this->where($where)->value('id');
+    }
 }

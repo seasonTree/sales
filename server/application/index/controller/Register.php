@@ -5,6 +5,7 @@ use \think\Request;
 use think\facade\Env;
 use app\index\model\User as UserModel;
 use app\index\model\UserRole as UserRoleModel;
+use app\index\model\Message as MessageModel;
 
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/ShortMessage.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Mailer.php';
@@ -56,10 +57,7 @@ class Register
     		return json(['msg' => '电话已经存在','code' => 14]);
     	}
 
-    	$redis = new \Redis();
-        $redis->connect(config('config.redis.host'), config('config.redis.port'));
-        $redis->select(config('config.redis.db_index'));
-        $phone = $redis->get('user:'.input('post.data.phone_num'));
+        $phone = redis()->get('user:'.input('post.data.phone_num'));
         if (!$phone) {
         	return json(['code' => 7,'msg' => '非法操作，未能获取验证码']);
         }
@@ -89,7 +87,20 @@ class Register
         $res = $user_model->insertSales($insert);
         if ($res) {
         	$user_role_model = new UserRoleModel();
-        	$user_role_model->insertUserRole(array('user_id' => $res,'role_id' => 15));
+        	$role_id = $user_role_model->getRoleId(array('role_name' => '销售员'));
+        	$user_role_model->insertUserRole(array('user_id' => $res,'role_id' => $role_id));
+        	//写入角色
+
+        	$message_model = new MessageModel();
+			$insert_message = array(
+									'title' => '注册信息',
+									'sender' => 1,
+									'receiver' => $res,
+									'type' => 3
+								);
+			$insert_message['content'] = '恭喜您已经注册成功，请尽快完善个人信息，才可以正常使用所有功能。';
+			$message_model->addMessage($insert_message);
+
         	return json(['code' => 0,'msg' => '注册成功','data' => ['url' => '/']]);
         }
         else{
