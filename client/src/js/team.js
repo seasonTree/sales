@@ -229,21 +229,81 @@ new Vue({
         commitPassword(){
             //提交修改密码
             let that = this;
-            that.$api.user.resetPassword({
-                data:{
-                    id :that.user_id,
-                    old_password : that.oldPassword,
-                    password : that.newPassword,
-                    rePassword : that.newPassword2
-                }
-            }).then((res) => {
-                // item.status = res.data.status
-            }).catch((res) => {
-                this.$comp.toast({
-                    text: '操作失败，请重试.',
-                    color: 'error'
+
+            that.changePassword.submitLoading = true;
+            that.changePassword.id = that.user_id;
+
+            if (that.$refs.PassRef.validate()) {
+                that.$api.user.resetPassword({
+                    data: that.changePassword
+                }).then((res) => {
+
+                    if (res.code == 0) {
+                        this.$comp.toast({
+                            text: res.msg,
+                        });
+
+                        // that.globalShowMessage(true, res.msg, 'success');
+                        // that.changePassword.submitLoading = true;
+                        setTimeout(() => {
+                            that.showEditPassword = false;
+                        }, 3000);
+                    } else {
+                        this.$comp.toast({
+                            text: res.msg,
+                            color: 'error'
+                        });
+
+                        // that.globalShowMessage(true, res.msg, 'error');
+                        that.changePassword.submitLoading = false;
+                    }
+
+                }).catch((res) => {
+                    this.$comp.toast({
+                        text: '修改失败,请重试.',
+                        color: 'error'
+                    });
+
+                    // that.globalShowMessage(true, '修改失败,请重试.', 'error');
+
+                    this.changePassword.submitLoading = false;
                 });
-            });
+            }
+
+
+
+            // that.$api.user.resetPassword({
+            //     data:{
+            //         id :that.user_id,
+            //         old_password : that.oldPassword,
+            //         password : that.newPassword,
+            //         rePassword : that.newPassword2
+            //     }
+
+            // }).then((res) => {
+            //     if (res.code == 0) {
+            //         this.$comp.toast({
+            //             text: res.msg
+            //         });
+            //         that.showEditPassword = false;
+            //     }else{
+            //         this.$comp.toast({
+            //             text: res.msg,
+            //             color: 'error'
+            //         });
+            //     }
+                
+            //     // item.status = res.data.status
+            // }).catch((res) => {
+            //     this.$comp.toast({
+            //         text: '操作失败，请重试.',
+            //         color: 'error'
+            //     });
+            // });
+
+
+
+
 
         }
     },
@@ -270,6 +330,18 @@ new Vue({
 
             disabled: {
                 editSales: false
+            },
+
+            changePassword: {
+                    valid: false,
+                    show: false,
+                    passOldVis: false,
+                    passVis: false,
+                    passVis1: false,
+                    password: '',
+                    oldPassword: '',
+                    rePassword: '',
+                    submitLoading: false
             },
 
             theader: [{
