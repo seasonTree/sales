@@ -278,8 +278,6 @@ new Vue({
 
             qr_code: {}, //邀请人信息
 
-            checkRepeat: '',
-
             editSales: {},
 
             disabled: {
