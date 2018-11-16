@@ -18,8 +18,6 @@ new Vue({
             showAdd: false,
             showEdit: false,
 
-            selectID: 1,
-
             items: null,
 
             theader: [{
