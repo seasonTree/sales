@@ -36,9 +36,11 @@ new Vue({
                 data: citem.id
             }).then((res) => {
                 if(res.code == 0){
-                    var mcount = that.global.messageCount;
+                    // var mcount = that.global.messageCount;
 
-                    that.global.messageCount = mcount-- < 0? 0: mcount --;
+                    // that.global.messageCount = mcount-- < 0? 0: mcount --;
+
+                    that._checkMessage();
 
                     //标记已读
                     item.status = 1;
