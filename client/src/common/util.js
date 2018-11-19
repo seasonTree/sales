@@ -202,9 +202,8 @@ export const getToken = () => {
     let myDate = new Date(),
         month = myDate.getUTCMonth() + 1,
         time = myDate.getUTCFullYear() + '' + month + '' + myDate.getUTCDate() + '' + myDate.getUTCHours(),
-        key = decodeURIComponent(__akey), //webpack打包提供的
-        value = sha1(time + '' + key);
-        
+        key = atob(__akey), //webpack打包提供的
+        value = sha1(time + key);
 
     return value;
 
