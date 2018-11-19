@@ -256,8 +256,6 @@ new Vue({
         }
     },
 
-
-
     data() {
         return {
 
