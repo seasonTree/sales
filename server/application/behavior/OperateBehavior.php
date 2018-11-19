@@ -90,7 +90,7 @@ class OperateBehavior extends Controller
             $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
             
             if ($api_token != $token) {
-                return json(['msg' => 'token无效','code' = 1]);
+                return json(['msg' => 'token无效','code' => 1]);
             }
         }
 
