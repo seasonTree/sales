@@ -201,6 +201,6 @@ export const getToken = () => {
     let time = myDate.getFullYear() +''+ month +''+ myDate.getDate() +''+ myDate.getHours(); 
     let key = decodeURIComponent(__akey); //webpack打包
     $value = sha1(time +''+ key);
-
-    return value;
+    console.log($value);
+    // return value;
 }
