@@ -226,7 +226,7 @@
 
     }
 
-    export const hex_sha1;
+    export default hex_sha1;
 
     /*
      *
