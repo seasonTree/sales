@@ -3,6 +3,7 @@ const extractTextPlugin = require("extract-text-webpack-plugin");
 const vueLoaderPlugin = require("vue-loader/lib/plugin");
 // const htmlPlugin = require('html-webpack-plugin');
 const fs = require("fs");
+const webpack = require('webpack');
 // 自动查找后缀文件
 // const glob = require('glob');
 
@@ -44,6 +45,7 @@ function loadGlobalConfig() {
 const globalCfg = loadGlobalConfig();
 //这个publicPath只用于image， fonts
 const publicPath = globalCfg.publicPath;
+const api_key = globalCfg.api_key;
 
 //移除dist生成的path
 function rmGenFile(outputPath) {
@@ -189,6 +191,10 @@ module.exports = {
     },
     plugins: [
         new vueLoaderPlugin(),
+
+        new webpack.DefinePlugin({
+            __akey: JSON.stringify(api_key),
+        }),
 
         // new htmlPlugin({
         //     filename: '../template/index.html',

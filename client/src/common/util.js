@@ -195,12 +195,12 @@ export const getUrlParams = (key) => {
  * 
  * @returns {String} value
  */
-// export const getToken = () => {
-//     let myDate = new Date();
-//     let month = myDate.getMonth()+1;
-//     let time = myDate.getFullYear() +''+ month +''+ myDate.getDate() +''+ myDate.getHours(); 
-//     let key = 'GbwS8JFxJfW3uj86S';
-//     $value = sha1(time +''+ key);
+export const getToken = () => {
+    let myDate = new Date();
+    let month = myDate.getMonth()+1;
+    let time = myDate.getFullYear() +''+ month +''+ myDate.getDate() +''+ myDate.getHours(); 
+    let key = decodeURIComponent(__akey); //webpack打包
+    $value = sha1(time +''+ key);
 
-//     return value;
-// }
+    return value;
+}
