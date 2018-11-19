@@ -1,3 +1,5 @@
+import sha1 from './sha1';
+
 /**
  * @param {boolean} separator 是否添加分隔符
  * 
@@ -196,11 +198,14 @@ export const getUrlParams = (key) => {
  * @returns {String} value
  */
 export const getToken = () => {
-    let myDate = new Date();
-    let month = myDate.getMonth()+1;
-    let time = myDate.getFullYear() +''+ month +''+ myDate.getDate() +''+ myDate.getHours(); 
-    let key = decodeURIComponent(__akey); //webpack打包
-    $value = sha1(time +''+ key);
-    console.log($value);
-    // return value;
+
+    let myDate = new Date(),
+        month = myDate.getUTCMonth() + 1,
+        time = myDate.getUTCFullYear() + '' + month + '' + myDate.getUTCDate() + '' + myDate.getUTCHours(),
+        key = decodeURIComponent(__akey), //webpack打包提供的
+        value = sha1(time + '' + key);
+        
+
+    return value;
+
 }

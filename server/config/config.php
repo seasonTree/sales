@@ -12,7 +12,7 @@
 // +----------------------------------------------------------------------
 // | 常用设置
 // +----------------------------------------------------------------------
-
+$basePath=json_decode(file_get_contents(dirname(Env::get('ROOT_PATH')).'/config.json'),true);
 return [
     'mail' => [
         'host' => 'md-hk-3.webhostbox.net',
@@ -43,6 +43,7 @@ return [
         'author'=>'',
         'db_index'=>0,
     ],
+    'api_key' => $basePath['api_key']
     
     
 ];
