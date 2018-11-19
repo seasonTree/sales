@@ -5,7 +5,6 @@ export function addSel(data) {
     return request({
         url: '/config/addConfig',
         method: 'get',
-        // data: data
     })
 }
 

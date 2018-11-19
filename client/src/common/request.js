@@ -6,6 +6,12 @@ const instance = axios.create({
     timeout: 6000 // 请求超时时间
 
 })
+
+let token=document.head.querySelector('meta[name="token"]')
+if (token) {
+    instance.defaults.headers.common['__token__'] = token.content;
+    console.log(token)
+}
 // request拦截器
 instance.interceptors.request.use(
     config => {
