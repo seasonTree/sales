@@ -16,7 +16,6 @@ class Channel
 
     public function index(){
     	//渠道
-    	// echo base64_encode('GbwS8JFxJfW3uj86S');
     	return view('/channel');
     }
 

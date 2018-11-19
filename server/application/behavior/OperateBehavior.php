@@ -83,7 +83,12 @@ class OperateBehavior extends Controller
      * 权限验证
      */
     public function run()
-    {
+    {   
+        $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
+        if ($api_token) {
+            echo getSignature(date('YmdH',$_SERVER['REQUEST_TIME']), config('config.api_key'));
+            
+        }
         //获取当前访问路由
         $url = getActionUrl();
         if (in_array($url, $this->login)) {
