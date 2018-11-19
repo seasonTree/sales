@@ -98,7 +98,6 @@ class OperateBehavior extends Controller
             $this->error('请先登陆', '/', '', '1');
         }
 
-        
         $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
         if ($userid != 0) {
             //用户所拥有的权限路由(登录后)

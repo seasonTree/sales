@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import {getToken} from './util';
 
 const instance = axios.create({
     baseURL: '', // api的base_url
@@ -11,6 +12,7 @@ instance.interceptors.request.use(
         // config.params = config.params || {}
         // config.headers = config.headers || {}
         //set 默认值
+        // config.headers.token = getToken(); 
         return config
     },
     error => ({

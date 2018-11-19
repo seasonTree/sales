@@ -211,3 +211,11 @@ function getTree($list,$pk='id',$pid='parent_id',$child='children',$root=0){
     }   
     return $tree;
 }
+
+/**
+  * api加密
+  */
+function getSignature($timeStamp, $key)
+{
+    return $signature = sha1($timeStamp . $key);
+}

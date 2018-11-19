@@ -15,6 +15,7 @@ class Team
 
 	public function lst(){
 		//团队列表
+		dump($_SESSION);exit;
 		$team = new UserModel();
 		$userid = Session::get('user_info')['id'];
 		$p_id = Session::get('user_info')['parent_id'];

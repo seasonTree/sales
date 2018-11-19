@@ -1,3 +1,4 @@
 {
-    "publicPath": "/client"
+    "publicPath": "/client",
+    "api_key": "R2J3UzhKRnhKZlczdWo4NlM=",
 }

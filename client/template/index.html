@@ -22,8 +22,9 @@
     <div class="content-header">
         KOOA - Sales Management System
     </div>
-
+    
     <v-form>
+        <input type="text" name="" v-model="data.__token__" value="{$Request.token}">
         <v-text-field label="用户名" v-model="data.username"></v-text-field>
         <v-text-field label="密码" v-model="data.password" :append-icon="show_pass ? 'visibility_off' : 'visibility'"
             :type="show_pass ? 'text' : 'password'" @click:append="show_pass = !show_pass"
