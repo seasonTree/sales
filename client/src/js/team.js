@@ -47,7 +47,7 @@ new Vue({
                 that.showAdd = true;
             }).catch((res) => {
                 this.$comp.toast({
-                    text: '获取二维码，请重试.',
+                    text: '获取二维码失败，请重试.',
                     color: 'error'
                 });
             });
@@ -213,7 +213,7 @@ new Vue({
         showPasswordDialog(item) {
             //显示修改密码界面
             let that = this;
-            that.user_id = item.id;
+            that.changePassword.id = item.id;
             that.showEditPassword = true;
         },
         commitPassword() {
@@ -221,7 +221,6 @@ new Vue({
             let that = this;
 
             that.changePassword.submitLoading = true;
-            that.changePassword.id = that.user_id;
 
             if (that.$refs.PassRef.validate()) {
                 that.$api.user.resetPassword({
@@ -233,20 +232,17 @@ new Vue({
                             text: res.msg,
                         });
 
-                        // that.globalShowMessage(true, res.msg, 'success');
-                        // that.changePassword.submitLoading = true;
-                        setTimeout(() => {
-                            that.showEditPassword = false;
-                        }, 3000);
+                        that.showEditPassword = false;
+                        that.$refs['editSalesForm'].reset();
+
                     } else {
                         this.$comp.toast({
                             text: res.msg,
                             color: 'error'
                         });
-
-                        // that.globalShowMessage(true, res.msg, 'error');
-                        that.changePassword.submitLoading = false;
                     }
+
+                    that.changePassword.submitLoading = false;
 
                 }).catch((res) => {
                     this.$comp.toast({
@@ -254,15 +250,11 @@ new Vue({
                         color: 'error'
                     });
 
-                    // that.globalShowMessage(true, '修改失败,请重试.', 'error');
-
                     this.changePassword.submitLoading = false;
                 });
             }
         }
     },
-
-
 
     data() {
         return {
@@ -270,11 +262,6 @@ new Vue({
             showAdd: false,
             showEditDialog: false,
             showEditPassword: false,
-
-            oldPassword: '',
-            newPassword: '',
-            newPassword2: '',
-            user_id: '',
 
             qr_code: {}, //邀请人信息
 
@@ -287,11 +274,9 @@ new Vue({
             changePassword: {
                 valid: false,
                 show: false,
-                passOldVis: false,
                 passVis: false,
                 passVis1: false,
                 password: '',
-                oldPassword: '',
                 rePassword: '',
                 submitLoading: false
             },
