@@ -80,22 +80,49 @@ class OperateBehavior extends Controller
     ];
 
     /**
+     *定义不需要token验证的路由(页面请求非api)
+     */
+    protected $untoken = [
+        'user/userinfo',//当前用户页面跳转
+        'message/index',//信息主页
+        '/',
+        'index/index',
+        'login/searchpass',
+        'index/browserchoose',
+        'config/showprotocol',
+        'register/index',//注册页面\
+        'login/loginout',
+        'channel/qrcode',//获取二维码信息
+        'user/upload',//上传
+
+    ];
+
+    /**
      * 权限验证
      */
     public function run()
     {   
-        $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
-        if ($api_token) {
-            date_default_timezone_set('UTC');
-            $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
-            
-            if ($api_token != $token) {
-                return json(['msg' => 'token无效','code' => 1]);
-            }
-        }
-
+        
         //获取当前访问路由
         $url = getActionUrl();
+        $page = Session::get('page') ? Session::get('page') : [];
+        $page = array_merge($this->untoken,$page);
+        $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
+        if (!in_array($url, $page)) {
+            if ($userid != 1) {
+                //超级管理员略过
+                $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
+                if (!$api_token) {
+                    $this->error('token不存在');
+                }
+                date_default_timezone_set('UTC');
+                $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
+                if ($api_token != $token) {
+                    $this->error('token无效');
+                }
+            }
+            
+        }
         if (in_array($url, $this->login)) {
             if (checkLogin() && $url != 'user/sendmessage') {
                 $this->redirect('user/userInfo');
@@ -108,7 +135,7 @@ class OperateBehavior extends Controller
             $this->error('请先登陆', '/', '', '1');
         }
 
-        $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
+        
         if ($userid != 0) {
             //用户所拥有的权限路由(登录后)
             $auth = Session::get('auth') ? Session::get('auth') : $this->unaudit;

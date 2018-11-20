@@ -195,11 +195,11 @@ export const getUrlParams = (key) => {
 /**
  * 
  * @param {Date} date 要格式的时间
- * @param {String} format 格式的模式
+ * @param {String} fmt 格式的模式
  * 
- * @returns 格式化后的代码
+ * @returns 格式化后的时间
  */
-export const formatDate = (date, format) => {
+export const formatDate = (date, fmt) => {
 
     //判断是否是日期
     if (isNaN(date) || isNaN(Date.parse(date))) {
@@ -207,16 +207,16 @@ export const formatDate = (date, format) => {
     }
 
     var o = {
-        "M+": this.getMonth() + 1, //月份   
-        "d+": this.getDate(), //日   
-        "h+": this.getHours(), //小时   
-        "m+": this.getMinutes(), //分   
-        "s+": this.getSeconds(), //秒   
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
-        "S": this.getMilliseconds() //毫秒   
+        "M+": date.getMonth() + 1, //月份   
+        "d+": date.getDate(), //日   
+        "h+": date.getHours(), //小时   
+        "m+": date.getMinutes(), //分   
+        "s+": date.getSeconds(), //秒   
+        "q+": Math.floor((date.getMonth() + 3) / 3), //季度   
+        "S": date.getMilliseconds() //毫秒   
     };
     if (/(y+)/.test(fmt))
-        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
@@ -226,11 +226,11 @@ export const formatDate = (date, format) => {
 /**
  * 
  * @param {Date} date 要格式的时间
- * @param {*} format 格式的模式
+ * @param {*} fmt 格式的模式
  * 
- * @returns 格式化后的代码
+ * @returns 格式化后的utc时间
  */
-export const formatUTCDate = (date, format) => {
+export const formatUTCDate = (date, fmt) => {
 
     //判断是否是日期
     if (isNaN(date) || isNaN(Date.parse(date))) {
@@ -238,16 +238,16 @@ export const formatUTCDate = (date, format) => {
     }
 
     var o = {
-        "M+": this.getUTCMonth() + 1, //月份   
-        "d+": this.getUTCDate(), //日   
-        "h+": this.getUTCHours(), //小时   
-        "m+": this.getMinutes(), //分   
-        "s+": this.getSeconds(), //秒   
-        "q+": Math.floor((this.getUTCMonth() + 3) / 3), //季度   
-        "S": this.getMilliseconds() //毫秒   
+        "M+": date.getUTCMonth() + 1, //月份   
+        "d+": date.getUTCDate(), //日   
+        "h+": date.getUTCHours(), //小时   
+        "m+": date.getMinutes(), //分   
+        "s+": date.getSeconds(), //秒   
+        "q+": Math.floor((date.getUTCMonth() + 3) / 3), //季度   
+        "S": date.getMilliseconds() //毫秒   
     };
     if (/(y+)/.test(fmt))
-        fmt = fmt.replace(RegExp.$1, (this.getUTCFullYear() + "").substr(4 - RegExp.$1.length));
+        fmt = fmt.replace(RegExp.$1, (date.getUTCFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
@@ -263,11 +263,9 @@ export const formatUTCDate = (date, format) => {
 export const getToken = () => {
 
     let myDate = new Date(),
-        month = myDate.getUTCMonth() + 1,
-        time = myDate.getUTCFullYear() + '' + month + '' + myDate.getUTCDate() + '' + myDate.getUTCHours(),
+        time = formatUTCDate(myDate,'yyyyMMddhh'),
         key = atob(__akey), //webpack打包提供的
         value = sha1(time + key);
-
     return value;
 
 }
