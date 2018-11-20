@@ -131,31 +131,27 @@ new Vue({
 
         showEditSales(item, show) {
             let that = this;
-            if (show) {
-                that.$api.user.getOneUser({
-                    data: item.id
-                }).then((res) => {
-                    if (res.code == 0) {
-                        that.editSales = res.data;
-                    } else {
-                        that.$comp.toast({
-                            text: res.msg || '获取数据失败，请重试.',
-                            color: 'error'
-                        });
-                    }
 
-                }).catch((res) => {
+            that.$api.user.getOneUser({
+                data: item.id
+            }).then((res) => {
+                if (res.code == 0) {
+                    that.editSales = res.data;
+                } else {
                     that.$comp.toast({
                         text: res.msg || '获取数据失败，请重试.',
                         color: 'error'
                     });
-                });
+                }
 
-                that.showEditDialog = true;
-            } else {
-                that.$refs['editSalesForm'].reset();
-                that.showEditDialog = false;
-            }
+            }).catch((res) => {
+                that.$comp.toast({
+                    text: res.msg || '获取数据失败，请重试.',
+                    color: 'error'
+                });
+            });
+
+            that.showEditDialog = true;
         },
 
         //提交修改销售的消息
@@ -173,8 +169,7 @@ new Vue({
                         text: '修改成功, 请等待审核通过.',
                     });
 
-                    that.$refs['editSalesForm'].reset();
-                    that.showEditDialog = false;
+                    that.closeDialog('editSales');
 
                 } else {
                     that.$comp.toast({
@@ -232,8 +227,7 @@ new Vue({
                             text: res.msg,
                         });
 
-                        that.showEditPassword = false;
-                        that.$refs['editSalesForm'].reset();
+                        that.closeDialog('editPass');
 
                     } else {
                         this.$comp.toast({
@@ -252,6 +246,18 @@ new Vue({
 
                     this.changePassword.submitLoading = false;
                 });
+            }
+        },
+
+        closeDialog(type) {
+            let that = this;
+
+            if ('editSales') {
+                that.$refs['editSalesForm'].reset();
+                that.showEditDialog = false;
+            } else if ('editPass') {
+                that.showEditPassword = false;
+                that.$refs['editSalesForm'].reset();
             }
         }
     },

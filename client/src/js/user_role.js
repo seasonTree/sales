@@ -107,9 +107,7 @@ new Vue({
 
                     that.getRemoteData();
 
-                    that.showAdd = false;
-
-                    that.$refs['addForm'].reset();
+                    that.closeDialog('add');
                 } else {
                     that.$comp.toast({
                         text: res.msg || '新增失败，请刷新后重试.',
@@ -144,9 +142,7 @@ new Vue({
 
                     that.getRemoteData();
 
-                    that.showEdit = false;
-
-                    that.$refs['editForm'].reset();
+                    that.closeDialog('edit');
                 } else {
                     that.$comp.toast({
                         text: res.msg || '修改失败，请刷新后重试.',
@@ -196,5 +192,17 @@ new Vue({
                 });
             });
         },
+
+        closeDialog(type){
+            let that = this;
+
+            if(type == 'add'){
+                that.showAdd = false;
+                that.$refs['addForm'].reset();
+            }else if(type == 'edit'){
+                that.showEdit = false;
+                that.$refs['editForm'].reset();
+            }
+        }
     }
 });

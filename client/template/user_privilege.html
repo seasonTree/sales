@@ -59,7 +59,7 @@
                 <v-btn color="s-primary" @click="addCommit()">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showAdd = false">
+                <v-btn color="primary" flat @click="closeDialog('add')">
                     取消
                 </v-btn>
             </v-card-actions>
@@ -87,7 +87,7 @@
                 <v-btn color="s-primary" @click="editCommit()">
                     确认
                 </v-btn>
-                <v-btn color="primary" flat @click="showEdit = false">
+                <v-btn color="primary" flat @click="closeDialog('edit')">
                     取消
                 </v-btn>
             </v-card-actions>

@@ -94,7 +94,7 @@
                         vpn_key
                     </v-icon>
 
-                    <v-icon v-if="!props.item.hidePre" @click.stop="showEditSales(props.item, true)" title="修改" class="mr-2">
+                    <v-icon v-if="!props.item.hidePre" @click.stop="showEditSales(props.item)" title="修改" class="mr-2">
                         edit
                     </v-icon>
 
@@ -173,7 +173,7 @@
             <v-btn color="s-primary" @click="editSalesHandler" :loading="disabled.editSales" :disabled="disabled.editSales">
                 确认
             </v-btn>
-            <v-btn color="primary" flat @click="showEditSales(null, false)" :disabled="disabled.editSales">
+            <v-btn color="primary" flat @click="closeDialog('editSales')" :disabled="disabled.editSales">
                 取消
             </v-btn>
         </v-card-actions>
@@ -206,7 +206,7 @@
             <v-btn color="s-primary" @click="commitPassword">
                 确认
             </v-btn>
-            <v-btn color="primary" flat @click="showEditPassword = false">
+            <v-btn color="primary" flat @click="closeDialog('editPass')">
                 取消
             </v-btn>
         </v-card-actions>
