@@ -252,12 +252,12 @@ new Vue({
         closeDialog(type) {
             let that = this;
 
-            if ('editSales') {
+            if (type == 'editSales') {
                 that.$refs['editSalesForm'].reset();
                 that.showEditDialog = false;
-            } else if ('editPass') {
+            } else if ( type == 'editPass') {
                 that.showEditPassword = false;
-                that.$refs['editSalesForm'].reset();
+                that.$refs['PassRef'].reset();
             }
         }
     },
