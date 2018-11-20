@@ -90,26 +90,32 @@ new Vue({
         del(id, index) {
             let that = this;
 
-            that.$api.protocol.del({
-                data: id
-            }).then((res) => {
-                if (res.code == 0) {
-                    that.$comp.toast({
-                        text: res.msg,
-                    });
+            that.$comp.confirm({
+                title: '提示',
+                text: '确认要删除吗?',
+                ok() {
+                    that.$api.protocol.del({
+                        data: id
+                    }).then((res) => {
+                        if (res.code == 0) {
+                            that.$comp.toast({
+                                text: res.msg,
+                            });
 
-                    that.tdata.splice(index, 1);
-                } else {
-                    that.$comp.toast({
-                        text: res.msg || '删除失败，请重试.',
-                        color: 'error'
+                            that.tdata.splice(index, 1);
+                        } else {
+                            that.$comp.toast({
+                                text: res.msg || '删除失败，请重试.',
+                                color: 'error'
+                            });
+                        }
+                    }).catch((res) => {
+                        that.$comp.toast({
+                            text: res.msg || '删除失败，请重试.',
+                            color: 'error'
+                        });
                     });
                 }
-            }).catch((res) => {
-                that.$comp.toast({
-                    text: res.msg || '删除失败，请重试.',
-                    color: 'error'
-                });
             });
         },
 
@@ -138,8 +144,8 @@ new Vue({
             let that = this;
             that.data.id = id;
             that.$api.protocol.getContent({
-                    data: that.data
-                }).then((res) => {
+                data: that.data
+            }).then((res) => {
                 if (res.code == 0) {
                     that.editItem.id = res.data.id;
                     that.editItem.title = res.data.title;
@@ -180,8 +186,8 @@ new Vue({
                 content: ''
             },
 
-            data:{
-                id:''
+            data: {
+                id: ''
             },
 
             showAdd: false,

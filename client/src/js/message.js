@@ -35,7 +35,7 @@ new Vue({
             that.$api.message.isRead({
                 data: citem.id
             }).then((res) => {
-                if(res.code == 0){
+                if (res.code == 0) {
                     // var mcount = that.global.messageCount;
 
                     // that.global.messageCount = mcount-- < 0? 0: mcount --;
@@ -45,35 +45,44 @@ new Vue({
                     //标记已读
                     item.status = 1;
                 }
-            }).catch((res) => { });
+            }).catch((res) => {});
         },
 
         delMessage(id, index) {
             let that = this;
-            that.$api.message.delMessage({
-                data: id
-            }).then((res) => {
-                if (res.code == 0) {
-                    that.$comp.toast({
-                        text: res.msg,
-                    });
 
-                    that.tdata.splice(index, 1);
-                } else {
-                    that.$comp.toast({
-                        text: res.msg || '删除失败，请重试.',
-                        color: 'error'
+            that.$comp.confirm({
+                title: '提示',
+                text: '确认要删除吗?',
+                ok() {
+                    that.$api.message.delMessage({
+                        data: id
+                    }).then((res) => {
+                        if (res.code == 0) {
+                            that.$comp.toast({
+                                text: res.msg,
+                            });
+
+                            that.tdata.splice(index, 1);
+                        } else {
+                            that.$comp.toast({
+                                text: res.msg || '删除失败，请重试.',
+                                color: 'error'
+                            });
+                        }
+                    }).catch((res) => {
+                        that.$comp.toast({
+                            text: res.msg || '删除失败，请重试.',
+                            color: 'error'
+                        });
                     });
                 }
-            }).catch((res) => {
-                that.$comp.toast({
-                    text: res.msg || '删除失败，请重试.',
-                    color: 'error'
-                });
             });
+
+
         },
 
-        closeDialog(){
+        closeDialog() {
             let that = this;
             that.message.show = false;
             that.message.id = null;
@@ -92,8 +101,7 @@ new Vue({
                 content: ''
             },
 
-            theader: [
-                {
+            theader: [{
                     text: '标题',
                     align: 'left',
                     value: 'title',

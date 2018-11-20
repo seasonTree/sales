@@ -107,24 +107,26 @@ div {
 }
 
 .theme--light.v-toolbar .theme--light.v-btn,
-.toolbar-dropdown .v-list__tile__title,
-.toolbar-subdropdown .v-list__tile__title,
-.language-dropdown .v-list__tile__title {
+.toolbar-subdropdown .v-list__tile,
+.language-dropdown .v-list__tile {
     font-size: 16px;
 }
 
-.toolbar-dropdown .v-list__tile__action,
-.toolbar-subdropdown .v-list__tile__action {
-    min-width: auto;
-}
+// .toolbar-dropdown .v-list__tile__action,
+// .toolbar-subdropdown .v-list__tile__action {
+//     min-width: auto;
+// }
 
-.toolbar-dropdown .v-list__tile__title {
-    text-align: right;
-}
+// .toolbar-dropdown .v-list__tile {
+//     text-align: right;
+// }
 
-.toolbar-subdropdown .v-list__tile__title,
-.language-dropdown .v-list__tile__title {
+.toolbar-subdropdown .v-list__tile,
+.language-dropdown .v-list__tile {
     text-align: center;
+    display: inline-block;
+    line-height: 40px;
+    width: 100%;
 }
 
 .toolbar-icon {

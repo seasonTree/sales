@@ -1,7 +1,9 @@
 import toast from './toast';
+import confirm from './confirm';
 
 const comp = {
-    toast
+    toast,
+    confirm
 }
 
 const install = function (Vue) {

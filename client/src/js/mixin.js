@@ -57,13 +57,18 @@ const mixin = {
                     commision: false,
                     setting: false,
                     audit: false
-                }
+                },
+
+                subSelect: {}
             }
         };
     },
 
     mounted() {
         this._checkMessage();
+
+        this.global.subSelect['23'] = 23;
+        this.global.subSelect['7'] = 7;        
     },
 
     watch: {
@@ -143,9 +148,9 @@ const mixin = {
 
                         // that.globalShowMessage(true, res.msg, 'success');
 
-                        setTimeout(() => {
-                            that.global.changePassword.show = false;
-                        }, 3000);
+                        // setTimeout(() => {
+                        that.global.changePassword.show = false;
+                        // }, 3000);
                     } else {
                         this.$comp.toast({
                             text: res.msg,

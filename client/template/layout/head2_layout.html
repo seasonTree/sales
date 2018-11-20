@@ -14,83 +14,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-sm-and-down">
-            <!-- <v-btn href="{:url('User/personInfo')}" flat>用户中心</v-btn> -->
 
-
-            <!--          <v-btn href="{:url('Team/index')}" flat :class="{'toolbar-active': global.currentView == 'team'}">团队</v-btn>
-            <v-btn href="{:url('Channel/index')}" flat :class="{'toolbar-active': global.currentView == 'channel'}">渠道</v-btn>
-            <v-btn href="{:url('Achievement/index')}" flat :class="{'toolbar-active': global.currentView == 'achievement'}">业绩</v-btn>
-            <v-btn href="{:url('Transaction/index')}" flat :class="{'toolbar-active': global.currentView == 'transaction'}">交易报告</v-btn> -->
-
-
-
-            <!-- <v-btn href="{:url('Achievement/distrib\utionNetwork')}" flat :class="{'toolbar-active': global.currentView == 'distributionnetwork'}">销售网络</v-btn> -->
-
-            <!--  <v-btn href="{:url('Message/index')}" flat :class="{'toolbar-active': global.currentView == 'message'}">
-                消息
-                <v-badge right class="toolbar-message-tip" v-if="global.messageCount > 0">
-                    <span slot="badge">{{global.messageCount}}</span>
-                </v-badge>
-            </v-btn> -->
-
-            <!-- </v-toolbar-items> -->
-            <!-- <v-toolbar-items class="hidden-sm-and-down">
-
-            <v-menu offset-y>
-                <v-btn flat primary slot="activator" :class="{'toolbar-active': global.viewSelect.system }">系统信息</v-btn>
-                <v-list dense class="toolbar-dropdown">
-                    {php}$data =model('User')->getBtns();
-                    {/php}
-                    <?php foreach($data as $k=>$v):?>
-                    <div>
-                        <v-menu offset-x left open-on-hover>
-                            <v-list-tile slot="activator" @click="" :class="{'sub-item-select': global.viewSelect.user}">
-                                <v-list-tile-action>
-                                    <v-icon>chevron_left</v-icon>
-                                </v-list-tile-action>
-
-                                <v-list-tile-title>
-                                    {$v['pri_name']}
-                                </v-list-tile-title>
-
-                            </v-list-tile>
-                            <v-list dense class="toolbar-subdropdown">
-                                <?php if(isset($v['children'])):?>
-                                <?php foreach($v['children'] as $k1=>$v1):?>
-                                <?php $url =$v1['controller_name'].'/'.$v1['action_name']; $url=url($url);?>
-                                <v-list-tile href="{$url}" :class="{'sub-item-select': global.currentView == '<?php echo $v1['controller_name']?>'}">
-                                    <v-list-tile-title>
-                                        {$v1['pri_name']}
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                                <?php endforeach;?>
-                                <?php endif;?>
-                            </v-list>
-                        </v-menu>
-                    </div>
-                    <?php endforeach;?>
-                </v-list>
-            </v-menu> -->
-
-
-            <!-- <v-menu offset-y>
-                <v-btn flat primary slot="activator" :class="{'toolbar-active': global.currentView == 'userinfo'}">用户中心</v-btn>
-                <v-list dense class="language-dropdown">
-                    <v-list-tile href="{:url('user/userInfo')}" :class="{'sub-item-select': global.currentView == 'userinfo'}">
-                        <v-list-tile-title>
-                            个人资料
-                        </v-list-tile-title>
-                    </v-list-tile>
-
-                    <v-list-tile @click="global.changePassword.show = true">
-                        <v-list-tile-title>修改密码</v-list-tile-title>
-                    </v-list-tile>
-
-                    <v-list-tile href="{:url('Login/loginOut')}">
-                        <v-list-tile-title>登出</v-list-tile-title>
-                    </v-list-tile>
-                </v-list>
-            </v-menu> -->
             <?php $data = model('User')->getBtns();?>
             {volist name = "data" id = "v" }
 
@@ -113,16 +37,14 @@
             {else/}
             <v-toolbar-items>
                 <v-menu offset-y>
-                    <v-btn flat primary slot="activator">{$v['pri_name']}</v-btn>
+                    <v-btn flat primary slot="activator" :class="{'toolbar-active': global.subSelect['<?php echo $v['id'];?>'] == '<?php echo $v['id'];?>' }">{$v['pri_name']}</v-btn>
                     {if (isset($v['children']))}
                     {volist name = "v['children']" id = "list"}
                     {if (isset($list['children']))}
                     {volist name = "list['children']" id = "b"}
                     {if ($b['action_name'] == $list['action_name']) }
-                    <v-list dense class="language-dropdown">
-
-                        <v-list-tile href="{:url($list['controller_name'].'/'.$list['action_name'])}">{$list['pri_name']}</v-list-tile>
-
+                    <v-list dense class="toolbar-subdropdown">
+                        <v-list-tile :class="{'sub-item-select': global.subSelect['<?php echo $list['id'];?>'] == '<?php echo $list['id'];?>' }" href="{:url($list['controller_name'].'/'.$list['action_name'])}">{$list['pri_name']}</v-list-tile>
                     </v-list>
                     {/if}
                     {/volist}
@@ -133,31 +55,25 @@
             </v-toolbar-items>
 
             {/if}
-
+            <!-- <?php dump($data);?> -->
 
             {/volist}
 
-
-
-
             <v-toolbar-items>
-                <!-- <?php dump($data);?> -->
                 <v-menu offset-y>
                     <v-btn flat primary slot="activator">语言</v-btn>
                     <v-list dense class="language-dropdown">
 
                         <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" @click="">
-                            <v-list-tile-title>简体中文</v-list-tile-title>
+                            简体中文
                         </v-list-tile>
 
                         <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="">
-                            <v-list-tile-title>
-                                繁体中文
-                            </v-list-tile-title>
+                            繁体中文
                         </v-list-tile>
 
                         <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" @click="">
-                            <v-list-tile-title>English</v-list-tile-title>
+                            English
                         </v-list-tile>
                     </v-list>
                 </v-menu>
@@ -169,18 +85,16 @@
                     <v-btn flat primary slot="activator">个人中心</v-btn>
                     <v-list dense class="language-dropdown">
 
-                        <v-list-tile :class="{'sub-item-select': global.language == 'zh-cn' }" href="{:url('user/userInfo')}">
-                            <v-list-tile-title>个人资料</v-list-tile-title>
+                        <v-list-tile :class="{'sub-item-select': global.currentView == 'userinfo' }" href="{:url('user/userInfo')}">
+                            个人资料
                         </v-list-tile>
 
-                        <v-list-tile :class="{'sub-item-select': global.language == 'zh-hk' }" @click="global.changePassword.show = true">
-                            <v-list-tile-title>
-                                修改密码
-                            </v-list-tile-title>
+                        <v-list-tile @click="global.changePassword.show = true">
+                            修改密码
                         </v-list-tile>
 
-                        <v-list-tile :class="{'sub-item-select': global.language == 'en-us' }" href="{:url('login/loginOut')}">
-                            <v-list-tile-title>登出</v-list-tile-title>
+                        <v-list-tile href="{:url('login/loginOut')}">
+                            登出
                         </v-list-tile>
                     </v-list>
                 </v-menu>
@@ -198,9 +112,9 @@
 
         <v-card-text>
             <v-form ref="globalPassRef" vaild="global.changePassword.valid">
-                <v-text-field label="旧密码" :append-icon="global.changePassword.passOldVis ? 'visibility_off' : 'visibility'" v-model="global.changePassword.oldPassword"
-                    :type="global.changePassword.passOldVis ? 'text' : 'password'" :rules="[v => !!v || '旧密码是必填']" 
-                    @click:append="global.changePassword.passOldVis = !global.changePassword.passOldVis"></v-text-field>
+                <v-text-field label="旧密码" :append-icon="global.changePassword.passOldVis ? 'visibility_off' : 'visibility'"
+                    v-model="global.changePassword.oldPassword" :type="global.changePassword.passOldVis ? 'text' : 'password'"
+                    :rules="[v => !!v || '旧密码是必填']" @click:append="global.changePassword.passOldVis = !global.changePassword.passOldVis"></v-text-field>
 
                 <v-text-field label="密码" :append-icon="global.changePassword.passVis ? 'visibility_off' : 'visibility'"
                     v-model="global.changePassword.password" :type="global.changePassword.passVis ? 'text' : 'password'"
