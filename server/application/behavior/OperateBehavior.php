@@ -106,21 +106,22 @@ class OperateBehavior extends Controller
         //获取当前访问路由
         $url = getActionUrl();
         $page = Session::get('page') ? Session::get('page') : [];
-        // dump($page);exit;
         $page = array_merge($this->untoken,$page);
-
+        $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
         if (!in_array($url, $page)) {
-            $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
-            if (!$api_token) {
-                $this->error('token不存在');
+            if ($userid != 1) {
+                //超级管理员略过
+                $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
+                if (!$api_token) {
+                    $this->error('token不存在');
+                }
+                date_default_timezone_set('UTC');
+                $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
+                if ($api_token != $token) {
+                    $this->error('token无效');
+                }
             }
-            date_default_timezone_set('UTC');
-            $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
-            // dump($_SERVER);
-            // echo $token;
-            if ($api_token != $token) {
-                $this->error('token无效');
-            }
+            
         }
         if (in_array($url, $this->login)) {
             if (checkLogin() && $url != 'user/sendmessage') {
@@ -134,7 +135,7 @@ class OperateBehavior extends Controller
             $this->error('请先登陆', '/', '', '1');
         }
 
-        $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
+        
         if ($userid != 0) {
             //用户所拥有的权限路由(登录后)
             $auth = Session::get('auth') ? Session::get('auth') : $this->unaudit;
