@@ -140,36 +140,43 @@ new Vue({
         },
         del(id) {
             let that = this;
-            that.$api.user.del({
-                data: id
-            }).then((res) => {
 
-                if (res.code == 0) {
+            that.$comp.confirm({
+                title: '提示',
+                text: '确认要删除吗?',
+                ok() {
+                    that.$api.user.del({
+                        data: id
+                    }).then((res) => {
 
-                    that.$comp.toast({
-                        text: res.msg || '删除成功.',
-                    });
+                        if (res.code == 0) {
 
-                    for (var i = 0; i < that.tdata.length; i++) {
-                        var item = that.tdata[i];
+                            that.$comp.toast({
+                                text: res.msg || '删除成功.',
+                            });
 
-                        if (item.id == id) {
-                            that.tdata.splice(i, 1);
-                            break;
+                            for (var i = 0; i < that.tdata.length; i++) {
+                                var item = that.tdata[i];
+
+                                if (item.id == id) {
+                                    that.tdata.splice(i, 1);
+                                    break;
+                                }
+                            }
+                        } else {
+                            that.$comp.toast({
+                                text: res.msg || '删除失败，请刷新后重试.',
+                                color: 'error',
+                            });
                         }
-                    }
-                } else {
-                    that.$comp.toast({
-                        text: res.msg || '删除失败，请刷新后重试.',
-                        color: 'error',
+
+                    }).catch((res) => { //function(data){}
+                        that.$comp.toast({
+                            text: '删除失败，请刷新后重试.',
+                            color: 'error',
+                        });
                     });
                 }
-
-            }).catch((res) => { //function(data){}
-                that.$comp.toast({
-                    text: '删除失败，请刷新后重试.',
-                    color: 'error',
-                });
             });
         },
 
