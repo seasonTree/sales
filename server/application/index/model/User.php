@@ -120,9 +120,8 @@ class User extends Model
                     ->join('user_role ur', 'u.id=ur.user_id')
                     ->join('role_pri rp', 'ur.role_id=rp.role_id')
                     ->join('privilege p', 'p.id=rp.pri_id')
-                    ->field('p.controller_name,p.action_name')
+                    ->field('p.controller_name,p.action_name,p.path')
                     ->where('u.id', $id)
-                    ->where($where)
                     ->select();
         foreach ($result as $k) {
             $url[] = strtolower($k['controller_name'] . '/' . $k['action_name']);

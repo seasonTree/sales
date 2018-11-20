@@ -77,19 +77,21 @@ class User
 		//重置密码
 		$data = input('post.data');
 		$user_model = new UserModel();
-		if ($data['oldPassword'] == '') {
-			return json(['code' => 7,'msg' => '旧密码不能为空']);
-		}
 
-		if (!isset($data['id'])) {
-			$data['id'] = Session::get('user_info')['id'];
-		}
+        if (!isset($data['id'])) {
+            $data['id'] = Session::get('user_info')['id'];
 
-		$password = $user_model->findPassword($data['id']);
+            if ($data['oldPassword'] == '') {
+                return json(['code' => 7,'msg' => '旧密码不能为空']);
+            }
 
-		if (!password_verify( $data['oldPassword'],$password)) {
-			return json(['code' => 8,'msg' => '旧密码不正确']);
-		}
+            $password = $user_model->findPassword($data['id']);
+
+            if (!password_verify( $data['oldPassword'],$password)) {
+                return json(['code' => 8,'msg' => '旧密码不正确']);
+            }
+
+        }
 
 		if ($data['password'] == '') {
 			return json(['code' => 1,'msg' => '密码不能为空']);

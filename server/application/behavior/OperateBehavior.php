@@ -92,6 +92,8 @@ class OperateBehavior extends Controller
         'config/showprotocol',
         'register/index',//注册页面\
         'login/loginout',
+        'channel/qrcode',//获取二维码信息
+        'user/upload',//上传
 
     ];
 
@@ -104,6 +106,7 @@ class OperateBehavior extends Controller
         //获取当前访问路由
         $url = getActionUrl();
         $page = Session::get('page') ? Session::get('page') : [];
+        // dump($page);exit;
         $page = array_merge($this->untoken,$page);
 
         if (!in_array($url, $page)) {
@@ -112,7 +115,6 @@ class OperateBehavior extends Controller
                 $this->error('token不存在');
             }
             date_default_timezone_set('UTC');
-            echo date('YmdH',time());exit;
             $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
             // dump($_SERVER);
             // echo $token;
