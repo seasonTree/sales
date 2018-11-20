@@ -12,7 +12,6 @@ class User extends Validate{
     protected $rule=[
         'username'=>'require',
         'password'=>'require|confirm',
-        '__token__'=>'require|token',
 
     ];
     protected $message=[
