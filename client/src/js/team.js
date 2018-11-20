@@ -257,7 +257,7 @@ new Vue({
                 that.showEditDialog = false;
             } else if ('editPass') {
                 that.showEditPassword = false;
-                that.$refs['editSalesForm'].reset();
+                that.$refs['PassRef'].reset();
             }
         }
     },
