@@ -29,3 +29,12 @@ export function del(data){
         data: data
     })
 }
+
+export function getSelect(data){
+    return request({
+        url: '/privilege/getSelect',
+        method: 'post',
+        data: data
+    })
+}
+

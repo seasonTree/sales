@@ -86,7 +86,7 @@ export const buildTree = (data, parentField, idField, parentID, callBack) => {
  */
 export const setCookie = (name, value, exp) => {
 
-    let now = Date.now;
+    let now = new Date();
 
     if (typeof exp == 'number') {
         exp = now.setTime(now + exp);
@@ -94,7 +94,7 @@ export const setCookie = (name, value, exp) => {
         exp = now.setTime(now + 30 * 24 * 60 * 60 * 1000);
     }
 
-    document.cookie = name + "=" + escape(value) + ";expires=" + (new Date(exp)).toGMTString();
+    document.cookie = name + "=" + escape(value) + ";path/;expires=" + (new Date(exp)).toGMTString();
 }
 
 /**
