@@ -1,5 +1,6 @@
 import {
-    getCookie
+    getCookie,
+    setCookie
 } from '../common/util';
 
 const base = {
@@ -66,9 +67,7 @@ const mixin = {
 
     mounted() {
         this._checkMessage();
-
-        this.global.subSelect['23'] = 23;
-        this.global.subSelect['7'] = 7;        
+        this._setMenuSelect();
     },
 
     watch: {
@@ -104,6 +103,18 @@ const mixin = {
     },
 
     methods: {
+
+        _setMenuSelect(){
+            let that = this,
+                mstring = window.sessionStorage.getItem('menu'),
+                arr = [];
+
+            if(mstring){
+                arr = mstring.split(',')
+            }
+
+            that.subSelect = arr;
+        },  
 
         //检查是否有新的消息
         _checkMessage() {
@@ -173,6 +184,21 @@ const mixin = {
                 });
             }
         },
+
+        globalMenu(id, parent_id, url){
+            let arr = [];
+
+            if(id){
+                arr.push(id);
+            }
+
+            if(parent_id){
+                arr.push(parent_id);
+            }
+
+            window.sessionStorage.setItem('menu', arr.join(','));
+            window.location.href = url;
+        }
     }
 };
 

@@ -70,4 +70,10 @@ class Privilege extends Controller
 
     }
 
+    public function getSelect(){
+        //获取选中
+        $id = input('post.data');
+        
+    }
+
 }
