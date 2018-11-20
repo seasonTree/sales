@@ -114,6 +114,7 @@ class User extends Model
     private function _getAuth($id)
     {
         $url = [];
+        $page = [];
         $result = Db::name('user')
                     ->alias('u')
                     ->join('user_role ur', 'u.id=ur.user_id')
@@ -121,11 +122,16 @@ class User extends Model
                     ->join('privilege p', 'p.id=rp.pri_id')
                     ->field('p.controller_name,p.action_name')
                     ->where('u.id', $id)
+                    ->where($where)
                     ->select();
         foreach ($result as $k) {
             $url[] = strtolower($k['controller_name'] . '/' . $k['action_name']);
+            if ($k['path'] == 2) {
+                //这里存放页面
+                $page[] = strtolower($k['controller_name'] . '/' . $k['action_name']);
+            }
         }
-        
+        Session::set('page',$page);
         return $url;
     }
 

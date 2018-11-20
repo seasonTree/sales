@@ -204,6 +204,8 @@ export const getToken = () => {
         time = myDate.getUTCFullYear() + '' + month + '' + myDate.getUTCDate() + '' + myDate.getUTCHours(),
         key = atob(__akey), //webpack打包提供的
         value = sha1(time + key);
+        // console.log(time);
+        console.log(myDate.getUTCHours().toString().replace(/^(\d{1})\b/, '0' + RegExp.$1));
 
     return value;
 

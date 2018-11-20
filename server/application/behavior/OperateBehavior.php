@@ -80,22 +80,46 @@ class OperateBehavior extends Controller
     ];
 
     /**
+     *定义不需要token验证的路由(页面请求非api)
+     */
+    protected $untoken = [
+        'user/userinfo',//当前用户页面跳转
+        'message/index',//信息主页
+        '/',
+        'index/index',
+        'login/searchpass',
+        'index/browserchoose',
+        'config/showprotocol',
+        'register/index',//注册页面\
+        'login/loginout',
+
+    ];
+
+    /**
      * 权限验证
      */
     public function run()
     {   
-        $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
-        if ($api_token) {
-            date_default_timezone_set('UTC');
-            $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
-            
-            if ($api_token != $token) {
-                return json(['msg' => 'token无效','code' => 1]);
-            }
-        }
-
+        
         //获取当前访问路由
         $url = getActionUrl();
+        $page = Session::get('page') ? Session::get('page') : [];
+        $page = array_merge($this->untoken,$page);
+
+        if (!in_array($url, $page)) {
+            $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
+            if (!$api_token) {
+                $this->error('token不存在');
+            }
+            date_default_timezone_set('UTC');
+            echo date('YmdH',time());exit;
+            $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
+            // dump($_SERVER);
+            // echo $token;
+            if ($api_token != $token) {
+                $this->error('token无效');
+            }
+        }
         if (in_array($url, $this->login)) {
             if (checkLogin() && $url != 'user/sendmessage') {
                 $this->redirect('user/userInfo');
