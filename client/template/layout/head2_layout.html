@@ -15,7 +15,7 @@
 
         <v-toolbar-items class="hidden-sm-and-down">
 
-            <?php $data = model('User')->getBtns();?>
+            <?php $data = model('User')->getBtns(); $pArr = []; ?>
             {volist name = "data" id = "v" }
 
             {if ($v['path'] == 2)}
@@ -36,6 +36,7 @@
             {/if}
             {else/}
 
+            <?php $pArr[$v['id']] = []; ?>
             <v-toolbar-items>
                 <v-menu offset-y>
                     <v-btn flat primary slot="activator" :class="{'toolbar-active': global.subSelect['<?php echo $v['id'];?>'] == '<?php echo $v['id'];?>' }">{$v['pri_name']}</v-btn>
@@ -45,7 +46,12 @@
                     {volist name = "list['children']" id = "b"}
                     {if ($b['action_name'] == $list['action_name']) }
                     <v-list dense class="toolbar-subdropdown">
-                        <v-list-tile :class="{'sub-item-select': global.subSelect['<?php echo $list['id'];?>'] == '<?php echo $list['id'];?>' }" href="javascript:void(0)" @click="globalMenu({$list['id']},{$list['parent_id']},'/{$list['controller_name'].'/'.$list['action_name']}')">{$list['pri_name']}</v-list-tile>
+
+                        <!-- TODO -->
+                        <?php array_push($pArr[$v['id']], $list['controller_name'].'/'.$list['action_name']);?>
+
+                        <v-list-tile :class="{'sub-item-select': global.subSelect['<?php echo $list['id'];?>'] == '<?php echo $list['id'];?>' }"
+                            href="javascript:void(0)" @click="globalMenu({$list['id']},{$list['parent_id']},'/{$list['controller_name'].'/'.$list['action_name']}')">{$list['pri_name']}</v-list-tile>
                     </v-list>
                     {/if}
                     {/volist}
@@ -59,6 +65,8 @@
             <!-- <?php dump($data);?> -->
 
             {/volist}
+
+            <!-- <?php echo dump(json_encode($pArr));?> -->
 
             <v-toolbar-items>
                 <v-menu offset-y>
@@ -146,4 +154,9 @@
 {/block}
 
 {block name="_script"}
+<script>
+    // TODO
+    window._menu = '<?php echo dump(json_encode($pArr));?>';
+</script>
+
 {/block}

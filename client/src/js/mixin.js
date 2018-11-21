@@ -185,20 +185,23 @@ const mixin = {
             }
         },
 
-        globalMenu(id, parent_id, url){
-            let arr = [];
+        // globalMenu(id, parent_id, url){
+        //     let arr = [];
+        //         // herf = url.replace(/(\.html|\/index.html|\/index)$/, ''),
+        //         // menu = href.split('/').pop().toLocaleLowerCase(),
+        //         // smenu = window.sessionStorage.getItem('menu'),
+        //         // mObj = null;
 
-            if(id){
-                arr.push(id);
-            }
+        //     if(id){
+        //         arr.push(id);
+        //     }
 
-            if(parent_id){
-                arr.push(parent_id);
-            }
-
-            window.sessionStorage.setItem('menu', arr.join(','));
-            window.location.href = url;
-        }
+        //     if(parent_id){
+        //         arr.push(parent_id);
+        //     }
+        //     window.sessionStorage.setItem('menu', arr.join(','));
+        //     window.location.href = url;
+        // }
     }
 };
 
