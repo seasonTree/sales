@@ -42,7 +42,7 @@
                 <td class="text-xs-left">{{ props.item.role_name }}</td>
                 <td class="text-xs-left">{{ props.item.phone }}</td>
                 <td class="text-xs-center">
-                    <v-btn color="s-primary" class="mr-0" @click="viewAudit(props.item.id)">查看明细</v-btn>
+                    <v-btn color="s-primary" class="mr-0" @click.stop="viewAudit(props.item.id)">查看明细</v-btn>
                 </td>
             </tr>
         </template>
@@ -156,8 +156,9 @@
 
         <v-card-actions class="dialog-foot blue-grey lighten-5">
             <v-spacer></v-spacer>
-            <v-btn color="s-primary" @click="auditCommit(viewAuditInfo.user_id)" :loading="agreeDisabled" :disabled="agreeDisabled || disagressDisabled">审核通过</v-btn>
-            <v-btn color="error" @click="auditNotPs(viewAuditInfo.user_id)" :loading="disagressDisabled" :disabled="agreeDisabled || disagressDisabled">
+
+            <v-btn v-if="viewAuditInfo.status == 0" color="s-primary" @click="auditCommit(viewAuditInfo.user_id)" :loading="agreeDisabled" :disabled="agreeDisabled || disagressDisabled">审核通过</v-btn>
+            <v-btn v-if="viewAuditInfo.status == 0" color="error" @click="auditNotPs(viewAuditInfo.user_id)" :loading="disagressDisabled" :disabled="agreeDisabled || disagressDisabled">
                 审核不通过
             </v-btn>
 

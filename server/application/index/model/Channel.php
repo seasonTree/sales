@@ -163,5 +163,17 @@ class Channel extends Model
         return $res;
     }
 
+    public function getPfmObj($where){
+        //获取业绩目标
+        $res = Channel::where($where)->sum('chan_pfm_obj');
+        return $res;
+    }
+
+    public function getDocNum($where){
+        //获取医生目标
+        $res = Channel::where($where)->sum('chan_doc_num');
+        return $res;
+    }
+
 
 }

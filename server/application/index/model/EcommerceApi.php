@@ -17,4 +17,16 @@ class EcommerceApi extends Model{
         return $res;
     }
 
+    public function getEcommerce($where){
+    	//获取数据
+    	$res = EcommerceApi::alias('a')
+    					   ->join('sales_tran_api b','a.userid = b.userId','left')
+    					   ->field('a.unitprice,a.quantity,a.pid')
+    					   ->where($where)
+    					   ->group('a.id')
+    					   ->select()
+    					   ->toArray();
+    	return $res;
+    }
+
 }

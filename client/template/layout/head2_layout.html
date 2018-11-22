@@ -155,8 +155,8 @@
 
 {block name="_script"}
 <script>
-    // TODO
-    window._menu = '<?php echo dump(json_encode($pArr));?>';
+    
+    window._menu = JSON.parse('<?php echo json_encode($pArr);?>');
 </script>
 
 {/block}

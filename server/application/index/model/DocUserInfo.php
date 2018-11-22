@@ -56,4 +56,10 @@ class DocUserInfo extends Model
 
         return $data;
     }
+
+    public function getDocData($where){
+        //获取医生们的数据集合
+        $res = DocUserInfo::field('user_id,firstName,lastName')->where($where)->select()->toArray();
+        return $res;
+    }
 }

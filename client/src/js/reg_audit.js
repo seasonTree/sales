@@ -12,6 +12,38 @@ new Vue({
         that.getReomteData();
     },
 
+
+    watch:{
+
+        currentDataType: {
+            
+            handler(newValue, oldValue) {
+
+                let that = this;
+
+                // if (newValue == 0) {
+                //     // that.theader = that.transactionHead;
+                // } else if (newValue == 1) {
+                //     // that.theader = that.registrationHead;
+                // }
+
+                // if(this.firstLoading){
+                //     return;
+                // }
+
+                // that.setExportUrl();
+
+                this.pager.index = 1;
+
+                that.getReomteData();
+                // that.getReomteData();
+                },
+                // immediate: true
+            },
+
+    },
+
+
     methods: {
 
         getReomteData() {
@@ -193,18 +225,22 @@ new Vue({
 
             tableLoading: false,
 
-            currentDataType: 1,
+            currentDataType: 0,
             tableType: [{
                     text: '全部',
-                    value: 0
-                },
-                {
-                    text: '未审核',
-                    value: 1
+                    value: 100
                 },
                 {
                     text: '待审核',
-                    value: 2
+                    value: 0
+                },
+                {
+                    text: '已通过',
+                    value: 1
+                },
+                {
+                    text: '未通过',
+                    value: -1
                 },
             ],
 

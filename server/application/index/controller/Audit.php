@@ -17,8 +17,16 @@ class Audit
     	//注册列表
     	$user_model = new UserModel();
 
+        $get = input('get.');
+
     	try {
-    			$data = $user_model->getRegUser();
+                if ($get['type'] == 100) {
+                    $data = $user_model->getRegUser();
+                }
+                else{
+                    $data = $user_model->getRegUser(array('status' => $get['type']));
+                }
+    			
 
 	        } catch (\Exception $e) {
 

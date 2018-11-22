@@ -211,7 +211,7 @@ class User extends Model
         //获取一个用户的信息
         $res = User::alias('a')
             ->join('sales_user_info b', 'a.id = b.user_id', 'left')
-            ->field('a.type,a.username,a.phone,a.parent_id,a.username,b.*')
+            ->field('a.status,a.type,a.username,a.phone,a.parent_id,a.username,b.*')
             ->where($where)
             ->find()
             ->toArray();
@@ -226,7 +226,7 @@ class User extends Model
         return $res;
     }
 
-    public function getRegUser()
+    public function getRegUser($where = '1=1')
     {
         //获取注册审核人员
         $res = User::alias('a')
@@ -234,7 +234,7 @@ class User extends Model
             ->join('sales_user_role c', 'a.id = c.user_id')
             ->join('sales_role d', 'c.role_id = d.id')
             ->field('a.id,a.username,a.phone,b.first_name,b.last_name,d.role_name')
-            ->where('status', 0)
+            ->where($where)
             ->where('type', '<>', 0)
             ->order('create_time', 'desc')
             ->select()
@@ -348,5 +348,12 @@ class User extends Model
         $res = User::where($where)->select()->toArray();
         return $res;
     }
+
+    public function getSalesList($where){
+        //获取销售员列表id
+        $res = User::where($where)->select()->toArray();
+        return $res;
+    }
+
 
 }

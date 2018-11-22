@@ -48,6 +48,7 @@ class OperateBehavior extends Controller
         'auser/lst',//获取管理员列表
         'message/lst',//获取信息列表
         'user/doresetpassword',//修改密码
+        'achievement/lst',//业绩列表
 
     ];
 
@@ -94,6 +95,8 @@ class OperateBehavior extends Controller
         'login/loginout',
         'channel/qrcode',//获取二维码信息
         'user/upload',//上传
+
+        'achievement/lst',
 
     ];
 
