@@ -47,11 +47,10 @@
                     {if ($b['action_name'] == $list['action_name']) }
                     <v-list dense class="toolbar-subdropdown">
 
-                        <!-- TODO -->
-                        <?php array_push($pArr[$v['id']], $list['controller_name'].'/'.$list['action_name']);?>
+                        <?php $pArr[$v['id']][$list['id']] = '/'.$list['controller_name'].'/'.$list['action_name'];?>
 
-                        <v-list-tile :class="{'sub-item-select': global.subSelect['<?php echo $list['id'];?>'] == '<?php echo $list['id'];?>' }"
-                            href="javascript:void(0)" @click="globalMenu({$list['id']},{$list['parent_id']},'/{$list['controller_name'].'/'.$list['action_name']}')">{$list['pri_name']}</v-list-tile>
+                        <v-list-tile href="{:url($list['controller_name'].'/'.$list['action_name'])}" :class="{'sub-item-select': global.subSelect['<?php echo $list['id'];?>'] == '<?php echo $list['id'];?>' }"
+                            href="javascript:void(0)">{$list['pri_name']}</v-list-tile>
                     </v-list>
                     {/if}
                     {/volist}
@@ -62,11 +61,8 @@
             </v-toolbar-items>
 
             {/if}
-            <!-- <?php dump($data);?> -->
 
             {/volist}
-
-            <!-- <?php echo dump(json_encode($pArr));?> -->
 
             <v-toolbar-items>
                 <v-menu offset-y>
@@ -89,9 +85,8 @@
             </v-toolbar-items>
 
             <v-toolbar-items>
-                <!-- <?php dump($data);?> -->
                 <v-menu offset-y>
-                    <v-btn flat primary slot="activator">个人中心</v-btn>
+                    <v-btn flat primary slot="activator" :class="{'toolbar-active': global.currentView == 'userinfo' }">个人中心</v-btn>
                     <v-list dense class="language-dropdown">
 
                         <v-list-tile :class="{'sub-item-select': global.currentView == 'userinfo' }" href="{:url('user/userInfo')}">

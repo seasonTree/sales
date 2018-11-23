@@ -1,6 +1,5 @@
 import {
-    getCookie,
-    setCookie
+    getCookie
 } from '../common/util';
 
 const base = {
@@ -8,7 +7,8 @@ const base = {
         return {
             global: {
                 language: 'zh_cn',
-                currentView: ''
+                currentView: '',
+                subSelect: {}
             }
         }
     },
@@ -24,8 +24,29 @@ const base = {
         },
 
         _checkLocation() {
-            let href = window.location.href.replace(/(\.html|\/index.html|\/index)$/, '');
-            this.global.currentView = href.split('/').pop().toLocaleLowerCase();
+            let that = this,
+                pathname = window.location.pathname.replace(/(\.html)$/, ''),
+                href = window.location.href.replace(/(\.html|\/index.html|\/index)$/, '');
+
+            that.global.currentView = href.split('/').pop().toLocaleLowerCase();
+
+            if (window._menu) {
+                let menu = window._menu;
+
+                for (var pkey in menu) {
+                    var pitem = menu[pkey];
+
+                    for (var ckey in pitem) {
+                        var citem = pitem[ckey];
+
+                        //找出
+                        if (citem == pathname) {
+                            that.global.subSelect[pkey] = pkey;
+                            that.global.subSelect[ckey] = ckey;
+                        }
+                    }
+                }
+            }
         }
     }
 };
@@ -59,15 +80,12 @@ const mixin = {
                     setting: false,
                     audit: false
                 },
-
-                subSelect: {}
             }
         };
     },
 
     mounted() {
         this._checkMessage();
-        this._setMenuSelect();
     },
 
     watch: {
@@ -104,17 +122,17 @@ const mixin = {
 
     methods: {
 
-        _setMenuSelect(){
-            let that = this,
-                mstring = window.sessionStorage.getItem('menu'),
-                arr = [];
+        // _setMenuSelect(){
+        //     let that = this,
+        //         mstring = window.sessionStorage.getItem('menu'),
+        //         arr = [];
 
-            if(mstring){
-                arr = mstring.split(',')
-            }
+        //     if(mstring){
+        //         arr = mstring.split(',')
+        //     }
 
-            that.subSelect = arr;
-        },  
+        //     that.subSelect = arr;
+        // },  
 
         //检查是否有新的消息
         _checkMessage() {
@@ -185,23 +203,23 @@ const mixin = {
             }
         },
 
-        globalMenu(id, parent_id, url){
-            let arr = [];
-                // herf = url.replace(/(\.html|\/index.html|\/index)$/, ''),
-                // menu = href.split('/').pop().toLocaleLowerCase(),
-                // smenu = window.sessionStorage.getItem('menu'),
-                // mObj = null;
+        // globalMenu(id, parent_id, url){
+        //     let arr = [];
+        //         // herf = url.replace(/(\.html|\/index.html|\/index)$/, ''),
+        //         // menu = href.split('/').pop().toLocaleLowerCase(),
+        //         // smenu = window.sessionStorage.getItem('menu'),
+        //         // mObj = null;
 
-            if(id){
-                arr.push(id);
-            }
+        //     if(id){
+        //         arr.push(id);
+        //     }
 
-            if(parent_id){
-                arr.push(parent_id);
-            }
-            window.sessionStorage.setItem('menu', arr.join(','));
-            window.location.href = url;
-        }
+        //     if(parent_id){
+        //         arr.push(parent_id);
+        //     }
+        //     window.sessionStorage.setItem('menu', arr.join(','));
+        //     window.location.href = url;
+        // }
     }
 };
 
