@@ -25,7 +25,7 @@ class OperateBehavior extends Controller
         'index/index',
         'login/loginout',
         'transaction/lst',//获取交易报告的数据
-        'transaction/exportExcel',//打印交易报告的数据
+        'transaction/exportexcel',//打印交易报告的数据
         'Auser/lst',//获取后台账号数据
         'user/getmemberlst',//获取销售账号数据
         'role/lst',//获取角色列表
@@ -95,6 +95,7 @@ class OperateBehavior extends Controller
         'login/loginout',
         'channel/qrcode',//获取二维码信息
         'user/upload',//上传
+        'transaction/exportexcel',//打印交易报告的数据
 
         'achievement/lst',
 
