@@ -29,6 +29,9 @@ class Role
     }
     public function add(){
 	    $data = input('post.data');
+	    if(empty($data['selected'])){
+            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);
+        }
 	    $arr['role_name'] = $data['role_name'];
         foreach ($data['selected'] as $k =>$v){
             $arr['pri_id'][] =$v['id'];
@@ -47,6 +50,9 @@ class Role
     }
     public function edit(){
         $data =input('post.data');
+        if(empty($data['selected'])){
+            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);
+        }
         $arr['role_name'] = $data['role_name'];
         $arr['id'] = $data['id'];
         foreach ($data['selected'] as $k =>$v){
