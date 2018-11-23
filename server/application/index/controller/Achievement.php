@@ -41,10 +41,11 @@ class Achievement
             $data[$k]['chan_pfm_obj'] = $channel_model->getPfmObj(array('user_id' => $v));
             $data[$k]['chan_doc_num'] = $channel_model->getDocNum(array('user_id' => $v));
             $data[$k]['achievement'] = 0;
+            // $data[$k]['children'] = array();
             foreach ($doc as $a => $b) {
                 $ecommerce = $ecommerce_model->getEcommerce(array('a.userid' => $b['user_id'],'b.referralCode' => $v));
-                $data[$k]['children']['firstName'] = $b['firstName'];
-                $data[$k]['children']['lastName'] = $b['lastName'];
+                $data[$k]['children'][$a]['firstName'] = $b['firstName'];
+                $data[$k]['children'][$a]['lastName'] = $b['lastName'];
                 foreach ($ecommerce as $n => $list) {
                     $data[$k]['achievement']+= $list['unitprice'] * $list['quantity'];
                 }
