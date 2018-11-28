@@ -2,7 +2,7 @@ import request from '../common/request';
 
 export function get(data) {
     return request({
-        url: '/privilege/lst',
+        url: '/privilege/privilegeList',
         method: 'post',
         data: data
     })

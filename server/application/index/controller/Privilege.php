@@ -1,26 +1,29 @@
 <?php
 namespace app\index\controller;
-use \think\Controller;
-use think\Request;
 
-class Privilege extends Controller
+class Privilege
 {
-    protected $middleware =['Check'];
-	public function index (Request $request){
-	    if($request->error){
-	        return $request->error;
-        }
-//        halt($request->priData);
-		return view('/user_privilege');
+    protected $privilegeModel;
+    public function __construct(\app\index\model\Privilege $privilege)
+    {
+        $this->privilegeModel=$privilege;
+    }
 
+    public function index (){
+		return view('/user_privilege');
 	}
 	//提供权限数据
-	public function lst(){
-        $model =model('Privilege');
-        $data = $model->getTree();
+	public function privilegeList(){
+        $data = $this->privilegeModel->getTree();
         $count = count($data);
         return json(['data'=>$data,'count'=>$count,'code'=>0,'msg'=>'权限列表数据']);
     }
+
+    public function test()
+    {
+       dump($this->privilegeModel->makeTree());
+    }
+
     public function edit(){
         $priModel = model('Privilege');
 	    $data = input('post.data');

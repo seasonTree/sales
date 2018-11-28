@@ -6,21 +6,20 @@ import {
 new Vue({
     el: '#app',
     mixins: [mixinExt],
-
     created() {
         let that = this;
         that.getRemoteData();
     },
-
     data() {
         return {
-
             showAdd: false,
             showEdit: false,
-
             items: null,
-
-            theader: [{
+            tdata: [],
+            editItem: {},
+            addItem: {},
+            headers: [
+                {
                     text: 'ID',
                     align: 'left',
                     value: 'id',
@@ -57,18 +56,12 @@ new Vue({
                     sortable: false,
                 },
             ],
-            tdata: [],
-
-            editItem: {},
-            addItem: {},
         };
     },
 
     methods: {
-
         getRemoteData() {
             let that = this;
-
             that.$api.privilege.get().then((data) => {
                 that.tdata = data.data;
                 that.tdata.unshift({
@@ -77,12 +70,10 @@ new Vue({
                     id: 0,
                     level: 0
                 });
-
                 that.items = that.tdata.map(function (item) {
                     item.pri_name = Array(item.level + 1).join('------') + item.pri_name;
                     return item;
                 });
-
             }).catch((data) => {
                 that.$comp.toast({
                     text: '获取数据失败，请刷新重试.',
@@ -90,18 +81,13 @@ new Vue({
                 });
             });
         },
-
         edit(item) {
             this.editItem = JSON.parse(JSON.stringify(item));
-
             this.editItem.pri_name = this.editItem.pri_name.replace(/------/g, '');
-
             this.showEdit = true;
         },
-
         del(id) {
             let that = this;
-
             that.$comp.confirm({
                 title: '提示',
                 text: '确认要删除吗?',
@@ -110,11 +96,9 @@ new Vue({
                         data: id
                     }).then((res) => {
                         if (res.code == 0) {
-        
                             that.$comp.toast({
                                 text: res.msg || '删除成功.',
                             });
-        
                             for (var i = 0; i < that.tdata.length; i++) {
                                 var item = that.tdata[i];
         
@@ -123,14 +107,13 @@ new Vue({
                                     break;
                                 }
                             }
-        
                         } else {
                             that.$comp.toast({
                                 text: res.msg || '删除失败，请刷新后重试.',
                                 color: 'error',
                             });
                         }
-                    }).catch((res) => { //function(data){}
+                    }).catch((res) => {
                         that.$comp.toast({
                             text: '删除失败，请刷新后重试.',
                             color: 'error',
@@ -139,7 +122,6 @@ new Vue({
                 }
             });
         },
-
         addCommit() {
             let that = this;
             that.$api.privilege.add({
@@ -149,9 +131,7 @@ new Vue({
                     that.$comp.toast({
                         text: res.msg || '新增成功.',
                     });
-
                     that.getRemoteData();
-
                     that.closeDialog('add');
                 } else {
                     that.$comp.toast({
@@ -167,7 +147,6 @@ new Vue({
                 });
             });
         },
-
         editCommit() {
             let that = this;
             that.$api.privilege.edit({
@@ -178,9 +157,7 @@ new Vue({
                     that.$comp.toast({
                         text: res.msg || '修改成功.',
                     });
-
                     that.getRemoteData();
-
                     that.closeDialog('edit');
                 } else {
                     that.$comp.toast({
@@ -195,10 +172,8 @@ new Vue({
                 });
             });
         },
-
         closeDialog(type) {
             let that = this;
-
             if (type == 'add') {
                 that.showAdd = false;
                 that.$refs['addForm'].reset();
@@ -208,4 +183,4 @@ new Vue({
             }
         }
     }
-})
+});

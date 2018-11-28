@@ -17,7 +17,7 @@
         </v-btn>
     </div>
 
-    <v-data-table :headers="theader" :items="tdata" hide-actions class="elevation-4 s-table">
+    <v-data-table :headers="headers" :items="tdata" hide-actions class="elevation-4 s-table">
         <template slot="items" slot-scope="props">
             <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">
