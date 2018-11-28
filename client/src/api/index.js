@@ -10,6 +10,7 @@ import * as transaction from './transaction';
 import * as register from './register';
 import * as protocol from './protocol';
 import * as audit from './audit';
+import * as financial from './financial';
 
 const apis = {
     common,
@@ -23,12 +24,13 @@ const apis = {
     config,
     register,
     protocol,
-    audit
+    audit,
+    financial,
 }
 
 const install = function (Vue) {
-    if (install.installed) return
-    install.installed = true
+    if (install.installed) return;
+    install.installed = true;
     Object.defineProperties(Vue.prototype, {
         $api: {
             get() {
