@@ -60,13 +60,13 @@ const mixin = {
                     rePassword: '',
                     submitLoading: false
                 },
-                viewSelect: {
-                    system: false,
-                    user: false,
-                    commision: false,
-                    setting: false,
-                    audit: false
-                },
+                // viewSelect: {
+                //     system: false,
+                //     user: false,
+                //     commision: false,
+                //     setting: false,
+                //     audit: false
+                // },
             }
         };
     },
@@ -85,19 +85,19 @@ const mixin = {
                 }
             },
         },
-        'global.currentView': {
-            handler(newValue, oldValue) {
-                this.global.viewSelect.user = (newValue == 'privilege' ||
-                    newValue == 'role' ||
-                    newValue == 'user');
-                this.global.viewSelect.commision = (newValue == 'commision_manage');
-                this.global.viewSelect.setting = (newValue == 'notifysetting' ||
-                    newValue == 'protocolsetting');
-                this.global.viewSelect.audit = (newValue == 'regaudit');
-                this.global.viewSelect.system = this.global.viewSelect.user || this.global.viewSelect.commision ||
-                    this.global.viewSelect.setting || this.global.viewSelect.audit
-            },
-        }
+        // 'global.currentView': {
+        //     handler(newValue, oldValue) {
+        //         this.global.viewSelect.user = (newValue == 'privilege' ||
+        //             newValue == 'role' ||
+        //             newValue == 'user');
+        //         this.global.viewSelect.commision = (newValue == 'commision_manage');
+        //         this.global.viewSelect.setting = (newValue == 'notifysetting' ||
+        //             newValue == 'protocolsetting');
+        //         this.global.viewSelect.audit = (newValue == 'regaudit');
+        //         this.global.viewSelect.system = this.global.viewSelect.user || this.global.viewSelect.commision ||
+        //             this.global.viewSelect.setting || this.global.viewSelect.audit
+        //     },
+        // }
     },
     methods: {
         //检查是否有新的消息
