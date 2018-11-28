@@ -129,23 +129,23 @@ const mixin = {
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        this.$comp.toast({
+                        that.$comp.toast({
                             text: res.msg,
                         });
                         that.global.changePassword.show = false;
                     } else {
-                        this.$comp.toast({
+                        that.$comp.toast({
                             text: res.msg,
                             color: 'error'
                         });
                         that.global.changePassword.submitLoading = false;
                     }
                 }).catch((res) => {
-                    this.$comp.toast({
+                    that.$comp.toast({
                         text: '修改失败,请重试.',
                         color: 'error'
                     });
-                    this.global.changePassword.submitLoading = false;
+                    that.global.changePassword.submitLoading = false;
                 });
             }
         },
