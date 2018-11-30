@@ -1,4 +1,4 @@
-<template>
+
 <template>
     <v-snackbar :color="color" v-model="visible" :timeout="timeout" :top="top" :left="left" :right="right" :bottom="bottom">
         {{ text }}

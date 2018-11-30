@@ -1,0 +1,142 @@
+{extend name="layout:head2_layout"/}
+
+{block name="css"}
+
+{/block}
+
+{block name="body"}
+
+<v-container class="content" grid-list-md text-xs-center>
+    <div class="content-header">
+        税务计算
+    </div>
+
+    <v-layout row>
+        <v-flex xs12 sm6 d-flex>
+            <v-select :items="items" item-text="text"  item-value="value" label="Standard" v-model="selected" >
+
+            </v-select>
+        </v-flex>
+    </v-layout>
+
+        <div v-if="selected == 'sales'">
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>含税销售额</v-subheader>
+                </v-flex>
+
+                <v-flex xs6>
+                    <v-text-field label="Amount" value="10.00" prefix="￥">
+                    </v-text-field>
+                </v-flex>
+            </v-layout>
+
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>税率</v-subheader>
+                </v-flex>
+
+                <v-flex xs12 sm6 d-flex>
+                    <v-select :items="items" label="Standard">
+
+                    </v-select>
+                </v-flex>
+
+            </v-layout>
+
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>不含税销售额</v-subheader>
+                </v-flex>
+
+                <v-flex xs6>
+                    <v-text-field label="Amount" value="10.00" prefix="￥">
+                    </v-text-field>
+                </v-flex>
+
+            </v-layout>
+        </div>
+        <div v-if="selected == 'taxes'">
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>含税销售额</v-subheader>
+                </v-flex>
+
+                <v-flex xs6>
+                    <v-text-field label="Amount" value="10.00" prefix="￥">
+                    </v-text-field>
+                </v-flex>
+            </v-layout>
+
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>增值税率</v-subheader>
+                </v-flex>
+
+                <v-flex xs12 sm6 d-flex>
+                    <v-select :items="items" label="Standard">
+
+                    </v-select>
+                </v-flex>
+
+            </v-layout>
+
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>应交增值税</v-subheader>
+                </v-flex>
+
+                <v-flex xs6>
+                    <v-text-field label="Amount" value="10.00" prefix="￥">
+                    </v-text-field>
+                </v-flex>
+
+            </v-layout>
+        </div>
+        <div v-if="selected == 'selfTaxes'">
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>含税销售额</v-subheader>
+                </v-flex>
+
+                <v-flex xs6>
+                    <v-text-field label="Amount" value="10.00" prefix="￥">
+                    </v-text-field>
+                </v-flex>
+            </v-layout>
+
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>税率</v-subheader>
+                </v-flex>
+
+                <v-flex xs12 sm6 d-flex>
+                    <v-select :items="items" label="Standard">
+
+                    </v-select>
+                </v-flex>
+
+            </v-layout>
+
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>个人所得税应纳税额</v-subheader>
+                </v-flex>
+
+                <v-flex xs6>
+                    <v-text-field label="Amount" value="10.00" prefix="￥">
+                    </v-text-field>
+                </v-flex>
+
+            </v-layout>
+        </div>
+
+
+</v-container>
+
+
+{/block}
+
+{block name="script"}
+<script src="__basePath__/js/chunks/financial.js?date=__date__"></script>
+{/block}
