@@ -20,7 +20,7 @@ new Vue({
                     window.location.href = res.data.url;
                 } else {
 
-                    this.$comp.toast({
+                    that.$comp.toast({
                         text: res.msg,
                         color: 'error'
                     })

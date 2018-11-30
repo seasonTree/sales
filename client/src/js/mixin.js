@@ -60,13 +60,13 @@ const mixin = {
                     rePassword: '',
                     submitLoading: false
                 },
-                viewSelect: {
-                    system: false,
-                    user: false,
-                    commision: false,
-                    setting: false,
-                    audit: false
-                },
+                // viewSelect: {
+                //     system: false,
+                //     user: false,
+                //     commision: false,
+                //     setting: false,
+                //     audit: false
+                // },
             }
         };
     },
@@ -85,19 +85,19 @@ const mixin = {
                 }
             },
         },
-        'global.currentView': {
-            handler(newValue, oldValue) {
-                this.global.viewSelect.user = (newValue == 'privilege' ||
-                    newValue == 'role' ||
-                    newValue == 'user');
-                this.global.viewSelect.commision = (newValue == 'commision_manage');
-                this.global.viewSelect.setting = (newValue == 'notifysetting' ||
-                    newValue == 'protocolsetting');
-                this.global.viewSelect.audit = (newValue == 'regaudit');
-                this.global.viewSelect.system = this.global.viewSelect.user || this.global.viewSelect.commision ||
-                    this.global.viewSelect.setting || this.global.viewSelect.audit
-            },
-        }
+        // 'global.currentView': {
+        //     handler(newValue, oldValue) {
+        //         this.global.viewSelect.user = (newValue == 'privilege' ||
+        //             newValue == 'role' ||
+        //             newValue == 'user');
+        //         this.global.viewSelect.commision = (newValue == 'commision_manage');
+        //         this.global.viewSelect.setting = (newValue == 'notifysetting' ||
+        //             newValue == 'protocolsetting');
+        //         this.global.viewSelect.audit = (newValue == 'regaudit');
+        //         this.global.viewSelect.system = this.global.viewSelect.user || this.global.viewSelect.commision ||
+        //             this.global.viewSelect.setting || this.global.viewSelect.audit
+        //     },
+        // }
     },
     methods: {
         //检查是否有新的消息
@@ -129,23 +129,23 @@ const mixin = {
                 }).then((res) => {
 
                     if (res.code == 0) {
-                        this.$comp.toast({
+                        that.$comp.toast({
                             text: res.msg,
                         });
                         that.global.changePassword.show = false;
                     } else {
-                        this.$comp.toast({
+                        that.$comp.toast({
                             text: res.msg,
                             color: 'error'
                         });
                         that.global.changePassword.submitLoading = false;
                     }
                 }).catch((res) => {
-                    this.$comp.toast({
+                    that.$comp.toast({
                         text: '修改失败,请重试.',
                         color: 'error'
                     });
-                    this.global.changePassword.submitLoading = false;
+                    that.global.changePassword.submitLoading = false;
                 });
             }
         },
