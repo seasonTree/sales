@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[16],{68:function(n,p,w){"use strict";w.r(p);var a=w(0),i=w(1);new a.a({el:"#app",mixins:[i.a]})}},[[68,0,2,1]]]);

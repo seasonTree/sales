@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[5],{56:function(o,n,e){document.documentMode&&window.location.replace("index/browserChoose")}},[[56,0]]]);
