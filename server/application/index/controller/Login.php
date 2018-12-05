@@ -27,7 +27,7 @@ class Login
     {
         //退出登录
         Session::clear();
-        Cookie::clear();
+        Cookie::clear('user_info');
         return redirect('/');
     }
 

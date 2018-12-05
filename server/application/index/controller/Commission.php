@@ -37,6 +37,7 @@ class Commission
             ['id' => 2, 'product_id' => 2, 'type_id' => 2, 'method' => '%', 'step1' => 1, 'step2' => 10, 'amt' => 1, 'create_time' => '', 'end_time' => ''],
             ['id' => 3, 'product_id' => 3, 'type_id' => 3, 'method' => '￥', 'step1' => 1, 'step2' => 10, 'amt' => 1, 'create_time' => '', 'end_time' => ''],
         ];
+
     }
 
     /***
