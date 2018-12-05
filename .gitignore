@@ -12,5 +12,4 @@ composer.lock
 /server/runtime
 /server/config/database.php
  /client/src
-#/client/dist
 
