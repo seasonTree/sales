@@ -1,9 +1,16 @@
 <?php
 
+/***
+ * Class Commission
+ * 佣金管理
+ * @package app\index\controller
+ */
+
 namespace app\index\controller;
 
 use app\index\model\Formulas;
 use think\facade\Request;
+
 
 class Commission
 {
@@ -47,9 +54,9 @@ class Commission
     public function addFormulas()
     {
         if (Request::param('data.name')) return json(['code' => 1, 'msg' => '佣金类型不能为空']);
-        if (Request::param('data.method')) return json(['code' => 1, 'msg' => '佣金计算公式不能为空']);
+        if (Request::param('data.method')) return json(['code' => 2, 'msg' => '佣金计算公式不能为空']);
         if (!$this->formulasModel->addFormulas(Request::param('data'))) {
-            return json(['code' => 0, 'msg' => '添加失败']);
+            return json(['code' => 3, 'msg' => '添加失败']);
         }
         return json(['code' => 0, 'msg' => '添加成功']);
     }
