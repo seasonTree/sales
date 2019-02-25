@@ -12,12 +12,6 @@ class UserInfo extends Model
     protected $pk = 'id';
 
 
-    public function findUserId($phone){
-    	//使用电话号码查找id
-    	$res = UserInfo::where('phone',$phone)->value('user_id');
-    	return $res;
-    }
-
     public function insertPic($data){
     	//插入图片
     	$res = UserInfo::update($data);

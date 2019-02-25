@@ -15,6 +15,7 @@ new Vue({
                     data: that.data
                 }).then((res) => {
 
+
                     if (res.code == 0) {
                         // that.globalShowMessage(true, res.msg, 'success');
 

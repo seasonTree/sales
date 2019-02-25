@@ -94,6 +94,7 @@ new Vue({
         },
 
         submit() {
+    
             let that = this;
             if (that.$refs.form.validate()) {
                 that.$api.user.checkPasswordSMS({

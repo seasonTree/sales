@@ -49,6 +49,7 @@ class OperateBehavior extends Controller
         'message/lst',//获取信息列表
         'user/doresetpassword',//修改密码
         'achievement/lst',//业绩列表
+        'user/doCheckCode',//验证短信
 
     ];
 
@@ -65,6 +66,11 @@ class OperateBehavior extends Controller
         'config/showprotocol',
         'register/index',//注册页面
         'register/userregister',//注册提交
+        'user/docheckcode',//验证短信
+        'user/resetpassword',//重置密码
+        'user/doresetpassword', //重置密码
+        'user/doresetpasswordbyphone',//重置密码
+
     ];
 
     /**
@@ -96,7 +102,7 @@ class OperateBehavior extends Controller
         'channel/qrcode',//获取二维码信息
         'user/upload',//上传
         'transaction/exportexcel',//打印交易报告的数据
-
+        'user/resetpassword',//重置密码
         'achievement/lst',
 
     ];
@@ -110,11 +116,12 @@ class OperateBehavior extends Controller
         //获取当前访问路由
         $url = getActionUrl();
         $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
-        
+
         if (in_array($url, $this->login)) {
             if (checkLogin() && $url != 'user/sendmessage') {
                 $this->redirect('user/userInfo');
             }
+          
         }
         if (empty(Session::get()) && !in_array($url, $this->login)) {
             if (checkLogin()) {

@@ -192,6 +192,13 @@ class User extends Model
         return $res;
     }
 
+        public function updatePasswordByPhone($data)
+    {
+        //修改密码
+        $res = User::where('id', $data['uid'])->update(['password' => $data['password']]);
+        return $res;
+    }
+
     public function getChildSales($uid)
     {
         //获取下级销售员
@@ -354,6 +361,7 @@ class User extends Model
         $res = User::where($where)->select()->toArray();
         return $res;
     }
+
 
 
 }

@@ -116,6 +116,39 @@ class User
 
 	}
 
+    public function doResetPasswordByPhone()
+    {
+
+        $user_model = new UserModel();
+
+        $data = input('post.data');
+
+        if ($data['password'] == '') {
+            return json(['code' => 1,'msg' => '密码不能为空']);
+        }
+        if ($data['rePassword'] != $data['password']) {
+            return json(['code' => 2,'msg' => '两次输入密码不一致']);
+        }
+
+        if (strlen($data['password']) < 6 || strlen($data['password']) > 30 ) {
+            return json(['code' => 4,'msg' => '密码长度只能在6到30位之间']);
+        }
+        if (!checkPassword($data['password'])) {
+            return json(['code' => 5,'msg' => '密码由数字字母下划线和.组成']);
+        }
+
+        $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+        
+        $res = $user_model->updatePasswordByPhone($data);
+        if (!$res) {
+            return json(['code' => 6,'msg' => '修改失败']);
+        }
+
+    
+        return json(['code' => 0,'msg' => '修改成功' ,'data' => [ 'url' => '/']]);
+
+    }
+
 	public function doCheckCode(){
 		//验证码验证
         $phone = redis()->get('user:'.input('post.data.phone_num'));
@@ -125,8 +158,8 @@ class User
         if ($phone != input('post.data.identify_code')) {
         	return json(['code' => 2,'msg' => '验证码错误']);
         }
-        $user_info = new UserInfoModel();
-        $uid = $user_info->findUserId(input('post.data.phone_num'));
+        $user = new UserModel();
+        $uid = $user->findUserId(input('post.data.phone_num'));
         return json(['code' => 0,'msg' => '验证成功','data'=>['url'=>'/user/resetpassword','uid'=>$uid]]);
 	}
 
